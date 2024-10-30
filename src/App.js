@@ -14,7 +14,7 @@ import PostTest from './posttest';
 import ResetPassword from './reset_password';
 import Signup from './signup';
 import UploadModule from './uploadmodule';
-
+import InstructorDashboard from './instructor_dashboard';
 
 
 function App() {
@@ -37,7 +37,7 @@ function App() {
             <Route path="/reset_password" element={<ResetPassword />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/uploadmodule" element={<UploadModule />} />
-
+            <Route path="/instructor_dashboard" element={<InstructorDashboard />} />
 
           </Routes>
         
