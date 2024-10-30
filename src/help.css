@@ -1,0 +1,85 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Sidebar styling */
+.sidebar {
+    width: 10%;
+    background-color: #F4F4F4;
+    position: fixed;
+    height: 100%;
+    color: black;
+    top: 0;
+    left: 0;
+    margin-top: 3.5%;
+    padding-top: 20px;
+    text-align: center; /* Center align text and images */
+}
+
+.sidebar ul {
+list-style-type: none;
+padding: 0;
+}
+
+.sidebar ul li {
+padding: 20px;
+text-align: center;
+}
+
+.sidebar ul li a {
+text-decoration: none;
+color: black;
+font-size: 80%;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+/* Header styling */
+.header {
+    width: 100%;
+    background-color: #002f87;
+    padding: 10px;
+    color: white;
+    text-align: left;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 1.5em; /* Adjusted for better readability */
+    display: inline-block; /* Added to keep the title inline */
+}
+
+.header img {
+    float: right; /* Float images to the right */
+    margin-left: 1%; 
+    margin-right: 2%;/* Add some space between images */
+    width: 2%;
+    height: 2%;
+}
+/* Main container */
+.help-container  {
+    margin-left: 12%;
+    padding: 20px;
+    margin-top: 80px; /* Adjust this value based on the height of your header */
+}
+
+/* Contact box styling */
+.contact-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin-top: 50px;
+}
+.sidebar img {
+    display: block;
+    margin: 0 auto; /* Center images */
+}

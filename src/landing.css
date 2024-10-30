@@ -1,0 +1,147 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #003366;
+    padding: 20px 0;
+    text-align: center;
+    color: white;
+}
+
+header .logo-placeholder {
+    width: 200px;
+    height: 50px;
+    background-color: lightgray;
+    margin: 0 auto;
+}
+
+.landing-container  {
+    width: 80%;
+    margin: 0 auto;
+    padding: 40px 0;
+    text-align: center; /* Align everything to center */
+}
+
+.intro-text {
+    margin-bottom: 30px;
+}
+
+.intro-text h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.intro-text p {
+    font-size: 18px;
+    color: gray;
+    margin-bottom: 20px;
+}
+
+/* Placeholder for the intro image */
+.intro-text .placeholder-box {
+    width: 400px;
+    height: 200px;
+    background-color: lightgray;
+    margin: 20px auto;
+}
+
+.buttons {
+    margin-bottom: 30px;
+}
+
+.buttons button {
+    padding: 12px 30px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.login {
+    background-color: white;
+    border: 1px solid #003366;
+    color: #003366;
+}
+
+.signup {
+    background-color: #003366;
+    color: white;
+}
+
+.featured-courses {
+    margin-bottom: 50px;
+}
+
+.featured-courses h2 {
+    font-size: 24px;
+}
+
+.featured-courses p {
+    font-size: 16px;
+    color: gray;
+    margin-bottom: 20px;
+}
+
+.featured-courses .placeholder-box {
+    width: 400px;
+    height: 150px;
+    background-color: lightgray;
+    margin: 20px auto;
+}
+
+.featured-courses button {
+    background-color: #003366;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 40px;
+}
+
+.course-grid {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.course-card {
+    background-color: white;
+    width: 250px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.course-card:hover {
+    transform: scale(1.05);
+}
+
+/* Placeholder for course images */
+.course-card .placeholder {
+    width: 100%;
+    height: 150px;
+    background-color: lightgray;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.course-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: gray;
+    margin-bottom: 5px;
+}
+
+.course-title {
+    font-size: 18px;
+    font-weight: bold;
+}

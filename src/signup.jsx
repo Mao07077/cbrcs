@@ -1,0 +1,75 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+import './signup.css';
+
+const Signup = () => {
+    const [formData, setFormData] = useState({
+        firstname: '',
+        middlename: '',
+        lastname: '',
+        suffix: '',
+        birthdate: '',
+        gender: '',
+        email: '',
+        password: '',
+        program: '',
+        id_number: ''
+    });
+
+    const [error, setError] = useState('');
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('/signup', formData);
+            if (response.data.success) {
+                window.location.href = '/login';
+            } else {
+                setError(response.data.message);
+            }
+        } catch (error) {
+            setError('An error occurred during signup.');
+        }
+    };
+
+    return (
+        <div>
+            <div className="header">
+                <h1>Logo here</h1>
+            </div>
+
+            <div className="Signup-container">
+                <h2>Sign-Up</h2>
+                {error && <p className="error">{error}</p>}
+                <form onSubmit={handleSubmit}>
+                    <input type="text" name="firstname" placeholder="First Name" value={formData.firstname} onChange={handleChange} required />
+                    <input type="text" name="middlename" placeholder="Middle Name" value={formData.middlename} onChange={handleChange} />
+                    <input type="text" name="lastname" placeholder="Last Name" value={formData.lastname} onChange={handleChange} required />
+                    <input type="text" name="suffix" placeholder="Suffix" value={formData.suffix} onChange={handleChange} />
+                    <input type="date" name="birthdate" placeholder="Birthdate (YYYY-MM-DD)" value={formData.birthdate} onChange={handleChange} required />
+                    <div className="gender">
+                        <label>Gender:</label>
+                        <label><input type="radio" name="gender" value="Male" checked={formData.gender === 'Male'} onChange={handleChange} required /> Male</label>
+                        <label><input type="radio" name="gender" value="Female" checked={formData.gender === 'Female'} onChange={handleChange} required /> Female</label>
+                    </div>
+                    <input type="email" name="email" placeholder="E-Mail" value={formData.email} onChange={handleChange} required />
+                    <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
+                    <input type="text" name="program" placeholder="Program" value={formData.program} onChange={handleChange} required />
+                    <input type="number" name="id_number" placeholder="ID Number" value={formData.id_number} onChange={handleChange} required />
+                    <a href="/login">Already have an account</a>
+                    <input type="submit" name="submit" value="Submit" />
+                </form>
+            </div>
+        </div>
+    );
+};
+
+export default Signup;
