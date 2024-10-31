@@ -18,6 +18,18 @@ const InstructorDashboard = () => {
       <div className="instructor-name">
         <h1>Hello Instructor</h1>
       </div>
+      
+      <div className="Numstudents" >
+      <div class = "header-border" >
+        <h1>Number of students: </h1>
+        <h2>50</h2>
+        <div class = "header-border" ></div>
+      </div>
+      </div>
+      
+      
+      
+      
       <nav className="sidebar">
         <ul>
         

@@ -1,12 +1,55 @@
-.header{
-    height: 7%;
+.header {
+    height: 7.3%;
+}
+.instructor-name{
+    display: flex;              /* Enable Flexbox */
+    align-items: flex-start;   /* Align items at the start of the cross axis */
+    justify-content: flex-start; /* Align items at the start of the main axis */
+    position: fixed;           /* Keep the header fixed in place */
+    top: 100px;                 /* Distance from the top */
+    left: 320px;                /* Distance from the left */
+    width: auto;               /* Adjust width as needed */
+    padding: 10px;            /* Optional: adds padding around the header */
+    background-color: white;  /* Optional: background color */
+    z-index: 1000; 
 }
 
+.instructor-name h1{
+    font-size: 2.5em; /* Adjust the size as needed */
+    color: #333;      /* Text color */
+    margin: 0;
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+    width: 10000px;
+}
+.Numstudents{
+    border: 3px solid #333;
+    padding: 100px;
+    border-radius: 35px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    display: flex;              
+    align-items: flex-start;   
+    justify-content: flex-start; 
+    position: fixed;           
+    top: 300px;                 
+    left: 450px;                
+    background-color: white;  
+    z-index: 1000;
 
-
+}
+.Numstudents h1{
+    font-size: 1.8em; /* Adjust the size as needed */
+    margin-top: -60px;
+    
+}
+.Numstudents h2{
+    font-size: 3.8em;
+     margin-left: 100px;
+     margin-top: 30px;
+}
 .sidebar {
     width: 300px;
-    background-color: #d4d0e4;
+    background-color: hwb(240 93% 5% / 0.986);
     height: 250%;
     position: fixed;
     top: 0;
@@ -26,19 +69,21 @@
     display: flex;
     align-items: center;
     padding: 20px 20px;
-    font-size: 2.0em;
+    font-size: 2.2em;
     color: #333;
     transition: background 0.3s;
+   margin-top: 50px;
+   
 }
 
 .sidebar li:hover {
-    background-color: #e0e0e0;
+    background-color: #596fd3;
     cursor: pointer;
 }
 
 .sidebar-icon {
-    width: 27px;
-    height: 25px;
+    width: 40px;
+    height: 35px;
     margin-right: 15px;
 }
 
