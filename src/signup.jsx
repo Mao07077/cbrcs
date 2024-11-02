@@ -28,14 +28,17 @@ const Signup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("Submitting signup data:", formData); // Log the signup data
         try {
-            const response = await axios.post('/signup', formData);
+            const response = await axios.post('http://127.0.0.1:8000/api/signup', formData); // Specify the full URL
+            console.log("Signup response:", response.data); // Log the response
             if (response.data.success) {
-                window.location.href = '/login';
+                window.location.href = '/login'; // Redirect to login page on success
             } else {
                 setError(response.data.message);
             }
         } catch (error) {
+            console.error("Signup error:", error); // Log error details
             setError('An error occurred during signup.');
         }
     };

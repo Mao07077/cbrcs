@@ -9,14 +9,17 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("Sending login request", { idNumber, password });
         try {
             const response = await axios.post('http://127.0.0.1:8000/api/login', { idNumber, password });
+            console.log("Response:", response.data); // Log the response
             if (response.data.success) {
                 window.location.href = '/module'; // Redirect to module page on success
             } else {
                 setError('Invalid ID number or password');
             }
         } catch (err) {
+            console.error("Error during login:", err); // Log error details
             setError('An error occurred. Please try again.');
         }
     };
@@ -62,4 +65,3 @@ const Login = () => {
 };
 
 export default Login;
-
