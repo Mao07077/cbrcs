@@ -45,7 +45,7 @@
 .Numstudents h2{
     font-size: 3.8em;
      margin-left: 100px;
-     margin-top: 30px;
+     margin-top: 40px;
 }
 .sidebar {
     width: 300px;
@@ -93,3 +93,96 @@
     flex-grow: 1;
 }
 
+
+             
+.studengagement{
+    border: 3px solid #333;
+    padding: 90px;
+    border-radius: 40px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    display: flex;  
+    margin-left: 700px;
+    margin-top: -8%;
+    padding-right: 100px;
+}
+.studengagement h1{
+    font-size: 1.8em; /* Adjust the size as needed */
+    margin-top: -60px;
+    padding-left: 0px;
+    padding-right: 90px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.studengagement h2{
+     font-size: 3.8em;
+     margin-left: -280px;
+     margin-top: 30px;
+     margin-right: 40px;
+     text-align: center;
+}
+.Upload {
+    border: 3px solid #333;
+    padding: 50px;
+    border-radius: 40px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    justify-content: space-between; /* Space out children */
+    height: 300px; /* Set a fixed height for the upload section */
+    margin-left: 300px;
+    margin-top: 40%;
+    padding-right: -10px;
+}
+
+.Upload textarea {
+    width: 100%; /* Full width */
+    height: 60px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    resize: none; /* Disable resizing */
+}
+
+.file-label {
+    display: flex;
+    align-items: center;
+    background-color: #3891f0;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.file-icon {
+    margin-right: 10px; /* Space between icon and text */
+    font-size: 1.5em; /* Adjust icon size */
+}
+
+#file-chosen {
+    display: block;
+    margin: 5px 0;
+}
+
+.divider {
+    border: none; /* Remove default border */
+    height: 2px; /* Set height of the line */
+    background-color: #007bff; /* Color of the line */
+    margin: 10px 0; /* Space around the line */
+}
+
+button {
+    background-color: #007bff; /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* Remove default border */
+    padding: 10px 20px; /* Button padding */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 1em; /* Font size */
+    align-self: flex-end; /* Align the button to the end (right) */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
