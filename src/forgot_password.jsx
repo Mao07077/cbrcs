@@ -9,13 +9,13 @@ const ForgotPassword = () => {
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
 
-    const handleSubmit = async (e) => {
+    const handleSendCode = async (e) => {
         e.preventDefault();
         setError('');
         setMessage('');
 
         try {
-            const response = await axios.post('/api/forgot_password', {
+            const response = await axios.post('http://127.0.0.1:8000/api/forgot_password', {
                 id_number: idNumber,
                 email: email,
             });
@@ -26,7 +26,31 @@ const ForgotPassword = () => {
                 setError(response.data.message);
             }
         } catch (error) {
+            console.error("Error sending reset email:", error);
             setError('Failed to send email.');
+        }
+    };
+
+    const handleConfirmCode = async (e) => {
+        e.preventDefault();
+        setError('');
+        setMessage('');
+
+        try {
+            const response = await axios.post('http://127.0.0.1:8000/api/confirm_reset_code', {
+                id_number: idNumber,
+                email: email,
+                reset_code: resetCode,
+            });
+
+            if (response.data.success) {
+                setMessage('Reset code confirmed. You can now reset your password.');
+            } else {
+                setError(response.data.message);
+            }
+        } catch (error) {
+            console.error("Error confirming reset code:", error);
+            setError('Failed to confirm code.');
         }
     };
 
@@ -40,7 +64,7 @@ const ForgotPassword = () => {
                 <h2>Forgot Password</h2>
                 {error && <p className="error">{error}</p>}
                 {message && <p className="message">{message}</p>}
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSendCode}>
                     <input
                         type="number"
                         name="id_number"
@@ -57,7 +81,10 @@ const ForgotPassword = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
+                    <button type="submit" className="send-code-btn">Send Code</button>
+                </form>
 
+                <form onSubmit={handleConfirmCode}>
                     <div className="code-container">
                         <input
                             type="text"
@@ -66,10 +93,8 @@ const ForgotPassword = () => {
                             value={resetCode}
                             onChange={(e) => setResetCode(e.target.value)}
                         />
-                        <button type="submit" className="send-code-btn">Send Code</button>
+                        <button type="submit" className="confirm-btn">Confirm</button>
                     </div>
-
-                    <button type="submit" className="confirm-btn">Confirm</button>
                 </form>
             </div>
         </div>
