@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './forgot_password.css';
 
 const ForgotPassword = () => {
@@ -8,6 +9,8 @@ const ForgotPassword = () => {
     const [resetCode, setResetCode] = useState('');
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
+    const [codeSent, setCodeSent] = useState(false);
+    const navigate = useNavigate(); // Initialize navigate
 
     const handleSendCode = async (e) => {
         e.preventDefault();
@@ -22,12 +25,13 @@ const ForgotPassword = () => {
 
             if (response.data.success) {
                 setMessage('Reset email has been sent.');
+                setCodeSent(true);
             } else {
                 setError(response.data.message);
             }
         } catch (error) {
             console.error("Error sending reset email:", error);
-            setError('Failed to send email.');
+            setError('Failed to send email. Please try again.');
         }
     };
 
@@ -45,12 +49,13 @@ const ForgotPassword = () => {
 
             if (response.data.success) {
                 setMessage('Reset code confirmed. You can now reset your password.');
+                navigate('/reset_password'); // Navigate to reset password page
             } else {
                 setError(response.data.message);
             }
         } catch (error) {
             console.error("Error confirming reset code:", error);
-            setError('Failed to confirm code.');
+            setError('Failed to confirm code. Please check the code and try again.');
         }
     };
 
@@ -64,6 +69,8 @@ const ForgotPassword = () => {
                 <h2>Forgot Password</h2>
                 {error && <p className="error">{error}</p>}
                 {message && <p className="message">{message}</p>}
+                
+                {/* Send Reset Code Form */}
                 <form onSubmit={handleSendCode}>
                     <input
                         type="number"
@@ -84,18 +91,22 @@ const ForgotPassword = () => {
                     <button type="submit" className="send-code-btn">Send Code</button>
                 </form>
 
-                <form onSubmit={handleConfirmCode}>
-                    <div className="code-container">
-                        <input
-                            type="text"
-                            name="reset_code"
-                            placeholder="Enter Code"
-                            value={resetCode}
-                            onChange={(e) => setResetCode(e.target.value)}
-                        />
-                        <button type="submit" className="confirm-btn">Confirm</button>
-                    </div>
-                </form>
+                {/* Confirm Code Form, only visible if the code was sent */}
+                {codeSent && (
+                    <form onSubmit={handleConfirmCode}>
+                        <div className="code-container">
+                            <input
+                                type="text"
+                                name="reset_code"
+                                placeholder="Enter Code"
+                                value={resetCode}
+                                onChange={(e) => setResetCode(e.target.value)}
+                                required
+                            />
+                            <button type="submit" className="confirm-btn">Confirm</button>
+                        </div>
+                    </form>
+                )}
             </div>
         </div>
     );

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from pymongo import MongoClient
@@ -8,6 +8,7 @@ import os
 import random
 import smtplib
 from email.mime.text import MIMEText
+from datetime import datetime, timedelta
 
 # Load environment variables
 load_dotenv()
@@ -63,6 +64,7 @@ class ConfirmResetCodeData(BaseModel):
 
 class ResetPasswordData(BaseModel):
     id_number: str
+    reset_code: str  # Added reset_code field
     new_password: str
 
 # Helper functions
@@ -107,24 +109,42 @@ async def forgot_password(data: ForgotPasswordData):
     user = collection.find_one({"id_number": data.id_number, "email": data.email})
     if user:
         reset_code = str(random.randint(100000, 999999))
+        expiration_time = datetime.utcnow() + timedelta(minutes=15)
+        
+        collection.update_one({"id_number": data.id_number}, {"$set": {
+            "reset_code": reset_code,
+            "reset_code_expiration": expiration_time
+        }})
+        
         send_email(data.email, "Password Reset Code", f"Your reset code is: {reset_code}")
         return {"success": True, "message": "Reset email has been sent."}
     else:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="User not found with the provided ID number and email")
 
 @app.post("/api/confirm_reset_code")
 async def confirm_reset_code(data: ConfirmResetCodeData):
-    if data.reset_code == "123456":
-        return {"success": True, "message": "Reset code confirmed. You can now reset your password."}
+    user = collection.find_one({"id_number": data.id_number, "email": data.email})
+    if user:
+        if user.get("reset_code") == data.reset_code and user.get("reset_code_expiration") > datetime.utcnow():
+            return {"success": True, "message": "Reset code confirmed. You can now reset your password."}
+        else:
+            raise HTTPException(status_code=400, detail="Invalid or expired reset code")
     else:
-        raise HTTPException(status_code=400, detail="Invalid reset code")
+        raise HTTPException(status_code=404, detail="User not found")
 
 @app.post("/api/reset_password")
 async def reset_password(data: ResetPasswordData):
     user = collection.find_one({"id_number": data.id_number})
     if user:
-        hashed_password = hash_password(data.new_password)
-        collection.update_one({"id_number": data.id_number}, {"$set": {"password": hashed_password}})
-        return {"success": True, "message": "Password has been reset successfully."}
+        # Check if the reset code matches and is not expired
+        if user.get("reset_code") == data.reset_code and user.get("reset_code_expiration") > datetime.utcnow():
+            hashed_password = hash_password(data.new_password)
+            collection.update_one(
+                {"id_number": data.id_number}, 
+                {"$set": {"password": hashed_password, "reset_code": None, "reset_code_expiration": None}}
+            )
+            return {"success": True, "message": "Password has been reset successfully."}
+        else:
+            raise HTTPException(status_code=400, detail="Invalid or expired reset code")
     else:
         raise HTTPException(status_code=404, detail="User not found")

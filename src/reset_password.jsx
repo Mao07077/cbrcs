@@ -3,21 +3,27 @@ import axios from 'axios';
 
 const ResetPassword = () => {
     const [userId, setUserId] = useState('');
-    const [resetCode, setResetCode] = useState('');
+    const [resetCode, setResetCode] = useState(''); // Add state for reset code
     const [newPassword, setNewPassword] = useState('');
     const [message, setMessage] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/reset_password', {
-                user_id: userId,
-                reset_code: resetCode,
+            const response = await axios.post('http://127.0.0.1:8000/api/reset_password', {
+                id_number: userId,
+                reset_code: resetCode,  // Include reset_code here
                 new_password: newPassword,
             });
             setMessage(response.data.message);
         } catch (error) {
-            setMessage('An error occurred. Please try again.');
+            if (error.response) {
+                setMessage(error.response.data.detail || 'An error occurred. Please try again.');
+                console.error('Error response:', error.response.data);
+            } else {
+                setMessage('An error occurred. Please try again.');
+                console.error('Error:', error.message);
+            }
         }
     };
 
