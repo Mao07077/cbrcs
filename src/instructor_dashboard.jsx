@@ -27,7 +27,7 @@ const InstructorDashboard = () => {
       {/* Header */}
       <header className="header">
         <h2>Logo Here</h2>
-      </header>
+      </header> 
 
       {/* Greeting */}
       <div className="greeting">
