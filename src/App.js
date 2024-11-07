@@ -15,6 +15,8 @@ import ResetPassword from './reset_password';
 import Signup from './signup';
 import UploadModule from './uploadmodule';
 import InstructorDashboard from './instructor_dashboard';
+import Mail from './Mail';
+
 
 
 function App() {
@@ -38,7 +40,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/uploadmodule" element={<UploadModule />} />
             <Route path="/instructor_dashboard" element={<InstructorDashboard />} />
-
+            <Route path= "/mail" element ={<Mail/>}/>
           </Routes>
         
       </BrowserRouter>
