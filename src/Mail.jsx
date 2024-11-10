@@ -8,7 +8,7 @@ import ReportsIcon from './icon/Reports.png';
 import settingsIcon from './icon/settings.png';
 
 const Email = () => {
-  const [isComposing, setIsComposing] = useState(false); // Toggle for compose form
+  const [isComposing, setIsComposing] = useState(false); 
   const [to, setTo] = useState('');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
@@ -21,7 +21,7 @@ const Email = () => {
     setTo('');
     setSubject('');
     setMessage('');
-    setIsComposing(false); // Close compose form after sending
+    setIsComposing(false); 
   };
 
   return (
