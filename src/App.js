@@ -19,6 +19,7 @@ import Mail from './Mail';
 
 
 
+
 function App() {
   return (
     <div>
@@ -41,6 +42,7 @@ function App() {
             <Route path="/uploadmodule" element={<UploadModule />} />
             <Route path="/instructor_dashboard" element={<InstructorDashboard />} />
             <Route path= "/mail" element ={<Mail/>}/>
+           
           </Routes>
         
       </BrowserRouter>
