@@ -150,7 +150,7 @@ const Mail = () => {
         </ul>
       </nav>
         
-      {/* Render the Email Component */}
+     
       <Email />
     </div>
   );
