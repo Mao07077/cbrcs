@@ -19,14 +19,11 @@ const ModuleDashboard = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch module information from the server
     fetch('/api/modules')
       .then(response => {
         if (!response.ok) {
-          // If the response is not OK, throw an error
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        // Check if the response is JSON
         const contentType = response.headers.get("content-type");
         if (contentType && contentType.indexOf("application/json") !== -1) {
           return response.json();
@@ -37,31 +34,38 @@ const ModuleDashboard = () => {
       .then(data => setModules(data))
       .catch(error => setError(error));
   }, []);
-  
 
   return (
     <div>
       <header className="header">
-                <h1>Logo here</h1>
-                <img src={nameIcon} alt="Profile" />
-                <img src={notifIcon} alt="Notifications" />
-            </header>
+        <h1>Logo here</h1>
+        <img src={nameIcon} alt="Profile" />
+        <img src={notifIcon} alt="Notifications" />
+      </header>
+      
       <nav className="sidebar">
-                <ul>
-                    <SidebarItem icon={nameIcon} text="Name" link="profile" />
-                    <SidebarItem icon={moduleIcon} text="Module" link="module" />
-                    <SidebarItem icon={dashboardIcon} text="Dashboard" link="dashboard" />
-                    <SidebarItem icon={settingsIcon} text="Settings" link="settings" />
-                    <SidebarItem icon={helpIcon} text="Help" link="help" />
-                </ul>
-            </nav>
+        <ul>
+          <SidebarItem icon={nameIcon} text="Name" link="profile" />
+          <SidebarItem icon={moduleIcon} text="Module" link="module" />
+          <SidebarItem icon={dashboardIcon} text="Dashboard" link="dashboard" />
+          <SidebarItem icon={settingsIcon} text="Settings" link="settings" />
+          <SidebarItem icon={helpIcon} text="Help" link="help" />
+        </ul>
+      </nav>
+      
       <div className="module-container">
-        <div className="notheader">
-          <h1>Modules</h1>
+        <div className="notheader-container">
+          <div className="notheader">
+            <h1>Modules</h1>
+          </div>
         </div>
-        <div className="instructions">
-          Instructions here
+        
+        <div className="instruc-container">
+          <div className="instruc">
+            <h2>Instructions here</h2>
+          </div>
         </div>
+        
         <div className="module-grid">
           {modules.length > 0 ? (
             modules.map(module => (
@@ -73,12 +77,13 @@ const ModuleDashboard = () => {
               </div>
             ))
           ) : (
-            <p>No modules available</p>
+            <div className="no-modules">
+              <p>No modules available</p>
+            </div>
           )}
         </div>
       </div>
     </div>
   );
 };
-
 export default ModuleDashboard;
