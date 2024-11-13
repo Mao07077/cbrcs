@@ -2,29 +2,35 @@ import React from 'react';
 import './landing.css';
 
 const Landing = () => {
-    return (
+    return (            
+    <div className="main-container">
+
         <div>
             <header>
                 <div className="logo-placeholder"></div> {/* Placeholder for the logo */}
             </header>
 
-            <div className="landing-container">
-                <div className="intro-text">
-                    <h1>Welcome to Dr. Carl Balita Review Center Student Portal</h1>
-                    <p>Where the dream and the dreamer become ONE!</p>
-                    <div className="placeholder-box"></div> {/* Placeholder for the intro image */}
+                <div className="intro-container">
+                   <div className="text-container">
+                        <h1>Welcome to Dr. Carl Balita Review Center Student Portal</h1>
+                        <p>Where the dream and the dreamer become ONE!</p>
+                        <div className="buttons">
+                            <button type="button" className="login" onClick={() => window.location.href='login'}>Log-in</button>
+                            <button type="button" className="signup" onClick={() => window.location.href='signup'}>Sign-Up</button>
+                        </div>
+                   </div>
+                    
+                    <div className="placeholder-box">
+                    </div> {/* Placeholder for the intro image */}
                 </div>
 
-                <div className="buttons">
-                    <button type="button" className="login" onClick={() => window.location.href='login'}>Log-in</button>
-                    <button type="button" className="signup" onClick={() => window.location.href='signup'}>Sign-Up</button>
-                </div>
-
+                <div>
                 <div className="featured-courses">
-                    <h2>Featured Courses</h2>
+                    <div className="featured-text"><h2>Featured Courses</h2>
                     <p>Browse through our top performing courses</p>
-                    <div className="placeholder-box"></div> {/* Placeholder for the featured courses banner */}
                     <button>View All Courses</button>
+                    </div>
+                    
 
                     <div className="course-grid">
                         {/* Course 1 */}
@@ -50,6 +56,7 @@ const Landing = () => {
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     );
 };

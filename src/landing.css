@@ -1,3 +1,6 @@
+*{
+    
+}
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -6,60 +9,85 @@ body {
 }
 
 header {
-    background-color: #003366;
-    padding: 20px 0;
-    text-align: center;
+    width: 100%;
+    background-color: #002f87;
+    padding: 10px 20px;
     color: white;
+    text-align: left;
+        position: sticky;
+        top: 0;
+        left: 0;
+    z-index:1; ;
 }
 
 header .logo-placeholder {
-    width: 200px;
+    width: 50PX;
     height: 50px;
     background-color: lightgray;
-    margin: 0 auto;
+    top: 0;
+    left: 0;
 }
 
-.landing-container  {
-    width: 80%;
-    margin: 0 auto;
-    padding: 40px 0;
-    text-align: center; /* Align everything to center */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    text-align: left;
+    margin-top: 200px;
 }
 
-.intro-text {
-    margin-bottom: 30px;
+.intro-container {
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+   margin-top:200px;
+   justify-content: center;
+   align-items: center;
+   height: auto;
+   gap: 50px;
+   position: relative;
 }
 
-.intro-text h1 {
-    font-size: 32px;
-    margin-bottom: 10px;
+.intro-container div{
+    width: 40%;
+    min-width: 400px;
 }
 
-.intro-text p {
-    font-size: 18px;
-    color: gray;
-    margin-bottom: 20px;
+.placeholder-box {
+    height: 400px;
+    min-width: 400px;
+    background-color: rgb(215, 214, 214);
 }
 
-/* Placeholder for the intro image */
-.intro-text .placeholder-box {
-    width: 400px;
-    height: 200px;
-    background-color: lightgray;
-    margin: 20px auto;
+.text-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.buttons {
-    margin-bottom: 30px;
+.text-container div {
+    width: 100%;
+}
+
+
+.buttons  {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    
+}
+.buttons button:hover {
+    opacity: 0.8;
 }
 
 .buttons button {
-    padding: 12px 30px;
-    font-size: 16px;
+    background-color: #003366;
+    color: white;
+    width: 50%;
+    padding: 10px 20px;
     border: none;
     cursor: pointer;
     border-radius: 5px;
-    margin: 5px;
 }
 
 .login {
@@ -74,74 +102,69 @@ header .logo-placeholder {
 }
 
 .featured-courses {
-    margin-bottom: 50px;
-}
-
-.featured-courses h2 {
-    font-size: 24px;
-}
-
-.featured-courses p {
-    font-size: 16px;
-    color: gray;
-    margin-bottom: 20px;
-}
-
-.featured-courses .placeholder-box {
-    width: 400px;
-    height: 150px;
-    background-color: lightgray;
-    margin: 20px auto;
-}
-
-.featured-courses button {
-    background-color: #003366;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
 }
 
 .course-grid {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    flex-wrap: wrap;
+    margin-top: 20px;
+    justify-items: center;
+    align-items: center;
+    width: 80%;
+    margin-bottom: 80px;
 }
-
 .course-card {
     background-color: white;
-    width: 250px;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    border: 1px solid #ddd;
     text-align: center;
-    transition: transform 0.3s;
+    width: 300px;
 }
+.featured-text {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    width: 80%;
+    margin-bottom: 80px;
+    
+}
+.featured-text h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #003366;
+    
+}
+.featured-text p {
+    margin: 0;
+    font-size: 16px;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
 
 .course-card:hover {
-    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
-/* Placeholder for course images */
-.course-card .placeholder {
+.placeholder {
     width: 100%;
-    height: 150px;
-    background-color: lightgray;
-    margin-bottom: 10px;
+    height: 200px;
+    background-color: rgb(215, 214, 214);
+}
+.course-label {
+    background-color: #003366;
+    color: white;
+    padding: 5px;
     border-radius: 5px;
 }
-
-.course-label {
-    font-size: 14px;
-    font-weight: bold;
-    color: gray;
-    margin-bottom: 5px;
-}
-
 .course-title {
-    font-size: 18px;
     font-weight: bold;
 }
