@@ -1,167 +1,113 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f4;
-}
 
-.sidebar {
-  width: 10%;
-  background-color: #F4F4F4;
-  position: fixed;
-  height: 100%;
-  color: black;
-  top: 0;
-  left: 0;
-  margin-top: 3.5%;
-  padding-top: 20px;
-  text-align: center; /* Center align text and images */
-}
-
-.sidebar ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.sidebar ul li {
-  padding: 20px;
-  text-align: center;
-}
-
-.sidebar ul li a {
-  text-decoration: none;
-  color: black;
-  font-size: 80%;
+.module-container {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 90%;
+  margin-top: 40px;
+  margin-right: 400px;
+  padding-bottom: 50px;
+  padding-left: 20px;
 }
 
-.header {
+/* Notheader container styling */
+.notheader-container {
+  position: absolute;
+  top: 20px;
+  left: 32%;
+  transform: translateX(-50%);
   width: 100%;
-  background-color: #002f87;
-  padding: 10px;
-  color: white;
+  max-width: 800px;
+  box-sizing: border-box;
+  margin-top: 100px;
+}
+
+.notheader {
+  border-bottom: 1px solid #0e0d0d;
+  padding: 1em;
   text-align: left;
-  position: fixed;
-  top: 0;
-  left: 0;
+  width: 220%;
 }
 
-.header h1 {
+/* Header title styling */
+.notheader h1 {
   margin: 0;
-  font-size: 1.5em; /* Adjusted for better readability */
-  display: inline-block; /* Added to keep the title inline */
+  font-size: 3em;
 }
 
-.header img {
-  float: right; /* Float images to the right */
-  margin-left: 1%; 
-  margin-right: 2%;/* Add some space between images */
-  width: 2%;
-  height: 2%;
+/* Instruction container styling */
+.instruc-container {
+  width: 90%;
+  max-width: 800px;
+  box-sizing: border-box;
+  margin-top: 20px;
+  margin-left: 7em;
+  margin-bottom: 250px;
 }
 
-.module-container  {
-  margin-left: 10%;
-  padding: 20px;
-  margin-top: 80px;
-}
-
-.instructions {
-  background-color: yellow;
-  padding: 10px;
-  margin: 10px 0;
+.instruc {
+  background-color: #fff59b;
+  padding: 1em;
   text-align: center;
+  width: 100%;
 }
 
-.module-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+.instruc h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+/* Module grid styling */
+.module-grid, .no-modules {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  justify-content: center;
+  width: 90%;
+  max-width: 800px;
+  box-sizing: border-box;
+  padding: 2em;
+  margin-left: 100px;
 }
 
 .module {
-  background-color: white;
-  width: 250px;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  width: 200px;
+  border: 1px solid #ddd;
+  padding: 1em;
   text-align: center;
-  transition: transform 0.3s;
-}
-
-.module:hover {
-  transform: scale(1.05);
-}
-
-/* Placeholder for course images */
-.module.placeholder {
-  width: 100%;
-  height: 150px;
-  background-color: lightgray;
-  margin-bottom: 10px;
-  border-radius: 5px;
-}
-
-.module img {
-  width: 100%;
-  height: 200px;
-  background-color: #ccc;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
 .proceed-btn {
-  background-color: yellow;
-  border: none;
-  padding: 10px;
   margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
   cursor: pointer;
 }
 
 .proceed-btn:hover {
-  background-color: #ffcc00;
+  background-color: #0056b3;
 }
 
-.sidebar img {
-  display: block;
-  margin: 0 auto; /* Center images */
+/* No modules styling */
+.no-modules {
+  position: absolute;
+  bottom: 200px;
+  left: 25%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 300px;
+  background-color: white;
+  border: 0.9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 15px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-  .sidebar {
-    width: 20%;
-  }
-
-  .container  {
-    margin-left: 20%;
-  }
-
-  .module-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 480px) {
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-    margin-top: 0;
-    padding-top: 0;
-  }
-
-  .module-container  {
-    margin-left: 0;
-    margin-top: 120px;
-  }
-
-  .module-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .header img {
-    width: 5%;
-    height: 5%;
-  }
-}

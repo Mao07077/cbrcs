@@ -1,129 +1,218 @@
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
 
-        /* Header styling */
-        .header {
-            width: 100%;
-            background-color: #002f87;
-            padding: 10px;
-            color: white;
-            text-align: left;
-            position: fixed;
-            top: 0;
-            left: 0;
-        }
+/* Header styling */
+.header {
+    width: 100%;
+    background-color: #002f87;
+    padding: 10px;
+    color: white;
+    text-align: left;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
 
-        .header h1 {
-            margin: 0;
-            font-size: 1.5em; /* Adjusted for better readability */
-            display: inline-block; /* Added to keep the title inline */
-        }
+.header h1 {
+    margin: 0;
+    font-size: 1.5em;
+    display: inline-block;
+}
 
-        .header img {
-            float: right; /* Float images to the right */
-            margin-left: 1%; 
-            margin-right: 2%;/* Add some space between images */
-            width: 2%;
-            height: 2%;
-        }
+.header img {
+    float: right;
+    margin-left: 1%;
+    margin-right: 2%;
+    width: 2%;
+    height: 2%;
+}
 
-        /* Sidebar styling */
-        .sidebar {
-            width: 10%;
-            background-color: #F4F4F4;
-            position: fixed;
-            height: 100%;
-            color: black;
-            top: 0;
-            left: 0;
-            margin-top: 3.5%;
-            padding-top: 20px;
-            text-align: center; /* Center align text and images */
-        }
+/* Sidebar styling */
+.sidebar {
+    width: 10%;
+    background-color: #F4F4F4;
+    position: fixed;
+    height: 100%;
+    color: black;
+    top: 0;
+    left: 0;
+    margin-top: 3.5%;
+    padding-top: 20px;
+    text-align: center;
+}
 
-  .sidebar ul {
+.sidebar ul {
     list-style-type: none;
     padding: 0;
-  }
+}
 
-  .sidebar ul li {
+.sidebar ul li {
     padding: 20px;
     text-align: center;
-  }
+}
 
-  .sidebar ul li a {
+.sidebar ul li a {
     text-decoration: none;
     color: black;
     font-size: 80%;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
+}
 
-        /* Main container */
-        .dashboard-container {
-            margin-left: 10%;
-            padding: 20px;
-        }
+.sidebar img {
+    display: block;
+    margin: 0 auto;
+}
 
-        /* Performance Overview Section */
-        .performance-overview {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-        }
+/* Main container */
+.dashboard-container {
+    margin-left: 10%;
+    padding: 20px;
+}
 
-        .progress-overview, .strength-weakness {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
+/* Performance Overview Section */
+.performance-overview {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
 
-        .progress-overview {
-            text-align: center;
-        }
+.progress-overview,
+.strength-weakness {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
 
-        .progress-chart {
-            background-color: #fff;
-            padding: 20px;
-            margin-top: 10px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
+.progress-overview {
+    text-align: center;
+}
 
-        /* Widgets for Strength & Weakness */
-        .strength-weakness {
-            display: grid;
-            grid-template-columns: 1fr;
-        }
+.progress-chart {
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
 
-        .strength-weakness div {
-            background-color: white;
-            padding: 15px;
-            border: 1px solid #ddd;
-            text-align: center;
-            margin-bottom: 15px;
-        }
+/* Widgets for Strength & Weakness */
+.strength-weakness {
+    display: grid;
+    grid-template-columns: 1fr;
+}
 
-        /* Button Styling */
-        button {
-            background-color: #002366;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
+.strength-weakness div {
+    background-color: white;
+    padding: 15px;
+    border: 1px solid #ddd;
+    text-align: center;
+    margin-bottom: 15px;
+}
 
-        button:hover {
-            background-color: #0047ab;
-        }
-        .sidebar img {
-            display: block;
-            margin: 0 auto; /* Center images */
-        }
+/* Button Styling */
+button {
+    background-color: #002366;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #0047ab;
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 15%; /* Widen sidebar on tablets */
+    }
+
+    .dashboard-container {
+        margin-left: 15%;
+    }
+
+    .performance-overview {
+        grid-template-columns: 1fr; /* Stack columns on tablets */
+    }
+}
+
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 1.2em;
+    }
+
+    .header img {
+        width: 4%;
+        height: 4%;
+    }
+
+    .sidebar {
+        width: 20%;
+        margin-top: 0;
+        position: relative;
+    }
+
+    .dashboard-container {
+        margin-left: 20%;
+    }
+
+    .performance-overview {
+        grid-template-columns: 1fr;
+    }
+
+    .strength-weakness {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1em;
+    }
+
+    .header img {
+        width: 6%;
+        height: 6%;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        display: flex;
+        justify-content: space-around;
+        position: relative;
+        padding: 10px 0;
+    }
+
+    .sidebar ul {
+        display: flex;
+        gap: 10px;
+    }
+
+    .sidebar ul li {
+        padding: 10px;
+        font-size: 0.8em;
+    }
+
+    .dashboard-container {
+        margin-left: 0;
+        padding-top: 80px;
+    }
+
+    .performance-overview {
+        grid-template-columns: 1fr;
+    }
+
+    .strength-weakness div {
+        margin-bottom: 10px;
+    }
+}

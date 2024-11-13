@@ -21,7 +21,6 @@ import CreatePostTest from './create_posttest';
 
 
 
-
 function App() {
   return (
     <div>

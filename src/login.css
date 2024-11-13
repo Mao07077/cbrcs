@@ -99,13 +99,13 @@ body {
 }
 
 /* Media Queries for responsiveness */
-@media (max-width: 768px) {
+@media (min-width: 768px) {
     .login-container {
         width: 80%;
     }
 }
 
-@media (max-width: 480px) {
+@media (min-width: 480px) {
     .login-container {
         width: 90%;
         padding: 20px;
@@ -119,10 +119,13 @@ body {
     .links-container a {
         margin-top: 10px;
     }
+    .header h1 {
+        align-items: center;
+    }
 }
 
 /* Additional Media Queries */
-@media (max-width: 320px) {
+@media (min-width: 320px) {
     .login-container {
         width: 95%;
         padding: 15px;
@@ -139,5 +142,8 @@ body {
 
     .links-container {
         width: 100%;
+    }
+    .header h1 {
+        align-items: center;
     }
 }
