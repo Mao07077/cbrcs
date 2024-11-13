@@ -225,4 +225,38 @@ background-color: #e0e0e0;
   margin-top: 10px;
 }
 
+.compose-email input,
+.compose-email textarea {
+width: 100%;
+padding: 8px;
+margin-top: 5px;
+border: 1px solid #ddd;
+border-radius: 4px;
+}
 
+button {
+padding: 10px 15px;
+margin-top: 15px;
+background-color: #4a90e2;
+color: white;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+}
+
+button:hover {
+background-color: #3a7bd5;
+}
+
+button[type="submit-send"] {
+margin-top: 15px;
+}
+
+.compose-email button + button {
+background-color: #ccc;
+color: #333;
+}
+
+.compose-email button + button:hover {
+background-color: #b0b0b0;
+}
