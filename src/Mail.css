@@ -186,3 +186,60 @@ color: #333;
 .compose-email button + button:hover {
 background-color: #b0b0b0;
 }
+@media (max-width: 1366px) {
+  .sidebar {
+      width: 15%;
+  }
+  .pagbati {
+      margin: 0 auto; /* Centers it */
+      font-size: 1.6em;
+  }
+  .content {
+      width: 75%;
+      padding: 15px;
+  }
+}
+
+/* Adjustments for screens smaller than 1024px */
+@media (max-width: 1024px) {
+  .sidebar {
+      width: 20%;
+  }
+  .pagbati {
+      font-size: 1.4em;
+  }
+  .content {
+      width: 70%;
+      padding: 10px;
+  }
+  .content, .email-part, .compose-email {
+    max-width: 100%; /* Ensures they stay within the screen width */
+    margin: 0 auto;
+}
+}
+
+/* Adjustments for screens smaller than 768px (mobile) */
+@media (max-width: 768px) {
+  .sidebar {
+      width: 100%;
+      position: relative;
+      height: auto;
+      padding: 10px;
+  }
+  .email-part {
+      flex-direction: column; /* Stacks elements vertically */
+      padding: 10px;
+  }
+  .content {
+      width: 100%;
+      padding: 10px;
+  }
+  @media (max-width: 1024px) {
+    .header h1 {
+        font-size: 1.2em;
+    }
+    .profile-container {
+        padding: 15px;
+    }
+}
+}
