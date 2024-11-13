@@ -16,6 +16,8 @@ import Signup from './signup';
 import UploadModule from './uploadmodule';
 import InstructorDashboard from './instructor_dashboard';
 import Mail from './Mail';
+import CreateModule from './Create_module';
+import CreatePostTest from './create_posttest';
 
 
 
@@ -35,14 +37,15 @@ function App() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/instructor" element={<InstructorPage />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/module_inside" element={<ModuleInside />} />
+            <Route path="/module/:moduleId" element={<ModuleInside />} />
             <Route path="/posttest" element={<PostTest />} />
             <Route path="/reset_password" element={<ResetPassword />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/uploadmodule" element={<UploadModule />} />
             <Route path="/instructor_dashboard" element={<InstructorDashboard />} />
             <Route path= "/mail" element ={<Mail/>}/>
-           
+            <Route path= "/createmodule" element ={<CreateModule/>}/>
+            <Route path= "/createposttest" element ={<CreatePostTest/>}/> 
           </Routes>
         
       </BrowserRouter>

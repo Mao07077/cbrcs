@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate and Link
 import './module.css';
 import nameIcon from './icon/name.png';
 import notifIcon from './icon/notif.png';
@@ -9,19 +10,20 @@ import helpIcon from './icon/help.png';
 
 const SidebarItem = ({ icon, text, link }) => (
   <li>
-      <img src={icon} alt={`${text} Icon`} width="30%" height="30%" />
-      <a href={link}>{text}</a>
+    <img src={icon} alt={`${text} Icon`} width="30%" height="30%" />
+    <Link to={link}>{text}</Link> {/* Use Link instead of a tag */}
   </li>
 );
 
 const ModuleDashboard = () => {
   const [modules, setModules] = useState([]);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Initialize useNavigate for navigation
 
   useEffect(() => {
     // Fetch module information from the server
-    fetch('/api/modules')
-      .then(response => {
+    fetch('http://localhost:8000/api/modules') // Updated URL to include full path
+      .then((response) => {
         if (!response.ok) {
           // If the response is not OK, throw an error
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -34,27 +36,31 @@ const ModuleDashboard = () => {
           throw new Error("Expected JSON but received non-JSON response");
         }
       })
-      .then(data => setModules(data))
-      .catch(error => setError(error));
+      .then((data) => setModules(data))
+      .catch((error) => setError(error.message)); // Display error message
   }, []);
-  
+
+  const handleProceedClick = (moduleId) => {
+    // Navigate to ModuleInside with the selected module's ID
+    navigate(`/module/${moduleId}`); // Assuming each module has a unique _id
+  };
 
   return (
     <div>
       <header className="header">
-                <h1>Logo here</h1>
-                <img src={nameIcon} alt="Profile" />
-                <img src={notifIcon} alt="Notifications" />
-            </header>
+        <h1>Logo here</h1>
+        <img src={nameIcon} alt="Profile" />
+        <img src={notifIcon} alt="Notifications" />
+      </header>
       <nav className="sidebar">
-                <ul>
-                    <SidebarItem icon={nameIcon} text="Name" link="profile" />
-                    <SidebarItem icon={moduleIcon} text="Module" link="module" />
-                    <SidebarItem icon={dashboardIcon} text="Dashboard" link="dashboard" />
-                    <SidebarItem icon={settingsIcon} text="Settings" link="settings" />
-                    <SidebarItem icon={helpIcon} text="Help" link="help" />
-                </ul>
-            </nav>
+        <ul>
+          <SidebarItem icon={nameIcon} text="Name" link="/profile" />
+          <SidebarItem icon={moduleIcon} text="Module" link="/module" />
+          <SidebarItem icon={dashboardIcon} text="Dashboard" link="/dashboard" />
+          <SidebarItem icon={settingsIcon} text="Settings" link="/settings" />
+          <SidebarItem icon={helpIcon} text="Help" link="/help" />
+        </ul>
+      </nav>
       <div className="module-container">
         <div className="notheader">
           <h1>Modules</h1>
@@ -63,13 +69,18 @@ const ModuleDashboard = () => {
           Instructions here
         </div>
         <div className="module-grid">
-          {modules.length > 0 ? (
-            modules.map(module => (
-              <div className="module" key={module.id}>
+          {error ? (
+            <p>{`Error: ${error}`}</p> // Display error if there is one
+          ) : modules.length > 0 ? (
+            modules.map((module) => (
+              <div className="module" key={module._id}>
                 <h3>{module.title}</h3>
-                <img src={`images/${module.image}`} alt="PDF First Page" />
+                {/* Prepend the backend URL */}
+                <img src={`http://localhost:8000/${module.image_url}`} alt="Module" />
                 <br />
-                <button className="proceed-btn">Proceed</button>
+                <button className="proceed-btn" onClick={() => handleProceedClick(module._id)}>
+                  Proceed
+                </button>
               </div>
             ))
           ) : (
