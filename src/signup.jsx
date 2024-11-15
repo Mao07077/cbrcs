@@ -53,22 +53,23 @@ const Signup = () => {
                 <h2>Sign-Up</h2>
                 {error && <p className="error">{error}</p>}
                 <form onSubmit={handleSubmit}>
-                    <input type="text" name="firstname" placeholder="First Name" value={formData.firstname} onChange={handleChange} required />
+                <div className="layer1"><input type="text" name="firstname" placeholder="First Name" value={formData.firstname} onChange={handleChange} required />
                     <input type="text" name="middlename" placeholder="Middle Name" value={formData.middlename} onChange={handleChange} />
                     <input type="text" name="lastname" placeholder="Last Name" value={formData.lastname} onChange={handleChange} required />
-                    <input type="text" name="suffix" placeholder="Suffix" value={formData.suffix} onChange={handleChange} />
-                    <input type="date" name="birthdate" placeholder="Birthdate (YYYY-MM-DD)" value={formData.birthdate} onChange={handleChange} required />
+                    <input type="text" name="suffix" placeholder="Suffix" value={formData.suffix} onChange={handleChange} /></div>
+                    <div className="layer2"><input type="date" name="birthdate" placeholder="Birthdate (YYYY-MM-DD)" value={formData.birthdate} onChange={handleChange} required />
                     <div className="gender">
                         <label>Gender:</label>
                         <label><input type="radio" name="gender" value="Male" checked={formData.gender === 'Male'} onChange={handleChange} required /> Male</label>
                         <label><input type="radio" name="gender" value="Female" checked={formData.gender === 'Female'} onChange={handleChange} required /> Female</label>
                     </div>
-                    <input type="email" name="email" placeholder="E-Mail" value={formData.email} onChange={handleChange} required />
-                    <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
+                    <input type="email" name="email" placeholder="E-Mail" value={formData.email} onChange={handleChange} required /></div>
+                    <div className="layer3"><input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
                     <input type="text" name="program" placeholder="Program" value={formData.program} onChange={handleChange} required />
-                    <input type="number" name="id_number" placeholder="ID Number" value={formData.id_number} onChange={handleChange} required />
-                    <a href="/login">Already have an account</a>
-                    <input type="submit" name="submit" value="Submit" />
+                    <input type="number" name="id_number" placeholder="ID Number" value={formData.id_number} onChange={handleChange} required /></div>
+                    <div className="layer4"><a href="/login">Already have an account</a>
+                    <input type="submit" name="submit" value="Submit" /></div>
+                    
                 </form>
             </div>
         </div>
