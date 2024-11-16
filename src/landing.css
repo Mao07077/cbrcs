@@ -1,5 +1,6 @@
 *{
     box-sizing: border-box;
+    box-sizing: border-box;
     
 }
 body {
@@ -24,9 +25,15 @@ header {
 header .logo-placeholder {
     width: 50PX;
     height: 50px;
-    background-color: lightgray;
     top: 0;
     left: 0;
+    position: sticky;
+    margin-right: 10px;
+    border-radius: 20%;
+}
+.logo-placeholder img{
+    width: 100%;
+    margin-left: 25%;
     position: sticky;
     margin-right: 10px;
     border-radius: 20%;
@@ -44,6 +51,7 @@ header .logo-placeholder {
    display: flex;
    flex-direction: row;
    flex-wrap: wrap;
+   margin-top:300px;
    margin-top:300px;
    justify-content: center;
    align-items: center;
@@ -96,6 +104,9 @@ header .logo-placeholder {
     font-size: 16px;
     font-weight: bold;
     transition: all 0.3s ease;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
 }
 
 .login {
@@ -103,11 +114,13 @@ header .logo-placeholder {
     border: 1px solid #003366;
     color: #003366;
     margin-right: 10px;
+    margin-right: 10px;
 }
 
 .signup {
     background-color: #003366;
     color: white;
+    margin-left: 10px;
     margin-left: 10px;
 }
 
@@ -121,13 +134,20 @@ header .logo-placeholder {
 .course-grid {
     display: flex;
     flex-direction: row;
+    display: flex;
+    flex-direction: row;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     margin-top: 20px;
     justify-items: center;
     align-items: center;
     width: 50%;
+    width: 50%;
     margin-bottom: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 800px;
+    
     margin-left: auto;
     margin-right: auto;
     min-width: 800px;
@@ -184,6 +204,11 @@ header .logo-placeholder {
     font-weight: bold;
 }
 
+@media (max-width: 800px) {
+    .course-grid {
+      flex-direction: column;
+    }
+  }
 @media (max-width: 800px) {
     .course-grid {
       flex-direction: column;

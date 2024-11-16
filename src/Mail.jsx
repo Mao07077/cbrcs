@@ -6,6 +6,7 @@ import MailIcon from './icon/Mail.png';
 import StudentsIcon from './icon/Students.png';
 import ReportsIcon from './icon/Reports.png';
 import settingsIcon from './icon/settings.png';
+import logoIcon from './icon/logo.png';
 
 
 const Email = () => {
@@ -57,9 +58,13 @@ const Email = () => {
 const Mail = () => {
   return (
       <div className="mail-container">
-          <header className="header">
-              <h2>Logo Here</h2>
-          </header> 
+           <header className="header">
+  <div className="header-content">
+    <div className="header-logo">
+      <img src={logoIcon} alt="logo" />
+    </div>
+  </div>
+</header>
           <div className="pagbati">
               <h1>Hi, Mike Angelo Muico</h1>
               <div className="line"></div>

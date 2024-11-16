@@ -18,13 +18,27 @@ body {
     padding: 20px;
     color: #333;
   }
-  .headers {
-    height: 70px;
-    background-color: #003366;
-    color: white;
+  .header {
+    width: 100%;  /* Full width */
+    background-color: #002f87;
+    padding: 10px 20px;
     display: flex;
     align-items: center;
-    padding-left: 20px;
+    justify-content: left;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Adjust header content to fit properly */
+  .header-content {
+    display: flex;
+    width: 100%;  
+    max-width: 1200px;  
+  }
+  /* Image styling */
+  .header-logo img {
+    height: 50px;   
+    width: auto;     
+    max-width: 180px; 
   }
 
 .pagbati {
@@ -128,27 +142,14 @@ body {
 }
 
 .mail-bar {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  max-width: 100%;
-  padding: 2rem;
-  height: 100vh;
-  overflow-y: auto;
-  width: 400px;
-  background-color: #d9dee9;
-  padding: 1rem;
-  border-right: 10px solid #ddd;
-  height: 100vh;
-  padding-top: 50px;
-  margin-right: 20px;
-  
+width: 400px;
+background-color: #f5f7fb;
+padding: 1rem;
+border-right: 1px solid #ddd;
+height: 100vh;
+overflow-y: auto;
 }
 
-.mail-bar, .email-content {
-  display: flex;
-  flex-direction: column;
-}
 .mail-bar h2 {
   font-size: 1.2rem;
   margin-bottom: 1rem;
@@ -233,6 +234,7 @@ margin-top: 5px;
 border: 1px solid #ddd;
 border-radius: 4px;
 }
+
 
 button {
 padding: 10px 15px;
