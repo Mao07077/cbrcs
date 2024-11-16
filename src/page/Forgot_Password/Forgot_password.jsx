@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import './forgot_password.css';
+import styles from './Forgot_password.module.css';
 
 const ForgotPassword = () => {
     const [idNumber, setIdNumber] = useState('');
@@ -65,13 +65,15 @@ const ForgotPassword = () => {
                 <h1>Logo here</h1>
             </div>
 
-            <div className="forgot-container">
+            <div className={styles.forgot_container}>
+                <div className={styles.forgot_header}>
                 <h2>Forgot Password</h2>
+                </div>
                 {error && <p className="error">{error}</p>}
                 {message && <p className="message">{message}</p>}
                 
                 {/* Send Reset Code Form */}
-                <form onSubmit={handleSendCode}>
+                <form onSubmit={handleSendCode} className={styles.forgot_form}>
                     <input
                         type="number"
                         name="id_number"
@@ -88,13 +90,13 @@ const ForgotPassword = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
-                    <button type="submit" className="send-code-btn">Send Code</button>
+                    <button type="submit" className={styles.send_code_btn}>Send Code</button>
                 </form>
 
                 {/* Confirm Code Form, only visible if the code was sent */}
                 {codeSent && (
                     <form onSubmit={handleConfirmCode}>
-                        <div className="code-container">
+                        <div className={styles.code_container}>
                             <input
                                 type="text"
                                 name="reset_code"
@@ -103,7 +105,7 @@ const ForgotPassword = () => {
                                 onChange={(e) => setResetCode(e.target.value)}
                                 required
                             />
-                            <button type="submit" className="confirm-btn">Confirm</button>
+                            <button type="submit" className={styles.confirm_btn}>Confirm</button>
                         </div>
                     </form>
                 )}

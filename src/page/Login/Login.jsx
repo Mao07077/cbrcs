@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './login.css';
+import './Login.css';
 
 const Login = () => {
     const [idNumber, setIdNumber] = useState('');
@@ -35,7 +35,7 @@ const Login = () => {
             {/* Center Wrapper */}
             <div className="center-wrapper">
                 <div className="login-container">
-                    <h2>Log-in</h2>
+                    <h2>LOG IN</h2>
                     {error && <p className="error">{error}</p>}
                     <form onSubmit={handleSubmit}>
                         <input
@@ -58,7 +58,7 @@ const Login = () => {
                             <a href="/forgot_password">Forgot password?</a>
                             <a href="/signup">Sign Up</a>
                         </div>
-                        <button type="submit">Sign-in</button>
+                        <button type="submit" className="Sign-bot">Sign-in</button>
                     </form>
                 </div>
             </div>

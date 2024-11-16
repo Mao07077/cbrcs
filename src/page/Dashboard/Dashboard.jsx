@@ -1,12 +1,12 @@
 import React from 'react';
-import './dashboard.css';
+import './Dashboard.css';
 
-import nameIcon from './icon/name.png';
-import notifIcon from './icon/notif.png';
-import moduleIcon from './icon/module.png';
-import dashboardIcon from './icon/dashboard.png';
-import settingsIcon from './icon/settings.png';
-import helpIcon from './icon/help.png';
+import nameIcon from '../../icon/name.png';
+import notifIcon from '../../icon/notif.png';
+import moduleIcon from '../../icon/module.png';
+import dashboardIcon from '../../icon/dashboard.png';
+import settingsIcon from '../../icon/settings.png';
+import helpIcon from '../../icon/help.png';
 
 const SidebarItem = ({ icon, text, link }) => (
     <li>

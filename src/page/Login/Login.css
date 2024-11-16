@@ -30,19 +30,18 @@ body {
     background-color: #f9f9f9;
     padding: 30px;
     border-radius: 8px;
-    width: 300px; /* Adjusted for compactness */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     margin-top: 80px; /* Space for header */
 }
 
 .login-container h2 {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    flex: 1;
     background-color: #002f87;
     color: white;
-    margin: 0 -30px 20px -30px;
-    padding: 15px;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
     font-size: 1.25em;
 }
 
@@ -123,7 +122,15 @@ body {
         align-items: center;
     }
 }
-
+.Sign-bot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #003366;
+    color: white;    
+    border-radius: 5px;
+    padding: 10px;
+}
 /* Additional Media Queries */
 @media (min-width: 320px) {
     .login-container {

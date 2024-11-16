@@ -1,5 +1,5 @@
 import React from 'react';
-import "./Mail.css";
+import "./mail.css";
 
 import HomeIcon from './icon/Home.png';
 import MailIcon from './icon/Mail.png';

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './Generate_questions.css';
 
 const GenerateQuestions = () => {
     const [inputText, setInputText] = useState("The Eiffel Tower is located in Paris.");
@@ -29,7 +30,9 @@ const GenerateQuestions = () => {
     };
 
     return (
-        <div>
+        <div className="Main-gen-questions">
+        <div className="header-gen-questions">LOGO</div>
+        <div className="main-gen-content">
             <h1>Generate Questions</h1>
             <textarea
                 value={inputText}
@@ -39,13 +42,13 @@ const GenerateQuestions = () => {
             />
             <br />
             <button onClick={handleGenerateQuestions}>Generate Questions</button>
-            <div>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 {output.map((line, index) => (
                     <p key={index}>{line}</p>
                 ))}
             </div>
         </div>
+        
     );
 };
 

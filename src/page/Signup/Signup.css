@@ -54,7 +54,7 @@ body {
 .Signup-container form input[type="password"],
 .Signup-container form input[type="number"],
 .Signup-container form input[type="date"] {
-    width: 140px;
+    width: 180px;
     padding: 10px;
     margin: 4% 0 3% 0; /* Adjusted margins */
     border: none;

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import './Post_test.css';
 
 const PostTest = () => {
   const { moduleId } = useParams(); // Get the module ID from the URL
@@ -10,7 +11,7 @@ const PostTest = () => {
   useEffect(() => {
     const fetchPostTestData = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/post-test/${moduleId}`);
+        const response = await fetch(`http://localhost:8000/api/post-test/${moduleId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch post-test data');
         }

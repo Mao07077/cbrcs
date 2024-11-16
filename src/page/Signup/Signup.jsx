@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './signup.css';
+import './Signup.css';
 
 const Signup = () => {
     const [formData, setFormData] = useState({
@@ -67,8 +67,8 @@ const Signup = () => {
                     <div className="layer3"><input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
                     <input type="text" name="program" placeholder="Program" value={formData.program} onChange={handleChange} required />
                     <input type="number" name="id_number" placeholder="ID Number" value={formData.id_number} onChange={handleChange} required /></div>
-                    <div className="layer4"><a href="/login">Already have an account</a>
-                    <input type="submit" name="submit" value="Submit" /></div>
+                    <div className="layer4"><a href="/login">Already have an account?</a>
+                    <input type="submit" name="submit" value="Sign Up" /></div>
                     
                 </form>
             </div>
