@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate and Link
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import './module.css';
 import nameIcon from './icon/name.png';
 import notifIcon from './icon/notif.png';
@@ -11,76 +11,81 @@ import helpIcon from './icon/help.png';
 const SidebarItem = ({ icon, text, link }) => (
   <li>
     <img src={icon} alt={`${text} Icon`} width="30%" height="30%" />
-    <Link to={link}>{text}</Link> {/* Use Link instead of a tag */}
+    <Link to={link}>{text}</Link>
   </li>
 );
 
 const ModuleDashboard = () => {
   const [modules, setModules] = useState([]);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Initialize useNavigate for navigation
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch module information from the server
-    fetch('http://localhost:8000/api/modules') // Updated URL to include full path
-      .then((response) => {
+    // Fetch modules from the backend
+    const fetchModules = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/modules"); // Backend endpoint
         if (!response.ok) {
-          // If the response is not OK, throw an error
-          throw new Error(`HTTP error! Status: ${response.status}`);
+          throw new Error("Failed to fetch modules");
         }
-        // Check if the response is JSON
-        const contentType = response.headers.get("content-type");
-        if (contentType && contentType.indexOf("application/json") !== -1) {
-          return response.json();
-        } else {
-          throw new Error("Expected JSON but received non-JSON response");
-        }
-      })
-      .then((data) => setModules(data))
-      .catch((error) => setError(error.message)); // Display error message
+        const data = await response.json();
+        setModules(data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    fetchModules();
   }, []);
 
   const handleProceedClick = (moduleId) => {
-    // Navigate to ModuleInside with the selected module's ID
-    navigate(`/module/${moduleId}`); // Assuming each module has a unique _id
+    if (moduleId) {
+      navigate(`/module/${moduleId}`);
+    } else {
+      alert("This module does not have a valid ID. Please contact support.");
+    }
   };
 
   return (
     <div>
+      {/* Header Section */}
       <header className="header">
         <h1>Logo here</h1>
         <img src={nameIcon} alt="Profile" />
         <img src={notifIcon} alt="Notifications" />
       </header>
+
+      {/* Sidebar Navigation */}
       <nav className="sidebar">
         <ul>
-          <SidebarItem icon={nameIcon} text="Name" link="/profile" />
-          <SidebarItem icon={moduleIcon} text="Module" link="/module" />
-          <SidebarItem icon={dashboardIcon} text="Dashboard" link="/dashboard" />
-          <SidebarItem icon={settingsIcon} text="Settings" link="/settings" />
-          <SidebarItem icon={helpIcon} text="Help" link="/help" />
+          <SidebarItem key="profile" icon={nameIcon} text="Name" link="/profile" />
+          <SidebarItem key="module" icon={moduleIcon} text="Module" link="/module" />
+          <SidebarItem key="dashboard" icon={dashboardIcon} text="Dashboard" link="/dashboard" />
+          <SidebarItem key="settings" icon={settingsIcon} text="Settings" link="/settings" />
+          <SidebarItem key="help" icon={helpIcon} text="Help" link="/help" />
         </ul>
       </nav>
+
+      {/* Main Module Dashboard */}
       <div className="module-container">
         <div className="notheader">
           <h1>Modules</h1>
         </div>
-        <div className="instructions">
-          Instructions here
-        </div>
+        <div className="instructions">Instructions here</div>
+
         <div className="module-grid">
           {error ? (
-            <p>{`Error: ${error}`}</p> // Display error if there is one
+            <p>{`Error: ${error}`}</p>
           ) : modules.length > 0 ? (
             modules.map((module) => (
               <div className="module" key={module._id}>
                 <h3>{module.title}</h3>
-                {/* Prepend the backend URL */}
-                <img src={`http://localhost:8000/${module.image_url}`} alt="Module" />
-                <br />
-                <button className="proceed-btn" onClick={() => handleProceedClick(module._id)}>
-                  Proceed
-                </button>
+                <img
+                  src={`http://localhost:8000/${module.image_url}`}
+                  alt={`${module.title} Image`}
+                  className="module-image"
+                />
+                <button onClick={() => handleProceedClick(module._id)}>Proceed</button>
               </div>
             ))
           ) : (
@@ -93,3 +98,4 @@ const ModuleDashboard = () => {
 };
 
 export default ModuleDashboard;
+

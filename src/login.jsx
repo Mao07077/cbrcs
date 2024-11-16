@@ -14,6 +14,8 @@ const Login = () => {
             const response = await axios.post('http://127.0.0.1:8000/api/login', { idNumber, password });
             console.log("Response:", response.data); // Log the response
             if (response.data.success) {
+                // Save the user's ID number to localStorage on successful login
+                localStorage.setItem('userIdNumber', idNumber);
                 window.location.href = '/module'; // Redirect to module page on success
             } else {
                 setError('Invalid ID number or password');

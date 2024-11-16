@@ -1,51 +1,120 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import './profile.css';
+
+import nameIcon from './icon/name.png';
+import notifIcon from './icon/notif.png';
+import moduleIcon from './icon/module.png';
+import dashboardIcon from './icon/dashboard.png';
+import settingsIcon from './icon/settings.png';
+import helpIcon from './icon/help.png';
+
+const SidebarItem = ({ icon, text, link }) => (
+    <li>
+        <img src={icon} alt={`${text} Icon`} width="30%" height="30%" />
+        <a href={link}>{text}</a>
+    </li>
+);
 
 const Profile = () => {
-    const [user, setUser] = useState(null);
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
-    
-    useEffect(() => {
-        const userId = localStorage.getItem('userIdNumber');
+    const [profileData, setProfileData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-        if (!userId) {
-            setError('User not logged in');
-            navigate('/login');
+    useEffect(() => {
+        const id_number = localStorage.getItem('userIdNumber'); // Assume id_number is stored in localStorage
+        if (!id_number) {
+            setError("User not logged in");
+            setLoading(false);
             return;
         }
 
-        fetch(`/api/profile/${userId}`)
-            .then(response => response.json())
-            .then(data => setUser(data))
-            .catch(() => {
-                setError('Error fetching profile data');
+        // Fetch profile data from the backend
+        fetch(`http://localhost:8000/api/profile/${id_number}`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Profile data not found");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setProfileData(data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setError(error.message);
+                setLoading(false);
             });
-    }, [navigate]);
+    }, []);
 
-    const handleLogout = () => {
-        // Remove user ID from localStorage
-        localStorage.removeItem('userIdNumber');
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
-        // Redirect to login page
-        navigate('/login');
-    };
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
 
     return (
         <div>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {user ? (
-                <div>
-                    <h2>Welcome, {user.firstname} {user.lastname}</h2>
-                    <p>ID Number: {user.id_number}</p>
-                    <p>Program: {user.program}</p>
-                    <button onClick={handleLogout}>Logout</button>
+            <header className="header">
+                <h1>Logo here</h1>
+                <img src={nameIcon} alt="Profile" />
+                <img src={notifIcon} alt="Notifications" />
+            </header>
+
+            <nav className="sidebar">
+                <ul>
+                    <SidebarItem icon={nameIcon} text="Name" link="profile" />
+                    <SidebarItem icon={moduleIcon} text="Module" link="module" />
+                    <SidebarItem icon={dashboardIcon} text="Dashboard" link="dashboard" />
+                    <SidebarItem icon={settingsIcon} text="Settings" link="settings" />
+                    <SidebarItem icon={helpIcon} text="Help" link="help" />
+                </ul>
+            </nav>
+
+            <div className="profile-container">
+                <div className="settings-section">
+                    <div className="profilebox" style={{ flexGrow: 1 }}>
+                        <h2>Account Profile</h2>
+                        <div className="row">
+                            <div className="profile-image">
+                                <img src={nameIcon} alt="Profile Picture" width="100%" height="100%" />
+                            </div>
+                            <div className="profile-details">
+                                <h3>{profileData.firstname} {profileData.lastname}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="sectionholder">
+                        <div className="section-box">
+                            <div className="row">
+                                <label>Name:</label>
+                                <span>{profileData.firstname} {profileData.lastname}</span>
+                            </div>
+                            <div className="row">
+                                <label>Age:</label>
+                                <span>{profileData.age ? profileData.age : "N/A"}</span>
+                            </div>
+                            <div className="row">
+                                <label>Id Number:</label>
+                                <span>{profileData.id_number}</span>
+                            </div>
+                            <div className="row">
+                                <label>Program:</label>
+                                <span>{profileData.program}</span>
+                            </div>
+                        </div>
+                        <div className="section-box">
+                            <div className="row">
+                                <label>Hours Activity:</label>
+                                <span>{profileData.hoursActivity ? profileData.hoursActivity : "0"}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            ) : (
-                <p>Loading...</p>
-            )}
+            </div>
         </div>
     );
-};
+}
 
 export default Profile;

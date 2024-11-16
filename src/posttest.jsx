@@ -1,58 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 const PostTest = () => {
-    const [formData, setFormData] = useState({
-        question_29: '',
-        question_30: ''
-    });
+  const { moduleId } = useParams(); // Get the module ID from the URL
 
-    const [submitted, setSubmitted] = useState(false);
+  const [postTest, setPostTest] = useState(null);
+  const [error, setError] = useState(null);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
+  useEffect(() => {
+    const fetchPostTestData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/api/post-test/${moduleId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch post-test data');
+        }
+        const data = await response.json();
+        setPostTest(data);
+      } catch (error) {
+        setError(error.message);
+      }
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setSubmitted(true);
-    };
+    fetchPostTestData();
+  }, [moduleId]);
 
-    return (
-        <div className="container">
-            <h1>Module Topic Here</h1>
-            {submitted ? (
-                <div>
-                    <p>Question 29: {formData.question_29}</p>
-                    <p>Question 30: {formData.question_30}</p>
-                </div>
-            ) : (
-                <form onSubmit={handleSubmit}>
-                    <div className="form-section">
-                        <h3>Set 1</h3>
-                        <div className="question">
-                            <p>29. Question here</p>
-                            <input type="radio" name="question_29" value="Choice1" onChange={handleChange} /> Choice1
-                            <input type="radio" name="question_29" value="Choice2" onChange={handleChange} /> Choice2
-                            <input type="radio" name="question_29" value="Choice3" onChange={handleChange} /> Choice3
-                        </div>
-                        <div className="question">
-                            <p>30. Question here</p>
-                            <input type="radio" name="question_30" value="Choice1" onChange={handleChange} /> Choice1
-                            <input type="radio" name="question_30" value="Choice2" onChange={handleChange} /> Choice2
-                            <input type="radio" name="question_30" value="Choice3" onChange={handleChange} /> Choice3
-                        </div>
-                    </div>
-                    <div className="actions">
-                        <button type="submit" className="button">Submit</button>
-                    </div>
-                </form>
-            )}
-        </div>
-    );
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!postTest) {
+    return <div>Loading post-test...</div>;
+  }
+
+  return (
+    <div>
+      <h1>Post-test for Module {moduleId}</h1>
+      <p>{postTest.description}</p>
+      {/* Add your test questions and options here */}
+    </div>
+  );
 };
 
 export default PostTest;

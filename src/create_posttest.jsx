@@ -1,32 +1,39 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './create_posttest.css';
+
 const CreatePostTest = () => {
+  // Get the module id from the URL
+  const { id } = useParams();
   const [questions, setQuestions] = useState([
     { question: '', options: ['', '', '', ''], correctAnswer: '' }
   ]);
   const [title, setTitle] = useState('');
   const navigate = useNavigate();
 
+  // Handle changes to the question input
   const handleQuestionChange = (index, value) => {
     const newQuestions = [...questions];
     newQuestions[index].question = value;
     setQuestions(newQuestions);
   };
 
+  // Handle changes to the options inputs
   const handleOptionChange = (qIndex, optionIndex, value) => {
     const newQuestions = [...questions];
     newQuestions[qIndex].options[optionIndex] = value;
     setQuestions(newQuestions);
   };
 
+  // Handle changes to the correct answer input
   const handleCorrectAnswerChange = (index, value) => {
     const newQuestions = [...questions];
     newQuestions[index].correctAnswer = value;
     setQuestions(newQuestions);
   };
 
+  // Add a new question
   const addQuestion = () => {
     setQuestions([
       ...questions,
@@ -34,8 +41,8 @@ const CreatePostTest = () => {
     ]);
   };
 
+  // Submit the post-test
   const handleSubmit = async () => {
-    // Check if all fields are filled
     if (!title || questions.some(q => !q.question || q.options.some(o => !o) || !q.correctAnswer)) {
       alert('Please fill in all fields.');
       return;
@@ -43,17 +50,17 @@ const CreatePostTest = () => {
 
     const postData = {
       title,
-      questions
+      questions,
+      module_id: id // Add the module id to the post data
     };
 
     try {
-      // Send POST request to backend with post-test data
-      const response = await axios.post('http://localhost:8000/api/posttests', postData);
-      if (response.data.success) {
-        alert('Post-test created successfully!');
-        navigate('/posttests');
-      }
+      const response = await axios.post(`http://localhost:8000/createposttest/${id}`, postData);
+      console.log('Response:', response.data);
+      alert('Post-test created successfully!');
+      navigate(`/module/${id}`);
     } catch (error) {
+      console.error('Error response:', error.response || error.message);
       alert('Error creating post-test: ' + (error.response?.data?.detail || error.message));
     }
   };

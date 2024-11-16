@@ -10,10 +10,14 @@ import random
 import smtplib
 from email.mime.text import MIMEText
 import shutil
-from typing import List
+from typing import List,Dict
 from fastapi.staticfiles import StaticFiles
 import logging
-from bson import ObjectId  # Import ObjectId for MongoDB
+from typing import Optional
+from bson import ObjectId
+from bson.errors import InvalidId 
+
+ # Import InvalidId to handle ObjectId errors
 
 # Load environment variables
 load_dotenv()
@@ -33,7 +37,7 @@ app = FastAPI()
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # React app URL
+    allow_origins=["http://localhost:3000"],  # Add your React frontend's URL here
     allow_credentials=True,
     allow_methods=["*"],  # Allow all methods
     allow_headers=["*"],  # Allow any headers
@@ -49,7 +53,9 @@ except Exception as e:
 
 db = client[DATABASE_NAME]
 modules_collection = db["modules"]  # Use 'modules' collection specifically
+post_test_collection = db.get_collection("post_tests")  # Define 'posttests' collection
 collection = db[COLLECTION_NAME]  # Define the collection variable
+
 
 # Serve static files for images and videos
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
@@ -98,6 +104,10 @@ class Module(BaseModel):
     image_url: str
     video_url: str
 
+class PostTest(BaseModel):
+    module_id: str
+    description: str
+    questions: list
 # Helper functions
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
@@ -106,15 +116,19 @@ def verify_password(password: str, hashed: str) -> bool:
     return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
 
 def send_email(to_email: str, subject: str, body: str):
-    msg = MIMEText(body)
-    msg['Subject'] = subject
-    msg['From'] = EMAIL_HOST_USER
-    msg['To'] = to_email
+    try:
+        msg = MIMEText(body)
+        msg['Subject'] = subject
+        msg['From'] = EMAIL_HOST_USER
+        msg['To'] = to_email
 
-    with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT) as server:
-        server.starttls()
-        server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
-        server.send_message(msg)
+        with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT) as server:
+            server.starttls()
+            server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
+            server.send_message(msg)
+        logging.info(f"Email sent to {to_email}")
+    except Exception as e:
+        logging.error(f"Failed to send email to {to_email}: {e}")
 
 # User management endpoints
 @app.post("/api/signup")
@@ -198,50 +212,132 @@ async def create_module(
     video: UploadFile = File(...),
     picture: UploadFile = File(...),
 ):
-    video_path = f"uploads/{video.filename}"
-    picture_path = f"uploads/{picture.filename}"
-    os.makedirs("uploads", exist_ok=True)
-    with open(video_path, "wb") as video_file:
-        shutil.copyfileobj(video.file, video_file)
-    with open(picture_path, "wb") as picture_file:
-        shutil.copyfileobj(picture.file, picture_file)
-    module_data = {
-        "title": title,
-        "topic": topic,
-        "description": description,
-        "program": program,
-        "id_number": id_number,
-        "video_url": video_path,
-        "image_url": picture_path,
-    }
-    result = modules_collection.insert_one(module_data)
-    if result.inserted_id:
-        return {"success": True, "message": "Module created successfully!"}
-    else:
-        raise HTTPException(status_code=500, detail="Failed to create module")
-
-# Module retrieval endpoint
-@app.get("/api/modules", response_model=List[Module])
-async def get_modules():
+    """
+    Create a new module with associated video and image uploads.
+    """
     try:
-        modules_cursor = modules_collection.find()
-        modules = [
-            {
-                "_id": str(module["_id"]),
-                "title": module["title"],
-                "image_url": module["image_url"],
-                "video_url": module["video_url"]
+        # Save files to the "uploads" directory
+        video_path = f"uploads/{video.filename}"
+        picture_path = f"uploads/{picture.filename}"
+        os.makedirs("uploads", exist_ok=True)
+        with open(video_path, "wb") as video_file:
+            shutil.copyfileobj(video.file, video_file)
+        with open(picture_path, "wb") as picture_file:
+            shutil.copyfileobj(picture.file, picture_file)
+        
+        # Prepare module data
+        module_data = {
+            "title": title,
+            "topic": topic,
+            "description": description,
+            "program": program,
+            "id_number": id_number,
+            "video_url": video_path,
+            "image_url": picture_path,
+        }
+
+        # Insert module into the database
+        result = modules_collection.insert_one(module_data)
+        if result.inserted_id:
+            return {
+                "success": True,
+                "message": "Module created successfully!",
+                "module_id": str(result.inserted_id)  # Return the string version of the ObjectId
             }
-            for module in modules_cursor
-        ]
-        return modules
+        else:
+            raise HTTPException(status_code=500, detail="Failed to create module")
     except Exception as e:
-        logging.error(f"Error fetching modules: {e}")
-        return JSONResponse(status_code=500, content={"message": str(e)})
+        logging.error(f"Error creating module: {e}")
+        raise HTTPException(status_code=500, detail="Module creation failed")
+
+@app.get("/api/modules")
+async def get_modules():
+    """
+    Fetch all modules.
+    """
+    modules = modules_collection.find()
+    return [{"_id": str(module["_id"]), "title": module["title"], "image_url": module["image_url"]} for module in modules]
+
 
 @app.get("/api/modules/{module_id}")
 async def get_module(module_id: str):
-    module = modules_collection.find_one({"_id": ObjectId(module_id)})
-    if not module:
-        raise HTTPException(status_code=404, detail="Module not found")
-    return module
+    """
+    Fetch a specific module by its ID.
+    """
+    try:
+        module = modules_collection.find_one({"_id": ObjectId(module_id)})
+        if module:
+            return {
+                "_id": str(module["_id"]),  # Convert ObjectId to string
+                "title": module["title"],
+                "description": module.get("description", ""),
+                "topic": module.get("topic", ""),
+                "program": module.get("program", ""),
+                "image_url": module["image_url"],
+                "video_url": module["video_url"]
+            }
+        else:
+            raise HTTPException(status_code=404, detail="Module not found")
+    except InvalidId:
+        raise HTTPException(status_code=400, detail="Invalid module ID format")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching module: {e}")
+
+@app.post("/createposttest/{id}")
+async def create_posttest(id: str, posttest: PostTest):
+    """
+    Create a post-test for a specific module.
+    """
+    try:
+        # Validate module existence
+        module = modules_collection.find_one({"_id": ObjectId(id)})
+        if not module:
+            raise HTTPException(status_code=404, detail="Module not found.")
+
+        # Prepare post-test data
+        posttest_data = {
+            "title": posttest.title,
+            "questions": posttest.questions,
+            "module_id": id,
+        }
+
+        # Save post-test to the collection
+        result = posttests_collection.insert_one(posttest_data)
+        return {
+            "success": True,
+            "message": "Post-test created successfully!",
+            "posttest_id": str(result.inserted_id),  # Convert ObjectId to string
+        }
+    except InvalidId:
+        raise HTTPException(status_code=400, detail="Invalid module ID format.")
+    except Exception as e:
+        logging.error(f"Error creating post-test: {e}")
+        raise HTTPException(status_code=500, detail="Failed to create post-test.")
+    
+import logging
+
+@app.get("/api/post-test/{module_id}")
+async def get_post_test(module_id: str):
+    logging.info(f"Received request for post-test with module_id: {module_id}")
+    
+    try:
+        # Log before the query to check if module_id is correct
+        logging.info(f"Querying post-test collection for module_id: {module_id}")
+        
+        post_test = await post_test_collection.find_one({"module_id": module_id})
+        
+        if post_test is None:
+            logging.error(f"Post-test not found for module_id: {module_id}")
+            raise HTTPException(status_code=404, detail="Post-test not found")
+        
+        logging.info(f"Successfully fetched post-test for module_id: {module_id}")
+        return {
+            "module_id": post_test["module_id"],
+            "description": post_test["description"],
+            "questions": post_test.get("questions", [])
+        }
+
+    except Exception as e:
+        logging.error(f"Error while fetching post-test for module_id {module_id}: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+
