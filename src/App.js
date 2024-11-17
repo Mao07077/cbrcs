@@ -18,6 +18,8 @@ import InstructorDashboard from './instructor_dashboard';
 import Mail from './Mail';
 import CreateModule from './Create_module';
 import CreatePostTest from './create_posttest';
+import Studentlist from './Studentlist';
+
 
 
 
@@ -37,6 +39,7 @@ function App() {
             <Route path="/instructor" element={<InstructorPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/module/:moduleId" element={<ModuleInside />} />
+            <Route path="/module/:moduleId" element={<ModuleInside />} />
             <Route path="/posttest" element={<PostTest />} />
             <Route path="/reset_password" element={<ResetPassword />} />
             <Route path="/signup" element={<Signup />} />
@@ -45,6 +48,9 @@ function App() {
             <Route path= "/mail" element ={<Mail/>}/>
             <Route path= "/createmodule" element ={<CreateModule/>}/>
             <Route path= "/createposttest" element ={<CreatePostTest/>}/> 
+            <Route path= "/createmodule" element ={<CreateModule/>}/>
+            <Route path= "/createposttest" element ={<CreatePostTest/>}/> 
+            <Route path="/studentlist" element = {<Studentlist/>}/>
           </Routes>
         
       </BrowserRouter>
