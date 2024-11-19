@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './profile.css';
 
 import nameIcon from './icon/name.png';
@@ -7,7 +7,6 @@ import moduleIcon from './icon/module.png';
 import dashboardIcon from './icon/dashboard.png';
 import settingsIcon from './icon/settings.png';
 import helpIcon from './icon/help.png';
-import logoIcon from './icon/logo.png';
 
 const SidebarItem = ({ icon, text, link }) => (
     <li>
@@ -16,8 +15,47 @@ const SidebarItem = ({ icon, text, link }) => (
     </li>
 );
 
-
 const Profile = () => {
+    const [profile, setProfile] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                // Replace with the actual id_number logic (e.g., from localStorage)
+                const idNumber = localStorage.getItem("userIdNumber"); 
+                if (!idNumber) {
+                    setError("User not logged in");
+                    setLoading(false);
+                    return;
+                }
+
+                const response = await fetch(`http://localhost:8000/api/profile/${idNumber}`);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch profile");
+                }
+
+                const data = await response.json();
+                setProfile(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProfile();
+    }, []);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
     return (
         <div>
             <header className="header">
@@ -51,21 +89,18 @@ const Profile = () => {
                     <div className="sectionholder">
                         <div className="section-box">
                             <div className="row">
-                                <label>Name</label>
+                                <label>Name: {profile.firstname} {profile.lastname}</label>
                             </div>
                             <div className="row">
-                                <label>Age</label>
+                                <label>Id Number: {profile.id_number}</label>
                             </div>
                             <div className="row">
-                                <label>Id Number</label>
-                            </div>
-                            <div className="row">
-                                <label>Program</label>
+                                <label>Program: {profile.program}</label>
                             </div>
                         </div>
                         <div className="section-box">
                             <div className="row">
-                                <label>Hours Activity</label>
+                                <label>Hours Activity: {profile.hoursActivity}</label>
                             </div>
                         </div>
                     </div>

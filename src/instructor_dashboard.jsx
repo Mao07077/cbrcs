@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import './InstructorDashboard.css';
+import './Instructor_Dashboard.css';
 
 import HomeIcon from './icon/Home.png';
 import MailIcon from './icon/Mail.png';
 import StudentsIcon from './icon/Students.png';
 import ReportsIcon from './icon/Reports.png';
 import settingsIcon from './icon/settings.png';
-
 const InstructorDashboard = () => {
   const [fileName, setFileName] = useState('No file chosen');
   const [postText, setPostText] = useState('');

@@ -15,6 +15,8 @@ import Signup from './page/Signup/Signup';
 import UploadModule from './page/Upload_Module/Uploadmodule';
 import InstructorDashboard from './instructor_dashboard';
 import Mail from './Mail';
+import CreateModule from './Create_module';
+import CreatePostTest from './create_posttest';
 
 
 
@@ -22,7 +24,7 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-        <Routes>
+      <Routes>
           <Route path='/' element={<Landing />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/Forgot_Password" element={<ForgotPassword />} />
@@ -30,10 +32,13 @@ function App() {
           <Route path="/Help" element={<HelpPage />} />
           <Route path="/module" element={<Module />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/module/:id" element={<ModuleInside />} />
+          <Route path="/post-test/:moduleId" element={<PostTest />} />
+          <Route path= "/createmodule" element={<CreateModule />} />
+          <Route path="/createposttest/:id" element={<CreatePostTest />} /> {/* Use :id */}
           <Route path="/Settings" element={<Settings />} />
           <Route path="/Login" element={<Login />} />
-          <Route path="/module_inside" element={<ModuleInside />} />
-          <Route path="/Post_test" element={<PostTest />} />
           <Route path="/Reset_Password" element={<ResetPassword />} />
           <Route path="/Signup" element={<Signup />} />
           <Route path="/Upload_Module" element={<UploadModule />} />

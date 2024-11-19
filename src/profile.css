@@ -1,4 +1,3 @@
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -16,7 +15,7 @@ body {
     left: 0;
     margin-top: 3.5%;
     padding-top: 20px;
-    text-align: center;
+    text-align: center; /* Center align text and images */
 }
 
 .sidebar ul {
@@ -27,7 +26,6 @@ body {
 .sidebar ul li {
     padding: 20px;
     text-align: center;
-    margin-left: 10px;
 }
 
 .sidebar ul li a {
@@ -37,150 +35,278 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.header {
+    width: 100%;
+    background-color: #002f87;
+    padding: 10px;
+    color: white;
+    text-align: left;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 1.5em; /* Adjusted for better readability */
+    display: inline-block; /* Added to keep the title inline */
+}
+
+.header img {
+    float: right; /* Float images to the right */
+    margin-left: 1%; 
+    margin-right: 2%;/* Add some space between images */
+    width: 2%;
+    height: 2%;
+}
+
+.profile-container  {
+    margin-left: 10%;
+    padding: 20px;
+    margin-top: 80px; /* Adjust this value based on the height of your header */
+}
+
+.sectionholder {
+    display: flex;
+    justify-content: space-between;
+}
+
+.settings-section {
+    display: flex;
+    flex-direction: column;
     gap: 20px;
 }
+
+.profilebox {
+    background-color: transparent;
+    border-bottom: 1px solid black;
+    
+}
+
+.section-box {
+    background-color: white;
+    padding: 10px; /* Reduced padding */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    width: 45%; /* Adjusted width */
+}
+
+.section-box h2 {
+    margin: 0;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-bottom: 1px solid #ddd;
+    border-radius: 8px 8px 0 0;
+    text-align: left; 
+}
+.row label {
+    flex-basis: 50%;
+    font-size: 16px;
+    color: #666;
+}
+
+.row input {
+    flex-grow: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.profile-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
 .sidebar img {
-    margin: 0 auto;
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
+    display: block;
+    margin: 0 auto; /* Center images */
+}
+
+body {
+font-family: Arial, sans-serif;
+margin: 0;
+padding: 0;
+background-color: #f4f4f4;
+}
+
+.sidebar {
+width: 10%;
+background-color: #F4F4F4;
+position: fixed;
+height: 100%;
+color: black;
+top: 0;
+left: 0;
+margin-top: 3.5%;
+padding-top: 20px;
+text-align: center;
+}
+
+.sidebar ul {
+list-style-type: none;
+padding: 0;
+}
+
+.sidebar ul li {
+padding: 20px;
+text-align: center;
+margin-left: 10px;
+}
+
+.sidebar ul li a {
+text-decoration: none;
+color: black;
+font-size: 80%;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 20px;
+}
+.sidebar img {
+margin: 0 auto;
+width: 40px;
+height: 40px;
+margin-right: 10px;
 }
 
 
 .header {
-    width: 100%;  /* Full width */
-    background-color: #002f87;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Adjust header content to fit properly */
-  .header-content {
-    display: flex;
-    width: 100%;  
-    max-width: 1200px;  
-  }
-  /* Image styling */
-  .header-logo img {
-    height: 50px;   
-    width: auto;     
-    max-width: 180px; 
-  }
-.header-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Aligns the header text and underline to the left */
-    padding: 10px;
+width: 100%;
+background-color: #002f87;
+padding: 10px;
+color: white;
+text-align: left;
+position: fixed;
+top: 0;
+left: 0;
+display: flex;
+align-items: center;
+justify-content: space-between;
+z-index: 10;
 }
 
+.header h1 {
+margin: 0;
+font-size: 1.5em;
+}
+
+.header-icons {
+display: flex;
+gap: 10px;
+}
+
+.header-icons img {
+width: 24px;
+height: 24px;
+}
+
+
+.header-container {
+display: flex;
+flex-direction: column;
+align-items: flex-start; /* Aligns the header text and underline to the left */
+padding: 10px;
+}
 
 .header-container h2 {
-    font-size: 2.3em;
-    margin: 0;
-    padding: 0;
+font-size: 2.3em;
+margin: 0;
+padding: 0;
 }
-
-        .section-box h2 {
-            margin: 0;
-            padding: 10px;
-            background-color: #f4f4f4;
-            border-bottom: 1px solid #ddd;
-            border-radius: 8px 8px 0 0;
-            text-align: left; 
-        }
-        .row label {
-            flex-basis: 50%;
-            font-size: 16px;
-            color: #666;
-        }
-
 
 .header-underline {
-    width: 120%;
-  height: 2px;
-  background-color: #000; /* Adjust the color as needed */
-  transition: width 0.3s ease; /* Smooth transition */
+width: 120%;
+height: 2px;
+background-color: #000; /* Adjust the color as needed */
+transition: width 0.3s ease; /* Smooth transition */
 }
 @media (max-width: 768px) {
-  .header-underline {
-    width: 100%; /* Shrinks the line to 50% on smaller screens */
-    margin: 0 auto; /* Centers the line */
-  }
+.header-underline {
+width: 100%; /* Shrinks the line to 50% on smaller screens */
+margin: 0 auto; /* Centers the line */
+}
 }
 
 /* Responsive adjustments */
 @media (min-width: 768px) {
-    .header-underline {
-        max-width: 1000px; /* Increase max width on medium screens */
-    }
+.header-underline {
+max-width: 1000px; /* Increase max width on medium screens */
+}
 }
 
 @media (min-width: 1024px) {
-    .header-underline {
-        max-width: 1000px; /* Increase max width on larger screens */
-    }
+.header-underline {
+max-width: 1000px; /* Increase max width on larger screens */
+}
 }
 .profile-container {
-    margin-left: 10%; /* Space for sidebar */
-    padding: 20px;
-    margin-top: 150px; /* Space for header */
+margin-left: 10%; /* Space for sidebar */
+padding: 20px;
+margin-top: 150px; /* Space for header */
 }
 
 .profile-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 50px;
-    padding: 90px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 1000px; /* Control the max width of the profile wrapper */
-    margin: 0 auto;
-    width:1000px; /* Center the profile wrapper */
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 50px;
+padding: 90px;
+background-color: #fff;
+border-radius: 8px;
+box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+max-width: 1000px; /* Control the max width of the profile wrapper */
+margin: 0 auto;
+width:1000px; /* Center the profile wrapper */
 
 }
 
 .profilebox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
+display: flex;
+justify-content: center;
+align-items: center;
+
 }
 /* Profile image without background or border */
 .profile-image {
-    flex-direction: row;
-    width: 100px;
-    height: 100px;
-    margin-right: 700px;
+flex-direction: row;
+width: 100px;
+height: 100px;
+margin-right: 700px;
 }
 
 .section-holder {
-    display: flex;
-    flex-direction: row;
-    gap: 50px; 
-    width: 10%; /* Full width within the profile wrapper */
-    justify-content: center;
-    align-items: flex-start; /* Aligns sections to the top */
-    margin-top: 30px;
+display: flex;
+flex-direction: row;
+gap: 50px; /* Consistent gap between personal and activity info */
+width: 10%; /* Full width within the profile wrapper */
+justify-content: center;
+align-items: flex-start; /* Aligns sections to the top */
+margin-top: 30px;
 }
 
 .section.personal-info,
 .section.activity-info {
-    padding: 50px; /* Padding inside each section */
-    border-radius: 8px;
-    flex: 1; /* Equal width for both sections */
-    max-width: 450px;
-    min-width: 250px; /* Minimum width for responsiveness */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    height: 300px;
+padding: 50px; /* Padding inside each section */
+border-radius: 8px;
+flex: 1; /* Equal width for both sections */
+max-width: 450px;
+min-width: 250px; /* Minimum width for responsiveness */
+box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+height: 300px;
 }
 .section.personal-info h3,
 .section.activity-info h3 {
-    margin-bottom: 20px; /* Space below the titles */
+margin-bottom: 20px; /* Space below the titles */
 }
 .section.personal-info ,.row{
 margin-bottom: 20px;
@@ -188,16 +314,16 @@ margin-bottom: 20px;
 }
 
 .section.personal-info {
-    background-color: #f5f5f5;
+background-color: #f5f5f5;
 }
 
 .section.activity-info {
-    background-color: #f5f5f5;
+background-color: #f5f5f5;
 
 }
 .separator-line {
-    width: 100%; /* Adjust width as needed */
-    height: 1px;
-    background-color: #000000; /* Line color */
-    margin: 6px auto; /* Space above and below the line */
+width: 100%; /* Adjust width as needed */
+height: 1px;
+background-color: #000000; /* Line color */
+margin: 6px auto; /* Space above and below the line */
 }
