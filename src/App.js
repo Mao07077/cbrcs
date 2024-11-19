@@ -1,22 +1,25 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Landing from './page/Landing/Landing';//ok
-import ForgotPassword from './page/Forgot_Password/Forgot_password'; //ok
-import Dashboard from './page/Dashboard/Dashboard';
-import GenerateQuestions from './page/Generate_Question/Generate_questions';
-import HelpPage from './page/Help/Help';
+import Landing from './landing';
+import ForgotPassword from './forgot_password';
+import Dashboard from './dashboard';
+import GenerateQuestions from './generate_questions';
+import HelpPage from './help';
 import Module from './module';
 import Profile from './profile';
-import Settings from './page/Settings/Settings';
-import Login from './page/Login/Login';
+import Settings from './settings';
+import InstructorPage from './instractor';
+import Login from './login';
 import ModuleInside from './module_inside';
 import PostTest from './posttest';
-import ResetPassword from './page/Reset_Password/Reset_password';
-import Signup from './page/Signup/Signup';
-import UploadModule from './page/Upload_Module/Uploadmodule';
+import ResetPassword from './reset_password';
+import Signup from './signup';
+import UploadModule from './uploadmodule';
 import InstructorDashboard from './instructor_dashboard';
 import Mail from './Mail';
 import CreateModule from './Create_module';
 import CreatePostTest from './create_posttest';
+import Studentlist from './Studentlist';
+
 
 
 
@@ -24,31 +27,35 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-      <Routes>
-          <Route path='/' element={<Landing />} />
-          <Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/Forgot_Password" element={<ForgotPassword />} />
-          <Route path="/Generate_Questions" element={<GenerateQuestions />} />
-          <Route path="/Help" element={<HelpPage />} />
-          <Route path="/module" element={<Module />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/module/:id" element={<ModuleInside />} />
-          <Route path="/post-test/:moduleId" element={<PostTest />} />
-          <Route path= "/createmodule" element={<CreateModule />} />
-          <Route path="/createposttest/:id" element={<CreatePostTest />} /> {/* Use :id */}
-          <Route path="/Settings" element={<Settings />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/Reset_Password" element={<ResetPassword />} />
-          <Route path="/Signup" element={<Signup />} />
-          <Route path="/Upload_Module" element={<UploadModule />} />
-          <Route path="/Instructor_Dashboard" element={<InstructorDashboard />} />
-          <Route path= "/mail" element ={<Mail/>}/>
-        </Routes>
+          <Routes>
+            <Route path='/' element={<Landing />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/forgot_password" element={<ForgotPassword />} />
+            <Route path="/generate_questions" element={<GenerateQuestions />} />
+            <Route path="/help" element={<HelpPage />} />
+            <Route path="/module" element={<Module />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/instructor" element={<InstructorPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/module/:moduleId" element={<ModuleInside />} />
+            <Route path="/module/:moduleId" element={<ModuleInside />} />
+            <Route path="/posttest" element={<PostTest />} />
+            <Route path="/reset_password" element={<ResetPassword />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/uploadmodule" element={<UploadModule />} />
+            <Route path="/instructor_dashboard" element={<InstructorDashboard />} />
+            <Route path= "/mail" element ={<Mail/>}/>
+            <Route path= "/createmodule" element ={<CreateModule/>}/>
+            <Route path= "/createposttest" element ={<CreatePostTest/>}/> 
+            <Route path= "/createmodule" element ={<CreateModule/>}/>
+            <Route path= "/createposttest" element ={<CreatePostTest/>}/> 
+            <Route path="/studentlist" element = {<Studentlist/>}/>
+          </Routes>
+        
       </BrowserRouter>
     </div>
   );
 }
 
 export default App;
-
