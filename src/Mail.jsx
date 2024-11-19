@@ -1,5 +1,5 @@
 import React from 'react';
-import "./mail.css";
+import "./Mail.css";
 
 import HomeIcon from './icon/Home.png';
 import MailIcon from './icon/Mail.png';
@@ -65,6 +65,7 @@ const Mail = () => {
               <div className="line"></div>
                 <h2>Mail</h2>
           </div>
+          <div className="overall-sidebar">
           <nav className="sidebar">
               <ul>
                   <li>
@@ -80,15 +81,16 @@ const Mail = () => {
                       <a href="#students">Students</a>
                   </li>
                   <li>
-                      <img src={ReportsIcon} alt="Reports icon" className="sidebar-icon" />
+                      <img src={ReportsIcon} alt="Reports icon" className="sidebar-icon"  />
                       <a href="#reports">Reports</a>
                   </li>
                   <li>
-                      <img src={settingsIcon} alt="Settings icon" className="sidebar-icon" />
+                      <img src={settingsIcon} alt="Settings icon" className="sidebar-icon" onClick={() => window.location.href='Settings'}/>
                       <a href="#settings">Settings</a>
                   </li>
               </ul>
           </nav>
+          </div>
             
           {/* Render the Email Component */}
           <Email />
