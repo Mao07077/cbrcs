@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios'
+import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import './create_posttest.css';
 
@@ -54,7 +54,10 @@ const CreatePostTest = () => {
         };
 
         try {
-            const response = await axios.post(`/createposttest/${id}`, postData);
+            const response = await axios.post(
+                `http://localhost:8000/api/createposttest/${id}`, // Corrected URL
+                postData
+            );
             console.log('Response:', response.data);
             alert('Post-test created successfully!');
             navigate(`/module/${id}`); // Redirect to module page

@@ -99,16 +99,26 @@ class ProfileData(BaseModel):
     program: str
     hoursActivity: int = None
 
-class Module(BaseModel):
-    _id: str
-    title: str
-    image_url: str
-    video_url: str
+class Question(BaseModel):
+    question: str
+    options: List[str]
+    correctAnswer: str
 
-class PostTest(BaseModel):
+class PostTestRequest(BaseModel):
+    title: str
+    questions: List[Question]
     module_id: str
-    description: str
-    questions: list
+
+post_tests = {
+    "67430e0c456808e796bf4a6d": {
+        "description": "Post-test for module 67430e0c456808e796bf4a6d",
+        "questions": [
+            {"question": "What is 2 + 2?", "options": ["3", "4", "5"]},
+            {"question": "What is 5 + 5?", "options": ["8", "10", "12"]}
+        ]
+    }
+}
+
 # Helper functions
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
@@ -287,32 +297,28 @@ async def get_module(module_id: str):
 @app.get("/api/post-test/{module_id}")
 async def get_post_test(module_id: str):
     """
-    Fetch the post-test for a given module by its ID.
+    Fetch the post-test for the given module_id.
     """
-    logging.info(f"Fetching post-test for module_id: {module_id}")
+    post_test = post_tests.get(module_id)
+    if post_test is None:
+        raise HTTPException(status_code=404, detail="Post-test not found")
+    return post_test
     
+@app.post("/api/post-test/submit/{module_id}")
+async def submit_post_test(module_id: str, answers: Dict[int, str]):
+    """
+    Submit answers for a post-test.
+    """
+    logging.info(f"Submitting post-test answers for module_id: {module_id}")
     try:
-        # Validate module_id format
-        if not ObjectId.is_valid(module_id):
-            logging.error(f"Invalid module ID format: {module_id}")
-            raise HTTPException(status_code=400, detail="Invalid module ID format.")
-        
-        # Fetch post-test from the collection
-        post_test = post_test_collection.find_one({"module_id": module_id})
-        if not post_test:
-            logging.error(f"No post-test found for module_id: {module_id}")
-            raise HTTPException(status_code=404, detail="Post-test not found.")
-        
-        return {
-            "module_id": post_test["module_id"],
-            "description": post_test["description"],
-            "questions": post_test.get("questions", [])
-        }
+        # Logic to process answers, grade, or save the submission
+        # For now, just logging the answers
+        logging.info(f"Answers submitted: {answers}")
+        return {"success": True, "message": "Post-test submitted successfully!"}
     except Exception as e:
-        logging.error(f"Error while fetching post-test for module_id {module_id}: {e}")
-        raise HTTPException(status_code=500, detail="Internal Server Error")
-
-
+        logging.error(f"Error submitting post-test answers: {e}")
+        raise HTTPException(status_code=500, detail="Error submitting post-test answers.")
+    
 # Endpoint for deleting a module
 @app.delete("/api/modules/{module_id}")
 async def delete_module(module_id: str):
@@ -350,3 +356,45 @@ async def health_check():
     except Exception as e:
         logging.error(f"Database connection issue: {e}")
         raise HTTPException(status_code=500, detail="Database connection failed.")
+
+@app.post("/createposttest/{module_id}")
+async def create_posttest(module_id: str, post_test_request: PostTestRequest):
+    try:
+        # Validate module_id format
+        if not ObjectId.is_valid(module_id):
+            logging.error(f"Invalid module ID format: {module_id}")
+            raise HTTPException(status_code=400, detail="Invalid module ID format.")
+        
+        # Check if module exists
+        module = modules_collection.find_one({"_id": ObjectId(module_id)})
+        if not module:
+            logging.error(f"Module not found with ID: {module_id}")
+            raise HTTPException(status_code=404, detail="Module not found.")
+
+        # Prepare post-test data
+        post_test_data = {
+            "module_id": module_id,
+            "title": post_test_request.title,
+            "questions": [
+                {
+                    "question": question.question,
+                    "options": question.options,
+                    "correctAnswer": question.correctAnswer
+                }
+                for question in post_test_request.questions
+            ],
+        }
+
+        # Insert post-test data into the database
+        result = post_test_collection.insert_one(post_test_data)
+
+        # Return success response
+        return {
+            "success": True,
+            "message": "Post-test created successfully!",
+            "post_test_id": str(result.inserted_id)  # Return the inserted post-test's ID
+        }
+    except Exception as e:
+        logging.error(f"Error creating post-test for module_id {module_id}: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+    

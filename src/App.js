@@ -9,7 +9,7 @@ import Profile from './profile';
 import Settings from './page/Settings/Settings';
 import Login from './page/Login/Login';
 import ModuleInside from './module_inside';
-import PostTest from './posttest';
+import PostTest from './page/Post_test/Post_test';
 import ResetPassword from './page/Reset_Password/Reset_password';
 import Signup from './page/Signup/Signup';
 import UploadModule from './page/Upload_Module/Uploadmodule';
@@ -38,7 +38,6 @@ function App() {
           <Route path= "/createmodule" element={<CreateModule />} />
           <Route path="/createposttest/:id" element={<CreatePostTest />} /> {/* Use :id */}
           <Route path="/Settings" element={<Settings />} />
-          <Route path="/Login" element={<Login />} />
           <Route path="/Reset_Password" element={<ResetPassword />} />
           <Route path="/Signup" element={<Signup />} />
           <Route path="/Upload_Module" element={<UploadModule />} />
