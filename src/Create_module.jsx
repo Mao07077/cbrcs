@@ -12,18 +12,12 @@ const CreateModule = () => {
   const [picture, setPicture] = useState(null);
   const navigate = useNavigate();
 
-  const handleVideoUpload = (e) => {
-    setVideo(e.target.files[0]);
-  };
-
-  const handlePictureUpload = (e) => {
-    setPicture(e.target.files[0]);
-  };
+  const handleVideoUpload = (e) => setVideo(e.target.files[0]);
+  const handlePictureUpload = (e) => setPicture(e.target.files[0]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if all fields are filled
     if (!moduleName || !moduleTopic || !description || !video || !picture || !selectedCourse) {
       alert("Please fill in all fields.");
       return;
@@ -37,7 +31,6 @@ const CreateModule = () => {
     formData.append('picture', picture);
     formData.append('program', selectedCourse);
 
-    // Retrieve the user's ID number from localStorage
     const userIdNumber = localStorage.getItem('userIdNumber');
     if (!userIdNumber) {
       alert("User ID not found. Please log in again.");
@@ -46,16 +39,19 @@ const CreateModule = () => {
     formData.append('id_number', userIdNumber);
 
     try {
-      // Send POST request to backend with the form data
       const response = await axios.post('http://localhost:8000/api/create_module', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
 
       if (response.data.success) {
-        alert("Module created successfully!");
-        navigate('/module');
+        const moduleId = response.data.module_id; // Assuming backend returns `module_id`
+        if (moduleId) {
+          alert("Module created successfully!");
+          navigate(`/createposttest/${moduleId}`);
+        } else {
+          alert("Error: Module ID is undefined.");
+          console.error("Module ID is undefined:", response.data);
+        }
       } else {
         alert("Error creating module: " + (response.data.message || "Unknown error"));
       }
@@ -93,14 +89,12 @@ const CreateModule = () => {
           type="file"
           onChange={handleVideoUpload}
           accept="video/*"
-          placeholder="Upload Video"
           required
         />
         <input
           type="file"
           onChange={handlePictureUpload}
           accept="image/*"
-          placeholder="Upload Picture"
           required
         />
         <input

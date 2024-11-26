@@ -27,29 +27,14 @@ const Settings = () => {
         </div>
       </header>
       <nav className="sidebar">
-        <ul>
-          <li>
-            <img src={nameIcon} alt="Name icon" className="sidebar-icon" />
-            <Link to="/">Name</Link>
-          </li>
-          <li>
-            <img src={moduleIcon} alt="Module icon" className="sidebar-icon" />
-            <Link to="/module">Module</Link>
-          </li>
-          <li>
-            <img src={dashboardIcon} alt="dashboard icon" className="sidebar-icon" />
-            <Link to="/dashboard">Dashboard</Link>
-          </li>
-          <li>
-            <img src={settingsIcon} alt="Settings icon" className="sidebar-icon" />
-            <Link to="/settings">Settings</Link>
-          </li>
-          <li>
-            <img src={helpIcon} alt="Help icon" className="sidebar-icon" />
-            <Link to="/help">Help</Link>
-          </li>
-        </ul>
-      </nav>
+                <ul>
+                    <SidebarItem icon={nameIcon} text="Name" link="profile" />
+                    <SidebarItem icon={moduleIcon} text="Module" link="module" />
+                    <SidebarItem icon={dashboardIcon} text="Dashboard" link="dashboard" />
+                    <SidebarItem icon={settingsIcon} text="Settings" link="settings" />
+                    <SidebarItem icon={helpIcon} text="Help" link="help" />
+                </ul>
+            </nav>
       <div className="settings-container">
         <div className="settings-section">
           {/* General Section */}

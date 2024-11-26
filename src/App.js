@@ -28,29 +28,26 @@ function App() {
     <div>
       <BrowserRouter>
           <Routes>
-            <Route path='/' element={<Landing />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/forgot_password" element={<ForgotPassword />} />
-            <Route path="/generate_questions" element={<GenerateQuestions />} />
-            <Route path="/help" element={<HelpPage />} />
-            <Route path="/module" element={<Module />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/instructor" element={<InstructorPage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/module/:moduleId" element={<ModuleInside />} />
-            <Route path="/module/:moduleId" element={<ModuleInside />} />
-            <Route path="/posttest" element={<PostTest />} />
-            <Route path="/reset_password" element={<ResetPassword />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/uploadmodule" element={<UploadModule />} />
+          <Route path='/' element={<Landing />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
+          <Route path="/Forgot_Password" element={<ForgotPassword />} />
+          <Route path="/Generate_Questions" element={<GenerateQuestions />} />
+          <Route path="/Help" element={<HelpPage />} />
+          <Route path="/module" element={<Module />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/module/:id" element={<ModuleInside />} />
+          <Route path="/post-test/:moduleId" element={<PostTest />} />
+          <Route path= "/createmodule" element={<CreateModule />} />
+          <Route path="/createposttest/:id" element={<CreatePostTest />} /> {/* Use :id */}
+          <Route path="/Settings" element={<Settings />} />
+          <Route path="/Reset_Password" element={<ResetPassword />} />
+          <Route path="/Signup" element={<Signup />} />
+          <Route path="/Upload_Module" element={<UploadModule />} />
+          <Route path="/Instructor_Dashboard" element={<InstructorDashboard />} />
+          <Route path= "/mail" element ={<Mail/>}/>
+            <Route path="/studentlist" element = {<Studentlist/>}/> 
             <Route path="/instructor_dashboard" element={<InstructorDashboard />} />
-            <Route path= "/mail" element ={<Mail/>}/>
-            <Route path= "/createmodule" element ={<CreateModule/>}/>
-            <Route path= "/createposttest" element ={<CreatePostTest/>}/> 
-            <Route path= "/createmodule" element ={<CreateModule/>}/>
-            <Route path= "/createposttest" element ={<CreatePostTest/>}/> 
-            <Route path="/studentlist" element = {<Studentlist/>}/>
           </Routes>
         
       </BrowserRouter>

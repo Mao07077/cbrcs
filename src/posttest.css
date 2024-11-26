@@ -1,38 +1,165 @@
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-        .container  {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            width: 60%;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-        }
-        .form-section {
-            margin-bottom: 20px;
-        }
-        .question {
-            margin-bottom: 10px;
-        }
-        .actions {
-            display: flex;
-            justify-content: space-between;
-        }
-        .button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-        }
+.header {
+    width: 100%;  /* Full width */
+    background-color: #002f87;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Adjust header content to fit properly */
+  .header-content {
+    display: flex;
+    width: 100%;  
+    max-width: 1200px;  
+  }
+  /* Image styling */
+  .header-logo img {
+    height: 50px;   
+    width: auto;     
+    max-width: 180px; 
+  }
+
+
+
+/* Container styling */
+.posttest-container {
+    font-family: 'Arial', sans-serif;
+    max-width: 1000px;
+    margin-right: 500px;
+    margin-top: 100px;
+    width: 300%;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    
+}
+
+/* Title Styling */
+.posttest-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #202124; /* Neutral dark text color */
+    text-align: left; /* Align text to the left */
+}
+
+/* Description Styling */
+.posttest-description {
+    font-size: 14px;
+    color: #5f6368; /* Subtle gray text for descriptions */
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd; /* Add a light gray line below */
+    padding-bottom: 10px;
+}
+
+/* Question Section Styling */
+.question-section {
+    margin-bottom: 20px;
+    text-align: left; /* Align questions and options to the left */
+    padding-bottom: 20px; /* Add some space between sections */
+}
+
+/* Question Item Styling */
+.question-item {
+    margin-bottom: 20px; /* Add more space between question items */
+}
+
+/* Question Text Styling */
+.question-text {
+    font-size: 16px;
+    font-weight: 500;
+    color: #202124;
+    margin-bottom: 12px; /* Increase space below the question text */
+}
+
+/* Choice Label Styling */
+.choice-label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px; /* Add more space between each choice option */
+    font-size: 14px;
+    color: #3c4043;
+}
+
+.choice-label input[type="radio"] {
+    margin-right: 15px; /* Adjust the space between the radio button and text */
+    accent-color: #4285f4; /* Google blue for the radio button */
+}
+
+/* Button Styling */
+.button-group {
+    text-align: right; /* Align button to the right */
+    margin-top: 30px;
+   
+}
+
+.next-button {
+    background-color: #4285f4; 
+    margin-right: 100px;
+    width: 90px;
+    height: 50px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.next-button:hover {
+    background-color: #357ae8; /* Darker blue on hover */
+    box-shadow: 0 2px 6px rgba(53, 122, 232, 0.4);
+}
+.submission-container {
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    margin: 30px auto;
+    text-align: center;
+}
+
+/* Submission Title */
+.submission-title {
+    font-size: 24px;
+    color: #333333;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+/* Submission Answers List */
+.submission-answers {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+/* Individual Answer Item */
+.answer-item {
+    font-size: 18px;
+    color: #555555;
+    margin: 10px 0;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 8px;
+}
+
+/* Question Label Styling */
+.question-label {
+    font-weight: bold;
+    color: #333333;
+}
+
+/* Answer Text Styling */
+.answer-text {
+    color: #007bff; /* Highlight the answers with a primary color */
+    font-style: italic;
+}

@@ -3,22 +3,22 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
-}
-
-body {
+  }
+  
+  body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
-}
-
-.container  {
+  }
+  
+  .container  {
     margin-left: 10%;
     padding: 20px;
     margin-top: 80px;
-}
-
-.sidebar {
+  }
+  
+  .sidebar {
     width: 10%;
     background-color: #F4F4F4;
     position: fixed;
@@ -29,31 +29,31 @@ body {
     margin-top: 3.5%;
     padding-top: 20px;
     text-align: center; /* Center align text and images */
-}
-.sidebar ul {
+  }
+  .sidebar ul {
     list-style-type: none;
     padding: 0;
-}
-
-.sidebar ul li {
+  }
+  
+  .sidebar ul li {
     padding: 20px;
     text-align: center;
-}
-
-.sidebar ul li a {
+  }
+  
+  .sidebar ul li a {
     text-decoration: none;
     color: black;
     font-size: 80%;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.sidebar ul li a i {
+  }
+  
+  .sidebar ul li a i {
     margin-right: 10px;
-}
-
-.header {
+  }
+  
+  .header {
     width: 100%;
     background-color: #002f87;
     padding: 10px;
@@ -62,42 +62,42 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-}
-
-.header h1 {
+  }
+  
+  .header h1 {
     margin: 0;
     font-size: 1.5em; /* Adjusted for better readability */
     display: inline-block; /* Added to keep the title inline */
-}
-
-.header img {
+  }
+  
+  .header img {
     float: right; /* Float images to the right */
     margin-left: 1%; 
     margin-right: 2%;/* Add some space between images */
     width: 2%;
     height: 2%;
-}
-
-.user-info {
+  }
+  
+  .user-info {
     display: flex;
     align-items: center;
-}
-
-.user-info img {
+  }
+  
+  .user-info img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     margin-right: 10px;
-}
-
-
-main {
+  }
+  
+  
+  main {
     flex: 1;
     padding: 20px;
     background-color: #fff;
-}
-
-.module-header {
+  }
+  
+  .module-header {
     display: flex;
     justify-content: space-between;
     border: 2px solid #0033A0;
@@ -105,47 +105,47 @@ main {
     margin-bottom: 20px;
     border-radius: 10px;
     background-color: #f9f9f9;
-}
-
-.module-info {
+  }
+  
+  .module-info {
     width: 70%;
-}
-
-.module-info h1, .module-info h2 {
+  }
+  
+  .module-info h1, .module-info h2 {
     color: #0033A0;
-}
-
-.next-module {
+  }
+  
+  .next-module {
     width: 25%;
     background-color: #f1f1f1;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-}
-
-.next-module button {
+  }
+  
+  .next-module button {
     background-color: #0033A0;
     color: white;
     padding: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.module-elements {
+  }
+  
+  .module-elements {
     margin-top: 30px;
-}
-
-.module-elements h2 {
+  }
+  
+  .module-elements h2 {
     color: #0033A0;
     margin-bottom: 10px;
-}
-
-.module-elements p {
+  }
+  
+  .module-elements p {
     margin-bottom: 20px;
-}
-
-.element {
+  }
+  
+  .element {
     display: inline-block;
     background-color: #f9f9f9;
     padding: 20px;
@@ -153,63 +153,63 @@ main {
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-right: 5%;
-}
-
-.element:last-child {
+  }
+  
+  .element:last-child {
     margin-right: 0;
-}
-
-.element h3 {
+  }
+  
+  .element h3 {
     color: #0033A0;
-}
-
-.element button {
+  }
+  
+  .element button {
     background-color: #0033A0;
     color: white;
     padding: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.instructions {
+  }
+  
+  .instructions {
     background-color: yellow;
     padding: 10px;
     margin: 10px 0;
     text-align: center;
-}
-
-.module-grid {
+  }
+  
+  .module-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-}
-
-.module {
+  }
+  
+  .module {
     background-color: white;
     padding: 20px;
     border: 1px solid #ddd;
     text-align: center;
-}
-
-.module img {
+  }
+  
+  .module img {
     width: 100%;
     height: 200px;
     background-color: #ccc;
-}
-
-.proceed-btn {
+  }
+  
+  .proceed-btn {
     background-color: yellow;
     border: none;
     padding: 10px;
     margin-top: 10px;
     cursor: pointer;
-}
-
-.proceed-btn:hover {
+  }
+  
+  .proceed-btn:hover {
     background-color: #ffcc00;
-}
-.sidebar img {
+  }
+  .sidebar img {
     display: block;
     margin: 0 auto; /* Center images */
-}
+  } 
