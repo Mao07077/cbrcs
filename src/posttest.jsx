@@ -1,97 +1,170 @@
-import React, { useState } from 'react';
-import './posttest.css'; // Importing the CSS file
-import logoIcon from './icon/logo.png'; // Logo image import
+import React, { useState, useEffect } from 'react';
+import { Pie } from 'react-chartjs-2';
+import './posttest.css';
+import logoIcon from './icon/logo.png';
+import { useParams } from 'react-router-dom';
+import {
+    Chart as ChartJS,
+    ArcElement,
+    Tooltip,
+    Legend
+} from 'chart.js';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const PostTest = () => {
-    const [formData, setFormData] = useState({
-        question_1: '',
-        question_2: '',
-        question_3: '',
-        question_4: '',
-        question_5: '',
-        question_6: '',
-        question_7: '',
-        question_8: '',
-        question_9: '',
-        question_10: ''
-    });
-
+    const { moduleId } = useParams();
+    const [postTest, setPostTest] = useState(null);
+    const [error, setError] = useState(null);
+    const [answers, setAnswers] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
     const [submitted, setSubmitted] = useState(false);
+    const [score, setScore] = useState(null);
+    const [validationError, setValidationError] = useState(null);
+    const [correctAnswers, setCorrectAnswers] = useState({});
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
+    useEffect(() => {
+        const fetchPostTestData = async () => {
+            try {
+                const response = await fetch(`http://localhost:8000/api/post-test/${moduleId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch post-test data');
+                }
+                const data = await response.json();
+                setPostTest(data);
+                const answersMap = {};
+                data.questions.forEach((question, index) => {
+                    answersMap[index] = question.correctAnswer; // Store correct answers by index
+                });
+                setCorrectAnswers(answersMap);
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
+        fetchPostTestData();
+    }, [moduleId]);
+
+    const handleAnswerChange = (questionIndex, selectedOption) => {
+        setAnswers(prevAnswers => ({
+            ...prevAnswers,
+            [questionIndex]: selectedOption
+        }));
+        setValidationError(null);
     };
 
-    const handleNext = () => {
-        setCurrentPage((prevPage) => prevPage + 1);
-    };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Submitted Data:', formData);
+
+        const unansweredQuestions = postTest.questions.filter((_, index) => !answers[index]);
+        if (unansweredQuestions.length > 0) {
+            setValidationError('Please answer all questions before submitting.');
+            return;
+        }
+
+        console.log('Answers before submission:', answers); // Log submitted answers
+
+        // Calculate correct and incorrect answers locally
+        let correctCount = 0;
+        let incorrectCount = 0;
+
+        postTest.questions.forEach((question, index) => {
+            if (answers[index] === correctAnswers[index]) {
+                correctCount++;
+            } else {
+                incorrectCount++;
+            }
+        });
+
+        // Log results
+        console.log(`Correct: ${correctCount}, Incorrect: ${incorrectCount}`);
+
+        // Set score for chart
+        setScore({
+            correct: correctCount,
+            incorrect: incorrectCount,
+            total_questions: postTest.questions.length,
+        });
+
         setSubmitted(true);
+
+        try {
+            const response = await fetch(`http://localhost:8000/api/post-test/submit/${moduleId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ answers }) // Send the answers object
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit answers');
+            }
+
+            const result = await response.json();
+            console.log('Post-test submitted:', result); // Log the server response
+        } catch (error) {
+            console.error('Error submitting post-test:', error);
+            alert('Failed to submit your post-test. Please try again.');
+        }
+    };
+
+    const handleNextPage = () => {
+        const startIndex = (currentPage - 1) * questionsPerPage;
+        const endIndex = startIndex + questionsPerPage;
+        const unansweredQuestions = postTest.questions.slice(startIndex, endIndex).filter((_, index) => !answers[startIndex + index]);
+
+        if (unansweredQuestions.length > 0) {
+            setValidationError('Please answer all questions on this page before proceeding.');
+            return;
+        }
+
+        setCurrentPage(currentPage + 1);
+        setValidationError(null);
+    };
+
+    const handlePrevPage = () => {
+        setCurrentPage(currentPage - 1);
+        setValidationError(null);
     };
 
     const renderQuestions = () => {
-        const questions = {
-            1: [
-                { id: 1, text: '1. Question text here' },
-                { id: 2, text: '2. Question text here' },
-                { id: 3, text: '3. Question text here' },
-                { id: 4, text: '4. Question text here' },
-                { id: 5, text: '5. Question text here' }
-            ],
-            2: [
-                { id: 6, text: '6. Question text here' },
-                { id: 7, text: '7. Question text here' },
-                { id: 8, text: '8. Question text here' },
-                { id: 9, text: '9. Question text here' },
-                { id: 10, text: '10. Question text here' }
-            ]
-        };
+        const startIndex = (currentPage - 1) * questionsPerPage;
+        const endIndex = startIndex + questionsPerPage;
+        const questionsToRender = postTest.questions.slice(startIndex, endIndex) || [];
 
-        return questions[currentPage].map((q) => (
-            <div key={q.id} className="question-item">
-                <p className="question-text">{q.text}</p>
-                <label className="choice-label">
-                    <input
-                        type="radio"
-                        name={`question_${q.id}`}
-                        value="Choice 1"
-                        onChange={handleChange}
-                    />{' '}
-                    Choice 1
-                </label>
-                <label className="choice-label">
-                    <input
-                        type="radio"
-                        name={`question_${q.id}`}
-                        value="Choice 2"
-                        onChange={handleChange}
-                    />{' '}
-                    Choice 2
-                </label>
-                <label className="choice-label">
-                    <input
-                        type="radio"
-                        name={`question_${q.id}`}
-                        value="Choice 3"
-                        onChange={handleChange}
-                    />{' '}
-                    Choice 3
-                </label>
+        return questionsToRender.map((question, index) => (
+            <div key={startIndex + index} className="question-item">
+                <p className="question-text">{`${startIndex + index + 1}. ${question.question}`}</p>
+                {question.options.map((option, optionIndex) => (
+                    <label key={optionIndex} className="choice-label">
+                        <input
+                            type="radio"
+                            name={`question_${startIndex + index}`}
+                            value={option}
+                            onChange={() => handleAnswerChange(startIndex + index, option)}
+                            checked={answers[startIndex + index] === option}
+                        />{' '}
+                        {option}
+                    </label>
+                ))}
             </div>
         ));
     };
 
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
+    if (!postTest) {
+        return <div>Loading post-test...</div>;
+    }
+
+    const questionsPerPage = 5;
+    const totalPages = Math.ceil((postTest.questions?.length || 0) / questionsPerPage);
+
     return (
         <div className="posttest-container">
-            {/* Header Section */}
             <header className="header">
                 <div className="header-content">
                     <div className="header-logo">
@@ -100,33 +173,56 @@ const PostTest = () => {
                 </div>
             </header>
 
-            {/* Title and Description */}
-            <h1 className="posttest-title">Module Topic Here</h1>
-            <p className="posttest-description">
-                Answer the following questions based on the module you've reviewed.
-            </p>
+            <h1 className="posttest-title">{postTest.title}</h1>
+            <p className="posttest-description">{postTest.description}</p>
 
-            {/* Display Submitted Data or the Form */}
             {submitted ? (
                 <div className="submission-container">
-                    <h2 className="submission-title">Thank you for submitting your answers!</h2>
-                    <ul className="submission-answers">
-                        {Object.keys(formData).map((key) => (
-                            <li key={key} className="answer-item">
-                                {key.replace('question_', 'Question ')}: {formData[key] || 'No answer'}
-                            </li>
-                        ))}
-                    </ul>
+                    <h2 className="submission-title">Your Score</h2>
+                    {score && (
+                        <div className="chart-container">
+                            <Pie
+                                data={{
+                                    labels: ['Correct', 'Incorrect'],
+                                    datasets: [
+                                        {
+                                            label: 'Score Distribution',
+                                            data: [score.correct, score.incorrect],
+                                            backgroundColor: ['#36A2EB', '#FF6384'],
+                                            hoverBackgroundColor: ['#36A2EB', '#FF6384']
+                                        }
+                                    ]
+                                }}
+                                options={{
+                                    responsive: true,
+                                    maintainAspectRatio: false
+                                }}
+                            />
+                            <p>
+                                Total Questions: {score.total_questions} | Correct: {score.correct} | Incorrect: {score.incorrect}
+                            </p>
+                        </div>
+                    )}
                 </div>
             ) : (
                 <form onSubmit={handleSubmit}>
                     <div className="question-section">
                         {renderQuestions()}
+                        {validationError && <p className="validation-error">{validationError}</p>}
                         <div className="button-group">
-                            {currentPage === 1 ? (
+                            {currentPage > 1 && (
                                 <button
                                     type="button"
-                                    onClick={handleNext}
+                                    onClick={handlePrevPage}
+                                    className="button prev-button"
+                                >
+                                    Previous
+                                </button>
+                            )}
+                            {currentPage < totalPages ? (
+                                <button
+                                    type="button"
+                                    onClick={handleNextPage}
                                     className="button next-button"
                                 >
                                     Next

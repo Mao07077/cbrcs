@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from pymongo import MongoClient
 from dotenv import load_dotenv
+from fastapi import APIRouter
 import bcrypt
 import os
 import random
@@ -17,6 +18,7 @@ import logging
 from typing import Optional
 from bson import ObjectId
 from bson.errors import InvalidId 
+from typing import Any
 
  # Import InvalidId to handle ObjectId errors
 
@@ -34,6 +36,8 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 logging.basicConfig(level=logging.INFO)
 
 app = FastAPI()
+router = APIRouter()
+
 
 # CORS configuration
 app.add_middleware(
@@ -100,15 +104,28 @@ class ProfileData(BaseModel):
     hoursActivity: int = None
 
 class Question(BaseModel):
-    post_test_id: str
     question: str
-    answers: List[str]
-    correct_answer: str
+    options: List[str]
+    correctAnswer: str
 
 class PostTestRequest(BaseModel):
     title: str
     questions: List[Question]
+
+class PostTestResponse(BaseModel):
+    post_test_id: str
     module_id: str
+    title: str
+    questions: List[Question]
+
+class PostTestSubmission(BaseModel):
+    answers: Dict[str, str]
+
+class PostTestData(BaseModel):
+    question_id: str
+    user_id: str
+    answers: list[str]
+    
 
 
 # Helper functions
@@ -132,6 +149,7 @@ def send_email(to_email: str, subject: str, body: str):
         logging.info(f"Email sent to {to_email}")
     except Exception as e:
         logging.error(f"Failed to send email to {to_email}: {e}")
+
 
 # User management endpoints
 @app.post("/api/signup")
@@ -365,42 +383,99 @@ async def health_check():
 
 @app.post("/createposttest/{module_id}")
 async def create_posttest(module_id: str, post_test_request: PostTestRequest):
-    try:
-        # Validate module_id format
-        if not ObjectId.is_valid(module_id):
-            logging.error(f"Invalid module ID format: {module_id}")
-            raise HTTPException(status_code=400, detail="Invalid module ID format.")
-        
-        # Check if module exists
-        module = modules_collection.find_one({"_id": ObjectId(module_id)})
-        if not module:
-            logging.error(f"Module not found with ID: {module_id}")
-            raise HTTPException(status_code=404, detail="Module not found.")
+    # Check if the module exists
+    module = modules_collection.find_one({"_id": ObjectId(module_id)})
+    if not module:
+        raise HTTPException(status_code=404, detail="Module not found.")
 
-        # Prepare post-test data
-        post_test_data = {
-            "module_id": module_id,
-            "title": post_test_request.title,
-            "questions": [
-                {
-                    "question": question.question,
-                    "options": question.options,
-                    "correctAnswer": question.correctAnswer
-                }
-                for question in post_test_request.questions
-            ],
-        }
+    # Prepare post-test data
+    post_test_data = {
+        "module_id": module_id,
+        "title": post_test_request.title,
+        "questions": [
+            {
+                "question": question.question,
+                "options": question.options,
+                "correctAnswer": question.correctAnswer
+            }
+            for question in post_test_request.questions
+        ],
+    }
 
-        # Insert post-test data into the database
-        result = post_test_collection.insert_one(post_test_data)
+    # Insert post-test data into the database
+    result = post_test_collection.insert_one(post_test_data)
 
-        # Return success response
-        return {
-            "success": True,
-            "message": "Post-test created successfully!",
-            "post_test_id": str(result.inserted_id)  # Return the inserted post-test's ID
-        }
-    except Exception as e:
-        logging.error(f"Error creating post-test for module_id {module_id}: {e}")
-        raise HTTPException(status_code=500, detail="Internal Server Error")
-    
+    return {
+        "success": True,
+        "message": "Post-test created successfully!",
+        "post_test_id": str(result.inserted_id)  # Return the inserted post-test's ID
+    }
+@router.post("/api/post-test/submit/{module_id}")
+async def submit_post_test(module_id: str, answers: dict):
+    if not module_id:
+        raise HTTPException(status_code=400, detail="Module ID is required")
+
+    # Fetch the post-test associated with the module_id
+    post_test = post_test_collection.find_one({"module_id": module_id})
+    if not post_test:
+        raise HTTPException(status_code=404, detail="Post-test not found for this module")
+
+    # Get the list of questions and the correct answers from the post-test
+    correct_answers = {question["question"]: question["correctAnswer"] for question in post_test["questions"]}
+
+    # Initialize score counters
+    correct_count = 0
+    incorrect_count = 0
+
+    # Compare provided answers with correct answers
+    for question, user_answer in answers.items():
+        correct_answer = correct_answers.get(question)
+        if correct_answer:
+            if user_answer == correct_answer:
+                correct_count += 1
+            else:
+                incorrect_count += 1
+
+    # Return the score (correct and incorrect answers count)
+    return {
+        "correct": correct_count,
+        "incorrect": incorrect_count,
+        "total_questions": len(post_test["questions"])
+    }
+
+@router.post("/api/post-test/submit/{module_id}")
+async def submit_post_test(module_id: str, answers: dict):
+    # Check if module_id is provided
+    if not module_id:
+        raise HTTPException(status_code=400, detail="Module ID is required")
+
+    # Fetch the post-test associated with the module_id
+    post_test = post_test_collection.find_one({"module_id": module_id})
+    if not post_test:
+        raise HTTPException(status_code=404, detail="Post-test not found for this module")
+
+    # Create a mapping of question index to correct answers
+    correct_answers = {index: question["correctAnswer"] for index, question in enumerate(post_test["questions"])}
+
+    # Initialize score counters
+    correct_count = 0
+    incorrect_count = 0
+
+    # Compare provided answers with correct answers
+    for index, user_answer in answers.items():
+        correct_answer = correct_answers.get(int(index))  # Convert index to integer
+        if correct_answer is not None:  # Check if the correct answer exists for the index
+            if user_answer == correct_answer:
+                correct_count += 1
+            else:
+                incorrect_count += 1
+
+    # Return the score (correct and incorrect answers count)
+    return {
+        "correct": correct_count,
+        "incorrect": incorrect_count,
+        "total_questions": len(post_test["questions"])
+    }
+
+# Include the router in the main app
+app.include_router(router)

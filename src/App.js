@@ -39,8 +39,8 @@ function App() {
           <Route path="/module/:id" element={<ModuleInside />} />
           <Route path="/post-test/:moduleId" element={<PostTest />} />
           <Route path= "/createmodule" element={<CreateModule />} />
-          <Route path="/createposttest/:id" element={<CreatePostTest />} /> {/* Use :id */}
           <Route path="/Settings" element={<Settings />} />
+          <Route path="/createposttest/:id" element={<CreatePostTest />} />
           <Route path="/Reset_Password" element={<ResetPassword />} />
           <Route path="/Signup" element={<Signup />} />
           <Route path="/Upload_Module" element={<UploadModule />} />
