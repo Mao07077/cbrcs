@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './dashboard.css';
+import axios from 'axios';
 
 import nameIcon from './icon/name.png';
 import notifIcon from './icon/notif.png';
@@ -16,6 +17,20 @@ const SidebarItem = ({ icon, text, link }) => (
 );
 
 const Dashboard = () => {
+    const id_number = '111'; // Hardcoded ID number for testing
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        // Example API request to get dashboard data for the hardcoded id_number
+        axios.get(`http://localhost:8000/api/dashboard/${id_number}`)
+            .then(response => {
+                setData(response.data);
+            })
+            .catch(error => {
+                console.error("Error fetching dashboard data:", error);
+            });
+    }, [id_number]);
+
     return (
         <div>
             <header className="header">
@@ -54,6 +69,17 @@ const Dashboard = () => {
                 <section className="progress-chart">
                     <h2>Progress Chart</h2>
                     <p>[Bar Chart Placeholder]</p>
+                </section>
+                <section className="dashboard-data">
+                    {data ? (
+                        <div>
+                            <h2>Data for ID {id_number}</h2>
+                            {/* Render the data */}
+                            <pre>{JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    ) : (
+                        <p>Loading data...</p>
+                    )}
                 </section>
             </main>
         </div>

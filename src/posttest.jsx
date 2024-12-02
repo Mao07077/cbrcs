@@ -80,11 +80,12 @@ const PostTest = () => {
         console.log(`Correct: ${correctCount}, Incorrect: ${incorrectCount}`);
 
         // Set score for chart
-        setScore({
+        const scoreData = {
             correct: correctCount,
             incorrect: incorrectCount,
             total_questions: postTest.questions.length,
-        });
+        };
+        setScore(scoreData);
 
         setSubmitted(true);
 
@@ -94,7 +95,7 @@ const PostTest = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ answers }) // Send the answers object
+                body: JSON.stringify({ answers }) // Send only the answers object
             });
 
             if (!response.ok) {
@@ -131,7 +132,7 @@ const PostTest = () => {
     const renderQuestions = () => {
         const startIndex = (currentPage - 1) * questionsPerPage;
         const endIndex = startIndex + questionsPerPage;
-        const questionsToRender = postTest.questions.slice(startIndex, endIndex) || [];
+        const questionsToRender = postTest.questions.slice (startIndex, endIndex) || [];
 
         return questionsToRender.map((question, index) => (
             <div key={startIndex + index} className="question-item">

@@ -60,6 +60,7 @@ db = client[DATABASE_NAME]
 modules_collection = db["modules"]  # Use 'modules' collection specifically
 post_test_collection = db.get_collection("post_tests")  # Define 'posttests' collection
 collection = db[COLLECTION_NAME]  # Define the collection variable
+scores_collection = db["scores"]
 
 
 # Serve static files for images and videos
@@ -125,6 +126,13 @@ class PostTestData(BaseModel):
     question_id: str
     user_id: str
     answers: list[str]
+
+class ScoreData(BaseModel):
+    module_id: str
+    correct: int
+    incorrect: int
+    total_questions: int
+    user_answers: dict
     
 
 
@@ -411,7 +419,9 @@ async def create_posttest(module_id: str, post_test_request: PostTestRequest):
         "post_test_id": str(result.inserted_id)  # Return the inserted post-test's ID
     }
 @router.post("/api/post-test/submit/{module_id}")
-async def submit_post_test(module_id: str, answers: dict):
+async def submit_post_test(module_id: str, answers: PostTestSubmission):
+    logging.info(f"Received submission for module_id: {module_id} with answers: {answers.answers}")
+
     if not module_id:
         raise HTTPException(status_code=400, detail="Module ID is required")
 
@@ -421,20 +431,42 @@ async def submit_post_test(module_id: str, answers: dict):
         raise HTTPException(status_code=404, detail="Post-test not found for this module")
 
     # Get the list of questions and the correct answers from the post-test
-    correct_answers = {question["question"]: question["correctAnswer"] for question in post_test["questions"]}
+    correct_answers = {str(index): question["correctAnswer"] for index, question in enumerate(post_test["questions"])}
+    logging.info(f"Correct answers: {correct_answers}")
 
     # Initialize score counters
     correct_count = 0
     incorrect_count = 0
 
     # Compare provided answers with correct answers
-    for question, user_answer in answers.items():
+    for question, user_answer in answers.answers.items():
         correct_answer = correct_answers.get(question)
-        if correct_answer:
+        logging.info(f"Comparing question: {question}, User answer: {user_answer}, Correct answer: {correct_answer}")
+        
+        if correct_answer is not None:  # Ensure correct_answer exists
             if user_answer == correct_answer:
                 correct_count += 1
             else:
                 incorrect_count += 1
+
+    # Prepare score data
+    score_data = ScoreData(
+        module_id=module_id,
+        correct=correct_count,
+        incorrect=incorrect_count,
+        total_questions=len(post_test["questions"]),
+        user_answers=answers.answers
+    )
+
+    # Log the score data before saving
+    logging.info(f"Score data to be saved: {score_data.dict()}")
+
+    # Save the score to the database
+    scores_collection.update_one(
+        {"module_id": module_id},  # Update if the module_id exists
+        {"$set": score_data.dict()},
+        upsert=True  # Create a new document if it doesn't exist
+    )
 
     # Return the score (correct and incorrect answers count)
     return {
@@ -443,39 +475,31 @@ async def submit_post_test(module_id: str, answers: dict):
         "total_questions": len(post_test["questions"])
     }
 
-@router.post("/api/post-test/submit/{module_id}")
-async def submit_post_test(module_id: str, answers: dict):
-    # Check if module_id is provided
-    if not module_id:
-        raise HTTPException(status_code=400, detail="Module ID is required")
-
-    # Fetch the post-test associated with the module_id
-    post_test = post_test_collection.find_one({"module_id": module_id})
-    if not post_test:
-        raise HTTPException(status_code=404, detail="Post-test not found for this module")
-
-    # Create a mapping of question index to correct answers
-    correct_answers = {index: question["correctAnswer"] for index, question in enumerate(post_test["questions"])}
-
-    # Initialize score counters
-    correct_count = 0
-    incorrect_count = 0
-
-    # Compare provided answers with correct answers
-    for index, user_answer in answers.items():
-        correct_answer = correct_answers.get(int(index))  # Convert index to integer
-        if correct_answer is not None:  # Check if the correct answer exists for the index
-            if user_answer == correct_answer:
-                correct_count += 1
-            else:
-                incorrect_count += 1
-
-    # Return the score (correct and incorrect answers count)
-    return {
-        "correct": correct_count,
-        "incorrect": incorrect_count,
-        "total_questions": len(post_test["questions"])
-    }
-
-# Include the router in the main app
 app.include_router(router)
+
+@app.get("/api/dashboard/{id_number}")
+async def get_dashboard(id_number: str):
+    # Fetch user profile details
+    user = collection.find_one({"id_number": id_number})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Fetch modules the user is associated with
+    modules = modules_collection.find({"program": user["program"]})
+    modules_list = [{"_id": str(module["_id"]), "title": module["title"], "image_url": module["image_url"]} for module in modules]
+
+    # Fetch post-tests and scores (if applicable)
+    post_tests = post_test_collection.find({"module_id": {"$in": [module["_id"] for module in modules]}})
+    post_tests_list = [{"_id": str(post_test["_id"]), "title": post_test["title"]} for post_test in post_tests]
+
+    # Example: Assuming you want to return user info, modules, and post-tests
+    return {
+        "user": {
+            "firstname": user["firstname"],
+            "lastname": user["lastname"],
+            "program": user["program"],
+            "hoursActivity": user.get("hoursActivity", 0),
+        },
+        "modules": modules_list,
+        "post_tests": post_tests_list,
+    }
