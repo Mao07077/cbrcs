@@ -62,9 +62,6 @@ const PostTest = () => {
             return;
         }
 
-        console.log('Answers before submission:', answers); // Log submitted answers
-
-        // Calculate correct and incorrect answers locally
         let correctCount = 0;
         let incorrectCount = 0;
 
@@ -76,18 +73,19 @@ const PostTest = () => {
             }
         });
 
-        // Log results
-        console.log(`Correct: ${correctCount}, Incorrect: ${incorrectCount}`);
+        const userId = localStorage.getItem('userIdNumber'); // Retrieve user ID
+        if (!userId) {
+            alert('User ID not found. Please log in again.');
+            return;
+        }
 
-        // Set score for chart
         const scoreData = {
             correct: correctCount,
             incorrect: incorrectCount,
             total_questions: postTest.questions.length,
+            answers,
+            user_id: userId // Add user ID
         };
-        setScore(scoreData);
-
-        setSubmitted(true);
 
         try {
             const response = await fetch(`http://localhost:8000/api/post-test/submit/${moduleId}`, {
@@ -95,7 +93,7 @@ const PostTest = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ answers }) // Send only the answers object
+                body: JSON.stringify(scoreData) // Send the complete data
             });
 
             if (!response.ok) {
@@ -103,7 +101,14 @@ const PostTest = () => {
             }
 
             const result = await response.json();
-            console.log('Post-test submitted:', result); // Log the server response
+            console.log('Post-test submitted:', result);
+
+            setScore({
+                correct: correctCount,
+                incorrect: incorrectCount,
+                total_questions: postTest.questions.length,
+            });
+            setSubmitted(true);
         } catch (error) {
             console.error('Error submitting post-test:', error);
             alert('Failed to submit your post-test. Please try again.');
@@ -132,7 +137,7 @@ const PostTest = () => {
     const renderQuestions = () => {
         const startIndex = (currentPage - 1) * questionsPerPage;
         const endIndex = startIndex + questionsPerPage;
-        const questionsToRender = postTest.questions.slice (startIndex, endIndex) || [];
+        const questionsToRender = postTest.questions.slice(startIndex, endIndex) || [];
 
         return questionsToRender.map((question, index) => (
             <div key={startIndex + index} className="question-item">

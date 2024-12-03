@@ -121,6 +121,7 @@ class PostTestResponse(BaseModel):
 
 class PostTestSubmission(BaseModel):
     answers: Dict[str, str]
+    user_id: str 
 
 class PostTestData(BaseModel):
     question_id: str
@@ -129,10 +130,11 @@ class PostTestData(BaseModel):
 
 class ScoreData(BaseModel):
     module_id: str
+    user_id: str
     correct: int
     incorrect: int
     total_questions: int
-    user_answers: dict
+    user_answers: Dict[str, str]
     
 
 
@@ -332,26 +334,7 @@ async def create_post_test(post_test: PostTestRequest):
         logging.error(f"Error creating post-test: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
-@app.get("/api/post-test/{module_id}")
-async def get_post_test(module_id: str):
-    """
-    Fetch the post-test for the given module_id.
-    """
-    try:
-        post_test = post_test_collection.find_one({"module_id": module_id})
-        if not post_test:
-            raise HTTPException(status_code=404, detail="Post-test not found for this module")
-        
-        return {
-            "post_test_id": str(post_test["_id"]),
-            "module_id": post_test["module_id"],
-            "title": post_test["title"],
-            "questions": post_test["questions"]
-        }
-    
-    except Exception as e:
-        logging.error(f"Error fetching post-test for module {module_id}: {e}")
-        raise HTTPException(status_code=500, detail="Error fetching post-test")
+
 @app.delete("/api/modules/{module_id}")
 async def delete_module(module_id: str):
     """
@@ -418,6 +401,27 @@ async def create_posttest(module_id: str, post_test_request: PostTestRequest):
         "message": "Post-test created successfully!",
         "post_test_id": str(result.inserted_id)  # Return the inserted post-test's ID
     }
+@router.get("/api/post-test/{module_id}")
+async def get_post_test(module_id: str):
+    """
+    Fetch the post-test for the given module_id.
+    """
+    try:
+        post_test = post_test_collection.find_one({"module_id": module_id})
+        if not post_test:
+            raise HTTPException(status_code=404, detail="Post-test not found for this module")
+        
+        return {
+            "post_test_id": str(post_test["_id"]),
+            "module_id": post_test["module_id"],
+            "title": post_test["title"],
+            "questions": post_test["questions"]
+        }
+    except Exception as e:
+        logging.error(f"Error fetching post-test for module {module_id}: {e}")
+        raise HTTPException(status_code=500, detail="Error fetching post-test")
+
+# Submit Post-Test
 @router.post("/api/post-test/submit/{module_id}")
 async def submit_post_test(module_id: str, answers: PostTestSubmission):
     logging.info(f"Received submission for module_id: {module_id} with answers: {answers.answers}")
@@ -452,6 +456,7 @@ async def submit_post_test(module_id: str, answers: PostTestSubmission):
     # Prepare score data
     score_data = ScoreData(
         module_id=module_id,
+        user_id=answers.user_id,
         correct=correct_count,
         incorrect=incorrect_count,
         total_questions=len(post_test["questions"]),
@@ -462,19 +467,18 @@ async def submit_post_test(module_id: str, answers: PostTestSubmission):
     logging.info(f"Score data to be saved: {score_data.dict()}")
 
     # Save the score to the database
-    scores_collection.update_one(
-        {"module_id": module_id},  # Update if the module_id exists
-        {"$set": score_data.dict()},
-        upsert=True  # Create a new document if it doesn't exist
-    )
+    scores_collection.insert_one(score_data.dict())
 
     # Return the score (correct and incorrect answers count)
     return {
+        "success": True,
+        "message": "Post-test submitted successfully!",
         "correct": correct_count,
         "incorrect": incorrect_count,
         "total_questions": len(post_test["questions"])
     }
 
+# Include the router
 app.include_router(router)
 
 @app.get("/api/dashboard/{id_number}")

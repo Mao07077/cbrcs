@@ -17,19 +17,25 @@ const SidebarItem = ({ icon, text, link }) => (
 );
 
 const Dashboard = () => {
-    const id_number = '111'; // Hardcoded ID number for testing
+    const [idNumber, setIdNumber] = useState('');
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        // Example API request to get dashboard data for the hardcoded id_number
-        axios.get(`http://localhost:8000/api/dashboard/${id_number}`)
-            .then(response => {
-                setData(response.data);
-            })
-            .catch(error => {
-                console.error("Error fetching dashboard data:", error);
-            });
-    }, [id_number]);
+        if (idNumber) {
+            // Example API request to get dashboard data for the idNumber
+            axios.get(`http://localhost:8000/api/dashboard/${idNumber}`)
+                .then(response => {
+                    setData(response.data);
+                })
+                .catch(error => {
+                    console.error("Error fetching dashboard data:", error);
+                });
+        }
+    }, [idNumber]);
+
+    const handleIdChange = (event) => {
+        setIdNumber(event.target.value);
+    };
 
     return (
         <div>
@@ -71,9 +77,15 @@ const Dashboard = () => {
                     <p>[Bar Chart Placeholder]</p>
                 </section>
                 <section className="dashboard-data">
+                    <input
+                        type="text"
+                        placeholder="Enter ID number"
+                        value={idNumber}
+                        onChange={handleIdChange}
+                    />
                     {data ? (
                         <div>
-                            <h2>Data for ID {id_number}</h2>
+                            <h2>Data for ID {idNumber}</h2>
                             {/* Render the data */}
                             <pre>{JSON.stringify(data, null, 2)}</pre>
                         </div>
