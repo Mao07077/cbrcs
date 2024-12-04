@@ -22,6 +22,8 @@ const PostTest = () => {
     const [score, setScore] = useState(null);
     const [validationError, setValidationError] = useState(null);
     const [correctAnswers, setCorrectAnswers] = useState({});
+    const [timeLeft, setTimeLeft] = useState(600); // 10 minutes timer
+    const [timeTaken, setTimeTaken] = useState(0); // Time taken to complete the test
 
     useEffect(() => {
         const fetchPostTestData = async () => {
@@ -45,6 +47,21 @@ const PostTest = () => {
         fetchPostTestData();
     }, [moduleId]);
 
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setTimeLeft(prevTime => {
+                if (prevTime <= 1) {
+                    clearInterval(timer);
+                    handleSubmit(); // Auto-submit when time runs out
+                    return 0;
+                }
+                return prevTime - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, []);
+
     const handleAnswerChange = (questionIndex, selectedOption) => {
         setAnswers(prevAnswers => ({
             ...prevAnswers,
@@ -54,7 +71,7 @@ const PostTest = () => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        if (e) e.preventDefault();
 
         const unansweredQuestions = postTest.questions.filter((_, index) => !answers[index]);
         if (unansweredQuestions.length > 0) {
@@ -109,6 +126,7 @@ const PostTest = () => {
                 total_questions: postTest.questions.length,
             });
             setSubmitted(true);
+            setTimeTaken(600 - timeLeft); // Calculate time taken
         } catch (error) {
             console.error('Error submitting post-test:', error);
             alert('Failed to submit your post-test. Please try again.');
@@ -169,6 +187,12 @@ const PostTest = () => {
     const questionsPerPage = 5;
     const totalPages = Math.ceil((postTest.questions?.length || 0) / questionsPerPage);
 
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+    };
+
     return (
         <div className="posttest-container">
             <header className="header">
@@ -181,6 +205,12 @@ const PostTest = () => {
 
             <h1 className="posttest-title">{postTest.title}</h1>
             <p className="posttest-description">{postTest.description}</p>
+
+            {!submitted && (
+                <div className="timer">
+                    Time Left: {formatTime(timeLeft)}
+                </div>
+            )}
 
             {submitted ? (
                 <div className="submission-container">
@@ -206,6 +236,9 @@ const PostTest = () => {
                             />
                             <p>
                                 Total Questions: {score.total_questions} | Correct: {score.correct} | Incorrect: {score.incorrect}
+                            </p>
+                            <p>
+                                Time Taken: {formatTime(timeTaken)}
                             </p>
                         </div>
                     )}

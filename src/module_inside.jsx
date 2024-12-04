@@ -19,6 +19,7 @@ const SidebarItem = ({ icon, text, link }) => (
 const ModuleInside = () => {
   const [module, setModule] = useState(null); // Store the module data
   const [error, setError] = useState(null); // Store any errors
+  const [timeSpent, setTimeSpent] = useState(0); // Track time spent on module in seconds
   const { id } = useParams(); // Extract the module ID from the URL if available
   const navigate = useNavigate(); // Navigation hook
 
@@ -50,6 +51,19 @@ const ModuleInside = () => {
     };
 
     fetchModuleData();
+
+    // Start timer
+    const startTime = Date.now();
+    const intervalId = setInterval(() => {
+      const currentTime = Date.now();
+      const timeSpentInSeconds = Math.floor((currentTime - startTime) / 1000);
+      setTimeSpent(timeSpentInSeconds);
+    }, 1000);
+
+    // Cleanup function to stop timer
+    return () => {
+      clearInterval(intervalId);
+    };
   }, [id]); // Re-fetch data when the ID changes
 
   // Error handling
@@ -61,6 +75,9 @@ const ModuleInside = () => {
   if (!module) {
     return <div className="loading">Loading module data...</div>;
   }
+
+  const minutes = Math.floor(timeSpent / 60);
+  const seconds = timeSpent % 60;
 
   return (
     <div>
@@ -104,6 +121,12 @@ const ModuleInside = () => {
             </div>
           </section>
 
+          {/* Time Spent Section */}
+          <section className="time-spent">
+            <h2>Time Spent on Module</h2>
+            <p>{minutes} minutes {seconds} seconds</p>
+          </section>
+
           {/* Module Elements */}
           <section className="module-elements">
             <h2>Module’s Elements</h2>
@@ -130,7 +153,7 @@ const ModuleInside = () => {
             <div className="element">
               <h3>Ready for the Challenge?</h3>
               <p>Test description here</p>
-              <button onClick={() => navigate(`/post-test/${module._id}`)}>Take Test</button>
+              <button onClick={() => navigate(`/post-test/${module._id}`, { state: { timeSpent } })}>Take Test</button>
             </div>
           </section>
         </main>

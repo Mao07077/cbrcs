@@ -477,33 +477,64 @@ async def submit_post_test(module_id: str, answers: PostTestSubmission):
         "incorrect": incorrect_count,
         "total_questions": len(post_test["questions"])
     }
+@router.get("/api/post-test/results/{user_id}")
+async def get_post_test_results(user_id: str):
+    """
+    Fetch all post-test results for the given user_id.
+    """
+    try:
+        results = scores_collection.find({"user_id": user_id})
+        results_list = [
+            {
+                "module_id": result["module_id"],
+                "correct": result["correct"],
+                "incorrect": result["incorrect"],
+                "total_questions": result["total_questions"],
+                "score": result["correct"] / result["total_questions"] * 100
+            }
+            for result in results
+        ]
+        return results_list
+    except Exception as e:
+        logging.error(f"Error fetching post-test results for user {user_id}: {e}")
+        raise HTTPException(status_code=500, detail="Error fetching post-test results")
 
 # Include the router
 app.include_router(router)
 
 @app.get("/api/dashboard/{id_number}")
 async def get_dashboard(id_number: str):
-    # Fetch user profile details
+    # Fetch user details
     user = collection.find_one({"id_number": id_number})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    # Fetch modules the user is associated with
+    # Fetch all modules the user is associated with
     modules = modules_collection.find({"program": user["program"]})
     modules_list = [{"_id": str(module["_id"]), "title": module["title"], "image_url": module["image_url"]} for module in modules]
 
-    # Fetch post-tests and scores (if applicable)
-    post_tests = post_test_collection.find({"module_id": {"$in": [module["_id"] for module in modules]}})
-    post_tests_list = [{"_id": str(post_test["_id"]), "title": post_test["title"]} for post_test in post_tests]
+    # Fetch pretest and post-test scores for the user
+    scores = scores_collection.find({"user_id": id_number})
+    post_test_scores = []
+    pretest_scores = []
 
-    # Example: Assuming you want to return user info, modules, and post-tests
+    for score in scores:
+        module_id = score["module_id"]
+        module_title = next((module["title"] for module in modules if str(module["_id"]) == module_id), "Unknown Module")
+        if score.get("test_type") == "pretest":
+            pretest_scores.append({"subject": module_title, "score": score["correct"]})
+        else:  # Assuming post-test by default
+            post_test_scores.append({
+                "module_title": module_title,  # Use module title instead of module_id
+                "correct": score["correct"],
+                "incorrect": score["incorrect"],
+                "total_questions": score["total_questions"]
+            })
+
     return {
-        "user": {
-            "firstname": user["firstname"],
-            "lastname": user["lastname"],
-            "program": user["program"],
-            "hoursActivity": user.get("hoursActivity", 0),
-        },
+        
         "modules": modules_list,
-        "post_tests": post_tests_list,
+        "pretest_scores": pretest_scores,
+       
+        "post_tests": post_test_scores,
     }
