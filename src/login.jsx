@@ -16,11 +16,17 @@ const Login = () => {
         try {
             const response = await axios.post('http://127.0.0.1:8000/api/login', { idNumber, password });
             if (response.data.success) {
+                // Save the logged-in user's ID number to localStorage
+                localStorage.setItem('userIdNumber', idNumber);
+
+                // Redirect to the module page upon successful login
                 window.location.href = '/module';
             } else {
                 setError('Invalid ID number or password');
             }
-        } catch {
+        } catch (error) {
+            // Log the error for debugging purposes
+            console.error('Login error:', error);
             setError('An error occurred. Please try again.');
         } finally {
             setIsLoading(false);
