@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from pymongo import MongoClient
 from dotenv import load_dotenv
@@ -19,6 +19,7 @@ from typing import Optional
 from bson import ObjectId
 from bson.errors import InvalidId 
 from typing import Any
+
 
  # Import InvalidId to handle ObjectId errors
 
@@ -61,7 +62,7 @@ modules_collection = db["modules"]  # Use 'modules' collection specifically
 post_test_collection = db.get_collection("post_tests")  # Define 'posttests' collection
 collection = db[COLLECTION_NAME]  # Define the collection variable
 scores_collection = db["scores"]
-
+users_collection = db[COLLECTION_NAME]
 
 # Serve static files for images and videos
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
@@ -135,7 +136,16 @@ class ScoreData(BaseModel):
     incorrect: int
     total_questions: int
     user_answers: Dict[str, str]
-    
+class UserSettings(BaseModel):
+    firstname: str
+    middlename: str
+    lastname: str
+    suffix: str
+    birthdate: str
+    email: str
+    program: str
+    username: str
+    password: str = None  # Optional for security reasons 
 
 
 # Helper functions
@@ -160,6 +170,12 @@ def send_email(to_email: str, subject: str, body: str):
     except Exception as e:
         logging.error(f"Failed to send email to {to_email}: {e}")
 
+def get_current_user(id_number: str):
+    """Simulates user authentication by ID."""
+    user = users_collection.find_one({"id_number": id_number})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
 
 # User management endpoints
 @app.post("/api/signup")
@@ -521,20 +537,65 @@ async def get_dashboard(id_number: str):
     for score in scores:
         module_id = score["module_id"]
         module_title = next((module["title"] for module in modules if str(module["_id"]) == module_id), "Unknown Module")
+        
+        # Fetch post-test title from post_tests collection
+        post_test = post_test_collection.find_one({"module_id": module_id})
+        post_test_title = post_test["title"] if post_test else "Unknown Post-Test"
+
         if score.get("test_type") == "pretest":
             pretest_scores.append({"subject": module_title, "score": score["correct"]})
         else:  # Assuming post-test by default
             post_test_scores.append({
-                "module_title": module_title,  # Use module title instead of module_id
+                "post_test_title": post_test_title,  # Add post-test title
                 "correct": score["correct"],
                 "incorrect": score["incorrect"],
                 "total_questions": score["total_questions"]
             })
 
     return {
-        
         "modules": modules_list,
         "pretest_scores": pretest_scores,
-       
         "post_tests": post_test_scores,
     }
+
+@app.get("/user/settings/{id_number}")
+async def get_user_settings(id_number: str):
+    user = collection.find_one({"id_number": id_number})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return {
+        "success": True,
+        "data": {
+            "firstname": user.get("firstname", ""),
+            "middlename": user.get("middlename", ""),
+            "lastname": user.get("lastname", ""),
+            "suffix": user.get("suffix", ""),
+            "birthdate": user.get("birthdate", ""),
+            "email": user.get("email", ""),
+            "program": user.get("program", ""),
+            "username": user.get("email", ""),  # Assuming username is the same as email
+        },
+    }
+
+# Route to update user settings
+@app.put("/user/settings/{id_number}")
+async def update_user_settings(id_number: str, user_settings: UserSettings):
+    update_data = user_settings.dict(exclude_unset=True)
+    
+    # Hash the password if it is being updated
+    if "password" in update_data and update_data["password"]:
+        update_data["password"] = hash_password(update_data["password"])
+    else:
+        # Remove password from update_data if it is not being updated
+        update_data.pop("password", None)
+    
+    result = collection.update_one(
+        {"id_number": id_number},
+        {"$set": update_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return {"success": True, "message": "User settings updated successfully"}
