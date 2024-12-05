@@ -27,7 +27,12 @@ const Profile = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
+<<<<<<< HEAD:src/profile.jsx
                 const idNumber = localStorage.getItem("userIdNumber");
+=======
+                // Replace with the actual id_number logic (e.g., from localStorage)
+                const idNumber = localStorage.getItem("userIdNumber"); 
+>>>>>>> 358cb3b4 (12/05/2024):src/page/Profile/profile.jsx
                 if (!idNumber) {
                     setError("User not logged in");
                     setLoading(false);
@@ -61,12 +66,20 @@ const Profile = () => {
 
     return (
         <div>
+<<<<<<< HEAD:src/profile.jsx
             {/* Header */}
             <header className="header">
                 <div className="header-content">
                     <div className="header-logo">
                         <img src={logoIcon} alt="logo" />
                     </div>
+=======
+            <header className="header">zz
+                <img src={logoIcon} alt="logo" />   
+                <div className="header-icons">
+                    <img src={nameIcon} alt="Profile" />
+                    <img src={notifIcon} alt="Notifications" />
+>>>>>>> 358cb3b4 (12/05/2024):src/page/Profile/profile.jsx
                 </div>
             </header>
             <nav className="sidebar">
@@ -99,12 +112,18 @@ const Profile = () => {
                                 <label>Name: {profile.firstname} {profile.lastname}</label>
                             </div>
                             <div className="row">
+<<<<<<< HEAD:src/profile.jsx
                                 <label>Age: {profile.age || "N/A"}</label>
                             </div>
                             <div className="row">
                                 <label>Id Number: {profile.id_number}</label>
                             </div>
                             <div className="row">
+=======
+                                <label>Id Number: {profile.id_number}</label>
+                            </div>
+                            <div className="row">
+>>>>>>> 358cb3b4 (12/05/2024):src/page/Profile/profile.jsx
                                 <label>Program: {profile.program}</label>
                             </div>
                         </div>

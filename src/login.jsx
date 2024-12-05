@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+<<<<<<< HEAD:src/login.jsx
 import './login.css';
 import logoIcon from './icon/logo.png'; // Logo image import
+=======
+import './Login.css';
+import logoIcon from '../../icon/logo.png';
+
+>>>>>>> 358cb3b4 (12/05/2024):src/page/Login/Login.jsx
 
 const Login = () => {
     const [idNumber, setIdNumber] = useState('');
@@ -35,6 +41,7 @@ const Login = () => {
 
     return (
         <div>
+<<<<<<< HEAD:src/login.jsx
             {/* Header */}
             <header className="header">
                 <div className="header-content">
@@ -50,6 +57,20 @@ const Login = () => {
                     <h2>Log-in</h2>
                     {error && <p className="error-message">{error}</p>}
                     <form onSubmit={handleSubmit} noValidate>
+=======
+            <div className="header">
+                <img src={logoIcon} alt="logo" />
+            </div>
+
+            {/* Center Wrapper */}
+            <div className="center-wrapper">
+                <div className="login-container">
+                   <div className= {"login_text"}>
+                    <h2>LOG IN</h2>
+                    </div>
+                    {error && <p className="error">{error}</p>}
+                    <form onSubmit={handleSubmit}>
+>>>>>>> 358cb3b4 (12/05/2024):src/page/Login/Login.jsx
                         <input
                             type="number"
                             placeholder="ID Number"

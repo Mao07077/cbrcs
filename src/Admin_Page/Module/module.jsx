@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate and Link
 import './module.css';
+<<<<<<< HEAD:src/module.jsx
 import nameIcon from './icon/name.png';
 import notifIcon from './icon/notif.png';
 import moduleIcon from './icon/module.png';
@@ -8,6 +9,15 @@ import dashboardIcon from './icon/dashboard.png';
 import settingsIcon from './icon/settings.png';
 import helpIcon from './icon/help.png';
 import logoIcon from './icon/logo.png';
+=======
+import nameIcon from '../../icon/name.png';
+import notifIcon from '../../icon/notif.png';
+import moduleIcon from '../../icon/module.png';
+import dashboardIcon from '../../icon/dashboard.png';
+import settingsIcon from '../../icon/settings.png';
+import helpIcon from '../../icon/help.png';
+import logoIcon from '../../icon/logo.png';
+>>>>>>> 358cb3b4 (12/05/2024):src/Admin_Page/Module/module.jsx
 
 const SidebarItem = ({ icon, text, link }) => (
   <li>
@@ -48,10 +58,16 @@ const ModuleDashboard = () => {
 
   return (
     <div>
+<<<<<<< HEAD:src/module.jsx
        {/* Header */}
        <header className="header">
   <div className="header-content">
     <div className="header-logo">
+=======
+       <header className="header">
+  <div className="header_content">
+    <div className="header_logo">
+>>>>>>> 358cb3b4 (12/05/2024):src/Admin_Page/Module/module.jsx
       <img src={logoIcon} alt="logo" />
     </div>
   </div>
@@ -65,7 +81,13 @@ const ModuleDashboard = () => {
           <SidebarItem icon={helpIcon} text="Help" link="/help" />
         </ul>
       </nav>
+<<<<<<< HEAD:src/module.jsx
       <div className="module-container">
+=======
+
+      {/* Main Module Dashboard */}
+      <div className="module_container">
+>>>>>>> 358cb3b4 (12/05/2024):src/Admin_Page/Module/module.jsx
         <div className="notheader">
           <h1>Modules</h1>
         </div>
