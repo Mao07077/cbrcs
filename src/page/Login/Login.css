@@ -8,24 +8,15 @@ body {
     height: 100vh;
     margin: 0;
 }
-
-/* Full-width blue header */
-.header {
-    width: 100%;
-    background-color: #002f87;
-    padding: 10px 20px;
-    color: white;
-    text-align: left;
-    position: fixed;
-    top: 0;
-    left: 0;
-    box-sizing: border-box;
+.header img {
+    float: right;
+    margin-left: 1%;
+    margin-right: 2%;
+    width: 5%;
+    height: 5%;
 }
 
-.header h1 {
-    margin: 0;
-    font-size: 1.5em;
-}
+
 .login-container {
     background-color: #f9f9f9;
     padding: 30px;
@@ -35,16 +26,15 @@ body {
     margin-top: 80px; /* Space for header */
 }
 
-.login-container h2 {
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    flex: 1;
+.login_text{
     background-color: #002f87;
+    padding: 10px;
     color: white;
-    font-size: 1.25em;
-}
-
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}h
+    
 .login-container input {
    width: 100%; /* Adjusted width for better alignment */
     padding: 10px;

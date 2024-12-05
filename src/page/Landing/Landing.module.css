@@ -5,9 +5,6 @@
     flex-direction: column;
     justify-content: left;
 }
-
-
-
 .logo_placeholder {
     display: flex;
     flex-direction: row;
@@ -20,6 +17,14 @@
     background: #003366;
 
 }
+.header img {
+    float: right;
+    margin-left: 1%;
+    margin-right: 2%;
+    width: 2%;
+    height: 2%;
+}
+
 .text_container_mark{
     background-color: rgb(252, 252, 252);
     display: flex;
@@ -29,10 +34,10 @@
 .intro_mark{
     display: flex;
     flex-direction: row;
-    padding: 10px;
-    justify-self: center;
+     justify-self: center;
     align-items: center;
     padding-right: 100px;
+    padding-top: 50px;
     
 }
 .inside_intro_mark{
@@ -183,5 +188,9 @@
     }
     .course_grid {
       flex-direction: column;
+    }
+    .inside_intro_mark {
+    display: flex;
+    justify-content: center;
     }
   }

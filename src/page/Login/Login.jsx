@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Login.css';
+import logoIcon from '../../icon/logo.png';
+
 
 const Login = () => {
     const [idNumber, setIdNumber] = useState('');
@@ -29,13 +31,15 @@ const Login = () => {
     return (
         <div>
             <div className="header">
-                <h1>Logo here</h1>
+                <img src={logoIcon} alt="logo" />
             </div>
 
             {/* Center Wrapper */}
             <div className="center-wrapper">
                 <div className="login-container">
+                   <div className= {"login_text"}>
                     <h2>LOG IN</h2>
+                    </div>
                     {error && <p className="error">{error}</p>}
                     <form onSubmit={handleSubmit}>
                         <input

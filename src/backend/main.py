@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import bcrypt
@@ -37,10 +38,10 @@ app = FastAPI()
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Add your React frontend's URL here
+    allow_origins=["*"],  # or specify specific origins
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all methods
-    allow_headers=["*"],  # Allow any headers
+    allow_methods=["*"],  # or specify methods like ["GET", "POST"]
+    allow_headers=["*"],  # or specify headers
 )
 
 # MongoDB setup
@@ -283,61 +284,69 @@ async def get_module(module_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching module: {e}")
 
-@app.post("/createposttest/{id}")
-async def create_posttest(id: str, posttest: PostTest):
-    """
-    Create a post-test for a specific module.
-    """
-    try:
-        # Validate module existence
-        module = modules_collection.find_one({"_id": ObjectId(id)})
-        if not module:
-            raise HTTPException(status_code=404, detail="Module not found.")
-
-        # Prepare post-test data
-        posttest_data = {
-            "title": posttest.title,
-            "questions": posttest.questions,
-            "module_id": id,
-        }
-
-        # Save post-test to the collection
-        result = posttests_collection.insert_one(posttest_data)
-        return {
-            "success": True,
-            "message": "Post-test created successfully!",
-            "posttest_id": str(result.inserted_id),  # Convert ObjectId to string
-        }
-    except InvalidId:
-        raise HTTPException(status_code=400, detail="Invalid module ID format.")
-    except Exception as e:
-        logging.error(f"Error creating post-test: {e}")
-        raise HTTPException(status_code=500, detail="Failed to create post-test.")
-    
-import logging
-
 @app.get("/api/post-test/{module_id}")
 async def get_post_test(module_id: str):
-    logging.info(f"Received request for post-test with module_id: {module_id}")
+    """
+    Fetch the post-test for a given module by its ID.
+    """
+    logging.info(f"Fetching post-test for module_id: {module_id}")
     
     try:
-        # Log before the query to check if module_id is correct
-        logging.info(f"Querying post-test collection for module_id: {module_id}")
+        # Validate module_id format
+        if not ObjectId.is_valid(module_id):
+            logging.error(f"Invalid module ID format: {module_id}")
+            raise HTTPException(status_code=400, detail="Invalid module ID format.")
         
-        post_test = await post_test_collection.find_one({"module_id": module_id})
+        # Fetch post-test from the collection
+        post_test = post_test_collection.find_one({"module_id": module_id})
+        if not post_test:
+            logging.error(f"No post-test found for module_id: {module_id}")
+            raise HTTPException(status_code=404, detail="Post-test not found.")
         
-        if post_test is None:
-            logging.error(f"Post-test not found for module_id: {module_id}")
-            raise HTTPException(status_code=404, detail="Post-test not found")
-        
-        logging.info(f"Successfully fetched post-test for module_id: {module_id}")
         return {
             "module_id": post_test["module_id"],
             "description": post_test["description"],
             "questions": post_test.get("questions", [])
         }
-
     except Exception as e:
         logging.error(f"Error while fetching post-test for module_id {module_id}: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
+
+# Endpoint for deleting a module
+@app.delete("/api/modules/{module_id}")
+async def delete_module(module_id: str):
+    """
+    Delete a specific module by its ID.
+    """
+    logging.info(f"Attempting to delete module with ID: {module_id}")
+    try:
+        if not ObjectId.is_valid(module_id):
+            logging.error(f"Invalid module ID format: {module_id}")
+            raise HTTPException(status_code=400, detail="Invalid module ID format.")
+
+        # Delete the module and related post-tests
+        delete_result = modules_collection.delete_one({"_id": ObjectId(module_id)})
+        if delete_result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Module not found.")
+        
+        # Delete associated post-tests
+        post_test_collection.delete_many({"module_id": module_id})
+        return {"success": True, "message": "Module and associated post-tests deleted successfully!"}
+    except Exception as e:
+        logging.error(f"Error deleting module with ID {module_id}: {e}")
+        raise HTTPException(status_code=500, detail="Failed to delete module.")
+
+
+# Utility route to check database status
+@app.get("/api/status")
+async def health_check():
+    """
+    Health check endpoint to verify API and database connection.
+    """
+    try:
+        client.admin.command('ping')  # Verifies MongoDB connection
+        return {"success": True, "message": "API and database are operational."}
+    except Exception as e:
+        logging.error(f"Database connection issue: {e}")
+        raise HTTPException(status_code=500, detail="Database connection failed.")

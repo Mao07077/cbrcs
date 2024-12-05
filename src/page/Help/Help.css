@@ -6,7 +6,6 @@ body {
     background-color: #f4f4f4;
 }
 
-/* Sidebar styling */
 .sidebar {
     width: 10%;
     background-color: #F4F4F4;
@@ -39,16 +38,7 @@ align-items: center;
 justify-content: center;
 }
 /* Header styling */
-.header {
-    width: 100%;
-    background-color: #002f87;
-    padding: 10px;
-    color: white;
-    text-align: left;
-    position: fixed;
-    top: 0;
-    left: 0;
-}
+
 
 .header h1 {
     margin: 0;

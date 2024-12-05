@@ -8,16 +8,6 @@ body {
     margin: 0;
 }
 
-.header {
-    width: 100%;
-    background-color: #002f87;
-    padding: 10px;
-    color: white;
-    text-align: left;
-    position: fixed;
-    top: 0;
-    left: 0;
-}
 
 .header h1 {
     margin: 0;

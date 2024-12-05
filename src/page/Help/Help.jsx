@@ -7,6 +7,7 @@ import moduleIcon from '../../icon/module.png';
 import dashboardIcon from '../../icon/dashboard.png';
 import settingsIcon from '../../icon/settings.png';
 import helpIcon from '../../icon/help.png';
+import logoIcon from '../../icon/logo.png';
 
 const SidebarItem = ({ icon, text, link }) => (
     <li>
@@ -20,10 +21,12 @@ const Help = () => {
     return (
         <div>
            <header className="header">
-                <h1>Logo here</h1>
-                <img src={nameIcon} alt="Profile" />
-                <img src={notifIcon} alt="Notifications" />
-            </header>
+        <div className="header_content">
+        <div className="header_logo">
+             <img src={logoIcon} alt="logo" />
+              </div>
+             </div>
+          </header>
             <nav className="sidebar">
                 <ul>
                     <SidebarItem icon={nameIcon} text="Name" link="profile" />

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import styles from './Forgot_password.module.css';
+import logoIcon from '../../icon/logo.png';
 
 const ForgotPassword = () => {
     const [idNumber, setIdNumber] = useState('');
@@ -62,7 +63,7 @@ const ForgotPassword = () => {
     return (
         <div>
             <div className="header">
-                <h1>Logo here</h1>
+            <img src={logoIcon} alt="logo" />
             </div>
 
             <div className={styles.forgot_container}>

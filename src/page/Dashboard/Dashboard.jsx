@@ -1,12 +1,12 @@
 import React from 'react';
-import './Dashboard.css';
+import styles from'./Dashboard.module.css';
 
 import nameIcon from '../../icon/name.png';
-import notifIcon from '../../icon/notif.png';
 import moduleIcon from '../../icon/module.png';
 import dashboardIcon from '../../icon/dashboard.png';
 import settingsIcon from '../../icon/settings.png';
 import helpIcon from '../../icon/help.png';
+import logoIcon from '../../icon/logo.png';
 
 const SidebarItem = ({ icon, text, link }) => (
     <li>
@@ -17,30 +17,40 @@ const SidebarItem = ({ icon, text, link }) => (
 
 const Dashboard = () => {
     return (
-        <div>
+        <main className={styles.Main_dashboard}>
             <header className="header">
-                <h1>Logo here</h1>
-                <img src={nameIcon} alt="Profile" />
-                <img src={notifIcon} alt="Notifications" />
+            <div className={styles.header_content}>
+            <div className="header_logo">
+            <img src={logoIcon} alt="logo" />
+            </div>
+            </div>             
             </header>
+            <div className={styles.Dashboardsign}>
+              <h1>Dashboard</h1>
+              <div className={styles.lines}>
+              </div>
+            </div>
+            <div className={styles.sidebar_combined}>
+            
             <nav className="sidebar">
                 <ul>
-                    <SidebarItem icon={nameIcon} text="Name" link="profile" />
-                    <SidebarItem icon={moduleIcon} text="Module" link="module" />
-                    <SidebarItem icon={dashboardIcon} text="Dashboard" link="dashboard" />
-                    <SidebarItem icon={settingsIcon} text="Settings" link="settings" />
-                    <SidebarItem icon={helpIcon} text="Help" link="help" />
+                    <SidebarItem icon={nameIcon} text="Name" link="/Profile" />
+                    <SidebarItem icon={moduleIcon} text="Module" link="/Module" />
+                    <SidebarItem icon={dashboardIcon} text="Dashboard" link="/Dashboard" />
+                    <SidebarItem icon={settingsIcon} text="Settings" link="/Settings" />
+                    <SidebarItem icon={helpIcon} text="Help" link="/Help" />
                 </ul>
             </nav>
-            <main className="dashboard-container">
-                <section className="performance-overview">
-                    <div className="progress-overview">
+    
+            <div className={styles.dashboard_container}>
+                <section className={styles.performance_overview}>
+                    <div className={styles.progress_overview}>
                         <h2>Progress Overview</h2>
-                        <div className="progress-chart">
+                        <div className={styles.progress_chart}>
                             <p>60% Completed</p>
                         </div>
                     </div>
-                    <div className="strength-weakness">
+                    <div className={styles.strength_weakness}>
                         <div>
                             <h3>Strength</h3>
                             <p>Explanation about strengths.</p>
@@ -51,12 +61,14 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </section>
-                <section className="progress-chart">
+                <section className={styles.progress_chart}>
                     <h2>Progress Chart</h2>
                     <p>[Bar Chart Placeholder]</p>
                 </section>
-            </main>
-        </div>
+            </div>
+            </div>
+        </main>
+        
     );
 };
 

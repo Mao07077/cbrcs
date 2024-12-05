@@ -1,13 +1,18 @@
 import React from 'react';
 import styles from'./Landing.module.css';
+import logoIcon from '../../icon/logo.png';
 
 const Landing = () => {
     return (            
     <div className={styles.main_container_mark}>
 
-            <header>
-                <div className={styles.logo_placeholder}>logo</div> {/* Placeholder for the logo */}
-            </header>
+<header className="header">
+  <div className="header_content">
+    <div className="header_logo">
+      <img src={logoIcon} alt="logo" />
+    </div>
+  </div>
+</header>
                    <div className={styles.main_content_mark}>
                        <div className={styles.intro_mark}>
                         <div className={styles.inside_intro_mark}>

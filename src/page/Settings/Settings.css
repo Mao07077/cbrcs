@@ -1,57 +1,59 @@
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
+ body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
 
-        .sidebar {
-            width: 10%;
-            background-color: #F4F4F4;
-            position: fixed;
-            height: 100%;
-            color: black;
-            top: 0;
-            left: 0;
-            margin-top: 3.5%;
-            padding-top: 20px;
-            text-align: center; /* Center align text and images */
+ .sidebar {
+            
+    width: 10%;
+    background-color: #003366;
+    height: 100%;
+    color: black;
+    top: 0;
+    left: 0;
+    margin-top: 3.5%;
+    padding-top: 20px;
+    text-align: center; /* Center align text and images */
         }
-
+/* side bar main edit */
   .sidebar ul {
     list-style-type: none;
+    display: flex;
+    justify-items: flex-start;
+    flex-direction: column; 
     padding: 0;
+    gap: 10px;
   }
 
   .sidebar ul li {
     padding: 20px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   .sidebar ul li a {
     text-decoration: none;
-    color: black;
+    color: rgb(82, 12, 12);
     font-size: 80%;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   .header {
-            width: 100%;
-            background-color: #002f87;
-            padding: 10px;
-            color: white;
-            text-align: left;
-            position: fixed;
-            top: 0;
-            left: 0;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 1.5em; /* Adjusted for better readability */
-            display: inline-block; /* Added to keep the title inline */
-        }
+  width: 100%;
+  background-color: #002f87;
+  padding: 10px;
+  text-align: left;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  z-index: 10;
+  }
 
         .header img {
             float: right; /* Float images to the right */
@@ -59,14 +61,6 @@
             margin-right: 2%;/* Add some space between images */
             width: 2%;
             height: 2%;
-        }
-
-
-        .settings-section {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            
         }
 
         .sec-box {
