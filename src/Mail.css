@@ -7,8 +7,7 @@ body {
     padding: 0;
     background-color: #f4f4f4;  
   }
-  
-  .mail_container {
+  .mail-container {
     display: flex;
     flex-direction: column;
     font-size: 14px;
@@ -19,7 +18,6 @@ body {
     padding: 20px;
     color: #333;
   }
-<<<<<<< HEAD:src/Mail.css
   .header {
     width: 100%;  /* Full width */
     background-color: #002f87;
@@ -43,8 +41,6 @@ body {
     max-width: 180px; 
   }
 
-=======
->>>>>>> 358cb3b4 (12/05/2024):src/Admin_Page/Mail/Mail.module.css
 .pagbati {
   display: flex;
   flex-direction: row;
@@ -112,18 +108,6 @@ body {
 
 }
 
-  .sidebar ul {
-   display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-items: center;
-  padding-top: 800px;
-  justify-content: space-between;
-  padding-top: 20px;
-  gap:10%;
-  font-size: 15px;
-  }
-
 
 * {
   margin: 0;
@@ -132,7 +116,7 @@ body {
 }
 
 
-.email_part {
+.email-part {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -140,7 +124,7 @@ body {
   width: 100%;
   height: 12%;
 }
- .mail_text {
+ .mail-text {
   display: flex;
   max-width: 100%;
   flex-grow: 1;
@@ -148,7 +132,7 @@ body {
   height: 100vh;
   
 }
-.mail_text h2 {
+.mail-text h2 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
   font-weight: bold;
@@ -157,7 +141,6 @@ body {
 
 }
 
-<<<<<<< HEAD:src/Mail.css
 .mail-bar {
 width: 400px;
 background-color: #f5f7fb;
@@ -168,46 +151,21 @@ overflow-y: auto;
 }
 
 .mail-bar h2 {
-=======
-.mail_bar {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  max-width: 100%;
-  padding: 2rem;
-  height: 100vh;
-  overflow-y: auto;
-  width: 400px;
-  background-color: #d9dee9;
-  padding: 1rem;
-  border-right: 10px solid #ddd;
-  height: 100vh;
-  padding-top: 50px;
-  margin-right: 20px;
-  
-}
-
-.mail_bar, .email_content {
-  display: flex;
-  flex-direction: column;
-}
-.mail_bar h2 {
->>>>>>> 358cb3b4 (12/05/2024):src/Admin_Page/Mail/Mail.module.css
   font-size: 1.2rem;
   margin-bottom: 1rem;
 }
-.email_item:hover{
+.email-item:hover{
 background-color: #e0e0e0;
     cursor: pointer;
   }
-.email_item {
+.email-item {
   background-color: #fff;
   border: 1px solid #ddd;
   padding: 0.5rem;
   margin-bottom: 1rem;
 }
 
-.email_content {
+.email-content {
   display: flex;
   flex-direction: column;
   max-width: 100%;
@@ -219,7 +177,7 @@ background-color: #e0e0e0;
   padding-top:20px;
 
 } 
-.email_content h2 {
+.email-content h2 {
   font-size: 1.2rem;
 
 }
@@ -229,15 +187,10 @@ background-color: #e0e0e0;
 }
 
 /* Profile and Subject Container */
-.header_content {
+.header-content {
   display: flex;
   align-items: center;
   justify-content: space-between; /* Align profile and subject on each end */
-}
-.header_logo img {
-  height: 50px;   
-  width: auto;     
-  max-width: 180px; 
 }
 
 .profile {
@@ -273,8 +226,8 @@ background-color: #e0e0e0;
   margin-top: 10px;
 }
 
-.compose_email input,
-.compose_email textarea {
+.compose-email input,
+.compose-email textarea {
 width: 100%;
 padding: 8px;
 margin-top: 5px;

@@ -51,7 +51,6 @@
   
   .sidebar ul li a i {
     margin-right: 10px;
-<<<<<<< HEAD:src/module_inside.css
   }
   
   .header {
@@ -80,11 +79,6 @@
   }
   
   .user-info {
-=======
-}
-
-.user-info {
->>>>>>> 358cb3b4 (12/05/2024):src/Admin_Page/Module_Inside/module_inside.css
     display: flex;
     align-items: center;
   }

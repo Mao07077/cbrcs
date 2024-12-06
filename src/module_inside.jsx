@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // Ensure React Router is properly set up
 import './module_inside.css';
-import nameIcon from '../../icon/name.png';
-import notifIcon from '../../icon/notif.png';
-import moduleIcon from '../../icon/module.png';
-import dashboardIcon from '..//../icon/dashboard.png';
-import settingsIcon from '../../icon/settings.png';
-import helpIcon from '../../icon/help.png';
+import nameIcon from './icon/name.png';
+import notifIcon from './icon/notif.png';
+import moduleIcon from './icon/module.png';
+import dashboardIcon from './icon/dashboard.png';
+import settingsIcon from './icon/settings.png';
+import helpIcon from './icon/help.png';
 
 // Sidebar component for reusable items
 const SidebarItem = ({ icon, text, link }) => (

@@ -9,7 +9,6 @@
 }
 
 /* Adjust header content to fit properly */
-<<<<<<< HEAD:src/module.css
 .header-content {
   display: flex;
   width: 100%;  
@@ -22,9 +21,6 @@
   max-width: 180px; 
 }
 .module-container {
-=======
-.module_container {
->>>>>>> 358cb3b4 (12/05/2024):src/Admin_Page/Module/module.css
   display: flex;
   flex-direction: column;
   align-items: flex-start;

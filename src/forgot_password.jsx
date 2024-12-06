@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-<<<<<<< HEAD:src/forgot_password.jsx
 import './forgot_password.css';
 import logoIcon from './icon/logo.png'; // Logo image import
-=======
-import styles from './Forgot_password.module.css';
-import logoIcon from '../../icon/logo.png';
->>>>>>> 358cb3b4 (12/05/2024):src/page/Forgot_Password/Forgot_password.jsx
 
 const ForgotPassword = () => {
     const [idNumber, setIdNumber] = useState('');
@@ -67,7 +62,6 @@ const ForgotPassword = () => {
 
     return (
         <div>
-<<<<<<< HEAD:src/forgot_password.jsx
            <header className="header">
                 <div className="header-content">
                     <div className="header-logo">
@@ -75,11 +69,6 @@ const ForgotPassword = () => {
                     </div>
                     </div>
                     </header>
-=======
-            <div className="header">
-            <img src={logoIcon} alt="logo" />
-            </div>
->>>>>>> 358cb3b4 (12/05/2024):src/page/Forgot_Password/Forgot_password.jsx
 
             <div className="forgot-container">
                 <h2>Forgot Password</h2>

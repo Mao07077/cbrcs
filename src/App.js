@@ -1,21 +1,25 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Landing from './page/Landing/Landing';
-import ForgotPassword from './page/Forgot_Password/Forgot_password'; //ok
-import Dashboard from './page/Dashboard/Dashboard';
-import GenerateQuestions from './page/Generate_Question/Generate_questions';
-import HelpPage from './page/Help/Help';
+import Landing from './landing';
+import ForgotPassword from './forgot_password';
+import Dashboard from './dashboard';
+import GenerateQuestions from './generate_questions';
+import HelpPage from './help';
 import Module from './module';
 import Profile from './profile';
-import Settings from './page/Settings/Settings'; // ok na daw sabi ni eron
-import Login from './page/Login/Login'; //ok
+import Settings from './settings';
+import InstructorPage from './instractor';
+import Login from './login';
 import ModuleInside from './module_inside';
 import PostTest from './posttest';
-import ResetPassword from './page/Reset_Password/Reset_password'; //ok
-import Signup from './page/Signup/Signup';
-import UploadModule from './page/Upload_Module/Uploadmodule';
+import ResetPassword from './reset_password';
+import Signup from './signup';
+import UploadModule from './uploadmodule';
 import InstructorDashboard from './instructor_dashboard';
 import Mail from './Mail';
-import Example from './Example';
+import CreateModule from './Create_module';
+import CreatePostTest from './create_posttest';
+import Studentlist from './Studentlist';
+
 
 
 
@@ -31,16 +35,21 @@ function App() {
           <Route path="/Help" element={<HelpPage />} />
           <Route path="/module" element={<Module />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/module/:id" element={<ModuleInside />} />
+          <Route path="/post-test/:moduleId" element={<PostTest />} />
+          <Route path= "/createmodule" element={<CreateModule />} />
           <Route path="/Settings" element={<Settings />} />
           <Route path="/createposttest/:id" element={<CreatePostTest />} />
           <Route path="/Reset_Password" element={<ResetPassword />} />
           <Route path="/Signup" element={<Signup />} />
           <Route path="/Upload_Module" element={<UploadModule />} />
           <Route path="/Instructor_Dashboard" element={<InstructorDashboard />} />
-          <Route path= "/Mail" element ={<Mail/>}/>
-          <Route path="/Example" element={<Example/>}/>
-          
-        </Routes>
+          <Route path= "/mail" element ={<Mail/>}/>
+            <Route path="/studentlist" element = {<Studentlist/>}/> 
+            <Route path="/instructor_dashboard" element={<InstructorDashboard />} />
+          </Routes>
+        
       </BrowserRouter>
     </div>
   );
