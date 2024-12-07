@@ -1,23 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './profile.css';
 
-import nameIcon from './icon/name.png';
-import notifIcon from './icon/notif.png';
-import moduleIcon from './icon/module.png';
-import dashboardIcon from './icon/dashboard.png';
-import settingsIcon from './icon/settings.png';
-import helpIcon from './icon/help.png';
-import logoIcon from './icon/logo.png';
-
-// Define SidebarItem component
-const SidebarItem = ({ icon, text, link }) => (
-    <li>
-        <a href={link}>
-            <img src={icon} alt={text} />
-            {text}
-        </a>
-    </li>
-);
+import nameIcon from '../../icon/name.png';
+import Header from '../../icon/Header';
 
 const Profile = () => {
     const [profile, setProfile] = useState(null);
@@ -63,22 +48,8 @@ const Profile = () => {
         <div>
             {/* Header */}
             <header className="header">
-                <div className="header-content">
-                    <div className="header-logo">
-                        <img src={logoIcon} alt="logo" />
-                    </div>
-                </div>
+                <Header />
             </header>
-            <nav className="sidebar">
-                <ul>
-                    <SidebarItem icon={nameIcon} text="Name" link="profile" />
-                    <SidebarItem icon={moduleIcon} text="Module" link="module" />
-                    <SidebarItem icon={dashboardIcon} text="Dashboard" link="dashboard" />
-                    <SidebarItem icon={settingsIcon} text="Settings" link="settings" />
-                    <SidebarItem icon={helpIcon} text="Help" link="help" />
-                </ul>
-            </nav>
-
             <div className="profile-container">
                 <div className="header-container">
                     <h2>Account Profile</h2>

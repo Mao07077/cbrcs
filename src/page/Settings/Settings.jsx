@@ -1,21 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./settings.css";
-import { Link } from "react-router-dom";
-import nameIcon from "./icon/name.png";
-import notifIcon from "./icon/notif.png";
-import moduleIcon from "./icon/module.png";
-import dashboardIcon from "./icon/dashboard.png";
-import settingsIcon from "./icon/settings.png";
-import helpIcon from "./icon/help.png";
-import logoIcon from "./icon/logo.png";
-
-const SidebarItem = ({ icon, text, link }) => (
-  <li>
-    <img src={icon} alt={`${text} Icon`} />
-    <a href={link}>{text}</a>
-  </li>
-);
-
+import Header from "../../icon/Header";
 const Settings = () => {
   const [formData, setFormData] = useState({
     firstname: "",
@@ -100,21 +85,8 @@ const Settings = () => {
   return (
     <div>
       <header className="header">
-        <div className="header-content">
-          <div className="header-logo">
-            <img src={logoIcon} alt="logo" />
-          </div>
-        </div>
-      </header>
-      <nav className="sidebar">
-        <ul>
-          <SidebarItem icon={nameIcon} text="Name" link="profile" />
-          <SidebarItem icon={moduleIcon} text="Module" link="module" />
-          <SidebarItem icon={dashboardIcon} text="Dashboard" link="dashboard" />
-          <SidebarItem icon={settingsIcon} text="Settings" link="settings" />
-          <SidebarItem icon={helpIcon} text="Help" link="help" />
-        </ul>
-      </nav>
+                <Header />
+            </header>
       <div className="settings-container">
         <div className="settings-section">
           <div className="sec-box">

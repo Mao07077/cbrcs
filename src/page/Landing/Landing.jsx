@@ -1,7 +1,7 @@
 import React from 'react';
 import './landing.css';
 
-import logoIcon from './icon/logo.png';
+import logoIcon from '../../icon/logo.png';
 
 const Landing = () => {
     return (            

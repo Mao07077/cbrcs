@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './forgot_password.css';
-import logoIcon from './icon/logo.png'; // Logo image import
-
+import logoIcon from '../../icon/logo.png';
 const ForgotPassword = () => {
     const [idNumber, setIdNumber] = useState('');
     const [email, setEmail] = useState('');

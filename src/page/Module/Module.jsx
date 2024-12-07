@@ -1,20 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate and Link
 import './module.css';
-import nameIcon from './icon/name.png';
-import notifIcon from './icon/notif.png';
-import moduleIcon from './icon/module.png';
-import dashboardIcon from './icon/dashboard.png';
-import settingsIcon from './icon/settings.png';
-import helpIcon from './icon/help.png';
-import logoIcon from './icon/logo.png';
-
-const SidebarItem = ({ icon, text, link }) => (
-  <li>
-    <img src={icon} alt={`${text} Icon`} width="30%" height="30%" />
-    <Link to={link}>{text}</Link> {/* Use Link instead of a tag */}
-  </li>
-);
+import Header from '../../icon/Header'; // Import the Header component
 
 const ModuleDashboard = () => {
   const [modules, setModules] = useState([]);
@@ -50,21 +37,8 @@ const ModuleDashboard = () => {
     <div>
        {/* Header */}
        <header className="header">
-  <div className="header-content">
-    <div className="header-logo">
-      <img src={logoIcon} alt="logo" />
-    </div>
-  </div>
-</header>
-      <nav className="sidebar">
-        <ul>
-          <SidebarItem icon={nameIcon} text="Name" link="/profile" />
-          <SidebarItem icon={moduleIcon} text="Module" link="/module" />
-          <SidebarItem icon={dashboardIcon} text="Dashboard" link="/dashboard" />
-          <SidebarItem icon={settingsIcon} text="Settings" link="/settings" />
-          <SidebarItem icon={helpIcon} text="Help" link="/help" />
-        </ul>
-      </nav>
+                <Header />
+            </header>
       <div className="module-container">
         <div className="notheader">
           <h1>Modules</h1>

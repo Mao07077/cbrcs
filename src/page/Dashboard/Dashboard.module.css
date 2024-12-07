@@ -5,96 +5,109 @@ body {
     background-color: #f4f4f4;
 }
 
-/* Header styling */
-.header {
-    width: 100%;
-    background-color: #002f87;
-    padding: 10px;
-    color: white;
-    text-align: left;
-    position: fixed;
-    top: 0;
-    left: 0;
-}
-
-.header h1 {
-    margin: 0;
-    font-size: 1.5em;
-    display: inline-block;
-}
-
-.header img {
-    float: right;
-    margin-left: 1%;
-    margin-right: 2%;
-    width: 2%;
-    height: 2%;
-}
-
-/* Sidebar styling */
-.sidebar {
-    width: 10%;
-    background-color: #F4F4F4;
-    position: fixed;
-    height: 100%;
-    color: black;
-    top: 0;
-    left: 0;
-    margin-top: 3.5%;
-    padding-top: 20px;
-    text-align: center;
-}
-
-.sidebar ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.sidebar ul li {
-    padding: 20px;
-    text-align: center;
-}
-
-.sidebar ul li a {
-    text-decoration: none;
-    color: black;
-    font-size: 80%;
+.header_content {
     display: flex;
-    align-items: center;
-    justify-content: center;
-}
+    width: 100%;  
+    max-width: 1200px;  
+  }
+  .header_logo img {
+    height: 50px;   
+    width: auto;     
+    max-width: 180px; 
+  }
+.Dashboardsign {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: white;
+  
 
+      
+  }
+  
+  .lines{
+    display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  background-color: #003366;
+  height: 1px;
+  width: 100%;
+  }
+  .Main_dashboard{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 14px;
+    padding: 200px; 
+    margin-top: 100px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px; 
+    background-color: white; 
+      
+      
+  }
+  
+  .pagbati h2{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    margin-left: 120px;
+    padding-left: 20px;
+    font-size: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    align-items: center;
+  }
+  
+  
+    
+  
+  
 .sidebar img {
     display: block;
     margin: 0 auto;
 }
 
-/* Main container */
-.dashboard-container {
-    margin-left: 10%;
-    padding: 20px;
+.dashboard_container {
+    display: flex;
+    height: 60vh;
+    justify-content: space-around;
+    flex-direction: column; 
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 50px;
 }
-
+.sidebar_combined{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    padding-top: 100px;
+}
 /* Performance Overview Section */
-.performance-overview {
-    display: grid;
+.performance_overview {
+    display: flex;
     grid-template-columns: 2fr 1fr;
-    gap: 20px;
+   
 }
 
-.progress-overview,
-.strength-weakness {
+.progress_overview,
+.strength_weakness {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
     background-color: white;
     padding: 20px;
     border-radius: 8px;
     border: 1px solid #ddd;
 }
 
-.progress-overview {
+.progress_overview {
     text-align: center;
 }
 
-.progress-chart {
+.progress_chart {
     background-color: #fff;
     padding: 20px;
     margin-top: 10px;
@@ -103,12 +116,12 @@ body {
 }
 
 /* Widgets for Strength & Weakness */
-.strength-weakness {
+.strength_weakness {
     display: grid;
     grid-template-columns: 1fr;
 }
 
-.strength-weakness div {
+.strength_weakness div {
     background-color: white;
     padding: 15px;
     border: 1px solid #ddd;

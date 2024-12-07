@@ -1,20 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // Ensure React Router is properly set up
 import './module_inside.css';
-import nameIcon from './icon/name.png';
-import notifIcon from './icon/notif.png';
-import moduleIcon from './icon/module.png';
-import dashboardIcon from './icon/dashboard.png';
-import settingsIcon from './icon/settings.png';
-import helpIcon from './icon/help.png';
-
-// Sidebar component for reusable items
-const SidebarItem = ({ icon, text, link }) => (
-  <li>
-    <img src={icon} alt={`${text} Icon`} width="30%" height="30%" />
-    <a href={link}>{text}</a>
-  </li>
-);
+import Header from '../../icon/Header'; // Import the Header component
 
 const ModuleInside = () => {
   const [module, setModule] = useState(null); // Store the module data
@@ -83,22 +70,8 @@ const ModuleInside = () => {
     <div>
       {/* Header Section */}
       <header className="header">
-        <h1>Logo here</h1>
-        <img src={nameIcon} alt="Profile" />
-        <img src={notifIcon} alt="Notifications" />
-      </header>
-
-      {/* Sidebar Navigation */}
-      <nav className="sidebar">
-        <ul>
-          <SidebarItem icon={nameIcon} text="Name" link="/profile" />
-          <SidebarItem icon={moduleIcon} text="Module" link="/module" />
-          <SidebarItem icon={dashboardIcon} text="Dashboard" link="/dashboard" />
-          <SidebarItem icon={settingsIcon} text="Settings" link="/settings" />
-          <SidebarItem icon={helpIcon} text="Help" link="/help" />
-        </ul>
-      </nav>
-
+                <Header />
+            </header>
       {/* Main Content */}
       <div className="container">
         <main>

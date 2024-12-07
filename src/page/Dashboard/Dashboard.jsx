@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import './dashboard.css';
 import axios from 'axios';
+import styles from './Dashboard.module.css';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -11,14 +11,7 @@ import {
     Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-
-import nameIcon from './icon/name.png';
-import notifIcon from './icon/notif.png';
-import moduleIcon from './icon/module.png';
-import dashboardIcon from './icon/dashboard.png';
-import settingsIcon from './icon/settings.png';
-import helpIcon from './icon/help.png';
-
+import Header from '../../icon/Header';
 // Register Chart.js components
 ChartJS.register(
     CategoryScale,
@@ -29,13 +22,6 @@ ChartJS.register(
     Legend
 );
 
-// Sidebar Item Component
-const SidebarItem = ({ icon, text, link }) => (
-    <li>
-        <img src={icon} alt={`${text} Icon`} width="30%" height="30%" />
-        <a href={link}>{text}</a>
-    </li>
-);
 
 // Pretest Score Chart Component
 const PretestScoreChart = ({ scores }) => {
@@ -146,62 +132,60 @@ const Dashboard = () => {
     }
 
     return (
-        <div>
+        <main className={styles.Main_dashboard}>
             <header className="header">
-                <h1>Logo here</h1>
-                <img src={nameIcon} alt="Profile" />
-                <img src={notifIcon} alt="Notifications" />
+                <Header />
             </header>
-            <nav className="sidebar">
-                <ul>
-                    <SidebarItem icon={nameIcon} text="Name" link="profile" />
-                    <SidebarItem icon={moduleIcon} text="Module" link="module" />
-                    <SidebarItem icon={dashboardIcon} text="Dashboard" link="dashboard" />
-                    <SidebarItem icon={settingsIcon} text="Settings" link="settings" />
-                    <SidebarItem icon={helpIcon} text="Help" link="help" />
-                </ul>
-            </nav>
-            <main className="dashboard-container">
-                <section className="performance-overview">
-                    <h2>Progress Overview</h2>
-                    <div className="progress-chart">
-                        <p>{progress.toFixed(0)}% Completed</p>
-                        <div className="progress-bar">
-                            <div
-                                className="progress-fill"
-                                style={{ width: `${progress}%`, backgroundColor: 'rgba(75, 192, 192, 0.6)' }}
-                            ></div>
+            <div className={styles.Dashboardsign}>
+                <h1>Dashboard</h1>
+                <div className={styles.lines}></div>
+            </div>
+            <div className={styles.sidebar_combined}>
+                
+                <div className={styles.dashboard_container}>
+                    <section className={styles.performance_overview}>
+                        <div className={styles.progress_overview}>
+                            <h2>Progress Overview</h2>
+                            <div className={styles.progress_chart}>
+                                <p>{progress.toFixed(0)}% Completed</p>
+                                <div className={styles.progress_bar}>
+                                    <div
+                                        className={styles.progress_fill}
+                                        style={{ width: `${progress}%`, backgroundColor: 'rgba(75, 192, 192, 0.6)' }}
+                                    ></div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className="strength-weakness">
-                        <div>
-                            <h3>Strength</h3>
-                            <p>Explanation about strengths.</p>
+                        <div className={styles.strength_weakness}>
+                            <div>
+                                <h3>Strength</h3>
+                                <p>Explanation about strengths.</p>
+                            </div>
+                            <div>
+                                <h3>Weakness</h3>
+                                <p>Explanation about weaknesses.</p>
+                            </div>
                         </div>
-                        <div>
-                            <h3>Weakness</h3>
-                            <p>Explanation about weaknesses.</p>
-                        </div>
-                    </div>
-                </section>
-                <section className="pretest-score-chart">
-                    <h2>Pretest Scores</h2>
-                    {scores.length > 0 ? (
-                        <PretestScoreChart scores={scores} />
-                    ) : (
-                        <p>No pretest scores available.</p>
-                    )}
-                </section>
-                <section className="post-test-scores">
-                    <h2>Post-Test Scores as Bar Charts</h2>
-                    {postTestScores.length > 0 ? (
-                        <PostTestScoreBarChart postTestScores={postTestScores} />
-                    ) : (
-                        <p>No post-test scores available.</p>
-                    )}
-                </section>
-            </main>
-        </div>
+                    </section>
+                    <section className={styles.pretest_score_chart}>
+                        <h2>Pretest Scores</h2>
+                        {scores.length > 0 ? (
+                            <PretestScoreChart scores={scores} />
+                        ) : (
+                            <p>No pretest scores available.</p>
+                        )}
+                    </section>
+                    <section className={styles.post_test_scores}>
+                        <h2>Post-Test Scores as Bar Charts</h2>
+                        {postTestScores.length > 0 ? (
+                            <PostTestScoreBarChart postTestScores={postTestScores} />
+                        ) : (
+                            <p>No post-test scores available.</p>
+                        )}
+                    </section>
+                </div>
+            </div>
+        </main>
     );
 };
 

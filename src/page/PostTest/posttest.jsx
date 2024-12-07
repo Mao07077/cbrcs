@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
 import './posttest.css';
-import logoIcon from './icon/logo.png';
+import logoIcon from '../../icon/logo.png';
 import { useParams } from 'react-router-dom';
 import {
     Chart as ChartJS,

@@ -1,0 +1,112 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.sidebar {
+    width: 10%;
+    background-color: #F4F4F4;
+    position: fixed;
+    height: 100%;
+    color: black;
+    top: 0;
+    left: 0;
+    margin-top: 3.5%;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 20px;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: black;
+    font-size: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+.sidebar img {
+    margin: 0 auto;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+
+.header {
+    width: 100%;  /* Full width */
+    background-color: #002f87;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Adjust header content to fit properly */
+  .header-content {
+    display: flex;
+    width: 100%;  
+    max-width: 1200px;  
+  }
+  /* Image styling */
+  .header-logo img {
+    height: 50px;   
+    width: auto;     
+    max-width: 180px; 
+  }
+.header-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns the header text and underline to the left */
+    padding: 10px;
+}
+
+
+.header-container h2 {
+    font-size: 2.3em;
+    margin: 0;
+    padding: 0;
+}
+
+        .section-box h2 {
+            margin: 0;
+            padding: 10px;
+            background-color: #f4f4f4;
+            border-bottom: 1px solid #ddd;
+            border-radius: 8px 8px 0 0;
+            text-align: left; 
+        }
+        .row label {
+            flex-basis: 50%;
+            font-size: 16px;
+            color: #666;
+        }
+
+
+.header-underline {
+    width: 120%;
+  height: 2px;
+  background-color: #000; /* Adjust the color as needed */
+  transition: width 0.3s ease; /* Smooth transition */
+}
+@media (max-width: 768px) {
+  .header-underline {
+    width: 100%; /* Shrinks the line to 50% on smaller screens */
+    margin: 0 auto; /* Centers the line */
+  }
+}
