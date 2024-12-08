@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import style from './Admin_Dashboard.module.css'
+import AdminHeader from '../../icon/Admin_Header';
 
-import HomeIcon from '../../icon/Home.png';
-import MailIcon from '../../icon/Mail.png';
-import StudentsIcon from '../../icon/Students.png';
-import ReportsIcon from '../../icon/Reports.png';
-import SettingsIcon from '../../icon/settings.png';
-import logoIcon from '../../icon/logo.png';
+
 const InstructorDashboard = () => {
   const [fileName, setFileName] = useState('No file chosen');
   const [postText, setPostText] = useState('');
@@ -83,45 +79,16 @@ const InstructorDashboard = () => {
 
   return (
     <div className="dashboard-container">
-      {/* Header */}
-      <header className="header">
-  <div className="header_content">
-    <div className="header_logo">
-      <img src={logoIcon} alt="logo" />
-    </div>
-  </div>
-</header>
-
+     <header className="header">
+                <AdminHeader />
+            </header>
       {/* Greeting */}
       <div className="greeting-dashboard">
         <h1>Admin's Dashboard</h1>
       </div>
 
       {/* Sidebar */}
-      <nav className="sidebar">
-      <ul>
-        <li>
-          <img src={HomeIcon} alt="Home icon" className="sidebar-icon" />
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <img src={MailIcon} alt="Mail icon" className="sidebar-icon" />
-          <Link to="/Mail">Mail</Link>
-        </li>
-        <li>
-          <img src={StudentsIcon} alt="Students icon" className="sidebar-icon" />
-          <Link to="/Studentlist">Students</Link>
-        </li>
-        <li>
-          <img src={ReportsIcon} alt="Reports icon" className="sidebar-icon" />
-          <Link to="/Reports">Reports</Link>
-        </li>
-        <li>
-          <img src={SettingsIcon} alt="Settings icon" className="sidebar-icon" />
-          <Link to="/Settings">Settings</Link>
-        </li>
-      </ul>
-    </nav>
+      
 
       {/* Statistics Section */}
       <div className="Main_insdashboard">

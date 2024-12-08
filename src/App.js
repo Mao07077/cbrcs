@@ -19,7 +19,9 @@ import CreatePostTest from './Instructor_Page/Create_Posttest/Create_posttest';
 import Studentlist from './Instructor_Page/Student_List/Studentlist';
 import AdminDashboard from './Admin_Page/Admin_Dashboard/Admin_Dashboard';
 import InstructorHeader from './icon/Instructor_Header';
-
+import Accounts from './Admin_Page/Accounts/Accounts';
+import Request from './Admin_Page/Request/Request';
+import Adminpost from './Admin_Page/AdminPost/AdminPost';
 
 
 
@@ -48,6 +50,9 @@ function App() {
             <Route path="/studentlist" element = {<Studentlist/>}/> 
             <Route path= "Header" element = {<Header/>}/>
             <Route path="/admin_dashboard" element={<AdminDashboard />} />
+            <Route path="/Accounts" element={<Accounts />} />
+            <Route path="/Request" element={<Request />} />
+            <Route path="/Adminpost" element={<Adminpost />} />
           </Routes>
         
       </BrowserRouter>

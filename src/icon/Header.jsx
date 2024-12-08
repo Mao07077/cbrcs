@@ -4,7 +4,7 @@ import './Header.css';
 import nameIcon from './name.png';
 import moduleIcon from './module.png';
 import dashboardIcon from './dashboard.png';
-import settingsIcon from './settings.png';
+import Request from './request.png';
 import helpIcon from './help.png';
 import logoIcon from './logo.png';
 
@@ -30,7 +30,7 @@ const Header = () => {
                     <SidebarItem icon={nameIcon} text="Name" link="profile" />
                     <SidebarItem icon={moduleIcon} text="Module" link="module" />
                     <SidebarItem icon={dashboardIcon} text="Dashboard" link="dashboard" />
-                    <SidebarItem icon={settingsIcon} text="Settings" link="settings" />
+                    <SidebarItem icon={Request} text="Request" link="settings" />
                     <SidebarItem icon={helpIcon} text="Help" link="help" />
                 </ul>
             </nav>
