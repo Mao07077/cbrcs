@@ -3,12 +3,12 @@ import React, { useState, useEffect } from 'react';
 import './Instructor_Header.css';
 import { Link } from "react-router-dom";
 
-import Dashboard from './dashboard.png'; 
-import MailIcon from './Mail.png';
-import StudentsIcon from './Students.png';
+import Dashboard from '../icon/dashboard.png'; 
+import MailIcon from '../icon/Mail.png';
+import StudentsIcon from '../icon/Students.png';
  
  
-import logoIcon from './logo.png';
+import logoIcon from '../icon/logo.png';
 
  
 const InstructorHeader = () => {

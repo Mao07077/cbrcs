@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './Header.css';
-
-import nameIcon from './name.png';
-import moduleIcon from './module.png';
-import dashboardIcon from './dashboard.png';
-import Request from './request.png';
-import helpIcon from './help.png';
-import logoIcon from './logo.png';
+import nameIcon from '../icon/name.png';
+import moduleIcon from '../icon/module.png';
+import dashboardIcon from '../icon/dashboard.png';
+import Request from '../icon/request.png';
+import helpIcon from '../icon/help.png';
+import logoIcon from '../icon/logo.png';
 
 const SidebarItem = ({ icon, text, link }) => (
     <li>

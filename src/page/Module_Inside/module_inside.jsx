@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // Ensure React Router is properly set up
 import './module_inside.css';
-import Header from '../../icon/Header'; // Import the Header component
+import Header from '../../Components/Header'; // Import the Header component
 
 const ModuleInside = () => {
   const [module, setModule] = useState(null); // Store the module data

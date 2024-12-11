@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Landing from './page/Landing/Landing';
 import ForgotPassword from './page/Forgot_Password/Forgot_password';
 import Dashboard from './page/Dashboard/Dashboard'
-import Header from './icon/Header'; 
+import Header from './Components/Header'; 
 import HelpPage from './page/Help/help';
 import Module from './page/Module/Module';
 import Profile from './page/Profile/Profile';
@@ -18,10 +18,11 @@ import CreateModule from './Instructor_Page/Create_module/Create_module';
 import CreatePostTest from './Instructor_Page/Create_Posttest/Create_posttest';
 import Studentlist from './Instructor_Page/Student_List/Studentlist';
 import AdminDashboard from './Admin_Page/Admin_Dashboard/Admin_Dashboard';
-import InstructorHeader from './icon/Instructor_Header';
+import InstructorHeader from './Components/Instructor_Header';
 import Accounts from './Admin_Page/Accounts/Accounts';
 import Request from './Admin_Page/Request/Request';
 import Adminpost from './Admin_Page/AdminPost/AdminPost';
+
 
 
 

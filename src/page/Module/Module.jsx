@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate and Link
 import './module.css';
-import Header from '../../icon/Header'; // Import the Header component
+import Header from '../../Components/Header'; // Import the Header component
 
 const ModuleDashboard = () => {
   const [modules, setModules] = useState([]);

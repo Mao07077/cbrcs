@@ -1,6 +1,6 @@
 import React from 'react';
 import './help.css';
-import Header from '../../icon/Header';
+import Header from '../../Components/Header';
 import nameIcon from '../../icon/name.png';
 import moduleIcon from '../../icon/module.png';
 import dashboardIcon from '../../icon/dashboard.png';

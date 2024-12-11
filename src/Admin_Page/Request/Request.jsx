@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AdminHeader from "../../icon/Admin_Header";
+import AdminHeader from "../../Components/Admin_Header";
 
 function Request() {
     const [requests, setRequests] = useState([

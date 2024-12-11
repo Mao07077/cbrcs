@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './profile.css';
 
 import nameIcon from '../../icon/name.png';
-import Header from '../../icon/Header';
+import Header from '../../Components/Header';
 
 const Profile = () => {
     const [profile, setProfile] = useState(null);

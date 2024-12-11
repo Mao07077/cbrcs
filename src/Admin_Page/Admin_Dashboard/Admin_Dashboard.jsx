@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import style from './Admin_Dashboard.module.css'
-import AdminHeader from '../../icon/Admin_Header';
+import AdminHeader from '../../Components/Admin_Header';
 
 
 const InstructorDashboard = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import "./Mail.css";
-import InstructorHeader from '../../icon/Instructor_Header';
+import InstructorHeader from '../../Components/Instructor_Header';
  
 
 const Email = () => {

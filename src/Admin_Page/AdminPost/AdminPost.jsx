@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import AdminHeader from '../../icon/Admin_Header';
+import AdminHeader from '../../Components/Admin_Header';
 
 const AdminPost = () => {
     const [title, setTitle] = useState('');

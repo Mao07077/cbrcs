@@ -11,7 +11,7 @@ import {
     Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import Header from '../../icon/Header';
+import Header from '../../Components/Header';
 // Register Chart.js components
 ChartJS.register(
     CategoryScale,

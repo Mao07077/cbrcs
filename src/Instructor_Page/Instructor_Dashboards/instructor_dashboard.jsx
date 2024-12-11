@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './InstructorDashboard.css';
 import { Link } from "react-router-dom";
- 
-import InstructorHeader from '../../icon/Instructor_Header';
+import InstructorHeader from '../../Components/Instructor_Header';
 
  
 

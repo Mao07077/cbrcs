@@ -1,7 +1,7 @@
 import React,{ useState } from "react";
 import "./StudentTable.css"; 
 import { Link } from "react-router-dom";
-import InstructorHeader from "../../icon/Instructor_Header";
+import InstructorHeader from "../../Components/Instructor_Header";
  
 
 function StudentTable() {

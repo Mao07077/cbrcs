@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./settings.css";
-import Header from "../../icon/Header";
+import Header from "../../Components/Header";
 const Settings = () => {
   const [formData, setFormData] = useState({
     firstname: "",

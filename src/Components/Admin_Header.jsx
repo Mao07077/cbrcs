@@ -3,14 +3,12 @@ import React, { useState, useEffect } from 'react';
 import './Admin_Header.css';
 import { Link } from "react-router-dom";
 
-import Dashboard from './dashboard.png'; 
-import Accounts from './name.png';
-import Report from './Reports.png';
-import AdminPost from './Upload.png';
-import Request from './request.png';
- 
- 
-import logoIcon from './logo.png';
+import Dashboard from '../icon/dashboard.png'; 
+import Accounts from '../icon/name.png';
+import Report from '../icon/Reports.png';
+import AdminPost from '../icon/Upload.png';
+import Request from '../icon/request.png';
+import logoIcon from '../icon/logo.png';
 
  
 const AdminHeader = () => {
