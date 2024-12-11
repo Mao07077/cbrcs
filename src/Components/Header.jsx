@@ -6,7 +6,6 @@ import dashboardIcon from '../icon/dashboard.png';
 import Request from '../icon/request.png';
 import helpIcon from '../icon/help.png';
 import logoIcon from '../icon/logo.png';
-
 const SidebarItem = ({ icon, text, link }) => (
     <li>
         <a href={link}>
@@ -18,6 +17,7 @@ const SidebarItem = ({ icon, text, link }) => (
 
 const Header = () => {
     return (
+        <div className='Main_Header'>
         <header className="header">
             <div className="header-content">
                 <div className="header-logo">
@@ -34,6 +34,7 @@ const Header = () => {
                 </ul>
             </nav>
         </header>
+        </div>
     );
 };
 

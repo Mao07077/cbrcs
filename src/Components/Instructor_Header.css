@@ -6,7 +6,7 @@ body {
     background-color: #f4f4f4;
 }
 
-.sidebar {
+.Instructor_sidebar {
     width: 10%;
     background-color: #F4F4F4;
     position: fixed;
@@ -19,18 +19,18 @@ body {
     text-align: center;
 }
 
-.sidebar ul {
+.Instructor_sidebar ul {
     list-style-type: none;
     padding: 0;
 }
 
-.sidebar ul li {
+.Instructor_sidebar ul li {
     padding: 20px;
     text-align: center;
     margin-left: 10px;
 }
 
-.sidebar ul li a {
+.Instructor_sidebar ul li a {
     text-decoration: none;
     color: black;
     font-size: 80%;
@@ -39,7 +39,7 @@ body {
     justify-content: center;
     gap: 20px;
 }
-.sidebar img {
+.Instructor_sidebar img {
     margin: 0 auto;
     width: 40px;
     height: 40px;

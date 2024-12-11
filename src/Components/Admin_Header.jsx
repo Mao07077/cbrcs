@@ -19,7 +19,7 @@ const AdminHeader = () => {
                     <img src={logoIcon} alt="logo" />
                 </div>
             </div>
-            <nav className="sidebar">
+            <nav className="Admin_sidebar">
       <ul>
         <li>
           <img src={Dashboard} alt="Dashboard icon" className="Dashboard-icon" />
