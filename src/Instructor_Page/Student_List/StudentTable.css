@@ -42,8 +42,8 @@
   font-size: 1.2em;
   border-bottom: 1px solid #333;
   }
-  
-  .sidebar {
+  /* Sidebar edit ewan ko ba ayusin ko pato rerelocate ko  */
+  .Sidebar {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
@@ -51,7 +51,6 @@
     position: fixed;
     width: 10%;
     height: 100%;
-    background: #c1d8e6;
     color: black;
     top: 0;
     left: 0;
@@ -59,7 +58,7 @@
     padding-bottom: 50px;
 }
 
-.sidebar ul {
+.Sidebar ul {
     display: flex;
     flex-direction: column;
     justify-content:  space-evenly;
@@ -68,35 +67,35 @@
 }
 
 
-.sidebar ul li {
+.Sidebar ul li {
   display: flex;
   justify-content: center;
   flex-direction: column;
   text-align: center;
-  padding: 15px 25px;
+  padding: 6px 10px;
   font-size: 24px;
   text-align: center;
   cursor: pointer;
   outline: none;
   color: #fff;
-  background-color: #04AA6D;
+  background: #4a90e3;
   border: none;
   border-radius: 15px;
   box-shadow: 0 9px #999;
 }
-.sidebar ul li:hover {background-color: #3e8e41}
-.sidebar ul li:active {
-  background-color: #3e8e41;
+.Sidebar ul li:hover {background-color: #cece05}
+.Sidebar ul li:active {
+  background: #4a90e2;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
-.sidebar-item{
+.Sidebar-item{
 display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
 }
-.sidebar ul li a {
+.Sidebar ul li a {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -108,7 +107,10 @@ align-items: center;
     justify-content: center;
     gap: 10px;
 }
-.sidebar img {
+.Sidebar span{
+  font-size: 15px;
+}
+.Sidebar img {
     margin: 0 auto;
     width: 30px;
     height: 30px;
