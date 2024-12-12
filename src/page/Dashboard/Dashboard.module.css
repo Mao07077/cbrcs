@@ -63,11 +63,7 @@ body {
   
     
   
-  
-.sidebar img {
-    display: block;
-    margin: 0 auto;
-}
+
 
 .dashboard_container {
     display: flex;
@@ -78,13 +74,7 @@ body {
     color: #333;
     padding: 50px;
 }
-.sidebar_combined{
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-items: center;
-    padding-top: 100px;
-}
+
 /* Performance Overview Section */
 .performance_overview {
     display: flex;

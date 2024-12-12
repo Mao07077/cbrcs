@@ -53,42 +53,6 @@ body {
   border-bottom: 1px solid #333;
 }
 
-/* Sidebar - This remains unchanged */
-.sidebar {
-  width: 200px;
-  background-color: #f0f0f0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  padding-top: 80px;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-}
-
-.sidebar li {
-  display: flex;
-  align-items: center;
-  padding: 15px 20px;
-  font-size: 1.1em;
-  color: #797979;
-  transition: background 0.3s;
-}
-
-.sidebar li:hover {
-  background-color: #e0e0e0;
-  cursor: pointer;
-}
-
-.sidebar-icon {
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
-}
-
 /* Statistics Section */
 .statistics-container {
   display: flex;

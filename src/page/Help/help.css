@@ -6,38 +6,7 @@ body {
     background-color: #f4f4f4;
 }
 
-/* Sidebar styling */
-.sidebar {
-    width: 10%;
-    background-color: #F4F4F4;
-    position: fixed;
-    height: 100%;
-    color: black;
-    top: 0;
-    left: 0;
-    margin-top: 3.5%;
-    padding-top: 20px;
-    text-align: center; /* Center align text and images */
-}
 
-.sidebar ul {
-list-style-type: none;
-padding: 0;
-}
-
-.sidebar ul li {
-padding: 20px;
-text-align: center;
-}
-
-.sidebar ul li a {
-text-decoration: none;
-color: black;
-font-size: 80%;
-display: flex;
-align-items: center;
-justify-content: center;
-}
 /* Header styling */
 .header {
     width: 100%;
@@ -79,7 +48,5 @@ justify-content: center;
     width: 100%;
     margin-top: 50px;
 }
-.sidebar img {
-    display: block;
-    margin: 0 auto; /* Center images */
-}
+
+

@@ -25,14 +25,30 @@ const Header = () => {
                 </div>
             </div>
             <nav className="sidebar">
-                <ul>
-                    <SidebarItem icon={nameIcon} text="Name" link="profile" />
-                    <SidebarItem icon={moduleIcon} text="Module" link="module" />
-                    <SidebarItem icon={dashboardIcon} text="Dashboard" link="dashboard" />
-                    <SidebarItem icon={Request} text="Request" link="settings" />
-                    <SidebarItem icon={helpIcon} text="Help" link="help" />
-                </ul>
-            </nav>
+    <ul>
+        <button className="sidebar-item" onClick={() => navigateTo('profile')}>
+            <img src={nameIcon} alt="Name Icon" />
+            <span>Name</span>
+        </button>
+        <button className="sidebar-item" onClick={() => navigateTo('module')}>
+            <img src={moduleIcon} alt="Module Icon" />
+            <span>Module</span>
+        </button>
+        <button className="sidebar-item" onClick={() => navigateTo('dashboard')}>
+            <img src={dashboardIcon} alt="Dashboard Icon" />
+            <span>Dashboard</span>
+        </button>
+        <button className="sidebar-item" onClick={() => navigateTo('settings')}>
+            <img src={Request} alt="Request Icon" />
+            <span>Request</span>
+        </button>
+        <button className="sidebar-item" onClick={() => navigateTo('help')}>
+            <img src={helpIcon} alt="Help Icon" />
+            <span>Help</span>
+        </button>
+    </ul>
+</nav>
+
         </header>
         </div>
     );
