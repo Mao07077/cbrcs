@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './profile.css';
+import Styles from './profile.module.css';
 
 import nameIcon from '../../icon/name.png';
 import Header from '../../Components/Header';
@@ -45,7 +45,7 @@ const Profile = () => {
     }
 
     return (
-        <div>
+        <div className={Styles.Main_Profiles}>
             {/* Header */}
             <header className="header">
                 <Header />
@@ -57,14 +57,15 @@ const Profile = () => {
                 </div>
 
                 <div className="profile-wrapper">
-                    <div className="profilebox">
-                        <div className="profile-image">
+                    <div className={Styles.Profilebox}>
+                        <div className={Styles.Profile_image}>
                             <img src={nameIcon} alt="Profile Picture" />
                         </div>
                     </div>
                     <div className="separator-line"></div>
-                    <div className="section-holder">
-                        <div className="section personal-info">
+                    <div className={Styles.Main_Sectionholder}>
+                    <div className={Styles.Section_holder}>
+                        <div className={Styles.Section_personal_info}>
                             <h3>Personal Information</h3>
                             <div className="row">
                                 <label>Name: {profile.firstname} {profile.lastname}</label>
@@ -79,11 +80,12 @@ const Profile = () => {
                                 <label>Program: {profile.program}</label>
                             </div>
                         </div>
-                        <div className="section activity-info">
+                        <div className={Styles.Section_activity_info}>
                             <h3>Activity Information</h3>
                             <div className="row">
                                 <label>Hours Activity: {profile.hoursActivity}</label>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>

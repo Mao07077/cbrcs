@@ -5,6 +5,14 @@ body {
     padding: 0;
     background-color: #f4f4f4;
 }
+.Main_Profiles{
+    width: 70vw;
+    height: 100%;
+    display: flex;
+    margin-top: 20%;
+    flex-direction: column;
+    justify-content: space-around;
+}
 
 .header {
     width: 100%;  /* Full width */
@@ -91,6 +99,7 @@ body {
 .profile-wrapper {
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
     gap: 50px;
     padding: 90px;
@@ -103,21 +112,29 @@ body {
 
 }
 
-.profilebox {
+.Profilebox {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     
 }
 /* Profile image without background or border */
-.profile-image {
+.Profile_image {
     flex-direction: row;
-    width: 100px;
-    height: 100px;
+    width: 100%;
     margin-right: 700px;
+    margin:70px;
+    flex-wrap: wrap;
+    gap: 10px;
+    flex: 1 1 auto;
 }
 
-.section-holder {
+.Main_Sectionholder{
+    display: flex;
+    justify-content: center;
+    
+}
+.Section_holder {
     display: flex;
     flex-direction: row;
     gap: 50px; 
@@ -127,30 +144,31 @@ body {
     margin-top: 30px;
 }
 
-.section.personal-info,
-.section.activity-info {
-    padding: 50px; /* Padding inside each section */
+.Section_personal_info,
+.Section_activity_info {
+    padding: 40px; /* Padding inside each Section */
     border-radius: 8px;
-    flex: 1; /* Equal width for both sections */
+    border: solid 1px #d04141;
+    flex: 1; /* Equal width for both Sections */
     max-width: 450px;
     min-width: 250px; /* Minimum width for responsiveness */
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    height: 300px;
+    height: 100%;
 }
-.section.personal-info h3,
-.section.activity-info h3 {
+.Section_personal_info h3,
+.Section_activity_info h3 {
     margin-bottom: 20px; /* Space below the titles */
 }
-.section.personal-info ,.row{
+.Section_personal_info ,.row{
 margin-bottom: 20px;
 
 }
 
-.section.personal-info {
+.Section_personal_info {
     background-color: #f5f5f5;
 }
 
-.section.activity-info {
+.Section.activity_info {
     background-color: #f5f5f5;
 
 }

@@ -37,7 +37,7 @@ const SidebarItem = ({ icon, text, onClick }) => (
         <li>
           <buttonss className="Sidebar-item" onClick={() => handleNavigation('profile')}>
             <img src={nameIcon} alt="Name Icon" className="sidebar-icon" />
-            <span>Name</span>
+            <span>Profile</span>
           </buttonss>
         </li>
         <li>
