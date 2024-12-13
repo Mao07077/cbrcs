@@ -39,11 +39,13 @@
     justify-content: center; 
     padding: 40px; 
     margin: 40px auto; 
+    height: 100%;
+    margin-top: 400px;
     max-width: 100%; 
     min-height: 80vh; 
     border: 2px solid #002f87;
     border-radius: 12px; 
-    background-color: #ffffff; 
+    background: #ffffff; 
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); 
 }
 
