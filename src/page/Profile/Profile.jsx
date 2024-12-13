@@ -67,22 +67,22 @@ const Profile = () => {
                     <div className={Styles.Section_holder}>
                         <div className={Styles.Section_personal_info}>
                             <h3>Personal Information</h3>
-                            <div className="row">
+                            <div className={Styles.row}>
                                 <label>Name: {profile.firstname} {profile.lastname}</label>
                             </div>
-                            <div className="row">
+                            <div className={Styles.row}>
                                 <label>Age: {profile.age || "N/A"}</label>
                             </div>
-                            <div className="row">
+                            <div className={Styles.row}>
                                 <label>Id Number: {profile.id_number}</label>
                             </div>
-                            <div className="row">
+                            <div className={Styles.row}>
                                 <label>Program: {profile.program}</label>
                             </div>
                         </div>
                         <div className={Styles.Section_activity_info}>
                             <h3>Activity Information</h3>
-                            <div className="row">
+                            <div className={Styles.row}>
                                 <label>Hours Activity: {profile.hoursActivity}</label>
                             </div>
                         </div>
