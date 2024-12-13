@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import MainHeader from '../../Components/MainHeader';
+import Styles from './Reset_password.module.css';
 const ResetPassword = () => {
     const [userId, setUserId] = useState('');
     const [resetCode, setResetCode] = useState(''); // Add state for reset code
@@ -29,6 +30,10 @@ const ResetPassword = () => {
 
     return (
         <div>
+            <header className="header">
+                <MainHeader />
+            </header>
+            <div className={Styles.Container}>
             <h2>Reset Password</h2>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="user_id">User ID:</label>
@@ -55,11 +60,13 @@ const ResetPassword = () => {
                     onChange={(e) => setNewPassword(e.target.value)}
                     required
                 />
-                <button type="submit">Reset Password</button>
+            
+                <button className={Styles.Submit} type="submit">Reset Password</button>
             </form>
             {message && <p>{message}</p>}
         </div>
-    );
+        </div>
+    ); 
 };
 
 export default ResetPassword;
