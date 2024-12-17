@@ -1,5 +1,5 @@
 import React,{ useState } from "react";
-import "./StudentTable.css"; 
+import Styles from "./StudentTable.module.css"; 
 import { Link } from "react-router-dom";
 import InstructorHeader from "../../Components/Instructor_Header";
  
@@ -29,7 +29,7 @@ function StudentTable() {
 
 
       {/* Main Content */}
-      <div className="List-container">
+      <div className={Styles.List_Container}>
         {/* Greeting */}
         <div className="greeting-studentlist">
           <h1>Students List</h1>

@@ -6,46 +6,79 @@ body {
     background-color: #f4f4f4;
 }
 
-.Instructor_sidebar {
-    width: 10%;
-    background-color: #F4F4F4;
-    position: fixed;
-    height: 100%;
-    color: black;
-    top: 0;
-    left: 0;
-    margin-top: 3.5%;
-    padding-top: 20px;
-    text-align: center;
+.Sidebar {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  width: 10%;
+  height: 100%;
+  color: black;
+  top: 0;
+  left: 0;
+  margin-top: 4.6%;
+  padding-bottom: 50px;
 }
 
-.Instructor_sidebar ul {
-    list-style-type: none;
-    padding: 0;
+.Sidebar ul {
+  display: flex;
+  flex-direction: column;
+  justify-content:  space-evenly;
+  flex: 1;
+  gap: 1px;
 }
 
-.Instructor_sidebar ul li {
-    padding: 20px;
-    text-align: center;
-    margin-left: 10px;
+
+.Sidebar ul li {
+display: flex;
+justify-content: center;
+flex-direction: column;
+text-align: center;
+padding: 6px 10px;
+font-size: 24px;
+text-align: center;
+cursor: pointer;
+outline: none;
+color: #fff;
+background: #4a90e3;
+border: none;
+border-radius: 15px;
+box-shadow: 0 9px #999;
+}
+.Sidebar ul li:hover {background-color: #cece05}
+.Sidebar ul li:active {
+background: #4a90e2;
+box-shadow: 0 5px #666;
+transform: translateY(4px);
+}
+.Sidebar-item{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+.Sidebar ul li a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  font-size: 50%;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.Sidebar span{
+font-size: 15px;
 }
 
-.Instructor_sidebar ul li a {
-    text-decoration: none;
-    color: black;
-    font-size: 80%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
+.Sidebar img {
+  margin: 0 auto;
+  width: 30px;
+  height: 30px;
 }
-.Instructor_sidebar img {
-    margin: 0 auto;
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
-}
-
 
 .header {
     width: 100%;  /* Full width */
