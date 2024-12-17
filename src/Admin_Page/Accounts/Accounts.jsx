@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Accounts.css";
+import Styles from"./Accounts.module.css";
 import { useNavigate } from "react-router-dom";
 import AdminHeader from "../../Components/Admin_Header";
 
@@ -54,7 +54,7 @@ function Accounts() {
             </header>
 
             {/* Main Content */}
-            <div className="List-container">
+            <div className={Styles.List_Container}>
                 {/* Greeting */}
                 <div className="greeting-accountlist">
                     <h1>Accounts List</h1>
@@ -63,7 +63,7 @@ function Accounts() {
                 {/* Sidebar */}
 
                 {/* Account List */}
-                <div className="container">
+                <div className={Styles.Container}>
                     <h2>Search:</h2>
                     <input
                         type="text"

@@ -1,0 +1,15 @@
+.List_Container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    border: 2px solid #ddd; 
+    border-radius: 8px;
+    overflow: hidden;
+    width: 1000px; 
+    height: auto; 
+    padding: 20px;
+    background: #ffffff;
+    margin-top: 300px;
+    margin-left: 50px ;
+}
+  

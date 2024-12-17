@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminHeader from "../../Components/Admin_Header";
-
+import Styles from "../Request.module.css";
 function Request() {
     const [requests, setRequests] = useState([
         { profile: "👤", accountNo: "20231001", name: "John Doe", program: "Computer Science", requestedChanges: { name: "Johnathan Doe", program: "Software Engineering" } },
@@ -22,7 +22,7 @@ function Request() {
             </header>
 
             {/* Main Content */}
-            <div className="List-container">
+            <div className={Styles.List_Container}>
                 {/* Greeting */}
                 <div className="greeting-requestlist">
                     <h1>Requests List</h1>

@@ -20,7 +20,7 @@
     width: auto;     
     max-width: 180px; 
   }
-  .List-container {
+  .List_Container {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -28,12 +28,11 @@
     border-radius: 8px;
     overflow: hidden;
     margin: 25px auto; 
-    width: 1550px; 
+    width: 1000px; 
     height: auto; 
     background: #ffffff;
-    margin-top: 300px;
-    margin-left: 100px ;
-}
+    margin-top: 200px;
+    padding: 80px;  }
   
   .greeting-studentlist {
     margin: 10px 220px;
@@ -43,7 +42,10 @@
   border-bottom: 1px solid #333;
   }
   
-  .container {
+  .Container {
+    display: flex;
+    flex-direction: column;
+    
     padding: 20px;
     width: 100%; /* Adjust width to fill the parent container */
     margin: 0; /* Remove margin to avoid extra spacing */

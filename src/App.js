@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Router, Routes } from 'react-router-dom';
 import Landing from './page/Landing/Landing';
 import ForgotPassword from './page/Forgot_Password/Forgot_password';
 import Dashboard from './page/Dashboard/Dashboard'
@@ -50,7 +50,7 @@ function App() {
           <Route path= "/mail" element ={<Mail/>}/>
             <Route path="/studentlist" element = {<Studentlist/>}/> 
             <Route path= "Header" element = {<Header/>}/>
-            <Route path="/admin_dashboard" element={<AdminDashboard />} />
+            <Route path="/Admin_Dashboard" element={<AdminDashboard />} />
             <Route path="/Accounts" element={<Accounts />} />
             <Route path="/Request" element={<Request />} />
             <Route path="/Adminpost" element={<Adminpost />} />

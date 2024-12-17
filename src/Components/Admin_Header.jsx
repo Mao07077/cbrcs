@@ -10,42 +10,66 @@ import AdminPost from '../icon/Upload.png';
 import Request from '../icon/request.png';
 import logoIcon from '../icon/logo.png';
 
- 
+const SidebarItem = ({ icon, text, onClick }) => (
+  <li>
+    <button className="sidebar-item" onClick={onClick}>
+      <img src={icon} alt={text} className="sidebar-icon" />
+      <span>{text}</span>
+    </button>
+  </li>
+);
+
 const AdminHeader = () => {
-    return (
-        <header className="header">
-            <div className="header-content">
-                <div className="header-logo">
-                    <img src={logoIcon} alt="logo" />
-                </div>
-            </div>
-            <nav className="Admin_sidebar">
-      <ul>
-        <li>
-          <img src={Dashboard} alt="Dashboard icon" className="Dashboard-icon" />
-          <Link to="/Admin_Dashboard">Dashboard</Link>
-        </li>
-        <li>
+  const handleNavigation = (route) => {
+    console.log(`Navigating to: ${route}`);
+    window.location.href = `/${route}`; 
+  };
+  return (
+      <div className='Main_Header'>
+      <header className="header">
+          <div className="header-content">
+              <div className="header-logo">
+                  <img src={logoIcon} alt="logo" />
+              </div>
+          </div>
+          <nav className="Sidebar">
+    <ul>
+      <li>
+        <buttonss className="Sidebar-item" onClick={() => handleNavigation('Admin_Dashboard')}>
+          <img src={Dashboard} alt="Dashboard Icon" className="sidebar-icon" />
+          <span>Dashboard</span>
+        </buttonss>
+      </li>
+      <li>
+        <buttonss className="Sidebar-item" onClick={() => handleNavigation('Accounts')}>
           <img src={Accounts} alt="Accounts Icon" className="sidebar-icon" />
-          <Link to="/Accounts">Accounts</Link>
-        </li>
-        <li>
-          <img src={AdminPost} alt="Upload icon" className="sidebar-icon" />
-          <Link to="/Adminpost">Upload</Link>
-        </li>
-        <li>
-          <img src={Report} alt="Reports icon" className="sidebar-icon" />
-          <Link to="/Reports">Reports</Link>
-        </li>
-        <li>
-          <img src={Request} alt="Request icon" className="sidebar-icon" />
-          <Link to="/Request">Request</Link>
-        </li>
-         
-      </ul>
-    </nav>
-        </header>
-    );
+          <span>Accounts</span>
+        </buttonss>
+      </li>
+      <li>
+        <buttonss className="Sidebar-item" onClick={() => handleNavigation('Adminpost')}>
+          <img src={AdminPost} alt="AdminPost Icon" className="sidebar-icon" />
+          <span>Upload</span>
+        </buttonss>
+      </li>
+      <li>
+        <buttonss className="Sidebar-item" onClick={() => handleNavigation('Reports')}>
+          <img src={Report} alt="Report Icon" className="sidebar-icon" />
+          <span>Reports</span>
+        </buttonss>
+      </li>
+      <li>
+        <buttonss className="Sidebar-item" onClick={() => handleNavigation('Request')}>
+          <img src={Request} alt="Request Icon" className="sidebar-icon" />
+          <span>Request</span>
+        </buttonss>
+      </li>
+    </ul>
+  </nav>  
+
+      </header>
+      </div>
+  );
 };
 
 export default AdminHeader;

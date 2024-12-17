@@ -17,12 +17,10 @@ const SidebarItem = ({ icon, text, onClick }) => (
   );
   
   const Header = () => {
-    // Define the navigation handler
+    
     const handleNavigation = (route) => {
       console.log(`Navigating to: ${route}`);
-      // Example for navigation:
-      // If using React Router, use navigate(route)
-      window.location.href = `/${route}`; // Fallback for simple routing
+      window.location.href = `/${route}`; 
     };
     return (
         <div className='Main_Header'>
