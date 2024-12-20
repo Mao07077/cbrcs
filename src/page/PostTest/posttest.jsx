@@ -9,6 +9,7 @@ import {
     Tooltip,
     Legend
 } from 'chart.js';
+import axios from 'axios'; // Import axios for making API calls
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -24,6 +25,7 @@ const PostTest = () => {
     const [correctAnswers, setCorrectAnswers] = useState({});
     const [timeLeft, setTimeLeft] = useState(600); // 10 minutes timer
     const [timeTaken, setTimeTaken] = useState(0); // Time taken to complete the test
+    const [loading, setLoading] = useState(false); // Loading state for paraphrasing
 
     useEffect(() => {
         const fetchPostTestData = async () => {
@@ -33,12 +35,16 @@ const PostTest = () => {
                     throw new Error('Failed to fetch post-test data');
                 }
                 const data = await response.json();
-                setPostTest(data);
                 const answersMap = {};
                 data.questions.forEach((question, index) => {
                     answersMap[index] = question.correctAnswer; // Store correct answers by index
+                    question.options = shuffleArray(question.options); // Shuffle options
                 });
                 setCorrectAnswers(answersMap);
+                setPostTest(data);
+
+                // Paraphrase questions
+                await paraphraseQuestions(data.questions);
             } catch (error) {
                 setError(error.message);
             }
@@ -47,6 +53,39 @@ const PostTest = () => {
         fetchPostTestData();
     }, [moduleId]);
 
+    const shuffleArray = (array) => {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    };
+
+    const paraphraseQuestions = async (questions) => {
+        setLoading(true); // Set loading to true
+        const paraphrasedQuestions = await Promise.all(questions.map(async (question) => {
+            const inputResponse = createPrompt(question.question, question.correctAnswer, question.wrongAnswers);
+            const generatedResponse = await axios.post('http://localhost:8000/api/paraphrase', { input: inputResponse });
+            return {
+                ...question,
+                question: generatedResponse.data.paraphrased // Assuming the response contains the paraphrased question
+            };
+        }));
+        setPostTest(prev => ({ ...prev, questions: paraphrasedQuestions }));
+        setLoading(false); // Set loading to false after paraphrasing
+    };
+    
+    const createPrompt = (inputText, correctAnswer, wrongAnswers) => {
+        return (
+            `Given question: '${inputText}'\n` +
+            `Correct answer: '${correctAnswer}'\n` +
+            `Wrong answers: '${wrongAnswers.join(", ")}'\n\n` +
+            "1. Paraphrase the question.\n" +
+            "2. Maintain the question context or topic.\n"  
+        );
+    };
+
+    // Timer and submission logic
     useEffect(() => {
         const timer = setInterval(() => {
             setTimeLeft(prevTime => {
@@ -82,7 +121,7 @@ const PostTest = () => {
         let correctCount = 0;
         let incorrectCount = 0;
 
-        postTest.questions.forEach((question, index) => {
+        postTest.questions.forEach ((question, index) => {
             if (answers[index] === correctAnswers[index]) {
                 correctCount++;
             } else {
@@ -92,7 +131,7 @@ const PostTest = () => {
 
         const userId = localStorage.getItem('userIdNumber'); // Retrieve user ID
         if (!userId) {
-            alert('User ID not found. Please log in again.');
+            alert('User  ID not found. Please log in again.');
             return;
         }
 
@@ -212,7 +251,9 @@ const PostTest = () => {
                 </div>
             )}
 
-            {submitted ? (
+            {loading ? (
+                <div className="loading-message">Loading and paraphrasing questions...</div>
+            ) : submitted ? (
                 <div className="submission-container">
                     <h2 className="submission-title">Your Score</h2>
                     {score && (
@@ -222,7 +263,7 @@ const PostTest = () => {
                                     labels: ['Correct', 'Incorrect'],
                                     datasets: [
                                         {
-                                            label: 'Score Distribution',
+                                            label: 'Score Distribution ',
                                             data: [score.correct, score.incorrect],
                                             backgroundColor: ['#36A2EB', '#FF6384'],
                                             hoverBackgroundColor: ['#36A2EB', '#FF6384']

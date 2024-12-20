@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Create_module.css';
+import CreatePostTest from '../Create_Posttest/Create_posttest'; // Adjust the import path as needed
 
-const CreateModule = () => {
+const CreateModule = ({ onClose }) => {
   const [moduleName, setModuleName] = useState('');
   const [moduleTopic, setModuleTopic] = useState('');
   const [description, setDescription] = useState('');
   const [selectedCourse, setSelectedCourse] = useState('');
   const [video, setVideo] = useState(null);
   const [picture, setPicture] = useState(null);
+
   const navigate = useNavigate();
 
   const handleVideoUpload = (e) => setVideo(e.target.files[0]);
@@ -44,14 +46,10 @@ const CreateModule = () => {
       });
 
       if (response.data.success) {
-        const moduleId = response.data.module_id; // Assuming backend returns `module_id`
-        if (moduleId) {
-          alert("Module created successfully!");
-          navigate(`/createposttest/${moduleId}`);
-        } else {
-          alert("Error: Module ID is undefined.");
-          console.error("Module ID is undefined:", response.data);
-        }
+        alert("Module created successfully!");
+        if (onClose) onClose(); // Call the onClose callback to close the modal
+
+        navigate('/modulelist'); // Navigate to InstructorDashboard
       } else {
         alert("Error creating module: " + (response.data.message || "Unknown error"));
       }
@@ -97,13 +95,21 @@ const CreateModule = () => {
           accept="image/*"
           required
         />
-        <input
-          type="text"
+        <select
+          className="styled-select"
+          name="program"
           value={selectedCourse}
           onChange={(e) => setSelectedCourse(e.target.value)}
-          placeholder="Program"
           required
-        />
+        >
+          <option value="">Select Program</option>
+          <option value="LET">LET</option>
+          <option value="Nursing">Nursing</option>
+          <option value="Civil Service">Civil Service</option>
+          <option value="OET">OET</option>
+          <option value="UPCAT">UPCAT</option>
+        </select>
+        
         <button type="submit">Create Module</button>
       </form>
     </div>

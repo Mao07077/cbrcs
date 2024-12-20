@@ -9,6 +9,10 @@ const CreatePostTest = () => {
         { question: '', options: ['', '', '', ''], correctAnswer: '' },
     ]);
     const [title, setTitle] = useState('');
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [createdQuestions, setCreatedQuestions] = useState(null); // New state variable
+    const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
+    const [isConfirmationOpen, setIsConfirmationOpen] = useState(false); // Confirmation modal visibility state
     const navigate = useNavigate();
 
     const handleQuestionChange = (index, value) => {
@@ -36,6 +40,19 @@ const CreatePostTest = () => {
         ]);
     };
 
+    const handleNextQuestion = () => {
+        if (currentQuestionIndex === questions.length - 1) {
+            addQuestion();
+        }
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+    };
+
+    const handlePreviousQuestion = () => {
+        if (currentQuestionIndex > 0) {
+            setCurrentQuestionIndex(currentQuestionIndex - 1);
+        }
+    };
+
     const handleSubmit = async () => {
         // Validation
         if (!title || questions.some((q) => !q.question || q.options.some((o) => !o))) {
@@ -60,11 +77,22 @@ const CreatePostTest = () => {
             );
             console.log('Response:', response.data);
             alert('Post-test created successfully!');
-            navigate(`/module/${id}`); // Redirect to module page
+            setCreatedQuestions(postData.questions); // Store created questions
+            setIsModalOpen(true); // Open the modal
+            // navigate(`/module/${id}`); // Redirect to module page (optional)
         } catch (error) {
             console.error('Error response:', error.response || error.message);
             alert('Error creating post-test: ' + (error.response?.data?.detail || error.message));
         }
+    };
+
+    const handleConfirmSubmit = () => {
+        setIsConfirmationOpen(true);
+    };
+
+    const confirmSubmit = () => {
+        setIsConfirmationOpen(false);
+        handleSubmit();
     };
 
     return (
@@ -78,42 +106,92 @@ const CreatePostTest = () => {
                 placeholder="Post-Test Title"
             />
 
-            {questions.map((question, qIndex) => (
-                <div key={qIndex} className="question">
+            <div className="question">
+                <input
+                    type="text"
+                    value={questions[currentQuestionIndex].question}
+                    onChange={(e) => handleQuestionChange(currentQuestionIndex, e.target.value)}
+                    placeholder={`Question ${currentQuestionIndex + 1}`}
+                />
+
+                {questions[currentQuestionIndex].options.map((option, oIndex) => (
                     <input
+                        key={oIndex}
                         type="text"
-                        value={question.question}
-                        onChange={(e) => handleQuestionChange(qIndex, e.target.value)}
-                        placeholder={`Question ${qIndex + 1}`}
+                        value={option}
+                        onChange={(e) => handleOptionChange(currentQuestionIndex, oIndex, e.target.value)}
+                        placeholder={`Option ${oIndex + 1}`}
                     />
+                ))}
 
-                    {question.options.map((option, oIndex) => (
-                        <input
-                            key={oIndex}
-                            type="text"
-                            value={option}
-                            onChange={(e) => handleOptionChange(qIndex, oIndex, e.target.value)}
-                            placeholder={`Option ${oIndex + 1}`}
-                        />
+                {/* Dropdown for selecting the correct answer */}
+                <select
+                    value={questions[currentQuestionIndex].correctAnswer}
+                    onChange={(e) => handleCorrectAnswerChange(currentQuestionIndex, e.target.value)}
+                >
+                    <option value="">Select Correct Answer</option>
+                    {questions[currentQuestionIndex].options.map((option, oIndex) => (
+                        <option key={oIndex} value={option}>
+                            {option}
+                        </option>
                     ))}
+                </select>
+            </div>
 
-                    {/* Dropdown for selecting the correct answer */}
-                    <select
-                        value={question.correctAnswer}
-                        onChange={(e) => handleCorrectAnswerChange(qIndex, e.target.value)}
-                    >
-                        <option value="">Select Correct Answer</option>
-                        {question.options.map((option, oIndex) => (
-                            <option key={oIndex} value={option}>
-                                {option}
-                            </option>
+            <button onClick={handlePreviousQuestion} disabled={currentQuestionIndex === 0}>
+                Previous Question
+            </button>
+            <button onClick={handleNextQuestion}>
+                Next Question
+            </button>
+            <button onClick={handleConfirmSubmit}>Submit Post-Test</button>
+
+             
+ 
+
+            {isModalOpen && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h2>All Questions</h2>
+                        {createdQuestions.map((q, index) => (
+                            <div key={index} className="created-question">
+                                <h3>Question {index + 1}</h3>
+                                <p>{q.question}</p>
+                                <ul>
+                                    {q.options.map((option, oIndex) => (
+                                        <li key={oIndex}>{option}</li>
+                                    ))}
+                                </ul>
+                                <p>Correct Answer: {q.correctAnswer}</p>
+                            </div>
                         ))}
-                    </select>
+                        <button onClick={() => setIsModalOpen(false)}>Close</button>
+                    </div>
                 </div>
-            ))}
+            )}
 
-            <button onClick={addQuestion}>Add Another Question</button>
-            <button onClick={handleSubmit}>Submit Post-Test</button>
+            {isConfirmationOpen && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h2>Confirm Post-Test</h2>
+                        <p>Are you sure you want to submit the post-test with the following questions?</p>
+                        {questions.map((q, index) => (
+                            <div key={index} className="created-question">
+                                <h3>Question {index + 1}</h3>
+                                <p>{q.question}</p>
+                                <ul>
+                                    {q.options.map((option, oIndex) => (
+                                        <li key={oIndex}>{option}</li>
+                                    ))}
+                                </ul>
+                                <p>Correct Answer: {q.correctAnswer}</p>
+                            </div>
+                        ))}
+                        <button onClick={confirmSubmit}>Confirm</button>
+                        <button onClick={() => setIsConfirmationOpen(false)}>Cancel</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

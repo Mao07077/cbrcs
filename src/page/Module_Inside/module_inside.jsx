@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // Ensure React Router is properly set up
 import './module_inside.css';
 import Header from '../../Components/Header'; // Import the Header component
+import Instructor_Header from '../../Components/Instructor_Header'; // Import the Instructor_Header component
 
 const ModuleInside = () => {
   const [module, setModule] = useState(null); // Store the module data
   const [error, setError] = useState(null); // Store any errors
   const [timeSpent, setTimeSpent] = useState(0); // Track time spent on module in seconds
+  const [isInstructor, setIsInstructor] = useState(false); // Manage instructor mode
   const { id } = useParams(); // Extract the module ID from the URL if available
   const navigate = useNavigate(); // Navigation hook
 
@@ -53,6 +55,14 @@ const ModuleInside = () => {
     };
   }, [id]); // Re-fetch data when the ID changes
 
+  useEffect(() => {
+    // Check user role from local storage
+    const userRole = localStorage.getItem('userRole');
+    if (userRole === 'instructor') {
+      setIsInstructor(true);
+    }
+  }, []);
+
   // Error handling
   if (error) {
     return <div className="error">Error: {error}</div>;
@@ -70,8 +80,8 @@ const ModuleInside = () => {
     <div>
       {/* Header Section */}
       <header className="header">
-                <Header />
-            </header>
+        {isInstructor ? <Instructor_Header /> : <Header />}
+      </header>
       {/* Main Content */}
       <div className="container">
         <main>
@@ -129,6 +139,16 @@ const ModuleInside = () => {
               <button onClick={() => navigate(`/post-test/${module._id}`, { state: { timeSpent } })}>Take Test</button>
             </div>
           </section>
+
+          {/* Instructor View Section */}
+          {isInstructor && (
+            <section className="instructor-view">
+              <h2>Instructor View</h2>
+              <p>Here you can add additional controls or information for the instructor.</p>
+              {/* Example: Edit Module Button */}
+              <button onClick={() => navigate(`/createposttest/${module._id}`)}>Create Posttest</button>
+            </section>
+          )}
         </main>
       </div>
     </div>
@@ -136,3 +156,4 @@ const ModuleInside = () => {
 };
 
 export default ModuleInside;
+

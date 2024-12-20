@@ -6,6 +6,7 @@ import MailIcon from '../icon/Mail.png';
 import StudentsIcon from '../icon/Students.png';
 import logoIcon from '../icon/logo.png';
 
+
  
 const SidebarItem = ({ icon, text, onClick }) => (
   <li>
@@ -48,6 +49,12 @@ const InstructorHeader = () => {
       </li>
       <li>
         <buttonss className="Sidebar-item" onClick={() => handleNavigation('studentlist')}>
+          <img src={StudentsIcon} alt="Students Icon" className="sidebar-icon" />
+          <span>StudentList</span>
+        </buttonss>
+      </li>
+      <li>
+        <buttonss className="Sidebar-item" onClick={() => handleNavigation('ModuleList')}>
           <img src={StudentsIcon} alt="Students Icon" className="sidebar-icon" />
           <span>StudentList</span>
         </buttonss>

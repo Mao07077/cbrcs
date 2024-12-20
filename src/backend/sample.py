@@ -17,7 +17,7 @@ def create_prompt(input_text):
         "4. Each wrong answers should be related to the correct answer.\n"
     )
 
-input_response = create_prompt(" Kabaliwan at paglulustay ang inyong ginagawa taon-taon. Higit na marami ang maralitang nangangailangan ng salapi at dunong. Ang nagsasalita ay")
+input_response = create_prompt(" 	An association wherein the name of something is substituted by something that represents it.")
 generated_response = ollama.generate(model='llama3.2', prompt=input_response, format=FormatResponse.model_json_schema())
 print(generated_response.response)
  

@@ -53,7 +53,8 @@ body {
 .Signup-container form input[type="email"],
 .Signup-container form input[type="password"],
 .Signup-container form input[type="number"],
-.Signup-container form input[type="date"] {
+.Signup-container form input[type="date"],
+.Signup-container from select {
     width: 140px;
     padding: 10px;
     margin: 4% 0 3% 0; /* Adjusted margins */
@@ -234,5 +235,29 @@ form a:hover {
     form input[type="submit"] {
         padding: 8px;
         font-size: 85%;
+    }
+}
+.styled-select {
+    width: 140px;
+    padding: 10px;
+    margin: 4% 0 3% 0; /* Same as other inputs */
+    border: none;
+    border: 3px solid #ccc;
+    background-color: transparent;
+    outline: none;
+    font-size: 16px;
+    display: block; /* Ensure it aligns correctly */
+    border-radius: 4px; /* Optional: adds a subtle curve */
+    appearance: none; /* Removes default browser styling */
+}
+
+.styled-select:focus {
+    border-bottom: 2px solid #002f87; /* Match focus style */
+}
+
+/* Add padding for alignment in small devices */
+@media (max-width: 480px) {
+    .styled-select {
+        width: 70%;
     }
 }

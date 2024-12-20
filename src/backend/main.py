@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, File, UploadFile, Form
+from fastapi import FastAPI, HTTPException, File, UploadFile,Query, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr
@@ -6,6 +6,7 @@ from starlette.middleware.trustedhost import TrustedHostMiddleware
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from fastapi import APIRouter
+from datetime import datetime
 import bcrypt
 import os
 import random
@@ -19,6 +20,8 @@ from typing import Optional
 from bson import ObjectId
 from bson.errors import InvalidId 
 from typing import Any
+import ollama
+
 
 
  # Import InvalidId to handle ObjectId errors
@@ -32,6 +35,7 @@ EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT"))
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+COLLECTION_NAME = "userinfo"
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -63,6 +67,8 @@ post_test_collection = db.get_collection("post_tests")  # Define 'posttests' col
 collection = db[COLLECTION_NAME]  # Define the collection variable
 scores_collection = db["scores"]
 users_collection = db[COLLECTION_NAME]
+request_collection = db["requests"]
+
 
 # Serve static files for images and videos
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
@@ -79,10 +85,19 @@ class SignupData(BaseModel):
     password: str
     program: str
     id_number: str
+    role: str
 
+class FormatResponse(BaseModel):
+  ReviseQuestion: str
+  correctAnswer: str
+  wrongAnswerFirst: str
+  wrongAnswerSecond: str
+  wrongAnswerThird: str
+  
 class LoginData(BaseModel):
     idNumber: str
     password: str
+
 
 class ForgotPasswordData(BaseModel):
     id_number: str
@@ -137,16 +152,59 @@ class ScoreData(BaseModel):
     total_questions: int
     user_answers: Dict[str, str]
 class UserSettings(BaseModel):
-    firstname: str
-    middlename: str
-    lastname: str
-    suffix: str
-    birthdate: str
-    email: str
-    program: str
-    username: str
-    password: str = None  # Optional for security reasons 
+  firstname: Optional[str] = None
+  middlename: Optional[str] = None
+  lastname: Optional[str] = None
+  suffix: Optional[str] = None
+  birthdate: Optional[str] = None
+  email: Optional[str] = None
+  program: Optional[str] = None
+  username: Optional[str] = None
+  password: Optional[str] = None
+class Module(BaseModel):
+    id: str
+    title: str
+    image_url: str
+    instructor_id: str    
+class Account(BaseModel):
+    id: str
+    profile: str
+    accountNo: str
+    name: str
+    role: str
+class AccountResponse(BaseModel):
+    id: str
+    profile: str
+    accountNo: str
+    name: str
+    role: str  
 
+class AccountResponses(BaseModel):
+    id: str
+    profile: str
+     
+    studentNo: str
+    name: str
+    role: str  
+    program: str
+     
+class ParaphraseRequest(BaseModel):
+    input: str
+
+class ParaphraseResponse(BaseModel):
+    paraphrased: str
+
+class QuestionWithAnswers(BaseModel):
+    question: str
+    options: List[str]
+    correctAnswer: str
+    wrongAnswers: List[str]  # Add wrong answers
+
+class PostTestResponse(BaseModel):
+    post_test_id: str
+    module_id: str
+    title: str
+    questions: List[QuestionWithAnswers]  # Update to use the new model
 
 # Helper functions
 def hash_password(password: str) -> str:
@@ -176,7 +234,23 @@ def get_current_user(id_number: str):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
+def create_prompt(input_text: str) -> str:
+    return (
+        f"You are a helpful assistant. Please paraphrase the following question REMOVE THE INTRODUCTION THATS SAYING ITS PARAPHRASE I KNOW IT IS,    REMOVE THE NUMBERING REMOVE THE NOTE I DONT NEED THAT:, DONT SAY THE WORD IN THE CORRECT ANSWER IN THE QUESTIONS\n"
+        f"{input_text}\n"
+        f"Keep the meaning intact and maintain proper grammar."
+ 
+    )
 
+def get_wrong_answers(correct_answer: str) -> List[str]:
+     
+    try:
+        response = ollama.generate(model='llama3.2', prompt=prompt)
+        wrong_answers = response.response.strip().split("\n")
+        return wrong_answers[:3]  # Ensure only three wrong answers are returned
+    except Exception as e:
+        logging.error(f"Failed to generate wrong answers: {e}")
+        return ["Option A", "Option B", "Option C"]  # Default wrong answers
 # User management endpoints
 @app.post("/api/signup")
 async def signup(data: SignupData):
@@ -191,9 +265,12 @@ async def signup(data: SignupData):
 
 @app.post("/api/login")
 async def login(data: LoginData):
+ 
     user = collection.find_one({"id_number": data.idNumber})
     if user and verify_password(data.password, user["password"]):
-        return {"success": True, "message": "Login successful!"}
+        # Retrieve user's role for frontend redirection
+        role = user.get("role", "unknown").lower()
+        return JSONResponse({"success": True, "message": "Login successful!", "role": role})
     else:
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
@@ -296,39 +373,48 @@ async def create_module(
     except Exception as e:
         logging.error(f"Error creating module: {e}")
         raise HTTPException(status_code=500, detail="Module creation failed")
-
 @app.get("/api/modules")
-async def get_modules():
-    """
-    Fetch all modules.
-    """
-    modules = modules_collection.find()
-    return [{"_id": str(module["_id"]), "title": module["title"], "image_url": module["image_url"]} for module in modules]
+async def get_modules(id_number: str = Query(None), program: str = Query(None)):
+  """
+  Fetch all modules with optional filters.
+  """
+  query = {}
+  if id_number:
+    query["id_number"] = id_number
+  if program:
+    query["program"] = program
+
+  modules = modules_collection.find(query)
+  return [{"_id": str(module["_id"]), "title": module["title"], "image_url": module["image_url"], "id_number": module["id_number"], "program": module["program"]} for module in modules]
+
 
 
 @app.get("/api/modules/{module_id}")
 async def get_module(module_id: str):
-    """
-    Fetch a specific module by its ID.
-    """
-    try:
-        module = modules_collection.find_one({"_id": ObjectId(module_id)})
-        if module:
-            return {
-                "_id": str(module["_id"]),  # Convert ObjectId to string
-                "title": module["title"],
-                "description": module.get("description", ""),
-                "topic": module.get("topic", ""),
-                "program": module.get("program", ""),
-                "image_url": module["image_url"],
-                "video_url": module["video_url"]
-            }
-        else:
-            raise HTTPException(status_code=404, detail="Module not found")
-    except InvalidId:
-        raise HTTPException(status_code=400, detail="Invalid module ID format")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching module: {e}")
+  """
+  Fetch a specific module by its ID.
+  """
+  try:
+    module = modules_collection.find_one({"_id": ObjectId(module_id)})
+    if module:
+      return {
+        "_id": str(module["_id"]),  # Convert ObjectId to string
+        "title": module["title"],
+        "description": module.get("description", ""),
+        "topic": module.get("topic", ""),
+        "program": module.get("program", ""),
+        "image_url": module["image_url"],
+        "video_url": module["video_url"],
+        "next_title": module.get("next_title", ""),
+        "next_description": module.get("next_description", ""),
+        "next_id": str(module.get("next_id", "")) if module.get("next_id") else None
+      }
+    else:
+      raise HTTPException(status_code=404, detail="Module not found")
+  except InvalidId:
+    raise HTTPException(status_code=400, detail="Invalid module ID format")
+  except Exception as e:
+    raise HTTPException(status_code=500, detail=f"Error fetching module: {e}")
 
 @app.post("/api/post-tests")
 async def create_post_test(post_test: PostTestRequest):
@@ -417,25 +503,33 @@ async def create_posttest(module_id: str, post_test_request: PostTestRequest):
         "message": "Post-test created successfully!",
         "post_test_id": str(result.inserted_id)  # Return the inserted post-test's ID
     }
-@router.get("/api/post-test/{module_id}")
+@app.get("/api/post-test/{module_id}", response_model=PostTestResponse)
 async def get_post_test(module_id: str):
-    """
-    Fetch the post-test for the given module_id.
-    """
-    try:
-        post_test = post_test_collection.find_one({"module_id": module_id})
-        if not post_test:
-            raise HTTPException(status_code=404, detail="Post-test not found for this module")
-        
-        return {
-            "post_test_id": str(post_test["_id"]),
-            "module_id": post_test["module_id"],
-            "title": post_test["title"],
-            "questions": post_test["questions"]
-        }
-    except Exception as e:
-        logging.error(f"Error fetching post-test for module {module_id}: {e}")
-        raise HTTPException(status_code=500, detail="Error fetching post-test")
+    logging.info(f"Fetching post-test for module_id: {module_id}")
+    
+    post_test = post_test_collection.find_one({"module_id": module_id})
+    if not post_test:
+        logging.error(f"Post test not found for module_id: {module_id}")
+        raise HTTPException(status_code=404, detail="Post test not found")
+
+    questions_with_answers = []
+    for question in post_test['questions']:
+        wrong_answers = get_wrong_answers(question['correctAnswer'])
+        questions_with_answers.append(QuestionWithAnswers(
+            question=question['question'],
+            options=question['options'],
+            correctAnswer=question['correctAnswer'],
+            wrongAnswers=wrong_answers
+        ))
+
+    logging.info(f"Successfully fetched post-test: {post_test['title']}")
+    
+    return PostTestResponse(
+        post_test_id=str(post_test['_id']),
+        module_id=post_test['module_id'],
+        title=post_test['title'],
+        questions=questions_with_answers
+    )
 
 # Submit Post-Test
 @router.post("/api/post-test/submit/{module_id}")
@@ -560,42 +654,207 @@ async def get_dashboard(id_number: str):
 
 @app.get("/user/settings/{id_number}")
 async def get_user_settings(id_number: str):
-    user = collection.find_one({"id_number": id_number})
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+  user = collection.find_one({"id_number": id_number})
+  if not user:
+    raise HTTPException(status_code=404, detail="User not found")
+  
+  return {
+    "success": True,
+    "data": {
+      "firstname": user.get("firstname", ""),
+      "middlename": user.get("middlename", ""),
+      "lastname": user.get("lastname", ""),
+      "suffix": user.get("suffix", ""),
+      "birthdate": user.get("birthdate", ""),
+      "email": user.get("email", ""),
+      "program": user.get("program", ""),
+      "username": user.get("username", ""),
+    },
+  }
+
+@app.post("/user/settings/request/{id_number}")
+async def request_user_settings_update(id_number: str, user_settings: UserSettings):
+    update_data = user_settings.dict(exclude_unset=True)  # Extract only the fields that have been updated
+
+    # If password is provided, hash it (you can add your hashing logic here)
+    if "password" in update_data and update_data["password"]:
+        update_data["password"] = hash_password(update_data["password"])  # Make sure to implement hash_password
+    else:
+        update_data.pop("password", None)  # Remove the password if it is not provided or is empty
+
+    # Create the request document
+    request_data = {
+        "id_number": id_number,
+        "update_data": update_data,
+        "status": "pending",  # Mark as pending until admin processes it
+        "created_at": datetime.utcnow(),  # Add a timestamp of when the request was made
+    }
+
+    # Insert the request into the 'requests' collection
+    result = request_collection.insert_one(request_data)
+    
+    if result.inserted_id:
+        return {"success": True, "message": "Your request has been sent to the admin for review."}
+    else:
+        raise HTTPException(status_code=500, detail="Error submitting the request")
     
     return {
         "success": True,
-        "data": {
-            "firstname": user.get("firstname", ""),
-            "middlename": user.get("middlename", ""),
-            "lastname": user.get("lastname", ""),
-            "suffix": user.get("suffix", ""),
-            "birthdate": user.get("birthdate", ""),
-            "email": user.get("email", ""),
-            "program": user.get("program", ""),
-            "username": user.get("email", ""),  # Assuming username is the same as email
-        },
+        "message": "User settings update request sent successfully",
+        "changes": changes  # Return the changes made
     }
+@app.get("/admin/requests")
+async def get_requests():
+    requests = list(request_collection.find({}, {"_id": 1, "id_number": 1, "update_data": 1}))
+    for request in requests:
+        request["_id"] = str(request["_id"])  # Convert ObjectId to string for frontend compatibility
+    return {"success": True, "data": requests} 
 
-# Route to update user settings
-@app.put("/user/settings/{id_number}")
-async def update_user_settings(id_number: str, user_settings: UserSettings):
-    update_data = user_settings.dict(exclude_unset=True)
+@app.post("/admin/requests/accept/{request_id}")
+async def accept_request(request_id: str):
+    try:
+        # Validate ObjectId
+        if not ObjectId.is_valid(request_id):
+            raise HTTPException(status_code=400, detail="Invalid request ID")
+
+        # Fetch the request details
+        request = request_collection.find_one({"_id": ObjectId(request_id)})
+        if not request:
+            raise HTTPException(status_code=404, detail="Request not found")
+
+        # Extract the firstname and lastname from the 'update_data' field
+        firstname = request.get("update_data", {}).get("firstname", "Unknown")
+        lastname = request.get("update_data", {}).get("lastname", "Unknown")
+
+        # Combine firstname and lastname for full name
+        full_name = f"{firstname} {lastname}".strip()
+
+        # Debugging: Log the full name
+        print(f"Full Name: {full_name}")
+
+        # Update user information based on the request
+        id_number = request.get("id_number")
+        update_data = {field: request["update_data"][field] for field in request["update_data"] if field not in ["_id", "id_number"]}
+        users_collection.update_one({"id_number": id_number}, {"$set": update_data})
+
+        # Remove the request after applying changes
+        request_collection.delete_one({"_id": ObjectId(request_id)})
+
+        return {
+            "success": True,
+            "detail": "Changes applied successfully",
+            "updated_name": full_name,
+        }
+    except Exception as e:
+        return {"success": False, "detail": str(e)}
+
+
+@app.delete("/admin/requests/decline/{request_id}")
+async def decline_request(request_id: str):
+    request = request_collection.find_one({"_id": ObjectId(request_id)})
+    if not request:
+        return {"success": False, "detail": "Request not found"}
+
+    # Remove the request without applying changes
+    request_collection.delete_one({"_id": ObjectId(request_id)})
+    return {"success": True, "detail": "Request declined"}
+
+@app.get("/api/accounts", response_model=List[AccountResponse])
+async def get_accounts(
+    search_query: str = Query("", alias="searchQuery"),
+    role_filter: str = Query("", alias="roleFilter"),
+):
+    """Fetch accounts from the userinfo collection with optional search and filtering."""
+    query = {}
+    if search_query:
+        query["$or"] = [
+            {"id_number": {"$regex": search_query, "$options": "i"}},
+            {"firstname": {"$regex": search_query, "$options": "i"}},
+            {"lastname": {"$regex": search_query, "$options": "i"}},
+        ]
+    if role_filter:
+        query["role"] = {"$regex": role_filter, "$options": "i"}
+
+    users = users_collection.find(query)
+    return [
+        {
+            "id": str(user["_id"]),
+            "profile": user.get("profile", "N/A"),
+            "accountNo": user["id_number"],
+            "name": f"{user['firstname']} {user['lastname']}",
+            "role": user["role"],
+        }
+        for user in users
+    ]
+
+@app.post("/api/accounts", response_model=AccountResponse)
+async def create_account(account: Account):
+    """Create a new account in the userinfo collection."""
+    new_user = {
+        "profile": account.profile,
+        "id_number": account.accountNo,
+        "firstname": account.name.split(" ")[0],
+        "lastname": " ".join(account.name.split(" ")[1:]),
+        "role": account.role,
+    }
+    result = users_collection.insert_one(new_user)
+    return {**account.dict(), "id": str(result.inserted_id)}
+
+@app.get("/api/accounts", response_model=list[Account])
+async def get_accounts():
+    try:
+        accounts = []
+        for user in users_collection.find():
+            account = {
+                "id": str(user["_id"]),
+                "profile": user.get("profile", ""),
+                "accountNo": user.get("id_number", ""),  # Assuming id_number is the account number
+                "name": f"{user.get('firstname', '')} {user.get('lastname', '')}",
+                "role": user.get("role", ""),
+            }
+            accounts.append(account)
+        return accounts
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching accounts: {e}")
+
+# Route to delete an account
+@app.delete("/api/accounts/{account_id}")
+async def delete_account(account_id: str):
+    try:
+        result = users_collection.delete_one({"_id": ObjectId(account_id)})
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Account not found")
+        return {"message": "Account deleted successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error deleting account: {e}")
     
-    # Hash the password if it is being updated
-    if "password" in update_data and update_data["password"]:
-        update_data["password"] = hash_password(update_data["password"])
-    else:
-        # Remove password from update_data if it is not being updated
-        update_data.pop("password", None)
+@app.get("/students", response_model=List[AccountResponses])
+async def get_students():
+    """Fetch accounts with the role 'Student'."""
+    try:
+        students = list(users_collection.find({"role": {"$regex": "^student$", "$options": "i"}}))
+        result = []
+        for student in students:
+            result.append({
+                "id": str(student["_id"]),
+                "profile": student.get("profile", "N/A"),
+                "studentNo": student.get("id_number", "N/A"),
+                "name": f"{student.get('firstname', '')} {student.get('lastname', '')}".strip(),
+                "program": student.get("program", "N/A"),
+                "role": str(student["role"]),
+            })
+        return result
+    except Exception as e:
+        logging.error(f"Error fetching students: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
     
-    result = collection.update_one(
-        {"id_number": id_number},
-        {"$set": update_data}
-    )
-    
-    if result.matched_count == 0:
-        raise HTTPException(status_code=404, detail="User not found")
-    
-    return {"success": True, "message": "User settings updated successfully"}
+@app.post("/api/paraphrase", response_model=ParaphraseResponse)
+async def paraphrase(request: ParaphraseRequest):
+    try:
+        prompt = create_prompt(request.input)
+        response = ollama.generate(model='llama3.2', prompt=prompt)
+        return {"paraphrased": response.response.strip()}
+    except Exception as e:
+        logging.error(f"Paraphrase error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to paraphrase input")
+ 

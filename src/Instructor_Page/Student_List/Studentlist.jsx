@@ -1,32 +1,57 @@
-import React,{ useState } from "react";
+import React, { useState, useEffect } from "react";
 import Styles from "./StudentTable.module.css"; 
-import { Link } from "react-router-dom";
 import InstructorHeader from "../../Components/Instructor_Header";
+import axios from 'axios';
+import DashboardModal from '../../page/Dashboard/DashboradModal';
  
-
 function StudentTable() {
   const [searchQuery, setSearchQuery] = useState(""); // Search query
-  const [students] = useState([
-    { profile: "👤", studentNo: "20231001", name: "John Doe", program: "Computer Science" },
-    { profile: "👤", studentNo: "20231002", name: "Jane Smith", program: "Information Technology" },
-    { profile: "👤", studentNo: "20231003", name: "Mark Lee", program: "Software Engineering" },
-    { profile: "👤", studentNo: "20231004", name: "Emily Davis", program: "Data Science" },
-    { profile: "👤", studentNo: "20231005", name: "Chris Brown", program: "Cybersecurity" },
-  ]);
+  const [students, setStudents] = useState([]); // Student list
+  const [selectedStudent, setSelectedStudent] = useState(null); // Selected student for the dashboard modal
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
 
+  useEffect(() => {
+    // Fetch students from the backend
+    axios
+      .get("http://localhost:8000/students")
+      .then((response) => {
+        // Map backend response to frontend structure
+        const mappedStudents = response.data.map((student) => ({
+          studentNo: student.studentNo,
+          name: student.name,
+          profile: student.profile,
+          program: student.program,
+        }));
+        setStudents(mappedStudents);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the students!", error);
+      });
+  }, []);
+
+  // Filter students based on search query
   const filteredStudents = students.filter(
     (student) =>
       student.studentNo.includes(searchQuery) ||
       student.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleViewDashboard = (student) => {
+    setSelectedStudent(student.studentNo);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedStudent(null);
+  };
+
   return (
     <>
       {/* Header */}
       <header className="header">
-                <InstructorHeader/>
-            </header>
-
+        <InstructorHeader />
+      </header>
 
       {/* Main Content */}
       <div className={Styles.List_Container}>
@@ -34,9 +59,6 @@ function StudentTable() {
         <div className="greeting-studentlist">
           <h1>Students List</h1>
         </div>
-
-        {/* Sidebar */}
-        
 
         {/* Student List */}
         <div className="container">
@@ -55,6 +77,7 @@ function StudentTable() {
                 <th>Student No.</th>
                 <th>Student Name</th>
                 <th>Program</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -65,11 +88,19 @@ function StudentTable() {
                     <td>{student.studentNo}</td>
                     <td>{student.name}</td>
                     <td>{student.program}</td>
+                    <td>
+                      <button
+                        className="view-dashboard-btn"
+                        onClick={() => handleViewDashboard(student)}
+                      >
+                        View Dashboard
+                      </button>
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4" className="no-students">
+                  <td colSpan="5" className="no-students">
                     No students found.
                   </td>
                 </tr>
@@ -78,6 +109,14 @@ function StudentTable() {
           </table>
         </div>
       </div>
+
+      {/* Dashboard Modal */}
+      {isModalOpen && (
+        <DashboardModal
+          studentId={selectedStudent}
+          onClose={closeModal}
+        />
+      )}
     </>
   );
 }

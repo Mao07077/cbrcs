@@ -8,6 +8,9 @@ const ModuleDashboard = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate(); // Initialize useNavigate for navigation
 
+  // Retrieve the user's program from local storage
+  const userProgram = localStorage.getItem('userProgram') || 'All Programs';
+
   useEffect(() => {
     // Fetch module information from the server
     fetch('http://localhost:8000/api/modules') // Updated URL to include full path
@@ -33,6 +36,8 @@ const ModuleDashboard = () => {
     navigate(`/module/${moduleId}`); // Assuming each module has a unique _id
   };
 
+  const filteredModules = modules.filter(module => module.program === userProgram);
+
   return (
     <div>
        {/* Header */}
@@ -40,17 +45,21 @@ const ModuleDashboard = () => {
                 <Header />
             </header>
       <div className="module-container">
+        
         <div className="notheader">
           <h1>Modules</h1>
         </div>
         <div className="instructions">
           Instructions here
         </div>
+        <div className="user-program">
+          <p>Current Program: {userProgram}</p>
+        </div>
         <div className="module-grid">
           {error ? (
             <p>{`Error: ${error}`}</p> // Display error if there is one
-          ) : modules.length > 0 ? (
-            modules.map((module) => (
+          ) : filteredModules.length > 0 ? (
+            filteredModules.map((module) => (
               <div className="module" key={module._id}>
                 <h3>{module.title}</h3>
                 {/* Prepend the backend URL */}

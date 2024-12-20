@@ -16,23 +16,37 @@ const Login = () => {
         try {
             const response = await axios.post('http://127.0.0.1:8000/api/login', { idNumber, password });
             if (response.data.success) {
-                // Save the logged-in user's ID number to localStorage
+                // Save the user's program, ID number, and role to localStorage
                 localStorage.setItem('userIdNumber', idNumber);
+                if (response.data.program) {
+                    localStorage.setItem('userProgram', response.data.program);
+                } else {
+                    console.warn('Program not available for this user.');
+                }
+                localStorage.setItem('userRole', response.data.role);
 
-                // Redirect to the module page upon successful login
-                window.location.href = '/module';
+                // Redirect based on the role of the account
+                const role = response.data.role;
+                if (role === 'student') {
+                    window.location.href = '/module';
+                } else if (role === 'admin') {
+                    window.location.href = '/admin_dashboard';
+                } else if (role === 'instructor') {
+                    window.location.href = '/instructor_dashboard';
+                } else {
+                    setError('Unknown role');
+                }
             } else {
                 setError('Invalid ID number or password');
             }
         } catch (error) {
-            // Log the error for debugging purposes
             console.error('Login error:', error);
             setError('An error occurred. Please try again.');
         } finally {
             setIsLoading(false);
         }
     };
-
+    
     return (
         <div>
             {/* Header */}

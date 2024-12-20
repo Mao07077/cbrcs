@@ -22,6 +22,7 @@ import InstructorHeader from './Components/Instructor_Header';
 import Accounts from './Admin_Page/Accounts/Accounts';
 import Request from './Admin_Page/Request/Request';
 import Adminpost from './Admin_Page/AdminPost/AdminPost';
+import ModuleList from './Instructor_Page/ModuleList/ModuleList';
 
 
 
@@ -54,6 +55,7 @@ function App() {
             <Route path="/Accounts" element={<Accounts />} />
             <Route path="/Request" element={<Request />} />
             <Route path="/Adminpost" element={<Adminpost />} />
+            <Route path="/ModuleList" element={<ModuleList/>}/>
           </Routes>
         
       </BrowserRouter>

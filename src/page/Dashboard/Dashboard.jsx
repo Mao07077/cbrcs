@@ -22,7 +22,6 @@ ChartJS.register(
     Legend
 );
 
-
 // Pretest Score Chart Component
 const PretestScoreChart = ({ scores }) => {
     const data = {
@@ -90,7 +89,7 @@ const PostTestScoreBarChart = ({ postTestScores }) => {
 };
 
 // Main Dashboard Component
-const Dashboard = () => {
+const Dashboard = ({ isModal = false }) => {
     const [idNumber, setIdNumber] = useState(localStorage.getItem('userIdNumber') || '');
     const [data, setData] = useState(null);
     const [scores, setScores] = useState([]);
@@ -133,15 +132,16 @@ const Dashboard = () => {
 
     return (
         <main className={styles.Main_dashboard}>
-            <header className="header">
-                <Header />
-            </header>
+            {!isModal && (
+                <header className="header">
+                    <Header />
+                </header>
+            )}
             <div className={styles.Dashboardsign}>
                 <h1>Dashboard</h1>
                 <div className={styles.lines}></div>
             </div>
             <div className={styles.sidebar_combined}>
-                
                 <div className={styles.dashboard_container}>
                     <section className={styles.performance_overview}>
                         <div className={styles.progress_overview}>
