@@ -90,7 +90,7 @@ const Settings = () => {
         <Header />
       </header>
       <div className="settings-container">
-        <div className="settings-section">
+        
           {requestSent ? (
             <div className="request-sent-message">
               Your request has been sent to the admin.
@@ -202,7 +202,6 @@ const Settings = () => {
           )}
         </div>
       </div>
-    </div>
   );
 };
 

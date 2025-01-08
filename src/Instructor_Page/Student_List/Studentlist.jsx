@@ -56,19 +56,19 @@ function StudentTable() {
       {/* Main Content */}
       <div className={Styles.List_Container}>
         {/* Greeting */}
-        <div className="greeting-studentlist">
+        <div className={Styles.Greeting_Studentlist}>
           <h1>Students List</h1>
         </div>
 
         {/* Student List */}
-        <div className="container">
+        <div className={Styles.Container}>
           <h2>Search:</h2>
           <input
             type="text"
             placeholder="Student No. or Name"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-input"
+            className={Styles.Search_Input}
           />
           <table className="table">
             <thead>
@@ -100,7 +100,7 @@ function StudentTable() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="5" className="no-students">
+                  <td colSpan="5" className={Styles.No_Students}>
                     No students found.
                   </td>
                 </tr>

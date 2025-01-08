@@ -34,28 +34,24 @@
 
   .settings-container {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap; 
     gap: 40px; 
     justify-content: center; 
     padding: 40px; 
     margin: 40px auto; 
     height: 100%;
-    margin-top: 400px;
+    margin-top:600px;
     max-width: 100%; 
     min-height: 80vh; 
     border: 2px solid #002f87;
     border-radius: 12px; 
     background: #ffffff; 
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); 
-}
-
-.settings-section {
     flex: 1; 
     min-width: 800px; 
     padding: 30px; 
-    border: 3px solid #E0E0E0; 
     border-radius: 10px; 
-    background-color: #f9f9f9; 
 }
 
 .sec-box {
