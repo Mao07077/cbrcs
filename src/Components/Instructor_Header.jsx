@@ -1,5 +1,5 @@
  
-import React, { useState, useEffect } from 'react';
+import React, { NavDropdown, Nav, Navbar, useState, useEffect } from 'react';
 import './Instructor_Header.css';
 import Dashboard from '../icon/dashboard.png'; 
 import MailIcon from '../icon/Mail.png';
@@ -26,13 +26,18 @@ const InstructorHeader = () => {
     window.location.href = `/${route}`; // Fallback for simple routing
   };
   return (
+    <>  <header className="header">
+    <div className="header-content">
+        <div className="header-logo">
+            <img src={logoIcon} alt="logo" />
+        </div>
+        
+    </div>
+    <div className="header-logout">
+        <button onClick={() => handleNavigation('landing')}>Logout</button>
+      </div>
+    </header>
       <div className='Main_Header'>
-      <header className="header">
-          <div className="header-content">
-              <div className="header-logo">
-                  <img src={logoIcon} alt="logo" />
-              </div>
-          </div>
           <nav className="Sidebar">
     <ul>
       <li>
@@ -61,9 +66,8 @@ const InstructorHeader = () => {
       </li>
     </ul>
   </nav>  
-
-      </header>
       </div>
+      </>
       );
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-
+import Styles from "./Module.module.css";
 import InstructorHeader from '../../Components/Instructor_Header';
 
 const ModuleList = () => {
@@ -38,9 +38,9 @@ const ModuleList = () => {
             <header className="header">
                 <InstructorHeader />
             </header>
-            <div className="module-container">
+            <div className={Styles.Module_Container}>
 
-                <div className="notheader">
+                <div className={Styles.Notheader}>
                     <h1>Modules</h1>
                 </div>
                 
@@ -48,7 +48,7 @@ const ModuleList = () => {
                 <div className="user-id-number">
                     <p>Current ID Number: {userIdNumber}</p>
                 </div>
-                <div className="module-grid">
+                <div className={Styles.Module_Grid}>
                     {error ? (
                         <p>{`Error: ${error}`}</p>
                     ) : filteredModules.length > 0 ? (

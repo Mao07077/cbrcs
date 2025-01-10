@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+      display: flex;
+      flex-wrap: wrap;
+  }
+.Module_Container {
+    display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  border: 2px solid #ddd; 
+  border-radius: 8px;
+  overflow: hidden;
+  width: 80vw; 
+  height: auto; 
+  background: #ffffff;
+  margin-top: 140px;
+  margin-left: 50px ;
+}
+.Notheader {
+    padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-size: 25px;
+  font-style: initial;
+  margin: 10px 10px;
+  margin-left: 10px;
+  font-size: 1.2em;
+  border-bottom: 1px solid #333;
+  }
+.Module_Grid {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+}

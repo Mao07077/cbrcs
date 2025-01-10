@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './landing.css';
 import logoIcon from '../../icon/logo.png';
+import Header from '../../Components/Header';
 
 const Landing = () => {
     const [introText, setIntroText] = useState({ header: '', subHeader: '' });
@@ -25,12 +26,11 @@ const Landing = () => {
     }, []);
 
     return (
+        <> <header className="header">
+    <Header />
+  </header>
         <div className="main-container">
             <div>
-                <header>
-                    <div className="logo-placeholder"><img src={logoIcon} alt="logo" /></div>
-                </header>
-
                 <div className="intro-container">
                     <div className="text-container">
                         <h1>{introText.header || 'Welcome to Dr. Carl Balita Review Center Student Portal'}</h1>
@@ -86,6 +86,7 @@ const Landing = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 };
 

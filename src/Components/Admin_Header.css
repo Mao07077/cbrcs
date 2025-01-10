@@ -59,6 +59,7 @@ body {
   
   /* Adjust header content to fit properly */
   .header-content {
+    justify-content: flex-start;
     display: flex;
     width: 100%;  
     max-width: 1200px;  

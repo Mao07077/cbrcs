@@ -32,7 +32,7 @@ function App() {
     <div>
       <BrowserRouter>
           <Routes>
-          <Route path='/' element={<Landing />} />
+          <Route path='/landing' element={<Landing />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/Forgot_Password" element={<ForgotPassword />} />
           <Route path="instructor_Header"element={<InstructorHeader/>}/>

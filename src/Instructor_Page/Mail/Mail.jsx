@@ -53,7 +53,7 @@ const Email = () => {
 };
 const Mail = () => {
   return (
-    <><header className="header">
+    <><header className="Header">
         <InstructorHeader/>
       </header>
     <div className={Styles.Main_Container}>
