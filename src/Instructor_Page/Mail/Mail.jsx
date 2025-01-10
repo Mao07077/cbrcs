@@ -1,18 +1,20 @@
 import React from 'react';
-import "./Mail.css";
+import Styles from "./Mail.module.css";
 import InstructorHeader from '../../Components/Instructor_Header';
  
 
 const Email = () => {
   return (
-      <div className="email-part">
+    
+      <div className={Styles.Email_Part}>
           {/* Email List */}
-          <div className="mail-bar">
+          <div className={Styles.Mail_Bar}>
+          <h1>Mail</h1>
             <h2>Inbox</h2>
             
             {Array.from({ length: 5 }).map((_, index) => (
                 <div 
-                    className="email-item" 
+                    className={Styles.Email_Item} 
                     key={index} 
                     onClick={() => handleEmailClick(index)} // Add onClick handler
                     style={{ cursor: 'pointer' }} // Change cursor to pointer
@@ -24,24 +26,24 @@ const Email = () => {
                 </div>
               ))}
           </div>
-              <div classname="email-details">
+              <div classname={Styles.Email_Details}>
           {/* Email Content */}
           
-              <div className="proof">
+              <div className={Styles.Proof}>
                   {/* Profile and Subject Side-by-Side */}
-                  <div className="profile">
-                      <div className="avatar">👤</div>
+                  <div className={Styles.Profile}>
+                      <div className={Styles.Avatar}>👤</div>
                       <div>
                           <p><strong>Sender Name</strong></p>
                           <p>sender@example.com</p>
                       </div>
                   </div>
-                  <div className="subject">
+                  <div className={Styles.Subject}>
                       <h3>Email Subject Here</h3>
                   </div>
               </div>
               <hr />
-              <div className="content">
+              <div className={Styles.Content}>
                   <p>This is the content of the email. It can be multiple lines of text or paragraphs.</p>
               </div>
               <button type="submit-send">Send</button>
@@ -51,22 +53,21 @@ const Email = () => {
 };
 const Mail = () => {
   return (
-      <div className="mail-container">
-           <header className="header">
+    <><header className="header">
                 <InstructorHeader/>
             </header>
-
-          <div className="pagbati">
+    <div className={Styles.Main_Container}>
+          <div className={Styles.Pagbati}>
               <h1>Hi, Mike Angelo Muico</h1>
-              <div className="line"></div>
-                <h2>Mail</h2>
           </div>
            
             
           {/* Render the Email Component */}
           <Email />
       </div>
+      </>
   );
 };
+
 
 export default Mail;

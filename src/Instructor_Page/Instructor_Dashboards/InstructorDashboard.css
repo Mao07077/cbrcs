@@ -29,14 +29,16 @@ body {
 
 .dashboard-container {
   display: flex;
-  flex-direction: column;
-  font-size: 14px;
-  padding: 20px; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px; 
-  margin-left: 220px; 
-  margin-top: 200px;
-  background-color: white; 
+    flex-direction: column;
+    min-height: 100vh;
+    border: 2px solid #ddd; 
+    border-radius: 8px;
+    overflow: hidden;
+    width: 80vw; 
+    height: auto; 
+    background: #ffffff;
+    margin-top: 140px;
+    margin-left: 50px ;
 }
 
 /* Header Section */
@@ -67,10 +69,17 @@ body {
 
 /* Greeting Text */
 .greeting-dashboard {
-  margin: 10px 220px;
-  margin-left: 20px;
-  font-size: 1.2em;
-  border-bottom: 1px solid #333;
+  padding: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 25px;
+    font-style: initial;
+    margin: 10px 10px;
+    margin-left: 10px;
+    font-size: 1.2em;
+    border-bottom: 1px solid #333;
+  
 }
 
 /* Statistics Section */
@@ -221,4 +230,12 @@ body {
   margin-top: 10px;
   font-size: 0.9em;
   color: #555;
+}
+.Create-Module{
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+
+
+
 }

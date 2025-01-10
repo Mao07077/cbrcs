@@ -48,19 +48,17 @@ function StudentTable() {
 
   return (
     <>
-      {/* Header */}
       <header className="header">
         <InstructorHeader />
       </header>
 
-      {/* Main Content */}
+      
       <div className={Styles.List_Container}>
-        {/* Greeting */}
+       
         <div className={Styles.Greeting_Studentlist}>
           <h1>Students List</h1>
         </div>
 
-        {/* Student List */}
         <div className={Styles.Container}>
           <h2>Search:</h2>
           <input
@@ -110,7 +108,7 @@ function StudentTable() {
         </div>
       </div>
 
-      {/* Dashboard Modal */}
+
       {isModalOpen && (
         <DashboardModal
           studentId={selectedStudent}

@@ -52,11 +52,10 @@ const InstructorDashboard = () => {
   }, []);
 
   return (
+    <> <header className="header">
+    <InstructorHeader />
+  </header>
     <div className="dashboard-container">
-      <header className="header">
-        <InstructorHeader />
-      </header>
-
       <div className="greeting-dashboard">
         <h1>Dashboard</h1>
       </div>
@@ -72,7 +71,7 @@ const InstructorDashboard = () => {
         </div>
       </div>
 
-      <div className="Create-module">
+      <div className="Create-Module">
         <button onClick={handleCreate} type="button">Create Module</button>
       </div>
 
@@ -112,6 +111,7 @@ const InstructorDashboard = () => {
         <button onClick={closeModal}>Close</button>
       </Modal>
     </div>
+    </>
   );
 };
 

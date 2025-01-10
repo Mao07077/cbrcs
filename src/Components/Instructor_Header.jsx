@@ -56,7 +56,7 @@ const InstructorHeader = () => {
       <li>
         <buttonss className="Sidebar-item" onClick={() => handleNavigation('ModuleList')}>
           <img src={StudentsIcon} alt="Students Icon" className="sidebar-icon" />
-          <span>StudentList</span>
+          <span>Module</span>
         </buttonss>
       </li>
     </ul>
