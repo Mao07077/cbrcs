@@ -131,7 +131,7 @@ const Dashboard = ({ isModal = false }) => {
     }
 
     return (
-        <main className={styles.Main_dashboard}>
+        <main className={styles.Main_Dashboard}>
             {!isModal && (
                 <header className="header">
                     <Header />

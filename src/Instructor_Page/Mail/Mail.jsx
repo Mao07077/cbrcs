@@ -54,8 +54,8 @@ const Email = () => {
 const Mail = () => {
   return (
     <><header className="header">
-                <InstructorHeader/>
-            </header>
+        <InstructorHeader/>
+      </header>
     <div className={Styles.Main_Container}>
           <div className={Styles.Pagbati}>
               <h1>Hi, Mike Angelo Muico</h1>

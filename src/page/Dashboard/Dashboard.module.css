@@ -34,7 +34,7 @@ body {
   height: 1px;
   width: 100%;
   }
-  .Main_dashboard{
+  .Main_Dashboard{
     display: flex;
     justify-content: center;
     flex-direction: column;
