@@ -68,7 +68,7 @@ function StudentTable() {
             onChange={(e) => setSearchQuery(e.target.value)}
             className={Styles.Search_Input}
           />
-          <table className="table">
+          <table className={Styles.Table}>
             <thead>
               <tr>
                 <th>Profile</th>
@@ -82,7 +82,7 @@ function StudentTable() {
               {filteredStudents.length > 0 ? (
                 filteredStudents.map((student, index) => (
                   <tr key={index}>
-                    <td className="center">{student.profile}</td>
+                    <td className="Center">{student.profile}</td>
                     <td>{student.studentNo}</td>
                     <td>{student.name}</td>
                     <td>{student.program}</td>

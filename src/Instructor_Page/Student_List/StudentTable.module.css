@@ -117,15 +117,16 @@ align-items: center;
   
  
   
-  .table {
+  .Table {
     width: 100%;
     border-collapse: collapse;
-    text-align: left;
+    text-align: center;
     margin-top: 20px;
     font-size: 1.2em;
   }
   
-  .table th {
+  .Table th {
+    font-family: 'Times New Roman', Times, serif;
     padding: 10px;
     border: 1px solid #ccc;
     background: #eef2f7;
@@ -133,12 +134,12 @@ align-items: center;
     font-size: 1.3em;
   }
   
-  .table td {
+  .Table td {
     padding: 10px;
     border: 1px solid #ccc;
   }
   
-  .table td.center {
+  .Table td.center {
     text-align: center;
   }
   

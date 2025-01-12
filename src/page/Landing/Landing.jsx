@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './landing.css';
 import logoIcon from '../../icon/logo.png';
-import Header from '../../Components/Header';
+import MainHeader from '../../Components/MainHeader';
 
 const Landing = () => {
     const [introText, setIntroText] = useState({ header: '', subHeader: '' });
@@ -27,7 +27,7 @@ const Landing = () => {
 
     return (
         <> <header className="header">
-    <Header />
+    <MainHeader />
   </header>
         <div className="main-container">
             <div>

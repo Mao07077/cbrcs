@@ -32,7 +32,7 @@ const InstructorHeader = () => {
         
     </div>
     <div className="header-logout">
-        <button onClick={() => handleNavigation('landing')}>Logout</button>
+        <button onClick={() => handleNavigation('')}>Logout</button>
       </div>
     </header>
       <div className='Main_Header'>

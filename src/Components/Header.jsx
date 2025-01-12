@@ -28,6 +28,9 @@ const SidebarItem = ({ icon, text, onClick }) => (
                     <img src={logoIcon} alt="logo" />
                 </div>
             </div>
+            <div className="header-logout">
+        <button onClick={() => handleNavigation('')}>Logout</button>
+      </div>
             </header>
 <div className='Main_Header'>
 <nav className="Sidebar">
