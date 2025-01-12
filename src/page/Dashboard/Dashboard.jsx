@@ -12,7 +12,6 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import Header from '../../Components/Header';
-// Register Chart.js components
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -22,7 +21,6 @@ ChartJS.register(
     Legend
 );
 
-// Pretest Score Chart Component
 const PretestScoreChart = ({ scores }) => {
     const data = {
         labels: scores.map(score => score.subject),
@@ -48,7 +46,6 @@ const PretestScoreChart = ({ scores }) => {
     return <Bar data={data} options={options} />;
 };
 
-// Post-Test Score Bar Chart Component
 const PostTestScoreBarChart = ({ postTestScores }) => {
     const data = {
         labels: postTestScores.map(score => score.post_test_title || "Unknown Post-Test"),
@@ -88,7 +85,6 @@ const PostTestScoreBarChart = ({ postTestScores }) => {
     return <Bar data={data} options={options} />;
 };
 
-// Main Dashboard Component
 const Dashboard = ({ isModal = false }) => {
     const [idNumber, setIdNumber] = useState(localStorage.getItem('userIdNumber') || '');
     const [data, setData] = useState(null);
@@ -97,7 +93,6 @@ const Dashboard = ({ isModal = false }) => {
     const [progress, setProgress] = useState(0);
     const [error, setError] = useState(null);
 
-    // Fetch data from the backend
     useEffect(() => {
         if (!idNumber) {
             setError('User not logged in');
@@ -113,7 +108,6 @@ const Dashboard = ({ isModal = false }) => {
                 setScores(response.data.pretest_scores || []);
                 setPostTestScores(response.data.post_tests || []);
 
-                // Calculate progress percentage
                 if (total_modules > 0) {
                     setProgress((completed_count / total_modules) * 100);
                 }
