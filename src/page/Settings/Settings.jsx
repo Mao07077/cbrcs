@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./settings.css";
+import Styles from"./Settings.module.css";
 import Header from "../../Components/Header";
 const Settings = () => {
   const [formData, setFormData] = useState({
@@ -89,17 +89,19 @@ const Settings = () => {
       <header className="header">
         <Header />
       </header>
-      <div className="settings-container">
-        
+      <div className={Styles.Settings_Container}>
+        <div className={Styles.General}>
+        <h2>General</h2>
+        </div>
           {requestSent ? (
             <div className="request-sent-message">
               Your request has been sent to the admin.
             </div>
           ) : (
             <>
-              <div className="sec-box">
-                <h2>General</h2>
-                <div className="row">
+            <div className={Styles.Sec_Container}>
+              <div className={Styles.Sec_Box}>
+                <div className={Styles.Row}>
                   <label>First Name</label>
                   <input
                     type="text"
@@ -109,7 +111,7 @@ const Settings = () => {
                     onChange={handleChange}
                   />
                 </div>
-                <div className="row">
+                <div className={Styles.Row}>
                   <label>Middle Name</label>
                   <input
                     type="text"
@@ -119,7 +121,7 @@ const Settings = () => {
                     onChange={handleChange}
                   />
                 </div>
-                <div className="row">
+                <div className={Styles.Row}>
                   <label>Last Name</label>
                   <input
                     type="text"
@@ -129,7 +131,7 @@ const Settings = () => {
                     onChange={handleChange}
                   />
                 </div>
-                <div className="row">
+                <div className={Styles.Row}>
                   <label>Suffix</label>
                   <input
                     type="text"
@@ -139,7 +141,7 @@ const Settings = () => {
                     onChange={handleChange}
                   />
                 </div>
-                <div className="row">
+                <div className={Styles.Row}>
                   <label>Birthdate</label>
                   <input
                     type="text"
@@ -149,7 +151,7 @@ const Settings = () => {
                     onChange={handleChange}
                   />
                 </div>
-                <div className="row">
+                <div className={Styles.Row}>
                   <label>Email</label>
                   <input
                     type="text"
@@ -159,7 +161,7 @@ const Settings = () => {
                     onChange={handleChange}
                   />
                 </div>
-                <div className="row">
+                <div className={Styles.Row}>
                   <label>Program</label>
                   <input
                     type="text"
@@ -170,9 +172,9 @@ const Settings = () => {
                   />
                 </div>
               </div>
-              <div className="sec-box">
+              <div className={Styles.Sec_Box}>
                 <h2>Login Info</h2>
-                <div className="row">
+                <div className={Styles.Row}>
                   <label>Username</label>
                   <input
                     type="text"
@@ -182,7 +184,7 @@ const Settings = () => {
                     onChange={handleChange}
                   />
                 </div>
-                <div className="row">
+                <div className={Styles.Row}>
                   <label>Password</label>
                   <input
                     type="password"
@@ -193,10 +195,11 @@ const Settings = () => {
                   />
                 </div>
               </div>
-              <div className="submit-button-container">
-                <button type="submit" className="submit-button" onClick={handleSubmit}>
+              <div className={Styles.Submit_Button_Container}>
+                <button type="submit" className={Styles.Submit_Button} onClick={handleSubmit}>
                   Submit
                 </button>
+              </div>
               </div>
             </>
           )}

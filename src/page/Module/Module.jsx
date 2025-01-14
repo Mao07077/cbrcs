@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate and Link
-import './module.css';
+import Styles from'./module.module.css';
 import Header from '../../Components/Header'; // Import the Header component
 
 const ModuleDashboard = () => {
@@ -44,18 +44,18 @@ const ModuleDashboard = () => {
        <header className="header">
                 <Header />
             </header>
-      <div className="module-container">
+      <div className={Styles.Module_Container}>
         
-        <div className="notheader">
+        <div className={Styles.Notheader}>
           <h1>Modules</h1>
         </div>
         <div className="instructions">
           Instructions here
         </div>
-        <div className="user-program">
+        <div className={Styles.User_Program}>
           <p>Current Program: {userProgram}</p>
         </div>
-        <div className="module-grid">
+        <div className={Styles.Module_Grid}>
           {error ? (
             <p>{`Error: ${error}`}</p> // Display error if there is one
           ) : filteredModules.length > 0 ? (

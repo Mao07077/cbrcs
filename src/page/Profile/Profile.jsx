@@ -50,10 +50,9 @@ const Profile = () => {
             <header className="header">
                 <Header />
             </header>
-            <div className="profile-container">
-                <div className="header-container">
+            <div className={Styles.Profile_Container}>
+                <div className={Styles.Header_Container}>
                     <h2>Account Profile</h2>
-                    <div className="header-underline"></div>
                 </div>
 
                 <div className="profile-wrapper">

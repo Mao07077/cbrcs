@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import styles from './Dashboard.module.css';
+import Styles from './Dashboard.module.css';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -125,32 +125,30 @@ const Dashboard = ({ isModal = false }) => {
     }
 
     return (
-        <main className={styles.Main_Dashboard}>
+        <main className={Styles.Main_Dashboard}>
             {!isModal && (
                 <header className="header">
                     <Header />
                 </header>
             )}
-            <div className={styles.Dashboardsign}>
+            <div className={Styles.Dashboardsign}>
                 <h1>Dashboard</h1>
-                <div className={styles.lines}></div>
             </div>
-            <div className={styles.sidebar_combined}>
-                <div className={styles.dashboard_container}>
-                    <section className={styles.performance_overview}>
-                        <div className={styles.progress_overview}>
+                <div className={Styles.Dashboard_Container}>
+                    <section className={Styles.Performance_Overview}>
+                        <div className={Styles.Progress_Overview}>
                             <h2>Progress Overview</h2>
-                            <div className={styles.progress_chart}>
+                            <div className={Styles.Progress_Chart}>
                                 <p>{progress.toFixed(0)}% Completed</p>
-                                <div className={styles.progress_bar}>
+                                <div className={Styles.Progress_Bar}>
                                     <div
-                                        className={styles.progress_fill}
+                                        className={Styles.Progress_Fill}
                                         style={{ width: `${progress}%`, backgroundColor: 'rgba(75, 192, 192, 0.6)' }}
                                     ></div>
                                 </div>
                             </div>
                         </div>
-                        <div className={styles.strength_weakness}>
+                        <div className={Styles.Strength_Weakness}>
                             <div>
                                 <h3>Strength</h3>
                                 <p>Explanation about strengths.</p>
@@ -161,7 +159,8 @@ const Dashboard = ({ isModal = false }) => {
                             </div>
                         </div>
                     </section>
-                    <section className={styles.pretest_score_chart}>
+                <div className={Styles.Chart_Container}>
+                    <section className={Styles.Pretest_Score_Chart}>
                         <h2>Pretest Scores</h2>
                         {scores.length > 0 ? (
                             <PretestScoreChart scores={scores} />
@@ -169,7 +168,7 @@ const Dashboard = ({ isModal = false }) => {
                             <p>No pretest scores available.</p>
                         )}
                     </section>
-                    <section className={styles.post_test_scores}>
+                    <section className={Styles.Post_Test_Scores}>
                         <h2>Post-Test Scores as Bar Charts</h2>
                         {postTestScores.length > 0 ? (
                             <PostTestScoreBarChart postTestScores={postTestScores} />
@@ -177,8 +176,8 @@ const Dashboard = ({ isModal = false }) => {
                             <p>No post-test scores available.</p>
                         )}
                     </section>
+                    </div>
                 </div>
-            </div>
         </main>
     );
 };

@@ -7,7 +7,7 @@
 
        
   .header {
-    width: 100%;  /* Full width */
+    width: 100%; 
     background-color: #002f87;
     padding: 10px 20px;
     display: flex;
@@ -16,81 +16,92 @@
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   }
   
-  /* Adjust header content to fit properly */
+  
   .header-content {
     display: flex;
     width: 100%;  
     max-width: 1200px;  
   }
-  /* Image styling */
+ 
   .header-logo img {
     height: 50px;   
     width: auto;     
     max-width: 180px; 
   }
 
+.General{
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 25px;
+    font-style: initial;
+    margin: 10px 10px;
+    margin-left: 10px;
+    font-size: 1.2em;
+    border-bottom: 1px solid #333;
+}
 
 
-
-  .settings-container {
+  .Settings_Container {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap; 
-    gap: 40px; 
-    justify-content: center; 
-    padding: 40px; 
-    margin: 40px auto; 
-    height: 100%;
-    margin-top:600px;
-    max-width: 100%; 
-    min-height: 80vh; 
-    border: 2px solid #002f87;
-    border-radius: 12px; 
-    background: #ffffff; 
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); 
-    flex: 1; 
-    min-width: 800px; 
-    padding: 30px; 
-    border-radius: 10px; 
-}
-
-.sec-box {
-    flex: 1;
-    padding: 20px;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
+    justify-content: center;
+    flex-wrap: wrap;    
+    border: 2px solid #ddd; 
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+    width: 80vw; 
+    height: auto; 
+    background: #ffffff;
+    margin-top: 140px;
+    margin-left: 50px ;
+    border: 2px solid #002f87;
+}
+.Sec_Box {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #ddd; 
+  border-radius: 8px;
+  overflow: hidden;
+  width: 40vw; 
+  height: auto; 
+  background: #ffffff;
+  border: 2px solid #002f87;
+  transition: transform 0.3s, box-shadow 0.3s;
+  Padding: 30px;
 }
 
-.sec-box:hover {
+.Sec_Box:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
 }
 
-.sec-box h2 {
+.Sec_Box h2 {
+    margin: 20px;
+    text-align: center;
     font-size: 1.5em;
     color: #333;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #002f87;
-    padding-bottom: 10px;
 }
 
-.row {
+.Sec_Container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Row {
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
 }
 
-.row label {
+.Row label {
     flex: 1;
     color: #555;
     font-weight: bold;
 }
 
-.row input {
+.Row input {
     flex: 2;
     padding: 10px;
     border: 1px solid #ccc;
@@ -98,7 +109,7 @@
     font-size: 14px;
 }
 
-.row input:focus {
+.Row input:focus {
     border-color: #002f87;
     outline: none;
     box-shadow: 0 0 5px #002f87(76, 175, 80, 0.5);
@@ -123,7 +134,7 @@
     object-fit: cover;
 }
 
-.submit-button-container {
+.Submit_Button_Container {
     display: flex;
     justify-content: flex-start; 
     align-items: center; 
@@ -133,7 +144,7 @@
     padding-left: 10px; 
 }
 
-.submit-button {
+.Submit_Button {
     background-color: #002f87; 
     color: white; 
     border: none; 
@@ -144,10 +155,9 @@
     transition: background-color 0.3s ease; 
     width: auto; 
     box-sizing: border-box; 
-    margin-left: 300px;
 }
 
-.submit-button:hover {
+.Submit_Button:hover {
     background-color: #2b68d7; 
 }
 
@@ -156,7 +166,7 @@
         flex-direction: column;
     }
 
-    .sec-box {
+    .Sec_Box {
         max-width: 100%;
     }
 }
