@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AdminHeader from '../../Components/Admin_Header';
+import Styles from "./Request.module.css";
 
 function Request() {
     const [requests, setRequests] = useState([]);
@@ -30,7 +31,7 @@ function Request() {
     const handleView = (index) => {
         console.log("Viewing request at index:", index);
         setSelectedRequest(requests[index]);
-        setShowPopup(true); // Show the popup
+        setShowPopup(true); 
     };
 
     const handleAccept = async () => {
@@ -46,8 +47,8 @@ function Request() {
             if (result.success) {
                 alert("Request accepted and changes applied!");
                 setSelectedRequest(null);
-                setShowPopup(false); // Close the popup
-                fetchRequests(); // Refresh the request list
+                setShowPopup(false); 
+                fetchRequests();
             } else {
                 alert("Failed to apply changes.");
             }
@@ -67,8 +68,8 @@ function Request() {
             if (result.success) {
                 alert("Request declined.");
                 setSelectedRequest(null);
-                setShowPopup(false); // Close the popup
-                fetchRequests(); // Refresh the request list
+                setShowPopup(false); 
+                fetchRequests(); 
             } else {
                 alert("Failed to decline request.");
             }
@@ -81,21 +82,16 @@ function Request() {
 
     return (
         <>
-            {/* Header */}
             <header className="header">
                 <AdminHeader />
             </header>
-
-            {/* Main Content */}
-            <div className="List-container">
-                {/* Greeting */}
-                <div className="greeting-requestlist">
+            <div className={Styles.List_Container}>
+                <div className={Styles.Greeting_Requestlist}>
                     <h1>Requests List</h1>
                 </div>
 
-                {/* Request List */}
-                <div className="container">
-                    <table className="table">
+                <div className={Styles.Container}>
+                    <table className={Styles.Table}>
                         <thead>
                             <tr>
                                 <th>Account No.</th>
@@ -118,7 +114,7 @@ function Request() {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="3" className="no-requests">
+                                    <td colSpan="3" className={Styles.No_Requests}>
                                         No requests found.
                                     </td>
                                 </tr>
@@ -128,7 +124,6 @@ function Request() {
                 </div>
             </div>
 
-            {/* Popup Modal */}
             {showPopup && selectedRequest && (
                 <div className="popup-overlay">
                     <div className="popup-content">

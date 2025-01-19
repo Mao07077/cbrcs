@@ -1,5 +1,5 @@
 .header {
-    width: 100%;  /* Full width */
+    width: 100%;  
     background-color: #002f87;
     padding: 10px 20px;
     display: flex;
@@ -8,13 +8,11 @@
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   }
   
-  /* Adjust header content to fit properly */
   .header-content {
     display: flex;
     width: 100%;  
     max-width: 1200px;  
   }
-  /* Image styling */
   .header-logo img {
     height: 50px;   
     width: auto;     
@@ -27,12 +25,25 @@
     border: 2px solid #ddd; 
     border-radius: 8px;
     overflow: hidden;
-    margin: 25px auto; 
-    width: 1000px; 
+    width: 80vw; 
     height: auto; 
     background: #ffffff;
-    margin-top: 200px;
-    padding: 80px;  }
+    margin-top: 140px;
+    margin-left: 50px ;
+    border: 2px solid #002f87; }
+
+  .Greeting_Accountlist {
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 25px;
+    font-style: initial;
+    margin: 10px 10px;
+    margin-left: 10px;
+    font-size: 1.2em;
+    border-bottom: 1px solid #333;
+  }
   
   .greeting-studentlist {
     margin: 10px 220px;
@@ -45,18 +56,16 @@
   .Container {
     display: flex;
     flex-direction: column;
-    
     padding: 20px;
-    width: 100%; /* Adjust width to fill the parent container */
-    margin: 0; /* Remove margin to avoid extra spacing */
+    width: 100%; 
     background: #f7f9fc;
     border-radius: 8px;
-    flex-grow: 1; /* Ensure it expands with the parent container */
-    overflow: auto; /* Add scrolling if the content overflows */
-    box-sizing: border-box; /* Ensures padding doesn't affect width */
+    flex-grow: 1; 
+    overflow: auto; 
+    box-sizing: border-box;
 }
   
-  .search-input {
+  .Search_Input {
     padding: 10px;
     width: 50%;
     margin-bottom: 20px;
@@ -64,8 +73,16 @@
     border-radius: 4px;
     margin-top: 20px;
   }
+.Filter_Input{
+  padding: 10px;
+  width: 50%;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 20px;
+}
   
-  .table {
+  .Table {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
@@ -73,17 +90,18 @@
     font-size: 1.2em;
   }
   
-  .table th {
+  .Table th {
     padding: 10px;
     border: 1px solid #ccc;
     background: #eef2f7;
     color: #333;
-    font-size: 1.3em;
+    
   }
   
-  .table td {
+  .Table td {
+    display: flex;
+    align-items: center;
     padding: 10px;
-    border: 1px solid #ccc;
   }
   
   .table td.center {
@@ -95,3 +113,25 @@
     text-align: center;
     color: #999;
   }
+
+ .No_Accounts
+ {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.Create_Button {
+  background-color: #002f87;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 10%;
+}

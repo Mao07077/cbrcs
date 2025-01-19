@@ -4,14 +4,13 @@ import { useNavigate } from "react-router-dom";
 import AdminHeader from "../../Components/Admin_Header";
 
 function Accounts() {
-    const [searchQuery, setSearchQuery] = useState(""); // Search query
-    const [roleFilter, setRoleFilter] = useState(""); // Role filter
+    const [searchQuery, setSearchQuery] = useState(""); 
+    const [roleFilter, setRoleFilter] = useState(""); 
     const [accounts, setAccounts] = useState([]);
     const [sortOrder, setSortOrder] = useState("asc");
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Fetch accounts data from API
         const fetchAccounts = async () => {
             try {
                 const response = await fetch("http://localhost:8000/api/accounts"); // FastAPI endpoint
@@ -67,19 +66,15 @@ function Accounts() {
 
     return (
         <>
-            {/* Header */}
             <header className="header">
                 <AdminHeader />
             </header>
 
-            {/* Main Content */}
             <div className={Styles.List_Container}>
-                {/* Greeting */}
-                <div className="greeting-accountlist">
+                <div className={Styles.Greeting_Accountlist}>
                     <h1>Accounts List</h1>
                 </div>
 
-                {/* Account List */}
                 <div className={Styles.Container}>
                     <h2>Search:</h2>
                     <input
@@ -87,7 +82,7 @@ function Accounts() {
                         placeholder="Account No. or Name"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="search-input"
+                        className={Styles.Search_Input}
                     />
                     <h2>Filter by Role:</h2>
                     <input
@@ -95,10 +90,10 @@ function Accounts() {
                         placeholder="Role"
                         value={roleFilter}
                         onChange={(e) => setRoleFilter(e.target.value)}
-                        className="filter-input"
+                        className={Styles.Filter_Input}
                     />
-                    <button onClick={handleCreate} className="create-button">Create Account</button>
-                    <table className="table">
+                    <buttons onClick={handleCreate} className={Styles.Create_Button}>Create Account</buttons>
+                    <table className={Styles.Table}>
                         <thead>
                             <tr>
                                 <th onClick={() => handleSort("profile")}>Profile</th>
@@ -108,6 +103,7 @@ function Accounts() {
                                 <th>Actions</th>
                             </tr>
                         </thead>
+                        </table>
                         <tbody>
                             {filteredAccounts.length > 0 ? (
                                 filteredAccounts.map((account, index) => (
@@ -122,14 +118,15 @@ function Accounts() {
                                     </tr>
                                 ))
                             ) : (
-                                <tr>
-                                    <td colSpan="5" className="no-accounts">
+                                <ts>
+                                    <ts colSpan="5" className={Styles.No_Accounts}>
                                         No accounts found.
-                                    </td>
-                                </tr>
-                            )}
+                                    </ts>
+                                </ts>
+                            )
+                            }
                         </tbody>
-                    </table>
+                   
                 </div>
             </div>
         </>
