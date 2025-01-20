@@ -2,25 +2,24 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Create_module.css';
-import CreatePostTest from '../Create_Posttest/Create_posttest'; // Adjust the import path as needed
 
 const CreateModule = ({ onClose }) => {
   const [moduleName, setModuleName] = useState('');
   const [moduleTopic, setModuleTopic] = useState('');
   const [description, setDescription] = useState('');
   const [selectedCourse, setSelectedCourse] = useState('');
-  const [video, setVideo] = useState(null);
+  const [file, setFile] = useState(null);
   const [picture, setPicture] = useState(null);
 
   const navigate = useNavigate();
 
-  const handleVideoUpload = (e) => setVideo(e.target.files[0]);
+  const handleFileUpload = (e) => setFile(e.target.files[0]);
   const handlePictureUpload = (e) => setPicture(e.target.files[0]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!moduleName || !moduleTopic || !description || !video || !picture || !selectedCourse) {
+    if (!moduleName || !moduleTopic || !description || !file || !picture || !selectedCourse) {
       alert("Please fill in all fields.");
       return;
     }
@@ -29,27 +28,28 @@ const CreateModule = ({ onClose }) => {
     formData.append('title', moduleName);
     formData.append('topic', moduleTopic);
     formData.append('description', description);
-    formData.append('video', video);
-    formData.append('picture', picture);
     formData.append('program', selectedCourse);
-
+    
     const userIdNumber = localStorage.getItem('userIdNumber');
     if (!userIdNumber) {
       alert("User ID not found. Please log in again.");
       return;
     }
     formData.append('id_number', userIdNumber);
+    formData.append('document', file);
+    formData.append('picture', picture);
+
+    console.log("FormData entries:", [...formData.entries()]); // Debugging: Log form data
 
     try {
       const response = await axios.post('http://localhost:8000/api/create_module', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       if (response.data.success) {
         alert("Module created successfully!");
-        if (onClose) onClose(); // Call the onClose callback to close the modal
-
-        navigate('/modulelist'); // Navigate to InstructorDashboard
+        if (onClose) onClose();
+        navigate('/modulelist');
       } else {
         alert("Error creating module: " + (response.data.message || "Unknown error"));
       }
@@ -85,8 +85,8 @@ const CreateModule = ({ onClose }) => {
         />
         <input
           type="file"
-          onChange={handleVideoUpload}
-          accept="video/*"
+          onChange={handleFileUpload}
+          accept=".pdf,.ppt,.pptx,.doc,.docx"
           required
         />
         <input
@@ -109,7 +109,7 @@ const CreateModule = ({ onClose }) => {
           <option value="OET">OET</option>
           <option value="UPCAT">UPCAT</option>
         </select>
-        
+
         <button type="submit">Create Module</button>
       </form>
     </div>

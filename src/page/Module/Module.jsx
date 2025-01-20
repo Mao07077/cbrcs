@@ -50,7 +50,7 @@ const ModuleDashboard = () => {
           <h1>Modules</h1>
         </div>
         <div className="instructions">
-          Instructions here
+
         </div>
         <div className={Styles.User_Program}>
           <p>Current Program: {userProgram}</p>

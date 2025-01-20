@@ -11,6 +11,10 @@ import bcrypt
 import os
 import random
 import smtplib
+from fastapi import FastAPI, UploadFile, File
+from io import BytesIO
+from pptx import Presentation
+from PyPDF2 import PdfReader
 from email.mime.text import MIMEText
 import shutil
 from typing import List,Dict
@@ -166,6 +170,7 @@ class Module(BaseModel):
     title: str
     image_url: str
     instructor_id: str    
+    file : str
 class Account(BaseModel):
     id: str
     profile: str
@@ -252,6 +257,21 @@ def get_wrong_answers(correct_answer: str) -> List[str]:
         logging.error(f"Failed to generate wrong answers: {e}")
         return ["Option A", "Option B", "Option C"]  # Default wrong answers
 # User management endpoints
+def extract_text_from_ppt(file):
+  presentation = Presentation(file)
+  text = ''
+  for slide in presentation.slides:
+    for shape in slide.shapes:
+      if hasattr(shape, "text"):
+        text += shape.text
+  return text
+
+def extract_text_from_pdf(file):
+  reader = PdfReader(file)
+  text = ''
+  for page in reader.pages:
+    text += page.extract_text()
+  return text
 @app.post("/api/signup")
 async def signup(data: SignupData):
     hashed_password = hash_password(data.password)
@@ -333,19 +353,19 @@ async def create_module(
     description: str = Form(...),
     program: str = Form(...),
     id_number: str = Form(...),
-    video: UploadFile = File(...),
+    document: UploadFile = File(...),  # Change from video to document
     picture: UploadFile = File(...),
 ):
     """
-    Create a new module with associated video and image uploads.
+    Create a new module with associated document and image uploads.
     """
     try:
         # Save files to the "uploads" directory
-        video_path = f"uploads/{video.filename}"
+        document_path = f"uploads/{document.filename}"
         picture_path = f"uploads/{picture.filename}"
         os.makedirs("uploads", exist_ok=True)
-        with open(video_path, "wb") as video_file:
-            shutil.copyfileobj(video.file, video_file)
+        with open(document_path, "wb") as document_file:
+            shutil.copyfileobj(document.file, document_file)
         with open(picture_path, "wb") as picture_file:
             shutil.copyfileobj(picture.file, picture_file)
         
@@ -356,7 +376,7 @@ async def create_module(
             "description": description,
             "program": program,
             "id_number": id_number,
-            "video_url": video_path,
+            "document_url": document_path,  # Change from video_url to document_url
             "image_url": picture_path,
         }
 
@@ -373,6 +393,7 @@ async def create_module(
     except Exception as e:
         logging.error(f"Error creating module: {e}")
         raise HTTPException(status_code=500, detail="Module creation failed")
+
 @app.get("/api/modules")
 async def get_modules(id_number: str = Query(None), program: str = Query(None)):
   """
@@ -391,30 +412,28 @@ async def get_modules(id_number: str = Query(None), program: str = Query(None)):
 
 @app.get("/api/modules/{module_id}")
 async def get_module(module_id: str):
-  """
-  Fetch a specific module by its ID.
-  """
-  try:
-    module = modules_collection.find_one({"_id": ObjectId(module_id)})
-    if module:
-      return {
-        "_id": str(module["_id"]),  # Convert ObjectId to string
-        "title": module["title"],
-        "description": module.get("description", ""),
-        "topic": module.get("topic", ""),
-        "program": module.get("program", ""),
-        "image_url": module["image_url"],
-        "video_url": module["video_url"],
-        "next_title": module.get("next_title", ""),
-        "next_description": module.get("next_description", ""),
-        "next_id": str(module.get("next_id", "")) if module.get("next_id") else None
-      }
-    else:
-      raise HTTPException(status_code=404, detail="Module not found")
-  except InvalidId:
-    raise HTTPException(status_code=400, detail="Invalid module ID format")
-  except Exception as e:
-    raise HTTPException(status_code=500, detail=f"Error fetching module: {e}")
+    try:
+        if not ObjectId.is_valid(module_id):
+            raise HTTPException(status_code=400, detail="Invalid module ID format")
+
+        module = modules_collection.find_one({"_id": ObjectId(module_id)})
+        if not module:
+            raise HTTPException(status_code=404, detail="Module not found")
+
+        module["_id"] = str(module["_id"])  # Convert ObjectId to string for JSON
+        return {
+            "title": module["title"],
+            "topic": module["topic"],
+            "description": module["description"],
+            "program": module["program"],
+            "image_url": module["image_url"],  # Ensure frontend can access this path
+            "document_url": module["document_url"],  # PDF file
+            "id_number": module["id_number"],
+        }
+    except Exception as e:
+        print(f"Error fetching module: {e}")
+        raise HTTPException(status_code=500, detail=f"Error fetching module: {e}")
+
 
 @app.post("/api/post-tests")
 async def create_post_test(post_test: PostTestRequest):
@@ -857,4 +876,14 @@ async def paraphrase(request: ParaphraseRequest):
     except Exception as e:
         logging.error(f"Paraphrase error: {e}")
         raise HTTPException(status_code=500, detail="Failed to paraphrase input")
- 
+
+@app.post("/extract-text/")
+async def extract_text(file: UploadFile = File(...)):
+  file_content = await file.read()
+  if file.filename.endswith('.pptx'):
+    text = extract_text_from_ppt(BytesIO(file_content))
+  elif file.filename.endswith('.pdf'):
+    text = extract_text_from_pdf(BytesIO(file_content))
+  else:
+    return {"error": "Unsupported file type"}
+  return {"extracted_text": text}

@@ -223,7 +223,7 @@ const PostTest = () => {
         return <div>Loading post-test...</div>;
     }
 
-    const questionsPerPage = 5;
+    const questionsPerPage = 1; // Set to 1 to show one question per page
     const totalPages = Math.ceil((postTest.questions?.length || 0) / questionsPerPage);
 
     const formatTime = (seconds) => {

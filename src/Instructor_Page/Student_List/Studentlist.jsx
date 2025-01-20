@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Styles from "./StudentTable.module.css"; 
+import Styles from "./StudentTable.module.css";
 import InstructorHeader from "../../Components/Instructor_Header";
-import axios from 'axios';
-import DashboardModal from '../../page/Dashboard/DashboradModal';
- 
+import axios from "axios";
+import DashboardModal from "../../page/Dashboard/DashboradModal";
+
 function StudentTable() {
   const [searchQuery, setSearchQuery] = useState(""); // Search query
   const [students, setStudents] = useState([]); // Student list
   const [selectedStudent, setSelectedStudent] = useState(null); // Selected student for the dashboard modal
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
+  const [isLoading, setIsLoading] = useState(true); // Loading state
 
   useEffect(() => {
     // Fetch students from the backend
@@ -26,6 +27,9 @@ function StudentTable() {
       })
       .catch((error) => {
         console.error("There was an error fetching the students!", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
@@ -37,7 +41,7 @@ function StudentTable() {
   );
 
   const handleViewDashboard = (student) => {
-    setSelectedStudent(student.studentNo);
+    setSelectedStudent(student); // Pass full student object
     setIsModalOpen(true);
   };
 
@@ -52,9 +56,7 @@ function StudentTable() {
         <InstructorHeader />
       </header>
 
-      
       <div className={Styles.List_Container}>
-       
         <div className={Styles.Greeting_Studentlist}>
           <h1>Students List</h1>
         </div>
@@ -68,52 +70,52 @@ function StudentTable() {
             onChange={(e) => setSearchQuery(e.target.value)}
             className={Styles.Search_Input}
           />
-          <table className={Styles.Table}>
-            <thead>
-              <tr>
-                <th>Profile</th>
-                <th>Student No.</th>
-                <th>Student Name</th>
-                <th>Program</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredStudents.length > 0 ? (
-                filteredStudents.map((student, index) => (
-                  <tr key={index}>
-                    <td className="Center">{student.profile}</td>
-                    <td>{student.studentNo}</td>
-                    <td>{student.name}</td>
-                    <td>{student.program}</td>
-                    <td>
-                      <button
-                        className="view-dashboard-btn"
-                        onClick={() => handleViewDashboard(student)}
-                      >
-                        View Dashboard
-                      </button>
+          {isLoading ? (
+            <p>Loading students...</p>
+          ) : (
+            <table className={Styles.Table}>
+              <thead>
+                <tr>
+                  <th>Profile</th>
+                  <th>Student No.</th>
+                  <th>Student Name</th>
+                  <th>Program</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredStudents.length > 0 ? (
+                  filteredStudents.map((student, index) => (
+                    <tr key={index}>
+                      <td className="Center">{student.profile}</td>
+                      <td>{student.studentNo}</td>
+                      <td>{student.name}</td>
+                      <td>{student.program}</td>
+                      <td>
+                        <button
+                          className="view-dashboard-btn"
+                          onClick={() => handleViewDashboard(student)}
+                        >
+                          View Dashboard
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="5" className={Styles.No_Students}>
+                      No students found.
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="5" className={Styles.No_Students}>
-                    No students found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                )}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
 
-
-      {isModalOpen && (
-        <DashboardModal
-          studentId={selectedStudent}
-          onClose={closeModal}
-        />
+      {isModalOpen && selectedStudent && (
+        <DashboardModal student={selectedStudent} onClose={closeModal} />
       )}
     </>
   );

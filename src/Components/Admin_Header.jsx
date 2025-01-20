@@ -31,7 +31,14 @@ const AdminHeader = () => {
               <div className="header-logo">
                   <img src={logoIcon} alt="logo" />
               </div>
+
           </div>
+
+          <div className="header-logout">
+        <button onClick={() => handleNavigation('login')}>Logout</button>
+      </div>
+    </header>
+    <div className='Main_Header'></div>
           <nav className="Sidebar">
     <ul>
       <li>
@@ -67,7 +74,7 @@ const AdminHeader = () => {
     </ul>
   </nav>  
 
-      </header>
+      
       </div>
   );
 };

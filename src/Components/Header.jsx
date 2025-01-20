@@ -29,7 +29,7 @@ const SidebarItem = ({ icon, text, onClick }) => (
                 </div>
             </div>
             <div className="header-logout">
-        <button onClick={() => handleNavigation('')}>Logout</button>
+        <button onClick={() => handleNavigation('login')}>Logout</button>
       </div>
             </header>
 <div className='Main_Header'>
