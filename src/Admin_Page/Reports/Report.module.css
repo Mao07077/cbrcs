@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f5f5f5; 
+  }
+
+
+.Report_Container{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    border: 2px solid #ddd; 
+    border-radius: 8px;
+    overflow: hidden;
+    width: 80vw; 
+    height: auto; 
+    background: #ffffff;
+    margin-top: 140px;
+    margin-left: 50px ;
+    border: 2px solid #002f87;
+}
+.Greeting_Report {
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 25px;
+    font-style: initial;
+    margin: 10px 10px;
+    margin-left: 10px;
+    font-size: 1.2em;
+    border-bottom: 1px solid #333;
+  }

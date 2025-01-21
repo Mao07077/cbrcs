@@ -118,17 +118,16 @@ function Accounts() {
                                     </tr>
                                 ))
                             ) : (
-                                <ts>
-                                    <ts colSpan="5" className={Styles.No_Accounts}>
+                                <tr>
+                                    <td colSpan="5" className={Styles.No_Accounts}>
                                         No accounts found.
-                                    </ts>
-                                </ts>
+                                    </td>
+                                </tr>
                             )
                             }
                         </tbody>
-                   
+                   </div>
                 </div>
-            </div>
         </>
     );
 }

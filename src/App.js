@@ -23,6 +23,7 @@ import Accounts from './Admin_Page/Accounts/Accounts';
 import Request from './Admin_Page/Request/Request';
 import Adminpost from './Admin_Page/AdminPost/AdminPost';
 import ModuleList from './Instructor_Page/ModuleList/ModuleList';
+import Report from './Admin_Page/Reports/Report';
 
 
 
@@ -56,6 +57,7 @@ function App() {
             <Route path="/Request" element={<Request />} />
             <Route path="/Adminpost" element={<Adminpost />} />
             <Route path="/ModuleList" element={<ModuleList/>}/>
+            <Route path="/Report" element={<Report/>}/>
           </Routes>
         
       </BrowserRouter>

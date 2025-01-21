@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import AdminHeader from '../../Components/Admin_Header';
+import './AdminPost.css';
 
 const AdminPost = () => {
     // State to manage the intro text and uploaded images
@@ -56,7 +57,6 @@ const AdminPost = () => {
                 </div>
 
                 <div className="placeholder-box">
-                    {/* Render images preview */}
                     {images.length > 0 && (
                         <div className="image-previews">
                             {images.map((image, index) => (

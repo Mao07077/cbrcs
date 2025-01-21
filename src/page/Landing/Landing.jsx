@@ -37,7 +37,6 @@ const Landing = () => {
                         <p>{introText.subHeader || 'Where the dream and the dreamer become ONE!'}</p>
                         <div className="buttons">
                             <button type="button" className="login" onClick={() => window.location.href = 'login'}>Log-in</button>
-                            <button type="button" className="signup" onClick={() => window.location.href = 'signup'}>Sign-Up</button>
                         </div>
                     </div>
 

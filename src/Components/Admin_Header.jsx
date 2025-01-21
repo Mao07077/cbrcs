@@ -60,7 +60,7 @@ const AdminHeader = () => {
         </buttonss>
       </li>
       <li>
-        <buttonss className="Sidebar-item" onClick={() => handleNavigation('Reports')}>
+        <buttonss className="Sidebar-item" onClick={() => handleNavigation('Report')}>
           <img src={Report} alt="Report Icon" className="sidebar-icon" />
           <span>Reports</span>
         </buttonss>
