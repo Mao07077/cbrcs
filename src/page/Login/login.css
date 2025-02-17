@@ -1,135 +1,110 @@
-.header {
-    background-color: #002d6d; /* Dark blue background */
-    padding: 10px 0;
-    text-align: center;
-}
-
-.header-content {
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;
+    background-color: #f6f7f9;
+
+}
+
+.login-page {
+    width: 700px;
+    height: 380px;
+    background-color: #0038c8;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .header-logo img {
-    max-width: 120px;
-    height: auto;
+    height: 50px;
+    
 }
 
-/* Main page styling */
-.login-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh; /* Ensures the container always takes the full height */
-    background-color: transparent; /* Light gray background */
-   
-}
-
-/* Login box styling */
 .login-box {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    max-height: 500px;
-    max-width: 500px; /* Restricts width on larger screens */
-    text-align: center;
-    margin: auto; /* Center the form vertically and horizontally */
-}
-/* Title styling */
-.login-box h2 {
-    color: #002d6d; /* Dark blue */
-    margin-bottom: 20px;
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
 }
 
-/* Error message */
-.error-message {
-    color: red;
-    margin-bottom: 10px;
-}
 
-/* Input fields */
-.login-box input {
+
+.login-box form input {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #ced4da;
     border-radius: 5px;
-    font-size: 14px;
+    border: none;
 }
 
-/* Button styling */
-.login-box button {
-    width: 100%;
+.login-box form button {
     padding: 10px;
-    background-color: #002d6d; /* Dark blue */
-    color: #ffffff;
+    width: 100%;
+    background-color: #001a6ec8;
+    color: white;
     border: none;
     border-radius: 5px;
-    font-size: 16px;
     cursor: pointer;
+    font-weight: bold;
 }
 
-.login-box button:disabled {
-    background-color: #6c757d; /* Gray for disabled */
-    cursor: not-allowed;
+.login-box form button:hover {
+    background-color: #001257;
 }
 
-/* Links */
-.login-box .links {
-    margin-top: 15px;
+.links {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
 }
 
-.login-box .links a {
-    color: #002d6d; /* Dark blue */
-    text-decoration: none;
-    font-size: 14px;
-    margin: 0 10px;
-}
-
-.login-box .links a:hover {
+.links a {
+    color: white;
     text-decoration: underline;
+    font-size: 12px;
 }
 
-/* Media Queries for responsiveness */
-@media (max-width: 768px) {
-    .login-container {
-        width: 90%;
-    }
-
-    .links-container {
-        flex-direction: column;
-        gap: 10px;
-    }
+.image-placeholder {
+    width: 45%;
+    height: 250px;
+    background-color: #526fbf;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
 }
 
-@media (max-width: 480px) {
-    .login-container {
-        padding: 20px;
-        margin-top: 80px;
-    }
-
-    .login-container h2 {
-        font-size: 1.2em;
-        padding: 15px;
-    }
-
-    .links-container {
-        font-size: 0.9em;
-    }
+.login-logo{
+    width: 50%;
+    display: flex;
+    margin-bottom: 15px;    
+    margin-left: 30px;
+}
+.cbrc {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%; /* Or set an appropriate width */
+    height: 250px; /* Set a fixed height for better control */
+    background-color: transparent; /* Change to white or transparent */
+    border-radius: 10px; /* Optional: soften the container edges */
 }
 
-@media (max-width: 320px) {
-    .login-container {
-        padding: 15px;
-        width: 95%;
-    }
-
-    .login-container h2 {
-        font-size: 1em;
-    }
-
-    .links-container {
-        gap: 8px;
-    }
+.cbrc img {
+    width: 200%; /* Increase width proportionally */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Ensures the image is fully visible without cropping */
+    padding: 10px;
 }
+  

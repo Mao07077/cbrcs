@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './login.css';
-import logoIcon from '../../icon/logo.png';
+import Icon from '../../icon/actual.png';
+import cbrcimage from '../../icon/carlbalita.jpg';
 
-const Login = () => {
+
+
+
+
+
+
+
+
+function Login() {
     const [idNumber, setIdNumber] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -46,14 +55,14 @@ const Login = () => {
             setIsLoading(false);
         }
     };
-    
+
     return (
         <div>
             {/* Header */}
             <header className="header">
                 <div className="header-content">
                     <div className="header-logo">
-                        <img src={logoIcon} alt="Company Logo" />
+                        <img src={Icon} alt="actual" />
                     </div>
                 </div>
             </header>
@@ -61,7 +70,10 @@ const Login = () => {
             {/* Main Content */}
             <main className="login-page">
                 <div className="login-box">
-                    <h2>Log-in</h2>
+                    <div className="login-logo">
+                        <img src={Icon} alt="actual" />
+                    </div>
+
                     {error && <p className="error-message">{error}</p>}
                     <form onSubmit={handleSubmit} noValidate>
                         <input
@@ -69,15 +81,13 @@ const Login = () => {
                             placeholder="ID Number"
                             value={idNumber}
                             onChange={(e) => setIdNumber(e.target.value)}
-                            required
-                        />
+                            required />
                         <input
                             type="password"
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
+                            required />
                         <button type="submit" disabled={isLoading}>
                             {isLoading ? 'Signing in...' : 'Sign In'}
                         </button>
@@ -87,9 +97,14 @@ const Login = () => {
                         </div>
                     </form>
                 </div>
+                <div className="cbrc">
+                    <img src={cbrcimage} alt="carlbalita" />
+                </div>
             </main>
         </div>
+
+
     );
-};
+}
 
 export default Login;
