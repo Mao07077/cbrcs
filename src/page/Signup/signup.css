@@ -3,43 +3,31 @@ body {
     background-color: #ffffff;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    align-items: flex-start; /* Align to the top for more flexibility */
+    min-height: 100vh; /* Allow full screen height coverage */
     margin: 0;
+    padding: 20px; /* Add padding to prevent the form from hitting the edges */
 }
 
 .header {
-    width: 100%;
-    background-color: #002f87;
-    padding: 10px;
-    color: white;
-    text-align: left;
     position: fixed;
     top: 0;
     left: 0;
-}
-
-.header h1 {
-    margin: 0;
-    font-size: 1.5em; /* Adjusted for better readability */
+    width: 100%;
 }
 
 .Signup-container {
-    background-color: #f9f9f9;
+    max-width: 600px; /* Constrain form width for large screens */
+    width: 100%;
+    height: 900px;
+    margin: 90px auto; /* Add space from the top */
+    background-color: #f5f5f6;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(114, 98, 98, 0.1);
-    text-align: center;
-    margin-top: 10%;
-    margin-left: 10%; /* Adjusted margin to center the form */
-    margin-right: 10%; /* Adjusted margin to center the form */
+    
 }
-.div {
-    margin-top: 10%;
-    margin-left: 10%;
-    margin-right: 10%;
-    padding: 100%;
-}
+
 .Signup-container h2 {
     background-color: #002f87;
     color: white;
@@ -47,32 +35,32 @@ body {
     padding: 15px;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
+    font-size: 24px;
 }
 
-.Signup-container form input[type="text"],
-.Signup-container form input[type="email"],
-.Signup-container form input[type="password"],
-.Signup-container form input[type="number"],
-.Signup-container form input[type="date"],
-.Signup-container from select {
-    width: 140px;
-    padding: 10px;
-    margin: 4% 0 3% 0; /* Adjusted margins */
-    border: none;
-    border: 3px solid #ccc;
-    background-color: transparent;
-    outline: none;
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="number"],
+form input[type="date"],
+.styled-select {
+    width: 100%; /* Full-width inputs */
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     font-size: 16px;
-    display: grid;
+   
+     
 }
-
 .Signup-container input:focus {
-    border-bottom: 2px solid #002f87;
+    border-bottom: 2px solid #374a6e;
+    
 }
 
 .Signup-container a {
     display: block;
-    margin-top: 1%;
+    margin-top: 10px;
     color: #002f87;
     text-decoration: none;
 }
@@ -83,145 +71,56 @@ body {
 
 .error {
     color: red;
-    margin-bottom: 1%;
+    margin-bottom: 10px;
 }
 
 .Signup-container form {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 40px;
-}
-.layer1 {
-    display: flex;
     flex-direction: column;
-    align-items: center;
-}
-.layer2 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.layer3 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.layer4 {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-.gender {
-    display: flex;
-    align-items: center;
-}
-
-.gender label {
-    margin-right: 1%;
+    gap: 20px;
 }
 
 form input[type="submit"] {
-    grid-column: span 4; /* Span across all columns */
     padding: 12px;
     background-color: #1e3a8a;
     color: white;
     border: none;
     border-radius: 4px;
-    font-size: 100%;
+    font-size: 16px;
     cursor: pointer;
-    margin-top: 2%; /* Added margin to move it down */
+    margin-top: 10px;
 }
 
 form input[type="submit"]:hover {
     background-color: #17408b;
 }
-
-/* Sign-in Link */
-form a {
-    grid-column: span 4; /* Span across all columns */
-    margin-top: 2%;
-    color: #1e3a8a;
-    text-decoration: none;
+.gender{
+    display: flex;
+    gap: 10px
 }
 
-form a:hover {
-    text-decoration: underline;
-}
-
-/* Media Queries for responsiveness */
+    /* Media Queries for responsiveness */
 @media (max-width: 768px) {
     .Signup-container {
         width: 100%;
-        margin-top: 10%;
-    margin-left: 10%; /* Adjusted margin to center the form */
-    margin-right: 10%; 
+        padding: 20px;
+        margin: 20px;
     }
 
     form {
-        grid-template-columns: 1fr; /* Single column layout */
-    }
-
-    form input[type="text"],
-    form input[type="email"],
-    form input[type="password"],
-    form input[type="number"],
-    form input[type="date"] {
-        width: 100%;
-    }
-
-    form input[type="submit"],
-    form a {
-        grid-column: span 1; /* Span across single column */
+        flex-direction: column;
     }
 }
 
 @media (max-width: 480px) {
     .Signup-container {
         width: 90%;
-        padding: 20px;
-    }
-
-    .Signup-container h2 {
-        margin: 0 -20px 20px -20px;
-        padding: 10px;
-    }
-
-    form input[type="text"],
-    form input[type="email"],
-    form input[type="password"],
-    form input[type="number"],
-    form input[type="date"] {
-        width: 70%;
-    padding: 10px;
-    margin: 3% 3% 3% 3%; /* Adjusted margins */
-    border: none;
-    border-bottom: 2px solid #ccc;
-    background-color: transparent;
-    outline: none;
-    font-size: 16px;
-    display: grid;
-    }
-
-    form input[type="submit"] {
-        padding: 10px;
-        font-size: 90%;
-    }
-}
-
-@media (max-width: 360px) {
-    .Signup-container {
-        width: 95%;
         padding: 15px;
     }
 
     .Signup-container h2 {
-        margin: 0 -15px 15px -15px;
-        padding: 8px;
-        font-size: 18px;
+        margin: 0 -15px 20px -15px;
+        padding: 10px;
     }
 
     form input[type="text"],
@@ -229,35 +128,20 @@ form a:hover {
     form input[type="password"],
     form input[type="number"],
     form input[type="date"] {
-        font-size: 12px;
-    }
-
-    form input[type="submit"] {
-        padding: 8px;
-        font-size: 85%;
+        width: 100%;
+        color: #ede6e6;
     }
 }
+
 .styled-select {
-    width: 140px;
-    padding: 10px;
-    margin: 4% 0 3% 0; /* Same as other inputs */
-    border: none;
-    border: 3px solid #ccc;
-    background-color: transparent;
-    outline: none;
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     font-size: 16px;
-    display: block; /* Ensure it aligns correctly */
-    border-radius: 4px; /* Optional: adds a subtle curve */
-    appearance: none; /* Removes default browser styling */
 }
 
 .styled-select:focus {
-    border-bottom: 2px solid #002f87; /* Match focus style */
-}
-
-/* Add padding for alignment in small devices */
-@media (max-width: 480px) {
-    .styled-select {
-        width: 70%;
-    }
+    border-bottom: 2px solid #002f87;
 }

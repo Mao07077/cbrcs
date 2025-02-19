@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './forgot_password.css';
-import logoIcon from '../../icon/logo.png';
-const ForgotPassword = () => {
+import Icon from '../../icon/actual.png';
+import cbrcimage from '../../icon/carlbalita.jpg';
+
+
+    const ForgotPassword = () => {
     const [idNumber, setIdNumber] = useState('');
     const [email, setEmail] = useState('');
     const [resetCode, setResetCode] = useState('');
@@ -62,56 +65,65 @@ const ForgotPassword = () => {
     return (
         <div>
            <header className="header">
-                <div className="header-content">
-                    <div className="header-logo">
-                        <img src={logoIcon} alt="logo" />
-                    </div>
-                    </div>
-                    </header>
-
-            <div className="forgot-container">
-                <h2>Forgot Password</h2>
-                {error && <p className="error">{error}</p>}
-                {message && <p className="message">{message}</p>}
-                
-                {/* Send Reset Code Form */}
-                <form onSubmit={handleSendCode}>
-                    <input
-                        type="number"
-                        name="id_number"
-                        placeholder="ID Number"
-                        value={idNumber}
-                        onChange={(e) => setIdNumber(e.target.value)}
-                        required
-                    />
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                    <button type="submit" className="send-code-btn">Send Code</button>
-                </form>
-
-                {/* Confirm Code Form, only visible if the code was sent */}
-                {codeSent && (
-                    <form onSubmit={handleConfirmCode}>
-                        <div className="code-container">
-                            <input
-                                type="text"
-                                name="reset_code"
-                                placeholder="Enter Code"
-                                value={resetCode}
-                                onChange={(e) => setResetCode(e.target.value)}
-                                required
-                            />
-                            <button type="submit" className="confirm-btn">Confirm</button>
-                        </div>
-                    </form>
-                )}
+                           <div className="header-content">
+                               <div className="header-logo">
+                                   <img src={Icon} alt="actual" />
+                               </div>
+                           </div>
+                       </header>
+                       <main className="forget-page">
+    <div className="forget-container">
+        {/* Left side: Form section */}
+        <div className="forget-box">
+            <div className="forgot-logo">
+                <img src={Icon} alt="actual" />
             </div>
+            <h2>Forgot Password</h2>
+            {error && <p className="error">{error}</p>}
+            {message && <p className="message">{message}</p>}
+
+            <form onSubmit={handleSendCode}>
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+                <input
+                    type="number"
+                    name="id_number"
+                    placeholder="ID Number"
+                    value={idNumber}
+                    onChange={(e) => setIdNumber(e.target.value)}
+                    required
+                />
+                <button type="submit" className="send-code-btn">Send Code</button>
+            </form>
+
+            {codeSent && (
+                <form onSubmit={handleConfirmCode}>
+                    <input
+                        type="text"
+                        name="reset_code"
+                        placeholder="Enter Code"
+                        value={resetCode}
+                        onChange={(e) => setResetCode(e.target.value)}
+                        required
+                    />
+                    <button type="submit" className="confirm-btn">Confirm</button>
+                </form>
+            )}
+        </div>
+
+        {/* Right side: CBRC image */}
+        <div className="carl">
+            <img src={cbrcimage} alt="carlbalita" />
+        </div>
+    </div>
+</main>
+
         </div>
     );
 };

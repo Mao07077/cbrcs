@@ -1,6 +1,8 @@
 import React, { useState } from 'react'; 
 import axios from 'axios';
 import './signup.css';
+import Icon from '../../icon/actual.png';
+
 
 const Signup = () => {
     const [formData, setFormData] = useState({
@@ -45,10 +47,14 @@ const Signup = () => {
     };
 
     return (
-        <div>
-            <div className="header">
-                <h1>Logo here</h1>
-            </div>
+         <div>
+                   <header className="header">
+                                   <div className="header-content">
+                                       <div className="header-logo">
+                                           <img src={Icon} alt="actual" />
+                                       </div>
+                                   </div>
+                               </header>
 
             <div className="Signup-container">
                 <h2>Sign-Up</h2>

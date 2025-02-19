@@ -12,7 +12,7 @@ body {
 
 .login-page {
     width: 700px;
-    height: 380px;
+    height: 400px;
     background-color: #0038c8;
     border-radius: 20px;
     display: flex;
@@ -20,6 +20,7 @@ body {
     justify-content: space-between;
     padding: 20px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    margin-top: 300px;
 }
 
 .header-logo img {
@@ -28,11 +29,10 @@ body {
 }
 
 .login-box {
-    width: 45%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    color: white;
+    font-size: 24px; /* Match the font size used in Sign In */
+    font-weight: bold; /* If Sign In uses bold */
+    margin-left: 0; /* Remove or adjust margin for better alignment */
+    text-align: center;
 }
 
 
@@ -48,7 +48,7 @@ body {
 .login-box form button {
     padding: 10px;
     width: 100%;
-    background-color: #001a6ec8;
+    background-color: #0056e8;
     color: white;
     border: none;
     border-radius: 5px;
@@ -61,16 +61,20 @@ body {
 }
 
 .links {
-    margin-top: 10px;
+    margin-top: 10px; /* You can reduce this value for closer spacing */
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Center the links horizontally */
+    gap: 50px; /* Adjust spacing between the two links */
 }
 
 .links a {
-    color: white;
+    color: white; /* Ensure text is visible */
     text-decoration: underline;
-    font-size: 12px;
+    font-size: 16px;
+    padding: 0; /* Ensure no extra padding is added */
+    margin: 2; /* Remove any unwanted margin */
 }
+
 
 .image-placeholder {
     width: 45%;
@@ -85,20 +89,24 @@ body {
     font-weight: bold;
 }
 
-.login-logo{
-    width: 50%;
+.login-logo {
     display: flex;
-    margin-bottom: 15px;    
-    margin-left: 30px;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    margin-bottom: 15px; 
+    margin-left: 5px; /* Adjust this to move left or right */
+    width: 100%; /* Ensure full width for proper alignment */
 }
+
 .cbrc {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50%; /* Or set an appropriate width */
-    height: 250px; /* Set a fixed height for better control */
+    width: 70%; /* Or set an appropriate width */
+    height:10px; /* Set a fixed height for better control */
     background-color: transparent; /* Change to white or transparent */
     border-radius: 10px; /* Optional: soften the container edges */
+    margin-left: 30px;
 }
 
 .cbrc img {
