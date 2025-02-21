@@ -1,0 +1,82 @@
+/* GroupCall.module.css */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #002b7f;
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    width: 400px;
+    margin: auto;
+  }
+  
+  .userList {
+    width: 100%;
+    background: white;
+    color: black;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .userItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .userItem span {
+    font-weight: bold;
+  }
+  
+  .inviteButton {
+    background-color: #002b7f;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .inviteButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .videoContainer {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .callBox {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    background: white;
+    border-radius: 10px;
+  }
+  
+  .callUser {
+    background: #002b7f;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .endCallButton {
+    background: red;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .endCallButton:hover {
+    background: darkred;
+  }
+  

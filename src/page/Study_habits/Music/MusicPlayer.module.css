@@ -1,0 +1,47 @@
+.container {
+    text-align: center;
+    padding: 20px;
+}
+
+.genreSelector button {
+    margin: 5px;
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.genreSelector button:hover {
+    background: #0056b3;
+}
+
+.songList div {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.activeSong {
+    font-weight: bold;
+    color: green;
+}
+
+.controls button {
+    margin: 5px;
+    padding: 10px 15px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.controls button:hover {
+    background-color: #0056b3;
+}
+
+.nowPlaying {
+    margin-top: 10px;
+    font-size: 1.2em;
+}
