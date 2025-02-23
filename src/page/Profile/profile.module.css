@@ -4,10 +4,12 @@
    .profilePage {
     /* Centers the content and provides spacing around */
     max-width: 1200px;
+    width: 200%;
     margin: 0 auto;
     padding: 20px;
     font-family: Arial, sans-serif;
     color: #333;
+    background-color: #f5f4fc;
   }
   
   /* -------------
@@ -17,7 +19,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 90px; /* space below header/sidebar */
+    margin-top: 70px; /* space below header/sidebar */
     margin-bottom: 30px;
   }
   
