@@ -1,0 +1,98 @@
+.survey-container {
+    width: 100%; /* Utilize full screen width */
+    max-width: 1100px; /* Wider container for better visibility */
+    min-width: 600px; /* Prevents it from being too narrow */
+    margin: auto; /* Centers the container */
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    margin-top: 80px; /* Space for the fixed header */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Keeps everything centered */
+}
+
+.head-content {
+    background-color: #0d47a1;
+    color: white;
+    padding: 10px 15px; /* Reduce padding to make it shorter */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 18px; /* Reduce font size slightly */
+    font-weight: bold;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+
+.survey-logo img {
+    width: 150px;
+    height: auto;
+    object-fit: contain;
+    margin-left: 15px; /* Adds space from the left */
+}
+.survey-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 30px;
+    width: 900px;
+    min-height: 600px; /* Ensures enough space without forcing extra */
+    max-height: 90vh; /* Prevents it from being too tall */
+    overflow-y: auto; /* Allows scrolling only if necessary */
+    padding-bottom: 50px; /* Prevents overlap with buttons */
+}
+
+
+.question-block {
+    margin-bottom: 20px;
+    text-align: left;
+    font-size: 20px;
+}
+
+.choice {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    margin-left: 20px;
+    font-size: 16px;
+}
+
+.choice input {
+    margin-right: 12px;
+    transform: scale(1.2); /* Makes radio buttons slightly bigger */
+}
+
+.navigation-buttons {
+    display: flex;
+    justify-content: right;
+    margin-top: 20px;
+    gap: 20px;
+    width: 100%;
+}
+
+button {
+    background-color: #0d47a1;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: auto; /* Prevents button from stretching too much */
+}
+
+button:hover {
+    background-color: #1565c0;
+}
+
+button:disabled {
+    background-color: #b0bec5;
+    cursor: not-allowed;
+}
