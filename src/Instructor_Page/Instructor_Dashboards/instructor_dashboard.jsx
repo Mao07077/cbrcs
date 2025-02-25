@@ -1,12 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import './InstructorDashboard.css';
+import Styles from './InstructorDashboard.module.css';
 import { useNavigate } from "react-router-dom";
 import Modal from 'react-modal';
 import InstructorHeader from '../../Components/Instructor_Header';
 import CreateModule from '../Create_module/Create_module';
+import Dashboard from '../../icon/dashboard.png'; 
+import MailIcon from '../../icon/Mail.png';
+import StudentsIcon from '../../icon/Students.png';
+import Icon from '../../icon/actual.png';
+
  
+const SidebarItem = ({ icon, text, onClick }) => (
+  <li>
+    <button className="sidebar-item" onClick={onClick}>
+      <img src={icon} alt={text} className="sidebar-icon" />
+      <span>{text}</span>
+    </button>
+  </li>
+);
 
 const InstructorDashboard = () => {
+  const handleNavigation = (route) => {
+    console.log(`Navigating to: ${route}`);
+  
+    window.location.href = `/${route}`;
+  };
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [attendanceData, setAttendanceData] = useState([]);
   const [stats, setStats] = useState({
@@ -52,38 +70,71 @@ const InstructorDashboard = () => {
   }, []);
 
   return (
-    <> <header className="header">
-    <InstructorHeader />
-  </header>
-    <div className="dashboard-container">
-      <div className="greeting-dashboard">
-        <h1>Dashboard</h1>
+    <div className={Styles.Maincontainer}>
+  <div className={Styles.Header}> 
+    <div className="header-content">
+        <div className="header-logo">
+            <img src={Icon} alt="logo" />
+        </div>
+        
+    </div></div>
+  <nav className={Styles.Menu}> 
+    <ul>
+      <li>
+        <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Instructor_Dashboard')}>
+          <img src={Dashboard} alt="Dashboard Icon" className={Styles.Sidebar_Icon} />
+          <span>Dashboard</span>
+        </buttonss>
+      </li>
+      <li>
+        <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('mail')}>
+          <img src={MailIcon} alt="Mail Icon" className={Styles.Sidebar_Icon} />
+          <span>Message</span>
+        </buttonss>
+      </li>
+      <li>
+        <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('studentlist')}>
+          <img src={StudentsIcon} alt="Students Icon" className={Styles.Sidebar_Icon} />
+          <span>StudentList</span>
+        </buttonss>
+      </li>
+      <li>
+        <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('ModuleList')}>
+          <img src={StudentsIcon} alt="Students Icon" className={Styles.Sidebar_Icon} />
+          <span>Module</span>
+        </buttonss>
+      </li>
+    </ul>
+   </nav>
+  <div className={Styles.Content}>
+    <div className={Styles.Greeting_Dashboard}>
+        <h1>Admin Dashboard</h1>
       </div>
 
-      <div className="statistics-container">
-        <div className="stat-card">
+    <div className={Styles.Statistics_Container}>
+        <div className={Styles.Stat_Card}>
           <h1>Total Number of Students</h1>
           <h2>{stats.totalStudents || 'Loading...'}</h2>
         </div>
-        <div className="stat-card">
+        <div className={Styles.Stat_Card}>
           <h1>Student Engagement Rate</h1>
           <h2>{stats.engagementRate ? `${stats.engagementRate}%` : 'Loading...'}</h2>
         </div>
       </div>
 
-      <div className="Create-Module">
+      <div className={Styles.Create_Module}>
         <button onClick={handleCreate} type="button">Create Module</button>
       </div>
 
-      <div className="content-container">
-        <div className="student-attendance">
+      <div className={Styles.Content_Container}>
+        <div className={Styles.Student_Attendance}>
           <h2>Student Attendance</h2>
-          <div className="graph">
+          <div className={Styles.Graph}>
             {attendanceData.length > 0 ? (
               attendanceData.map((value, index) => (
                 <div
                   key={index}
-                  className="bar"
+                  className={Styles.Bar}
                   style={{
                     height: `${value}%`,
                     transition: 'height 0.5s ease-in-out',
@@ -104,14 +155,14 @@ const InstructorDashboard = () => {
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         contentLabel="Create Module"
-        className="modal"
+        className={Styles.Modal}
         overlayClassName="overlay"
       >
         <CreateModule />
         <button onClick={closeModal}>Close</button>
       </Modal>
-    </div>
-    </>
+</div>
+</div>
   );
 };
 
