@@ -6,117 +6,67 @@ import {
     CategoryScale,
     LinearScale,
     BarElement,
-    Title,
+    ArcElement,
     Tooltip,
     Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { Bar, Doughnut } from 'react-chartjs-2';
 import Header from '../../Components/Header';
+
 ChartJS.register(
     CategoryScale,
     LinearScale,
     BarElement,
-    Title,
+    ArcElement,
     Tooltip,
     Legend
 );
 
-const PretestScoreChart = ({ scores }) => {
-    const data = {
-        labels: scores.map(score => score.subject),
-        datasets: [
-            {
-                label: 'Pretest Scores',
-                data: scores.map(score => score.score),
-                backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
-            },
-        ],
-    };
-
-    const options = {
-        scales: {
-            y: {
-                beginAtZero: true,
-            },
-        },
-    };
-
-    return <Bar data={data} options={options} />;
-};
-
-const PostTestScoreBarChart = ({ postTestScores }) => {
-    const data = {
-        labels: postTestScores.map(score => score.post_test_title || "Unknown Post-Test"),
-        datasets: [
-            {
-                label: 'Correct',
-                data: postTestScores.map(score => score.correct || 0),
-                backgroundColor: 'rgba(75, 192, 192, 0.6)',
-            },
-            {
-                label: 'Incorrect',
-                data: postTestScores.map(score => score.incorrect || 0),
-                backgroundColor: 'rgba(255, 99, 132, 0.6)',
-            },
-            {
-                label: 'Total Questions',
-                data: postTestScores.map(score => score.total_questions || 0),
-                backgroundColor: 'rgba(153, 102, 255, 0.6)',
-            },
-        ],
-    };
-
-    const options = {
-        responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true,
-            },
-        },
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-        },
-    };
-
-    return <Bar data={data} options={options} />;
-};
-
 const Dashboard = ({ isModal = false }) => {
     const [idNumber, setIdNumber] = useState(localStorage.getItem('userIdNumber') || '');
-    const [data, setData] = useState(null);
-    const [scores, setScores] = useState([]);
-    const [postTestScores, setPostTestScores] = useState([]);
-    const [progress, setProgress] = useState(0);
+    const [progress, setProgress] = useState(60);
     const [error, setError] = useState(null);
+    const [barChartData, setBarChartData] = useState({ labels: [], datasets: [] });
 
     useEffect(() => {
         if (!idNumber) {
             setError('User not logged in');
             return;
         }
-
+        
         const fetchDashboardData = async () => {
             try {
                 const response = await axios.get(`http://localhost:8000/api/dashboard/${idNumber}`);
-                const { completed_count, total_modules } = response.data;
-
-                setData(response.data);
-                setScores(response.data.pretest_scores || []);
-                setPostTestScores(response.data.post_tests || []);
-
-                if (total_modules > 0) {
-                    setProgress((completed_count / total_modules) * 100);
+                const { post_tests } = response.data;
+                
+                if (post_tests) {
+                    setBarChartData({
+                        labels: post_tests.map(test => test.post_test_title || 'Unknown Post-Test'),
+                        datasets: [
+                            {
+                                label: 'Correct',
+                                data: post_tests.map(test => test.correct || 0),
+                                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                            },
+                            {
+                                label: 'Incorrect',
+                                data: post_tests.map(test => test.incorrect || 0),
+                                backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                            },
+                            {
+                                label: 'Total Questions',
+                                data: post_tests.map(test => test.total_questions || 0),
+                                backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                            },
+                        ],
+                    });
                 }
             } catch (error) {
                 setError('Failed to fetch dashboard data');
                 console.error(error);
             }
         };
-
+        
         fetchDashboardData();
     }, [idNumber]);
 
@@ -124,60 +74,77 @@ const Dashboard = ({ isModal = false }) => {
         return <div>Error: {error}</div>;
     }
 
+    const progressData = {
+        labels: ['Completed', 'Remaining'],
+        datasets: [
+            {
+                data: [progress, 100 - progress],
+                backgroundColor: ['#FFD700', '#1E40AF'],
+            },
+        ],
+    };
+
     return (
         <main className={Styles.Main_Dashboard}>
-            {!isModal && (
-                <header className="header">
-                    <Header />
-                </header>
-            )}
-            <div className={Styles.Dashboardsign}>
-                <h1>Dashboard</h1>
+            {!isModal && <Header />}
+            <h1 className={Styles.Title}>Dashboard</h1>
+            <section className={Styles.PerformanceOverview}>
+    <h2>Performance Overview</h2>
+    <p>Track your progress </p>
+    <div className={Styles.ProgressContainer} style={{ width: "200px", height: "200px" }}>
+    <Doughnut 
+    data={progressData} 
+    options={{
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: "70%", // Ensures the hole in the middle
+        plugins: {
+            tooltip: { enabled: false }, // Disable tooltips
+            legend: { display: false }, // Hide legend if not needed
+        }
+    }}
+    plugins={[
+        {
+            id: "centerText",
+            afterDraw: (chart) => {
+                const { ctx, chartArea: { left, right, top, bottom } } = chart;
+                ctx.save();
+                ctx.font = "bold 24px Arial"; // Adjust font size
+                ctx.fillStyle = "#000"; // Set text color
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+
+                // Calculate exact center position
+                const centerX = (left + right) / 2;
+                const centerY = (top + bottom) / 2;
+
+                // Draw the percentage in the middle of the doughnut
+                ctx.fillText(`${progress}%`, centerX, centerY);
+                ctx.restore();
+            }
+        }
+    ]}
+/>
+
+
+    </div>
+</section>
+            <div className={Styles.StrengthWeaknessContainer}>
+                <div className={Styles.StrengthCard}>Strength</div>
+                <div className={Styles.WeaknessCard}>Weakness</div>
             </div>
-                <div className={Styles.Dashboard_Container}>
-                    <section className={Styles.Performance_Overview}>
-                        <div className={Styles.Progress_Overview}>
-                            <h2>Progress Overview</h2>
-                            <div className={Styles.Progress_Chart}>
-                                <p>{progress.toFixed(0)}% Completed</p>
-                                <div className={Styles.Progress_Bar}>
-                                    <div
-                                        className={Styles.Progress_Fill}
-                                        style={{ width: `${progress}%`, backgroundColor: 'rgba(75, 192, 192, 0.6)' }}
-                                    ></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={Styles.Strength_Weakness}>
-                            <div>
-                                <h3>Strength</h3>
-                                <p>Explanation about strengths.</p>
-                            </div>
-                            <div>
-                                <h3>Weakness</h3>
-                                <p>Explanation about weaknesses.</p>
-                            </div>
-                        </div>
-                    </section>
-                <div className={Styles.Chart_Container}>
-                    <section className={Styles.Pretest_Score_Chart}>
-                        <h2>Pretest Scores</h2>
-                        {scores.length > 0 ? (
-                            <PretestScoreChart scores={scores} />
-                        ) : (
-                            <p>No pretest scores available.</p>
-                        )}
-                    </section>
-                    <section className={Styles.Post_Test_Scores}>
-                        <h2>Post-Test Scores as Bar Charts</h2>
-                        {postTestScores.length > 0 ? (
-                            <PostTestScoreBarChart postTestScores={postTestScores} />
-                        ) : (
-                            <p>No post-test scores available.</p>
-                        )}
-                    </section>
-                    </div>
+            <section className={Styles.StudyHabitsSection}>
+                <h3>Top 3 Study Habits:</h3>
+                <div className={Styles.StudyHabitsContainer}>
+                    <div className={Styles.HabitCard}>Study With Friends</div>
+                    <div className={Styles.HabitCard}>Listen To Music</div>
+                    <div className={Styles.HabitCard}>Asking For Help</div>
                 </div>
+            </section>
+            <section className={Styles.ProgressChartSection}>
+                <h3>Post-Test Scores</h3>
+                <Bar data={barChartData} options={{ responsive: true, scales: { y: { beginAtZero: true } } }} />
+            </section>
         </main>
     );
 };

@@ -1,245 +1,137 @@
-body {
+/* Dashboard.module.css */
+
+/* General Layout */
+.Main_Dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
+    max-width: 1200px; /* Prevents UI from stretching too much */
+    margin: auto;
+    width: 2000px;
+    margin-top: 150px;
+    background-color: #f0f2ff;
 }
 
-.header_content {
-    justify-content: flex-start;
-    display: flex;
-    width: 100%;  
-    max-width: 1200px;  
-  }
-  .header_logo img {
-    height: 50px;   
-    width: auto;     
-    max-width: 180px; 
-  }
-.Dashboardsign {
-    padding: 10px;
-    text-align: center;
-    display: flex;
-    justify-content: flex-start;
-    font-size: 25px;
-    font-style: initial;
-    margin: 10px 10px;
-    margin-left: 10px;
-    font-size: 1.2em;
-    border-bottom: 1px solid #333;
-  
-
-      
-  }
-  
-  .Main_Dashboard{
-   display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  border: 2px solid #ddd; 
-  border-radius: 8px;
-  overflow: hidden;
-  width: 80vw; 
-  height: auto; 
-  background: #ffffff;
-  margin-top: 140px;
-  margin-left: 50px ;
-  border: 2px solid #002f87;
-      
-      
-  }
-  
-  .pagbati h2{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding-top: 20px;
-    margin-left: 120px;
-    padding-left: 20px;
+/* Title */
+.Title h1 {
     font-size: 30px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+/* Performance Overview */
+.PerformanceOverview {
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 30px auto; /* Centers the container horizontally */
+    margin-top: 20px;
+}
+.PerformanceOverview p {
+    text-align: center;
+    display: block; /* Ensures it behaves like a block element */
+    margin-right: 30px; /* Adjust spacing as needed */
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+
+.ProgressContainer {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-  }
-  
-  
-    
-  
+    position: relative;
+    width: 250px;
+    height: 250px;
+    margin: auto;
+}
 
+.ProgressContainer p {
+    font-size: 18px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
 
-.Dashboard_Container {
+/* Strength & Weakness */
+.StrengthWeaknessContainer {
     display: flex;
     justify-content: space-around;
-    flex-direction: column; 
-    background-color: #f4f4f4;
-    color: #333;
-    padding: 30px;
-    min-height: 100vh;
+    width: 150%;
+    max-width: 600px;
+    margin-bottom: 30px;
+    height: 150px;
+    gap: 15px;
+    
 }
 
-.Performance_Overview {
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    gap: 100px;
-    grid-template-columns: 2fr 1fr;
-   
-}
-
-.Progress_Overview,
-.Strength_Weakness {
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: column;
-    background-color: white;
-    padding: 100px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    text-align: start;
-}
-
-.Chart_Container{
-    margin-top: 40px;
-    display: flex;
+.StrengthCard, .WeaknessCard {
+    background: #f3f4f6;
+    padding: 15px 25px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
     text-align: center;
-    flex-direction: column;
-    gap: 20px;
-}
-.Pretest_Score_Chart p{
-    display: flex;
-    justify-content: center;
-    font-size: 20px;
-}
-.Post_Test_Scores p{
-    display: flex;
-    justify-content: center;
-    font-size: 20px;
-}
-.Progress_Chart {
-    background-color: #fff;
-    padding: 20px;
-    margin-top: 10px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
+    flex: 1;
+    margin: 5px;
+    width: 20px;
+    border: 0.5px solid #121212;
 }
 
-
-
-.Strength_Weakness div {
-    background-color: white;
-    padding: 15px;
-    border: 1px solid #ddd;
+/* Study Habits */
+.StudyHabitsSection {
     text-align: center;
-    margin-bottom: 15px;
-}
-
-button {
-    background-color: #002366;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-button:hover {
-    background-color: #0047ab;
-}
-
-@media (max-width: 1024px) {
-    .sidebar {
-        width: 15%; 
-    }
-
-    .Dashboard_Container {
-        margin-left: 15%;
-    }
-
-    .Performance_Overview {
-        grid-template-columns: 1fr; 
-    }
-}
-
-@media (max-width: 768px) {
-    .header h1 {
-        font-size: 1.2em;
-    }
-
-    .header img {
-        width: 4%;
-        height: 4%;
-    }
-
-    .sidebar {
-        width: 20%;
-        margin-top: 0;
-        position: relative;
-    }
-
-    .Dashboard_Container {
-        margin-left: 20%;
-    }
-
-    .Performance_Overview {
-        grid-template-columns: 1fr;
-    }
-
-    .Strength_Weakness {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 480px) {
-    .header h1 {
-        font-size: 1em;
-    }
-
-    .header img {
-        width: 6%;
-        height: 6%;
-    }
-
-    .sidebar {
-        width: 100%;
-        height: auto;
-        display: flex;
-        justify-content: space-around;
-        position: relative;
-        padding: 10px 0;
-    }
-
-    .sidebar ul {
-        display: flex;
-        gap: 10px;
-    }
-
-    .sidebar ul li {
-        padding: 10px;
-        font-size: 0.8em;
-    }
-
-    .Dashboard_Container {
-        margin-left: 0;
-        padding-top: 80px;
-    }
-
-    .Performance_Overview {
-        grid-template-columns: 1fr;
-    }
-
-    .Strength_Weakness div {
-        margin-bottom: 10px;
-    }
-}
-.Progress_Bar {
     width: 100%;
-    height: 20px;
-    background-color: #f3f3f3;
-    border-radius: 5px;
-    overflow: hidden;
-    margin-top: 10px;
+    max-width: 800px;
+    margin-bottom: 30px;
 }
 
-.Progress_Fill {
-    height: 100%;
-    transition: width 0.3s ease;
+.StudyHabitsContainer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap; /* Ensures habits wrap properly on smaller screens */
+}
+
+.HabitCard {
+    background: #f3f4f6;
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    text-align: center;
+    width: 150px;
+    height: 100px;
+    margin-top: 30px;
+    flex: 1;
+    min-width: 120px;
+    border: 0.5px solid #121212;
+
+}
+
+/* Progress Chart */
+.ProgressChartSection {
+    text-align: center;
+    width: 100%;
+    max-width: 900px;
+    margin-top: 20px;
+}
+
+.ProgressChartSection h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Fix ChartJS Overflow */
+canvas {
+    max-width: 100% !important;
+    height: auto !important;
 }
