@@ -1,39 +1,114 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-      display: flex;
-      flex-wrap: wrap;
-  }
-.Module_Container {
-    display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  border: 2px solid #ddd; 
-  border-radius: 8px;
-  overflow: hidden;
-  width: 80vw; 
-  height: auto; 
-  background: #ffffff;
-  margin-top: 140px;
-  margin-left: 50px ;
-  border: 2px solid #002f87;
-}
-.Notheader {
-    padding: 10px;
+/* ===== Page Container ===== */
+.pageContainer {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  font-size: 25px;
-  font-style: initial;
-  margin: 10px 10px;
-  margin-left: 10px;
-  font-size: 1.2em;
-  border-bottom: 1px solid #333;
+  align-items: center;
+  width: 80%; /* Expands it closer to the red line */
+  max-width: 1600px; /* Increase width further */
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f8f8;
+  margin-top: 100px;
+}
+
+
+/* ================= STUDY HABITS SECTION ================= */
+.habitsContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1500px;
+}
+
+.habitCard {
+  flex: 1;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  width: 50px;
+  min-width: 200px;
+  height: 100%;
+  gap: 10px;
+  margin: 10px;
+}
+.habitCard p {
+  
+  margin-left: 120px;
+  margin-top: 20px;
+}
+
+/* ================= MODULES SECTION ================= */
+.moduleContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1500px; /* Adjust as needed */
+  gap: 10px;
+  
   }
-.Module_Grid {
-    display: flex;
-    justify-content: center;
-    padding-top: 20px;
+  
+.moduleTitle {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 70px;
+  text-align: center; /* Aligns title to the left */
+}
+
+/* Module Grid */
+.moduleGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Spreads modules */
+  width: 100%;
+}
+
+/* Individual Module Card */
+.moduleCard {
+  flex: 1;
+  max-width: 300px; /* Prevents cards from getting too big */
+  padding: 15px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.moduleCard:hover {
+  transform: scale(1.05);
+}
+
+/* Placeholder for Images */
+.moduleImage {
+  width: 100%;
+  height: 150px;
+  background-color: #d9d9d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+
+/* Proceed Button */
+.proceedBtn {
+  background-color: #002c77;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.proceedBtn:hover {
+  background-color: #001a4d;
 }
