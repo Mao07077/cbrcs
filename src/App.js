@@ -24,6 +24,9 @@ import Request from './Admin_Page/Request/Request';
 import Adminpost from './Admin_Page/AdminPost/AdminPost';
 import ModuleList from './Instructor_Page/ModuleList/ModuleList';
 import Report from './Admin_Page/Reports/Report';
+import StudyHabits_landingpage from './page/Study_habits/Habits_Landing/StudyHabits_landingpage';
+
+
 
 
 
@@ -58,6 +61,7 @@ function App() {
             <Route path="/Adminpost" element={<Adminpost />} />
             <Route path="/ModuleList" element={<ModuleList/>}/>
             <Route path="/Report" element={<Report/>}/>
+            <Route path="/StudyHabits_landingpage" element={<StudyHabits_landingpage/>}/>
           </Routes>
         
       </BrowserRouter>
