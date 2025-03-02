@@ -157,7 +157,7 @@ body {
   justify-content: space-between;
 }
 .Email_Text {
-  font-size: 1.2em;
+  font-size: 1em;
   display:flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -226,6 +226,20 @@ body {
   display: flex;
   justify-content: center;
   gap: 10px;
+}
+.Email_Text h2{
+  font-size: 0.8em;
+  display:flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: end;
+
+}
+.Email_Text p{
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  margin-left: 20px;
 }
 }
 @media(max-width: 600px) {
