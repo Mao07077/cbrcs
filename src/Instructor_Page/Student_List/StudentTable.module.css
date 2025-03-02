@@ -1,190 +1,304 @@
-.body{
-  display: flex;
-  flex-wrap: wrap;
-}
-.header {
-    width: 100%;  /* Full width */
-    background-color: #002f87;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Adjust header content to fit properly */
-  .header-content {
-    display: flex;
-    width: 100%;  
-    max-width: 1200px;  
-  }
-  /* Image styling */
-  .header-logo img {
-    height: 50px;   
-    width: auto;     
-    max-width: 180px; 
-  }
-  .List_Container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    border: 2px solid #ddd; 
-    border-radius: 8px;
-    overflow: hidden;
-    width: 80vw; 
-    height: auto; 
-    background: #ffffff;
-    margin-top: 140px;
-    margin-left: 50px ;
-    border: 2px solid #002f87;
-}
-  
-
-  /* Sidebar edit ewan ko ba ayusin ko pato rerelocate ko  */
-  .Sidebar {
+  .body{
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
-    align-items: center;
-    position: fixed;
-    width: 10%;
-    height: 100%;
+  }
+  .Header {
+    grid-area: Header;
+    background-color: #002f87;
+    display: flex;
+  }
+  *{
+    margin: 0;
+    padding: 0;
+  }
+  body {
+  
+    font-family: Consolas, sans-serif;
+    box-sizing: border-box;
+  }
+  .Maincontainer {
+    display: grid;
+    grid-template-areas:
+      "Header Header"
+      "Menu Content";
+    grid-template-columns: 0.1fr 1fr;
+    height: auto;
+    width: 100vw;
+    
+  }
+  .Maincontainer > div {
+    padding: 10px;
+  }
+  .Menu {
+    grid-area: Menu;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-items: flex-start;
+    width: 100%;
     color: black;
     top: 0;
     left: 0;
-    margin-top: 4.6%;
-    padding-bottom: 50px;
-}
-
-.Sidebar ul {
+    
+  }
+  .Menu ul {
     display: flex;
     flex-direction: column;
-    justify-content:  space-evenly;
+    justify-content:  flex-start;
     flex: 1;
-    gap: 1px;
-}
-
-
-.Sidebar ul li {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  text-align: center;
-  padding: 6px 10px;
-  font-size: 24px;
-  text-align: center;
-  cursor: pointer;
-  outline: none;
-  color: #fff;
-  background: #4a90e3;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 9px #999;
-}
-.Sidebar ul li:hover {background-color: #cece05}
-.Sidebar ul li:active {
-  background: #4a90e2;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
-}
-.Sidebar-item{
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-}
-.Sidebar ul li a {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    color: black;
-    font-size: 50%;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-.Sidebar span{
-  font-size: 15px;
-}
-
-.Sidebar img {
-    margin: 0 auto;
-    width: 30px;
-    height: 30px;
-}
-  
-  
- 
-  
-  .Table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: center;
-    margin-top: 20px;
-    font-size: 1.2em;
+    gap: 8%;
+    margin-top: 80px;
   }
-  
-  .Table th {
-    font-family: 'Times New Roman', Times, serif;
-    padding: 10px;
-    border: 1px solid #ccc;
-    background: #eef2f7;
-    color: #333;
-    font-size: 1.3em;
-  }
-  
-  .Table td {
-    padding: 10px;
-    border: 1px solid #ccc;
-  }
-  
-  .Table td.center {
-    text-align: center;
-  }
-  
-  .No_Students {
-    padding: 10px;
-    text-align: center;
-    color: #999;
-  }
-  .Greeting_Studentlist{
-    padding: 10px;
-    text-align: center;
+  .Menu ul li {
     display: flex;
     justify-content: flex-start;
-    font-size: 25px;
-    font-style: initial;
-    margin: 10px 10px;
+    text-align: center;
     margin-left: 10px;
-    font-size: 1.2em;
-    border-bottom: 1px solid #333;
+    padding: 5px 10px;
+    font-size: 24px;
+    cursor: pointer;
+    outline: none;
+    color: #000;
+    background: #f4f4f4;
+    border: none;
+    }
+    .Sidebar_Item{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      align-self: center;
+      gap: 10px;
+      }
+      .Menu ul li a {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        color: black;
+        font-size: 50%;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      .Menu span{
+        font-size: 15px;
+        }
+        
+        .Menu img {
+          margin: 0 auto;
+          width: 50px;
+          height: 40px;
+        }
+        .Sidebar_Icon{
+          margin: 0 auto;
+          width: 50px;
+          height: 40px;
+          display:flex;
+          justify-content: center;
+        }
+        .Maincontainer > div.Content {
+          display: flex;
+          justify-content: flex-start ;
+          height: auto;
+          grid-area: Content;
+        }
+        .Content{
+          padding: 10px;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          font-size: 25px;
+          font-style: initial;
+          margin: 10px 10px;
+          margin-left: 10px;
+          font-size: 1.2em;
+          border-bottom: 4px solid #333;
+          border-left: 4px solid #333;
+          border-right: 4px solid #333;
+          border-top: 4px solid #333;
+        }
+        
+    
+    .Table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+    
+    .Table th {
+      font-family: 'Times New Roman', Times, serif;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background: #eef2f7;
+      color: #333;
+      font-size: 1.3em;
+    }
+    
+    .Table td {
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+    
+    .Table td.center {
+      text-align: center;
+    }
+    
+    .No_Students {
+      padding: 10px;
+      text-align: center;
+      color: #999;
+    }
+    .Greeting_Studentlist{
+      display: flex;
+    justify-content: flex-start;
+    padding:15px;
+    border-bottom: 4px solid #333;
+  
   }
 
-  .Greeting_Studentlist h1{
-    font-size: 1.5em;
-    color: #333;
-    margin-bottom: 20px;
+    .Greeting_Studentlist h1{
+      font-size: 1.5em;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .Content h2{
+      display: flex;
+      font-size: 1em; 
+      color: #333;
+      margin-top: 15px;
+    }
+    .Container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 20px;
+      width: 100%; /* Adjust width to fill the parent container */
+      margin: 0; /* Remove margin to avoid extra spacing */
+      background: #f7f9fc;
+      border-radius: 8px;
+      flex-grow: 1; /* Ensure it expands with the parent container */
+      overflow: auto; /* Add scrolling if the content overflows */
+      box-sizing: border-box; /* Ensures padding doesn't affect width */
   }
-  .Container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 20px;
-    width: 100%; /* Adjust width to fill the parent container */
-    margin: 0; /* Remove margin to avoid extra spacing */
-    background: #f7f9fc;
-    border-radius: 8px;
-    flex-grow: 1; /* Ensure it expands with the parent container */
-    overflow: auto; /* Add scrolling if the content overflows */
-    box-sizing: border-box; /* Ensures padding doesn't affect width */
+  .Search-Input {
+      padding: 10px;
+      width: 10%;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-top: 20px;
+    }
+    buttons {
+      width: 100%;
+      padding: 12px;
+      background-color: #032a6e;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-family: 'Segoe UI';
+      cursor: pointer;
+      transition: background-color 0.3s;
+  }
+    buttons:hover {
+    background-color: #f4e53e;
 }
- .Search-Input {
-    padding: 10px;
-    width: 10%;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-top: 20px;
-  }
+    @media(max-width: 1000px) {
+      .Menu ul{
+        display: flex;
+        flex-direction: row;
+        height: 5px;
+        justify-content: center;
+        padding-bottom: 50px;
+      }
+      .Menu ul li {
+        display: flex;
+        flex-direction: row;
+        height: 5px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        
+      }
+      .Menu img {
+        margin: 0 auto;
+        width: 20px;
+        height: 20px;
+      }
+      .Menu span{
+        font-size: 10px;
+        }
+      .Maincontainer{
+        display: grid;
+        grid-template-areas:
+          "Header Header"
+          "Content Content"
+          "Menu Menu";
+        
+      }
+      .Table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+        margin-top: 20px;
+        font-size: 0.9em;
+      }
+      
+      .Table th {
+        font-family: 'Times New Roman', Times, serif;
+        padding: 10px;
+        border: 1px solid #ccc;
+        background: #eef2f7;
+        color: #333;
+        font-size: 0.9em;
+      }
+      Buttons {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 6px;
+        background-color: #032a6e;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 12px;
+        font-family: 'Segoe UI';
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+      }
+      @media(max-width: 600px) {
+      .Menu ul{
+        display: flex;
+        flex-direction: row;
+        height: 5px;
+        justify-content: center;
+        gap: 5%;
+      }
+      .Menu ul li {
+        display: flex;
+        flex-direction: row;
+        height: 5px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        
+      }
+      .Menu img {
+        margin: 0 auto;
+        width: 20px;
+        height: 20px;
+      }
+      .Menu span{
+        font-size: 10px;
+        }
+      .Maincontainer{
+        display: grid;
+        grid-template-areas:
+          "Header Header"
+          "Content Content"
+          "Menu Menu";
+      }
+      }

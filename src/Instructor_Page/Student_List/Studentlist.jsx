@@ -3,20 +3,30 @@ import Styles from "./StudentTable.module.css";
 import InstructorHeader from "../../Components/Instructor_Header";
 import axios from "axios";
 import DashboardModal from "../../page/Dashboard/DashboradModal";
+import Dashboard from '../../icon/dashboard.png'; 
+import MailIcon from '../../icon/Mail.png';
+import StudentsIcon from '../../icon/Students.png';
+import Icon from '../../icon/actual.png';
+
+
 
 function StudentTable() {
-  const [searchQuery, setSearchQuery] = useState(""); // Search query
-  const [students, setStudents] = useState([]); // Student list
-  const [selectedStudent, setSelectedStudent] = useState(null); // Selected student for the dashboard modal
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
-  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [searchQuery, setSearchQuery] = useState(""); 
+  const [students, setStudents] = useState([]); 
+  const [selectedStudent, setSelectedStudent] = useState(null); 
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isLoading, setIsLoading] = useState(true); 
+
+    const handleNavigation = (route) => {
+      console.log(`Navigating to: ${route}`);
+    
+      window.location.href = `/${route}`;
+    };
 
   useEffect(() => {
-    // Fetch students from the backend
     axios
       .get("http://localhost:8000/students")
       .then((response) => {
-        // Map backend response to frontend structure
         const mappedStudents = response.data.map((student) => ({
           studentNo: student.studentNo,
           name: student.name,
@@ -33,7 +43,6 @@ function StudentTable() {
       });
   }, []);
 
-  // Filter students based on search query
   const filteredStudents = students.filter(
     (student) =>
       student.studentNo.includes(searchQuery) ||
@@ -41,7 +50,7 @@ function StudentTable() {
   );
 
   const handleViewDashboard = (student) => {
-    setSelectedStudent(student); // Pass full student object
+    setSelectedStudent(student); 
     setIsModalOpen(true);
   };
 
@@ -49,19 +58,57 @@ function StudentTable() {
     setIsModalOpen(false);
     setSelectedStudent(null);
   };
-
+  const SidebarItem = ({ icon, text, onClick }) => (
+    <li>
+      <button className="sidebar-item" onClick={onClick}>
+        <img src={icon} alt={text} className="sidebar-icon" />
+        <span>{text}</span>
+      </button>
+    </li>
+  );
+  
   return (
-    <>
-      <header className="header">
-        <InstructorHeader />
-      </header>
-
-      <div className={Styles.List_Container}>
-        <div className={Styles.Greeting_Studentlist}>
+    <div className={Styles.Maincontainer}>
+    <div className={Styles.Header}> 
+      <div className="header-content">
+          <div className="header-logo">
+              <img src={Icon} alt="logo" />
+          </div>
+          
+      </div></div>
+    <nav className={Styles.Menu}> 
+      <ul>
+        <li>
+          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Instructor_Dashboard')}>
+            <img src={Dashboard} alt="Dashboard Icon" className={Styles.Sidebar_Icon} />
+            <span>Dashboard</span>
+          </buttonss>
+        </li>
+        <li>
+          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('mail')}>
+            <img src={MailIcon} alt="Mail Icon" className={Styles.Sidebar_Icon} />
+            <span>Message</span>
+          </buttonss>
+        </li>
+        <li>
+          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('studentlist')}>
+            <img src={StudentsIcon} alt="Students Icon" className={Styles.Sidebar_Icon} />
+            <span>StudentList</span>
+          </buttonss>
+        </li>
+        <li>
+          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('ModuleList')}>
+            <img src={StudentsIcon} alt="Students Icon" className={Styles.Sidebar_Icon} />
+            <span>Module</span>
+          </buttonss>
+        </li>
+      </ul>
+     </nav>
+    <div className={Styles.Content}>
+    <div className={Styles.Greeting_Studentlist}>
           <h1>Students List</h1>
         </div>
 
-        <div className={Styles.Container}>
           <h2>Search:</h2>
           <input
             type="text"
@@ -92,12 +139,12 @@ function StudentTable() {
                       <td>{student.name}</td>
                       <td>{student.program}</td>
                       <td>
-                        <button
+                        <buttons
                           className="view-dashboard-btn"
                           onClick={() => handleViewDashboard(student)}
                         >
                           View Dashboard
-                        </button>
+                        </buttons>  
                       </td>
                     </tr>
                   ))
@@ -112,12 +159,13 @@ function StudentTable() {
             </table>
           )}
         </div>
-      </div>
-
-      {isModalOpen && selectedStudent && (
+        {isModalOpen && selectedStudent && (
         <DashboardModal student={selectedStudent} onClose={closeModal} />
       )}
-    </>
+
+      </div>
+      
+
   );
 }
 
