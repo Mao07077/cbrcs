@@ -150,32 +150,38 @@ body {
 .Email_Item{
   display: flex;
   justify-content: flex-start;
-  flex-direction: column;
+  flex-direction: row;
   padding: 10px;
   margin: 50px;
   border-bottom: 1px solid #333;
+  justify-content: space-between;
 }
-.Email_Item h2{
+.Email_Text {
   font-size: 1.2em;
   display:flex;
+  flex-direction: column;
   justify-content: flex-start;
+  text-align: end;
 
 }
-.Email_Item  p{
+.Email_Text p{
   display: flex;
   align-items: center;
   font-size: 15px;
   margin-left: 20px;
 }
-.Email_Item buttons h2{
+
+.Button{
+  width: 8%;
+  height: 40px;
+  padding: 12px;
+  background-color: #032a6e;
+  color: white;
+  border: none;
+  border-radius: 10px;
   display: flex;
-  flex-direction: column;
-}
-.Email_Item buttons{
-  display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 10px;
-  margin-top: -5px;;
 }
 @media(max-width: 1000px) {
 .Menu ul{
@@ -208,6 +214,18 @@ body {
     "Content Content"
     "Menu Menu";
    
+}
+.Button {
+  font-size: 15px;
+  width: 20%;
+  padding: 12px;
+  background-color: #032a6e;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 }
 @media(max-width: 600px) {

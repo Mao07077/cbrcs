@@ -66,17 +66,20 @@ const SidebarItem = ({ icon, text, onClick }) => (
       </div>
     <div className={Styles.Mail_Bar}>
             {Array.from({ length: 10 }).map((_, index) => (
-                <div 
-                    className={Styles.Email_Item} 
+                <div className={Styles.Email_Item} 
                     key={index} 
                     onClick={() => handleEmailClick(index)}    
                     style={{ cursor: 'pointer' }}   
-                >  
+                >
+                  <div className={Styles.Email_Text}>
                     <h2><strong> Name Here</strong></h2>
-                    <buttons type="submit-send">Invite</buttons>
                     <p>Active Now</p>
-                    
+                    </div>
+                    <div className={Styles.Button}>
+                    <buttonz type="submit-send">Invite</buttonz>
+                    </div>
                 </div>
+                
               ))}
           </div>
               <div classname={Styles.Email_Details}>
