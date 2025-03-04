@@ -25,7 +25,8 @@ import Adminpost from './Admin_Page/AdminPost/AdminPost';
 import ModuleList from './Instructor_Page/ModuleList/ModuleList';
 import Report from './Admin_Page/Reports/Report';
 import StudyHabits_landingpage from './page/Study_habits/Habits_Landing/StudyHabits_landingpage';
-
+import Flashcard from './page/Study_habits/Flashcard/Flashcard';
+import Flashcard_landing from './page/Study_habits/Flashcard/Flashcard_landing';
 
 
 
@@ -62,6 +63,8 @@ function App() {
             <Route path="/ModuleList" element={<ModuleList/>}/>
             <Route path="/Report" element={<Report/>}/>
             <Route path="/StudyHabits_landingpage" element={<StudyHabits_landingpage/>}/>
+            <Route path="/Flashcard" element={<Flashcard/>}/>
+            <Route path="/Flashcard_landing" element={<Flashcard_landing/>}/>
           </Routes>
         
       </BrowserRouter>

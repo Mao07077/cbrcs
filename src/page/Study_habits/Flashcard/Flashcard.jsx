@@ -13,31 +13,39 @@ const Flashcards = () => {
 
     const handleNext = () => {
         setShowAnswer(false);
-        setCurrentIndex((prev) => (prev + 1) % hardcodedFlashcards.length);
+        setCurrentIndex((prev) => (prev + 1) % flashcards.length);
     };
 
     const handlePrev = () => {
         setShowAnswer(false);
-        setCurrentIndex((prev) => (prev - 1 + hardcodedFlashcards.length) % hardcodedFlashcards.length);
+        setCurrentIndex((prev) => (prev - 1 + flashcards.length) % flashcards.length);
     };
 
     const handleFlip = () => setShowAnswer(!showAnswer);
 
     return (
         <div className={styles.container}>
-            <h2>Flashcards</h2>
-            {hardcodedFlashcards.length > 0 ? (
+            <h2 className={styles.title}>Flashcards</h2>
+            {flashcards.length > 0 ? (
                 <div className={styles.card} onClick={handleFlip}>
-                    <p>{showAnswer ? hardcodedFlashcards[currentIndex].answer : hardcodedFlashcards[currentIndex].question}</p>
+                     <div className={`${styles.inner} ${showAnswer ? styles.flipped : ''}`}>
+                        <div className={styles.front}>
+                            <p>{flashcards[currentIndex].question}</p>
+                        </div>
+                        <div className={styles.back}>
+                            <p>{flashcards[currentIndex].answer}</p>
+                        </div>
+                    </div>
                 </div>
             ) : (
                 <p>No flashcards available.</p>
             )}
             <div className={styles.controls}>
-                <button onClick={handlePrev}>Prev</button>
-                <button onClick={handleNext}>Next</button>
+            <button className={styles.button} onClick={handlePrev}>Prev</button>
+                <button className={styles.button} onClick={handleNext}>Next</button>
             </div>
         </div>
+
     );
 };
 
