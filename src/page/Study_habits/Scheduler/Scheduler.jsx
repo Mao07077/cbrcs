@@ -1,69 +1,94 @@
 import { useState, useEffect } from "react";
 import styles from "./Scheduler.module.css";
+import Header from '../../../Components/Header';
 
-const Scheduler = () => {
-  const [schedule, setSchedule] = useState({});
-  const [currentTime, setCurrentTime] = useState(new Date());
+const daysOfWeek = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 60000);
+const ScheduleTable = () => {
+    const [schedule, setSchedule] = useState(
+        Array(5).fill(null).map(() => Array(7).fill(""))
+    );
+    const [times, setTimes] = useState(["08:00 AM", "10:00 AM", "12:00 PM", "02:00 PM", "04:00 PM"]);
+    const [reminder, setReminder] = useState(null);
 
-    return () => clearInterval(timer);
-  }, []);
+    useEffect(() => {
+        const checkReminders = () => {
+            const now = new Date();
+            const currentTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+            
+            schedule.forEach((row, rowIndex) => {
+                if (times[rowIndex] === currentTime) {
+                    row.forEach((item, colIndex) => {
+                        if (item) {
+                            setReminder(`Reminder: ${item} at ${times[rowIndex]}`);
+                        }
+                    });
+                }
+            });
+        };
 
-  const handleInputChange = (day, time, value) => {
-    setSchedule((prev) => ({
-      ...prev,
-      [`${day}-${time}`]: value,
-    }));
-  };
+        const interval = setInterval(checkReminders, 60000);
+        return () => clearInterval(interval);
+    }, [schedule, times]);
 
-  useEffect(() => {
-    const day = new Date().toLocaleString("en-US", { weekday: "short" }).toUpperCase();
-    const hour = new Date().getHours();
-    const key = `${day}-${hour}`;
+    const handleTimeChange = (index, value) => {
+        const newTimes = [...times];
+        newTimes[index] = value;
+        setTimes(newTimes);
+    };
 
-    if (schedule[key]) {
-      alert(`Reminder: ${schedule[key]}`);
-    }
-  }, [currentTime, schedule]);
+    const handleScheduleChange = (row, col, value) => {
+        const newSchedule = [...schedule];
+        newSchedule[row][col] = value;
+        setSchedule(newSchedule);
+    };
 
-  const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-  const times = Array.from({ length: 24 }, (_, i) => i);
-
-  return (
-    <div className={styles.schedulerContainer}>
-      <table className={styles.schedulerTable}>
-        <thead>
-          <tr>
-            <th>TIME</th>
-            {days.map((day) => (
-              <th key={day}>{day}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {times.map((time) => (
-            <tr key={time}>
-              <td>{`${time}:00`}</td>
-              {days.map((day) => (
-                <td key={`${day}-${time}`}>
-                  <input
-                    type="text"
-                    value={schedule[`${day}-${time}`] || ""}
-                    onChange={(e) => handleInputChange(day, time, e.target.value)}
-                    className={styles.input}
-                  />
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+    return (
+        <div className={styles.container}>
+            <Header/>
+            {reminder && (
+                <div className={styles.reminderPopup}>
+                    <p>{reminder}</p>
+                    <button onClick={() => setReminder(null)}>Close</button>
+                </div>
+            )}
+            <div className={styles.scheduleWrapper}>
+                <table className={styles.scheduleTable}>
+                    <thead>
+                        <tr>
+                            <th>TIME</th>
+                            {daysOfWeek.map((day, index) => (
+                                <th key={index} className={styles.dayHeader}>{day}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {schedule.map((row, rowIndex) => (
+                            <tr key={rowIndex}>
+                                <td>
+                                    <input
+                                        type="text"
+                                        value={times[rowIndex]}
+                                        onChange={(e) => handleTimeChange(rowIndex, e.target.value)}
+                                    />
+                                </td>
+                                {row.map((item, colIndex) => (
+                                    <td key={colIndex}>
+                                        <input
+                                            type="text"
+                                            value={item}
+                                            onChange={(e) => handleScheduleChange(rowIndex, colIndex, e.target.value)}
+                                        />
+                                    </td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
 };
 
-export default Scheduler;
+export default ScheduleTable;
+
