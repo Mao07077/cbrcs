@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./landing.css";
+import Styles from "./Landing.module.css";
 import Icon from '../../icon/actual.png';
 import image from '../../icon/carlbalita.jpg';
 
@@ -28,22 +28,20 @@ const Landing = () => {
     }, []);
 
     return (
-        <>
-             <header className="header">
-                                               <div className="header-content">
-                                                   <div className="header-logo">
-                                                       <img src={Icon} alt="actual" />
-                                                   </div>
-                                               </div>
-                                           </header>
-
-            <div className="main-container">
-                <div>
-                    <div className="intro-container">
-                        <div className="text-container">
+        <div className={Styles.Landing_Page}>
+          <div className={Styles.Header}>
+        <div className="header-content">
+        <div className="header-logo">
+            <img src={Icon} alt="logo" />
+        </div> </div>
+        </div>
+        <div className={Styles.Content}>
+        
+                    <div className={Styles.Intro_Container}>
+                        <div className={Styles.Text_Container}>
                             <h1>{introText.header || "Welcome to Dr. Carl Balita Review Center Student Portal"}</h1>
                             <p>{introText.subHeader || "Where the dream and the dreamer become ONE!"}</p>
-                            <div className="buttons">
+                            <div className={Styles.Buttons}>
                                 <button
                                     type="button"
                                     className="login"
@@ -54,24 +52,15 @@ const Landing = () => {
                                 </button>
                             </div>
                         </div>
-                        <div className="image-container">
+                        <div className={Styles.Image_Container}>
         <img src={image} alt="carlbalita" />
     </div>
 </div>
-                        <div className="placeholder-box">
-                            {/* Render images preview */}
-                            {images.length > 0 && (
-                                <div className="image-previews">
-                                    {images.map((image, index) => (
-                                        <img key={index} src={image} alt={`Uploaded Preview ${index + 1}`} />
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                       
+                    
 {/* Newly added image below the news section */}
-<div className="cbrc-description">
-                        <div className="cbrc-background">
+<div className={Styles.Cbrc_Description}>
+                        <div className={Styles.Cbrc_Background}>
                             <h2>Dr. Carl Balita Review Center</h2>
                             <p>
                                 CBRC, popularly known as the Dr. Carl E. Balita Review Center, stands as the biggest, most awarded, 
@@ -86,7 +75,7 @@ const Landing = () => {
 
 
                     {/* News Section */}
-                    <div className="news-container">
+                    <div className={Styles.News_Container}>
                         <h2>Latest News</h2>
                         <p>{news || "No news available at the moment."}</p>
                     </div>
@@ -100,7 +89,7 @@ const Landing = () => {
                             <p>Browse through our top performing courses</p>
                         </div>
 
-                        <div className="course-grid">
+                        <div className={Styles.Course_Grid}>
                             <div className="course-card">
                                 <div className="placeholder"></div>
                                 <div className="course-label">Top Rated</div>
@@ -118,17 +107,48 @@ const Landing = () => {
                             </div>
                         </div>
                     </div>
-                </div>
-
+        
             {/* Footer as an image */}
-            <footer>
-    <div className="footer">
+    <div className={Styles.Footer}>
         <img src={Icon} alt="actual" />
         <p>&copy; 2024 Dr. Carl Balita Review Center. All Rights Reserved.</p>
     </div>
-</footer>
 
-        </>
+    </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     );
 };
 
