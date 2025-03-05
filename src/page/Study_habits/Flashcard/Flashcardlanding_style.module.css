@@ -7,12 +7,14 @@
   padding: 20px;
   background: linear-gradient(to right, #f8f9fa, #e9ecef); /* Minimalist gradient */
   min-height: 100vh;
+  width: 1000px;
 }
 
 /* Container for all modules */
 .module_container {
-  width: 85%;
+  width: 100%;
   max-width: 1200px;
+  margin-bottom: 200px;
 }
 
 /* Title Styling */
@@ -46,6 +48,7 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   transition: transform 0.2s ease-in-out;
+  height: 200px;
 }
 
 .module_card:hover {
@@ -69,6 +72,7 @@
 /* Button Styling */
 .proceed_btn {
   background: #0056b3;
+  margin-top: 80px;
   color: white;
   padding: 8px 16px;
   border: none;

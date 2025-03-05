@@ -1,49 +1,90 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Styles from "./Flashcardlanding_style.module.css";
-import Header from '../../../Components/Header';
+import Styles from "./Flashcardlanding_style.module.css"; // ✅ Ensure this file exists and is properly named
+import Header from "../../../Components/Header"; // ✅ Ensure this path is correct
 
 const FlashcardsLandingPage = () => {
     const [modules, setModules] = useState([]);
     const [error, setError] = useState(null);
+    const [userProgram, setUserProgram] = useState(null);
     const navigate = useNavigate();
-    const userIdNumber = localStorage.getItem("userIdNumber") || "All IDs";
 
+    // ✅ Fetch User Profile
     useEffect(() => {
-        fetch("http://localhost:8000/api/modules")
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+        const fetchUserProfile = async () => {
+            try {
+                const idNumber = localStorage.getItem("userIdNumber");
+                if (!idNumber) {
+                    setError("User not logged in");
+                    return;
                 }
-                return response.json();
-            })
-            .then((data) => setModules(data))
-            .catch((error) => setError(error.message));
+
+                const response = await fetch(`http://localhost:8000/api/profile/${idNumber}`);
+                if (!response.ok) throw new Error("Failed to fetch user profile");
+
+                const data = await response.json();
+                console.log("User Profile:", data); // Debugging
+                setUserProgram(data.program || "All Programs"); // Default to 'All Programs'
+            } catch (err) {
+                setError(err.message);
+            }
+        };
+
+        fetchUserProfile();
     }, []);
 
-    const handleProceedClick = (moduleId) => {
+    // ✅ Fetch Modules Based on User Program
+    useEffect(() => {
+        if (!userProgram) return;
+
+        const apiUrl =
+            userProgram === "All Programs"
+                ? "http://localhost:8000/api/modules"
+                : `http://localhost:8000/api/modules?program=${encodeURIComponent(userProgram)}`;
+
+        console.log("Fetching modules from:", apiUrl);
+
+        fetch(apiUrl)
+            .then((response) => {
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                return response.json();
+            })
+            .then((data) => {
+                console.log("Modules fetched:", data);
+                setModules(data);
+            })
+            .catch((error) => setError(error.message));
+    }, [userProgram]);
+
+    // ✅ Handle Click to Open Flashcards
+    const handleOpenFlashcards = (moduleId) => {
         navigate(`/flashcards/${moduleId}`);
     };
 
-    const filteredModules = modules.filter((module) => module.id_number === userIdNumber);
-
     return (
-        
-                 
         <div className={Styles.page_container}>
             <Header />
+
             <div className={Styles.module_container}>
                 <h1 className={Styles.module_title}>Flashcards Modules</h1>
                 <p className={Styles.module_description}>Select a module to review its flashcards.</p>
+
                 <div className={Styles.module_grid}>
                     {error ? (
                         <p>{`Error: ${error}`}</p>
-                    ) : filteredModules.length > 0 ? (
-                        filteredModules.map((module) => (
+                    ) : modules.length > 0 ? (
+                        modules.map((module) => (
                             <div className={Styles.module_card} key={module._id}>
                                 <h3>{module.title}</h3>
-                                <p>Click below to study flashcards for this module.</p>
-                                <button className={Styles.proceed_btn} onClick={() => handleProceedClick(module._id)}>View Flashcards</button>
+                                <img
+                                    src={`http://localhost:8000/${module.image_url}`}
+                                    alt="Module"
+                                    className={Styles.module_image}
+                                />
+                                <br />
+                                <button className={Styles.proceed_btn} onClick={() => handleOpenFlashcards(module._id)}>
+                                    Open Flashcards
+                                </button>
                             </div>
                         ))
                     ) : (
