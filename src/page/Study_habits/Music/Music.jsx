@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './MusicPlayer.module.css';
+import Header from '../../../Components/Header';
 
 const genres = {
     Pop: [
@@ -51,28 +52,42 @@ const MusicPlayer = () => {
     };
 
     return (
-        <div className={styles.container}>
-            <h2>Music Player</h2>
-            <div className={styles.genreSelector}>
-                {Object.keys(genres).map((genre) => (
-                    <button key={genre} onClick={() => handleGenreChange(genre)}>{genre}</button>
-                ))}
+        <div className={styles.page_container}>
+            <Header />
+            <div className={styles.music_player_container}>
+                <h2 className={styles.header}>Music Player</h2>
+                
+                <div className={styles.genreSelector}>
+                    {Object.keys(genres).map((genre) => (
+                        <button key={genre} onClick={() => handleGenreChange(genre)}>
+                            {genre}
+                        </button>
+                    ))}
+                </div>
+
+                <div className={styles.songList}>
+                    {genres[selectedGenre].map((song) => (
+                        <div 
+                            key={song.title} 
+                            className={song === currentSong ? styles.activeSong : ''} 
+                            onClick={() => setCurrentSong(song)}
+                        >
+                            {song.title}
+                        </div>
+                    ))}
+                </div>
+
+                <div className={styles.controls}>
+                    <button onClick={handlePlayPause}>{isPlaying ? 'Pause' : 'Play'}</button>
+                    <button onClick={handleNextSong}>Next</button>
+                </div>
+
+                <div className={styles.nowPlaying}>
+                    Now Playing: {currentSong.title}
+                </div>
+
+                <audio ref={audioRef} src={currentSong.src} />
             </div>
-            <div className={styles.songList}>
-                {genres[selectedGenre].map((song) => (
-                    <div key={song.title} className={song === currentSong ? styles.activeSong : ''}>
-                        {song.title}
-                    </div>
-                ))}
-            </div>
-            <div className={styles.controls}>
-                <button onClick={handlePlayPause}>{isPlaying ? 'Pause' : 'Play'}</button>
-                <button onClick={handleNextSong}>Next</button>
-            </div>
-            <div className={styles.nowPlaying}>
-                Now Playing: {currentSong.title}
-            </div>
-            <audio ref={audioRef} src={currentSong.src} />
         </div>
     );
 };
