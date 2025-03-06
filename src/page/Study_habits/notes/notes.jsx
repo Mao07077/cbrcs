@@ -1,47 +1,70 @@
 import { useState } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import styles from "./Notes.module.css";
+import Header from "../../../Components/Header";
 
 const Notes = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [showNoteModal, setShowNoteModal] = useState(false);
+  const [notes, setNotes] = useState([]);
 
-  const handleSave = async () => {
-    const response = await fetch("http://localhost:8000/add_note", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, content }),
-    });
-
-    if (response.ok) {
-      alert("Note saved!");
-      setTitle("");
-      setContent("");
-    } else {
-      alert("Error saving note.");
-    }
+  const handleSave = () => {
+    if (!title.trim() || !content.trim()) return;
+    const newNote = { title, content };
+    setNotes([newNote, ...notes]);
+    setTitle("");
+    setContent("");
+    setShowNoteModal(false);
   };
 
   return (
-    <div className={styles.noteContainer}>
-      <button className={styles.closeBtn}>×</button>
-      <label className={styles.label}>Title:</label>
-      <input
-        type="text"
-        className={styles.titleInput}
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <ReactQuill
-        className={styles.textEditor}
-        value={content}
-        onChange={setContent}
-        theme="snow"
-      />
-      <button className={styles.saveBtn} onClick={handleSave}>
-        Save
+    <div className={styles.page_container}>
+      <Header />
+      <header className={styles.border}>
+        <h2>My Notes</h2>
+      </header>
+      <button className={styles.create_note_btn} onClick={() => setShowNoteModal(true)}>
+        Create New Note
       </button>
+
+      <div className={styles.notes_grid}>
+        {notes.length > 0 ? (
+          notes.map((note, index) => (
+            <div key={index} className={styles.note_card}>
+              <h3>{note.title}</h3>
+              <p>{note.content}</p>
+            </div>
+          ))
+        ) : (
+          <p className={styles.no_notes}>No notes available. Create one!</p>
+        )}
+      </div>
+
+      {showNoteModal && (
+        <div className={styles.modal_overlay}>
+          <div className={styles.modal_content}>
+            <button className={styles.closeBtn} onClick={() => setShowNoteModal(false)}>×</button>
+            <h2 className={styles.modalTitle}>Create a New Note</h2>
+            <label className={styles.label}>Title:</label>
+            <input
+              type="text"
+              className={styles.titleInput}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <label className={styles.label}>Content:</label>
+            <textarea
+              className={styles.textArea}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              rows={5}
+            />
+            <button className={styles.saveBtn} onClick={handleSave}>
+              Save
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

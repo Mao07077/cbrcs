@@ -1,47 +1,138 @@
-.noteContainer {
-    width: 500px;
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-  }
-  
-  .closeBtn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-  }
-  
-  .label {
-    font-weight: bold;
-  }
-  
-  .titleInput {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    font-size: 16px;
-  }
-  
-  .textEditor {
-    height: 250px;
-    margin-bottom: 10px;
-  }
-  
-  .saveBtn {
-    width: 100%;
-    padding: 10px;
-    background: blue;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
+.page_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  margin-top: 80px;
+  min-height: 100vh;
+}
+
+.border {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: left;
+  padding: 15px 0;
+  border-bottom: 2px solid #003366;
+  width: 100%;
+  max-width: 1200px;
+  color: #0b0b0b;
+  background: none;
+}
+
+.create_note_btn {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.create_note_btn:hover {
+  background-color: #218838;
+}
+
+.notes_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.note_card {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.note_card:hover {
+  transform: scale(1.03);
+}
+
+.no_notes {
+  color: #888;
+  font-size: 16px;
+  text-align: center;
+  width: 100%;
+}
+
+.modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal_content {
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  width: 450px;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalTitle {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.label {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.titleInput, .textArea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.saveBtn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 15px;
+}
+
+.saveBtn:hover {
+  background-color: #0056b3;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  border-radius: 50%;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #555;
+}
+
+.closeBtn:hover {
+  color: #f5f3f3;
+}
