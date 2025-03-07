@@ -1,22 +1,23 @@
 import { useState } from "react";
 import styles from "./Chat.module.css";
+import Header from "../../../Components/Header";
 
 const Chat = () => {
-  const [selectedInstructor, setSelectedInstructor] = useState("");
+  const [selectedInstructor, setSelectedInstructor] = useState(null);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
 
   const instructors = [
-    { name: "Instructor A", active: true },
-    { name: "Instructor B", active: true },
-    { name: "Instructor C", active: true },
-    { name: "Instructor D", active: true },
-    { name: "Instructor E", active: true }
+    { name: "Jessica Carroll", active: true },
+    { name: "Emily Rose", active: false },
+    { name: "David Bryant", active: true },
   ];
 
   const selectInstructor = (instructor) => {
-    setSelectedInstructor(instructor.name);
-    setMessages([{ sender: instructor.name, text: "Hello, how can I help you?" }]);
+    setSelectedInstructor(instructor);
+    setMessages([
+      { sender: instructor.name, text: "Hello, how can I help you?" },
+    ]);
   };
 
   const sendMessage = () => {
@@ -28,45 +29,68 @@ const Chat = () => {
 
   return (
     <div className={styles.chatContainer}>
-      {!selectedInstructor ? (
-        <div className={styles.instructorList}>
-          {instructors.map((instructor, index) => (
-            <div key={index} className={styles.instructorItem}>
-              <div className={styles.instructorDetails}>
-                <div className={styles.instructorAvatar}></div>
-                <div>
-                  <strong>{instructor.name}</strong>
-                  <p className={styles.activeStatus}>🟢 Active</p>
-                </div>
-              </div>
-              <button 
-                className={styles.chatButton} 
-                onClick={() => selectInstructor(instructor)}
-              >
-                ...
-              </button>
+      <Header />
+      {/* Sidebar with Instructor List */}
+      <div className={styles.sidebar}>
+        <h3>Messages</h3>
+        {instructors.map((instructor, index) => (
+          <div
+            key={index}
+            className={styles.instructorItem}
+            onClick={() => selectInstructor(instructor)}
+          >
+            <div className={styles.instructorAvatar}></div>
+            <div className={styles.instructorInfo}>
+              <strong>{instructor.name}</strong>
+              <p className={styles.previewText}>Click to chat</p>
+              <p className={instructor.active ? styles.activeStatus : styles.inactiveStatus}>
+                <span className={styles.statusDot}></span>
+                {instructor.active ? "Active now" : "Offline"}
+              </p>
             </div>
-          ))}
-        </div>
-      ) : (
-        <>
-          <h3>Chatting with {selectedInstructor}</h3>
-          <div className={styles.messages}>
-            {messages.map((msg, index) => (
-              <div key={index} className={styles.message}>
-                <strong>{msg.sender}:</strong> {msg.text}
-              </div>
-            ))}
           </div>
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className={styles.input}
-          />
-          <button onClick={sendMessage} className={styles.button}>Send</button>
-        </>
-      )}
+        ))}
+      </div>
+
+      {/* Chat Section */}
+      <div className={styles.chatSection}>
+        {selectedInstructor ? (
+          <>
+            <div className={styles.chatHeader}>
+              <div className={styles.instructorAvatar}></div>
+              <h3>{selectedInstructor.name}</h3>
+            </div>
+
+            <div className={styles.messages}>
+              {messages.map((msg, index) => (
+                <div
+                  key={index}
+                  className={
+                    msg.sender === "You" ? styles.userMessage : styles.instructorMessage
+                  }
+                >
+                  <div className={styles.messageBubble}>{msg.text}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className={styles.inputContainer}>
+              <input
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                className={styles.input}
+                placeholder="Type your message here..."
+              />
+              <button onClick={sendMessage} className={styles.sendButton}>➤</button>
+            </div>
+          </>
+        ) : (
+          <div className={styles.noChatSelected}>
+            <p>Select an instructor to start a chat</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
