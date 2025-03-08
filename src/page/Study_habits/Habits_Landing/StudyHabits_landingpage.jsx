@@ -1,5 +1,6 @@
 import React from "react";
 import "./studyhabits.css";
+import Header from "../../../Components/Header";
 
 const studyHabits = [
   "Study with Friends",
@@ -23,6 +24,7 @@ const top10StudyHabits = [
 const StudyHabits = () => {
   return (
     <div className="container">
+      <Header />
       <h2 className="title">Study Habits</h2>
       <div className="section">
         <h3 className="subtitle">Your Top 3 Study Habits:</h3>
