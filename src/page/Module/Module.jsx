@@ -24,8 +24,7 @@ const ModuleDashboard = () => {
         }
 
         const data = await response.json();
-        console.log("User Profile:", data); // Debugging
-        setUserProgram(data.program || "All Programs"); // Default to 'All Programs' if missing
+        setUserProgram(data.program || "All Programs");
       } catch (err) {
         setError(err.message);
       }
@@ -35,14 +34,12 @@ const ModuleDashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (!userProgram) return; // Wait until userProgram is set
+    if (!userProgram) return;
 
     const apiUrl =
       userProgram === "All Programs"
         ? "http://localhost:8000/api/modules"
         : `http://localhost:8000/api/modules?program=${encodeURIComponent(userProgram)}`;
-
-    console.log("Fetching modules from:", apiUrl); // Debugging
 
     fetch(apiUrl)
       .then((response) => {
@@ -51,40 +48,43 @@ const ModuleDashboard = () => {
         }
         return response.json();
       })
-      .then((data) => {
-        console.log("Modules fetched:", data); // Debugging
-        setModules(data);
-      })
+      .then((data) => setModules(data))
       .catch((error) => setError(error.message));
-  }, [userProgram]); // Runs whenever userProgram changes
+  }, [userProgram]);
 
   const handleProceedClick = (moduleId) => {
     navigate(`/module/${moduleId}`);
   };
 
   return (
-    <div>
+    <div className={Styles.ModuleDashboard}>
       <Header />
 
+      {/* Unified Module Container */}
       <div className={Styles.Module_Container}>
-        <div className={Styles.Notheader}>
-          <h1>Modules</h1>
+        {/* Study Habits Section Inside Module_Container */}
+        <div className={Styles.StudyHabitsSection}>
+          <h2>Your Top 3 Study Habits:</h2>
+          <div className={Styles.HabitsContainer}>
+            <div className={Styles.HabitCard}>Study With Friends</div>
+            <div className={Styles.HabitCard}>Listen To Music</div>
+            <div className={Styles.HabitCard}>Asking For Help</div>
+          </div>
         </div>
 
-        <div className={Styles.User_Program}>
-          <p>Current Program: {userProgram || "Loading..."}</p>
-        </div>
-
+        {/* Modules Section */}
+        <h1>Modules</h1>
         <div className={Styles.Module_Grid}>
           {error ? (
             <p>{`Error: ${error}`}</p>
           ) : modules.length > 0 ? (
             modules.map((module) => (
-              <div className="module" key={module._id}>
+              <div className={Styles.ModuleCard} key={module._id}>
                 <h3>{module.title}</h3>
-                <img src={`http://localhost:8000/${module.image_url}`} alt="Module" />
-                <br />
-                <button className="proceed-btn" onClick={() => handleProceedClick(module._id)}>
+                <div className={Styles.ModuleImage}>
+                  <img src={`http://localhost:8000/${module.image_url}`} alt="Module" />
+                </div>
+                <button className={Styles.ProceedBtn} onClick={() => handleProceedClick(module._id)}>
                   Proceed
                 </button>
               </div>
