@@ -1,180 +1,129 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-  }
-  
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-  }
-  
-  .container  {
-    margin-left: 10%;
-    padding: 20px;
-    margin-top: 80px;
-  }
-  
-  .header {
-    width: 100%;
-    background-color: #002f87;
-    padding: 10px;
-    color: white;
-    text-align: left;
-    position: fixed;
-    top: 0;
-    left: 0;
-  }
-  
-  .header h1 {
-    margin: 0;
-    font-size: 1.5em; /* Adjusted for better readability */
-    display: inline-block; /* Added to keep the title inline */
-  }
-  
-  .header img {
-    float: right; /* Float images to the right */
-    margin-left: 1%; 
-    margin-right: 2%;/* Add some space between images */
-    width: 2%;
-    height: 2%;
-  }
-  
-  .user-info {
-    display: flex;
-    align-items: center;
-  }
-  
-  .user-info img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  
-  main {
-    flex: 1;
-    padding: 20px;
-    background-color: #fff;
-  }
-  
-  .module-header {
-    display: flex;
-    justify-content: space-between;
-    border: 2px solid #0033A0;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-  }
-  
-  .module-info {
-    width: 70%;
-  }
-  
-  .module-info h1, .module-info h2 {
-    color: #0033A0;
-  }
-  
-  .next-module {
-    width: 25%;
-    background-color: #f1f1f1;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-  }
-  
-  .next-module button {
-    background-color: #0033A0;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .module-elements {
-    margin-top: 30px;
-  }
-  
-  .module-elements h2 {
-    color: #0033A0;
-    margin-bottom: 10px;
-  }
-  
-  .module-elements p {
-    margin-bottom: 20px;
-  }
-  
-  .element {
-    display: inline-block;
-    background-color: #f9f9f9;
-    padding: 20px;
-    width: 45%;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-right: 5%;
-  }
-  
-  .element:last-child {
-    margin-right: 0;
-  }
-  
-  .element h3 {
-    color: #0033A0;
-  }
-  
-  .element button {
-    background-color: #0033A0;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .instructions {
-    background-color: yellow;
-    padding: 10px;
-    margin: 10px 0;
-    text-align: center;
-  }
-  
-  .module-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-  
-  .module {
-    background-color: white;
-    padding: 20px;
-    border: 1px solid #ddd;
-    text-align: center;
-  }
-  
-  .module img {
-    width: 100%;
-    height: 200px;
-    background-color: #ccc;
-  }
-  
-  .proceed-btn {
-    background-color: yellow;
-    border: none;
-    padding: 10px;
-    margin-top: 10px;
-    cursor: pointer;
-  }
-  
-  .proceed-btn:hover {
-    background-color: #ffcc00;
-  }
-  .sidebar img {
-    display: block;
-    margin: 0 auto; /* Center images */
-  } 
+/* Updated CSS for ModuleInside */
+
+.container {
+  width: calc(300% - 80px); /* Adjust width to take full screen minus sidebar width */
+  margin-left: 0; /* Move container to the left near the sidebar */
+  padding: 20px; /* Adjust padding as needed */
+  background: #f5f5f5; /* Light gray background similar to Google Classroom */
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(93, 79, 79, 0.1);
+  min-height: 90vh;
+  position: absolute; /* Ensure the container is positioned absolutely */
+  left: 400px; /* Align the container to the left near the sidebar */
+}
+
+.module-header {
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+.module-header h1 {
+  font-size: 36px;
+  font-weight: bold;
+  color: #202124; /* Dark gray color for text */
+}
+
+.time-spent {
+  font-size: 18px;
+  color: #5f6368; /* Lighter gray for secondary text */
+  margin-bottom: 20px;
+}
+
+.module-resource {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.fileelement {
+  width: 60%;
+  max-width: 1200px;
+  padding: 25px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background: #ffffff; /* White background for file elements */
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.fileelement:hover {
+  background: #f1f3f4; /* Light gray background on hover */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
+}
+
+.document-preview {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-bottom: #5f6368;
+}
+
+.document-icon {
+  width: 60px;
+  height: 60px;
+  background: #4285f4; /* Google blue for document icon */
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+}
+
+.document-info h3 {
+  font-size: 22px;
+  font-weight: bold;
+  color: #202124; /* Dark gray color for text */
+}
+
+.separator {
+  width: 100%;
+  height: 2px;
+  background: #ddd; /* Light gray line */
+  margin: 30px 0; /* Space around the separator */
+}
+
+.test-section {
+  width: 50%;
+  height: 170px;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.test-container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 40px;
+  background: #ffffff; /* White background for test container */
+  border-radius: 10px;
+  text-align: center;
+  margin-left: 0; /* Ensure it's aligned to the left */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+.test-container p {
+  font-size: 18px;
+  color: #5f6368; /* Lighter gray for secondary text */
+  margin-left: 75px;
+  margin-top: 10px;
+}
+.proceed-btn {
+  background: #1a73e8; /* Google blue for button */
+  color: white;
+  padding: 14px 30px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 15px;
+  font-size: 16px;
+  transition: background 0.3s;
+  width: 120px;
+  height: 50px;
+}
+
+.proceed-btn:hover {
+  background: #185abc; /* Darker blue on hover */
+}

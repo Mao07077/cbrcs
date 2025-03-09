@@ -23,7 +23,6 @@ const ModuleInside = () => {
         const data = await response.json();
         console.log("Fetched module data:", data);
         setModule(data);
-      } catch (error) {
         console.error("Error fetching module data:", error);
         setError(error.message);
       }

@@ -1,0 +1,112 @@
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import "./module_inside.css";
+import Header from "../../Components/Header";
+import Instructor_Header from "../../Components/Instructor_Header";
+
+const ModuleInside = () => {
+  const [module, setModule] = useState(null);
+  const [error, setError] = useState(null);
+  const [timeSpent, setTimeSpent] = useState(0);
+  const [isInstructor, setIsInstructor] = useState(false);
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchModuleData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/api/modules/${id}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch module: ${response.status}`);
+        }
+        const data = await response.json();
+        setModule(data);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    fetchModuleData();
+
+    const startTime = Date.now();
+    const intervalId = setInterval(() => {
+      const currentTime = Date.now();
+      setTimeSpent(Math.floor((currentTime - startTime) / 1000));
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [id]);
+
+  useEffect(() => {
+    const userRole = localStorage.getItem("userRole");
+    if (userRole === "instructor") {
+      setIsInstructor(true);
+    }
+  }, []);
+
+  if (error) {
+    return <div className="error">Error: {error}</div>;
+  }
+
+  if (!module) {
+    return <div className="loading">Loading module data...</div>;
+  }
+
+  const minutes = Math.floor(timeSpent / 60);
+  const seconds = timeSpent % 60;
+
+  return (
+    <div>
+      <header className="header">
+        {isInstructor ? <Instructor_Header /> : <Header />}
+      </header>
+      
+      <div className="container wider-container">  
+        <main className="module-content">
+          
+          <section className="module-header">
+            <h1 className="module-title">{module.title}</h1>
+            <p className="time-spent">
+              Time Spent: {minutes < 10 ? `0${minutes}` : minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+            </p>
+          </section>
+
+          {module.document_url && (
+            <section className="module-resource">
+              <div 
+                className="fileelement fixed-file" 
+                onClick={() => window.open(`http://localhost:8000/${module.document_url}`, "_blank")}
+              >
+                <div className="document-preview">
+                  <div className="document-icon"></div>
+                  <div className="document-info">
+                    <h3>{module.title}</h3>
+                    <p>PDF</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+
+          <div className="separator"></div> {/* Add separator line */}
+
+          <section className="test-section">
+            <div className="test-container wider-test-container">
+              <h3>Ready To Take The Test?</h3>
+              <p>Instructions Here</p>
+              <button 
+                className="proceed-btn" 
+                onClick={() => navigate(`/post-test/${id}`, { state: { timeSpent } })}
+              >
+                Proceed
+              </button>
+            </div>
+          </section>
+
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default ModuleInside;
