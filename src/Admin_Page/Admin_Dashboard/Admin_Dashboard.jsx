@@ -1,9 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import style from './Admin_Dashboard.module.css'
-import AdminHeader from '../../Components/Admin_Header';
+import Styles from './Admin_Dashboard.module.css'
+import Dashboard from '../../icon/dashboard.png'; 
+import Icon from '../../icon/actual.png';
+import Accounts from '../../icon/name.png';
+import Report from '../../icon/Reports.png';
+import AdminPost from '../../icon/Upload.png';
+import Request from '../../icon/request.png';
 
-const InstructorDashboard = () => {
+const SidebarItem = ({ icon, text, onClick }) => (
+  <li>
+    <button className="sidebar-item" onClick={onClick}>
+      <img src={icon} alt={text} className="sidebar-icon" />
+      <span>{text}</span>
+    </button>
+  </li>
+);
+const AdminDashboard = () => {
+  const handleNavigation = (route) => {
+    console.log(`Navigating to: ${route}`);
+  
+    window.location.href = `/${route}`;
+  };
   const [fileName, setFileName] = useState('No file chosen');
   const [isDragging, setIsDragging] = useState(false);
   const [attendanceData, setAttendanceData] = useState([]); // State for attendance data
@@ -46,20 +64,50 @@ const InstructorDashboard = () => {
   }, []);
 
   return (
-    <div className="dashboard-container">
-      <header className="header">
-        <AdminHeader />
-      </header>
-      {/* Greeting */}
-      <div className="greeting-dashboard">
-        <h1>Admin's Dashboard</h1>
-      </div>
-
-      {/* Sidebar */}
-
-      {/* Statistics Section */}
-      <div className="Main_insdashboard">
-        <div className="statistics-container">
+    <div className={Styles.Maincontainer}>
+    <div className={Styles.Header}> 
+      <div className="header-content">
+          <div className="header-logo">
+              <img src={Icon} alt="logo" />
+          </div>
+          
+      </div></div>
+    <nav className={Styles.Menu}> 
+      <ul>
+        <li>
+          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Admin_Dashboard')}>
+            <img src={Dashboard} alt="Dashboard Icon" className={Styles.Sidebar_Icon} />
+            <span>Dashboard</span>
+          </buttonss>
+        </li>
+        <li>
+          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Accounts')}>
+            <img src={Accounts} alt="Accounts Icon" className={Styles.Sidebar_Icon} />
+            <span>Accounts</span>
+          </buttonss>
+        </li>
+        <li>
+          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Adminpost')}>
+            <img src={AdminPost} alt="Adminpost Icon" className={Styles.Sidebar_Icon} />
+            <span>Uploads</span>
+          </buttonss>
+        </li>
+        <li>
+          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Report')}>
+            <img src={Report} alt="Report Icon" className={Styles.Sidebar_Icon} />
+            <span>Report</span>
+          </buttonss>
+        </li>
+        <li>
+          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Request')}>
+            <img src={Request} alt="Request Icon" className={Styles.Sidebar_Icon} />
+            <span>Request</span>
+          </buttonss>
+        </li>
+      </ul>
+     </nav>
+    <div className={Styles.Content}>
+    <div className="statistics-container">
           <div className="stat-card">
             <h1>Total Number of Students</h1>
             <h2>{stats.totalStudents || 'Loading...'}</h2>
@@ -103,4 +151,4 @@ const InstructorDashboard = () => {
   );
 };
 
-export default InstructorDashboard;
+  export default AdminDashboard;

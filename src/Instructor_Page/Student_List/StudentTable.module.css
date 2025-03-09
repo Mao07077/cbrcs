@@ -46,7 +46,7 @@
     flex-direction: column;
     justify-content:  flex-start;
     flex: 1;
-    gap: 8%;
+    gap: 14%;
     margin-top: 80px;
   }
   .Menu ul li {
@@ -114,10 +114,8 @@
           margin: 10px 10px;
           margin-left: 10px;
           font-size: 1.2em;
-          border-bottom: 4px solid #333;
-          border-left: 4px solid #333;
-          border-right: 4px solid #333;
-          border-top: 4px solid #333;
+          border-left: 2px solid #333;
+          
         }
         
     
@@ -268,6 +266,11 @@
         font-family: 'Segoe UI';
         cursor: pointer;
         transition: background-color 0.3s;
+    }
+    .Content{
+      border-left: 0px;
+      border-bottom: 2px solid #333;
+      
     }
       }
       @media(max-width: 600px) {

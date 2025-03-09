@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Styles from './InstructorDashboard.module.css';
 import { useNavigate } from "react-router-dom";
 import Modal from 'react-modal';
-import InstructorHeader from '../../Components/Instructor_Header';
 import CreateModule from '../Create_module/Create_module';
 import Dashboard from '../../icon/dashboard.png'; 
 import MailIcon from '../../icon/Mail.png';
@@ -31,7 +30,6 @@ const InstructorDashboard = () => {
     totalStudents: 0,
     engagementRate: 0,
   });
-  // const navigate = useNavigate();
   const handleCreate = () => {
     setIsModalOpen(true);
   };
@@ -108,7 +106,7 @@ const InstructorDashboard = () => {
    </nav>
   <div className={Styles.Content}>
     <div className={Styles.Greeting_Dashboard}>
-        <h1>Admin Dashboard</h1>
+        <h1>Instructor Dashboard</h1>
       </div>
 
     <div className={Styles.Statistics_Container}>
@@ -123,7 +121,7 @@ const InstructorDashboard = () => {
       </div>
 
       <div className={Styles.Create_Module}>
-        <button onClick={handleCreate} type="button">Create Module</button>
+        <buttons onClick={handleCreate} type="button">Create Module</buttons>
       </div>
 
       <div className={Styles.Content_Container}>

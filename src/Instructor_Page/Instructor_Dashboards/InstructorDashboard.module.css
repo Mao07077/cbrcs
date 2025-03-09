@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
 }
-body {
+.body {
  
   font-family: Consolas, sans-serif;
   box-sizing: border-box;
@@ -120,10 +120,7 @@ body {
   margin: 10px 10px;
   margin-left: 10px;
   font-size: 1.2em;
-  border-bottom: 4px solid #333;
-  border-left: 4px solid #333;
-  border-right: 4px solid #333;
-  border-top: 4px solid #333;
+  border-left: 2px solid #333;
 }
 
 .Stat_Card {
@@ -313,14 +310,23 @@ body {
   margin-top: 30px;
   font-size: 2.8em;
 }
+.Content{
+  border-left: 0px;
+  border-bottom: 2px solid #333;
+}
 }
 @media(max-width: 600px) {
+.Menu{
+  position: sticky;
+
+}
 .Menu ul{
   display: flex;
   flex-direction: row;
   height: 5px;
   justify-content: center;
   gap: 5%;
+  margin-top: 10px;
 }
 .Menu ul li {
   display: flex;

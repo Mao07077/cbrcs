@@ -106,10 +106,9 @@ body {
   margin: 10px 10px;
   margin-left: 10px;
   font-size: 1.2em;
-  border-bottom: 4px solid #333;
-  border-left: 4px solid #333;
-  border-right: 4px solid #333;
-  border-top: 4px solid #333;
+  border-left: 2px solid #333;
+ 
+ 
 }
 
 .drop-zone {
@@ -241,6 +240,12 @@ body {
   font-size: 12px;
   margin-left: 20px;
 }
+.Content{
+  border-left: 0px;
+  border-bottom: 2px solid #333;
+ 
+ 
+}
 }
 @media(max-width: 600px) {
 .Menu ul{
@@ -249,12 +254,12 @@ body {
   height: 5px;
   justify-content: center;
   gap: 5%;
+  margin-top: 10px;
 }
 .Menu ul li {
   display: flex;
   flex-direction: row;
   height: 5px;
-  margin-top: 10px;
   margin-bottom: 10px;
   
 }
