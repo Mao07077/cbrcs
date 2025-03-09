@@ -8,7 +8,7 @@ import Module from './page/Module/Module';
 import Profile from './page/Profile/Profile';
 import Settings from './page/Settings/Settings';
 import Login from './page/Login/login';
-import ModuleInside from './page/Module_Inside/module_inside';
+import ModuleInside from './page/Module_Inside/ModuleInside';
 import PostTest from './page/PostTest/posttest';
 import ResetPassword from './page/Reset_Password/reset_password';
 import Signup from './page/Signup/signup';
@@ -27,6 +27,12 @@ import Report from './Admin_Page/Reports/Report';
 import StudyHabits_landingpage from './page/Study_habits/Habits_Landing/StudyHabits_landingpage';
 import Flashcard from './page/Study_habits/Flashcard/Flashcard';
 import Flashcard_landing from './page/Study_habits/Flashcard/Flashcard_landing';
+import Survey from './page/Survey/survey';
+import Scheduler from './page/Study_habits/Scheduler/Scheduler';
+import Notes from './page/Study_habits/notes/notes';
+import Music from './page/Study_habits/Music/Music';
+import LearnTogether from './page/Study_habits/learn_together/learn_together';
+import Chat from './page/Study_habits/Instructor_chat/chat';
 
 
 
@@ -65,6 +71,12 @@ function App() {
             <Route path="/StudyHabits_landingpage" element={<StudyHabits_landingpage/>}/>
             <Route path="/Flashcard" element={<Flashcard/>}/>
             <Route path="/Flashcard_landing" element={<Flashcard_landing/>}/>
+            <Route path="/Survey" element={<Survey/>}/>
+            <Route path="/Scheduler" element={<Scheduler />} />
+            <Route path="/notes" element= {<Notes/>}/> 
+            <Route path="/Music" element= {<Music/>}/>
+            <Route path="/learn_together" element= {<LearnTogether/>}/>
+            <Route path="/chat" element= {<Chat/>}/>
           </Routes>
         
       </BrowserRouter>
