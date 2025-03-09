@@ -107,46 +107,33 @@ const AdminDashboard = () => {
       </ul>
      </nav>
     <div className={Styles.Content}>
-    <div className="statistics-container">
-          <div className="stat-card">
+      <div className={Styles.Greeting_Dashboard}>
+              <h1>Admin Dashboard</h1>
+            </div>
+    <div className={Styles.Statistics_Container}>
+          <div className={Styles.Stat_Card}>
             <h1>Total Number of Students</h1>
             <h2>{stats.totalStudents || 'Loading...'}</h2>
           </div>
-          <div className="stat-card">
+          <div className={Styles.Stat_Card}>
             <h1> Number of Instructor/per season</h1>
             <h2>{stats.totalStudents || 'Loading...'}</h2>
           </div>
-          <div className="stat-card">
+          <div className={Styles.Stat_Card}>
             <h1>number of Enrolled course's/per season</h1>
             <h2>{stats.engagementRate ? `${stats.engagementRate}%` : 'Loading...'}</h2>
           </div>
         </div>
 
-        {/* Content Section */}
-        <div className="content-container">
-          {/* Student Attendance */}
-          <div className="student-attendance">
-            <h2>Student Attendance</h2>
-            <div className="graph">
-              {attendanceData.length > 0 ? (
-                attendanceData.map((value, index) => (
-                  <div
-                    key={index}
-                    className="bar"
-                    style={{
-                      height: `${value}%`,
-                      transition: 'height 0.5s ease-in-out',
-                    }}
-                    title={`Attendance: ${value}%`}
-                  ></div>
-                ))
-              ) : (
-                <p>Loading attendance data...</p>
-              )}
-            </div>
+        <div className={Styles.List_Students}>
+          <div className={Styles.Student}>
+            <h2>List of Students</h2>
           </div>
+          <div className={Styles.Instructor}>
+            <h2>Names of Instructor's/Per season</h2>
         </div>
       </div>
+    </div>
     </div>
   );
 };
