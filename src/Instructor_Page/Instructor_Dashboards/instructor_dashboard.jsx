@@ -109,7 +109,7 @@ const InstructorDashboard = () => {
             </button>
           </li>
           <li>
-            <button className={Styles.Sidebar_Item} onClick={() => handleNavigation('mail')}>
+            <button className={Styles.Sidebar_Item} onClick={() => handleNavigation('Message')}>
               <img src={MailIcon} alt="Mail Icon" className={Styles.Sidebar_Icon} />
               <span>Message</span>
             </button>
