@@ -6,14 +6,19 @@
     grid-area: Header;
     background-color: #002f87;
     display: flex;
+    
   }
+  .Header img{
+    margin-left: 10px;
+  }
+
   *{
     margin: 0;
     padding: 0;
   }
   body {
   
-    font-family: Consolas, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     box-sizing: border-box;
   }
   .Maincontainer {
@@ -32,14 +37,16 @@
   .Menu {
     grid-area: Menu;
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
     width: 100%;
     color: black;
+    position: relative;
     top: 0;
     left: 0;
-    
+    background-color: #f4f4f4!important;
+    height: 100vh; /* Make sidebar full height */
+    border-right: 2px solid #333; /* Add border to the right */
   }
   .Menu ul {
     display: flex;
@@ -68,6 +75,8 @@
       align-items: center;
       align-self: center;
       gap: 10px;
+      color: #000 !important;
+      background-color: #f4f4f4!important;
       }
       .Menu ul li a {
         display: flex;
@@ -75,7 +84,7 @@
         justify-content: center;
         align-items: center;
         text-decoration: none;
-        color: black;
+        color: black ;
         font-size: 50%;
         align-items: center;
         justify-content: center;
@@ -114,7 +123,6 @@
           margin: 10px 10px;
           margin-left: 10px;
           font-size: 1.2em;
-          border-left: 2px solid #333;
           
         }
         
@@ -123,12 +131,12 @@
       width: 100%;
       border-collapse: collapse;
       text-align: center;
-      margin-top: 20px;
+      margin-top: 10px;
       font-size: 1.2em;
     }
     
     .Table th {
-      font-family: 'Times New Roman', Times, serif;
+      font-family: Arial, Helvetica, sans-serif;
       padding: 10px;
       border: 1px solid #ccc;
       background: #eef2f7;
@@ -151,17 +159,17 @@
       color: #999;
     }
     .Greeting_Studentlist{
-      display: flex;
+    display: flex;
     justify-content: flex-start;
     padding:15px;
-    border-bottom: 4px solid #333;
+    border-bottom: 0.5px solid #333;
   
   }
 
     .Greeting_Studentlist h1{
       font-size: 1.5em;
       color: #333;
-      margin-bottom: 20px;
+      margin-bottom: 0px;
     }
     .Content h2{
       display: flex;
@@ -174,36 +182,36 @@
       flex-direction: column;
       justify-content: flex-start;
       padding: 20px;
-      width: 100%; /* Adjust width to fill the parent container */
-      margin: 0; /* Remove margin to avoid extra spacing */
+      width: 100%; 
+      margin: 0; 
       background: #f7f9fc;
       border-radius: 8px;
-      flex-grow: 1; /* Ensure it expands with the parent container */
-      overflow: auto; /* Add scrolling if the content overflows */
-      box-sizing: border-box; /* Ensures padding doesn't affect width */
+      flex-grow: 0; 
+      overflow: auto;
+      box-sizing: border-box; 
   }
-  .Search-Input {
-      padding: 10px;
-      width: 10%;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      margin-top: 20px;
-    }
-    buttons {
+  .Search_Container {
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+    width: 300px;
+}
+
+      .buttons {
       width: 100%;
       padding: 12px;
       background-color: #032a6e;
       color: white;
       border: none;
       border-radius: 10px;
-      font-size: 16px;
-      font-family: 'Segoe UI';
+      font-size: 12px;
+      font-family: Arial, Helvetica, sans-serif;
       cursor: pointer;
       transition: background-color 0.3s;
   }
-    buttons:hover {
-    background-color: #f4e53e;
+    .buttons:hover {
+    background-color: #3e3e3c;
+    
 }
     @media(max-width: 1000px) {
       .Menu ul{
@@ -246,7 +254,7 @@
       }
       
       .Table th {
-        font-family: 'Times New Roman', Times, serif;
+        font-family: Arial, Helvetica, sans-serif;
         padding: 10px;
         border: 1px solid #ccc;
         background: #eef2f7;
@@ -263,7 +271,7 @@
         border: none;
         border-radius: 10px;
         font-size: 12px;
-        font-family: 'Segoe UI';
+        font-family: Arial, Helvetica, sans-serif;
         cursor: pointer;
         transition: background-color 0.3s;
     }
@@ -304,4 +312,22 @@
           "Content Content"
           "Menu Menu";
       }
-      }
+      } .Search_Container {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Adjust spacing between h2 and input */
+}
+
+.Search_Container h2 {
+    margin: 0; /* Remove default margin */
+    font-size: 1em; /* Adjust font size if necessary */
+}
+
+.Search_Input {
+    width: 200px; /* Adjust width */
+    max-width: 100%;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
