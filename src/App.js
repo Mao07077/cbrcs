@@ -13,7 +13,7 @@ import PostTest from './page/PostTest/posttest';
 import ResetPassword from './page/Reset_Password/reset_password';
 import Signup from './page/Signup/signup';
 import InstructorDashboard from './Instructor_Page/Instructor_Dashboards/instructor_dashboard';
-import Mail from './Instructor_Page/Mail/Mail';
+import Message from './Instructor_Page/Message/Message';
 import CreateModule from './Instructor_Page/Create_module/Create_module';
 import CreatePostTest from './Instructor_Page/Create_Posttest/Create_posttest';
 import Studentlist from './Instructor_Page/Student_List/Studentlist';
@@ -59,7 +59,7 @@ function App() {
           <Route path="/Reset_Password" element={<ResetPassword />} />
           <Route path="/Signup" element={<Signup />} />
           <Route path="/Instructor_Dashboard" element={<InstructorDashboard />} />
-          <Route path= "/mail" element ={<Mail/>}/>
+          <Route path= "/Message" element ={<Message/>}/>
             <Route path="/studentlist" element = {<Studentlist/>}/> 
             <Route path= "Header" element = {<Header/>}/>
             <Route path="/Admin_Dashboard" element={<AdminDashboard />} />

@@ -62,7 +62,7 @@ const ModuleList = () => {
                 </buttonss>
               </li>
               <li>
-                <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('mail')}>
+                <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Message')}>
                   <img src={MailIcon} alt="Mail Icon" className={Styles.Sidebar_Icon} />
                   <span>Message</span>
                 </buttonss>

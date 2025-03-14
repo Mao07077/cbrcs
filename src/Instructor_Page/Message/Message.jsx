@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Styles from "./Mail.module.css";
+import Styles from "./Message.module.css";
 import Dashboard from '../../icon/dashboard.png'; 
 import MailIcon from '../../icon/Mail.png';
 import StudentsIcon from '../../icon/Students.png';
@@ -16,7 +16,7 @@ const SidebarItem = ({ icon, text, onClick }) => (
       </button>
     </li>
   );
-  const Mail = () => {
+  const Message = () => {
     const handleNavigation = (route) => {
       console.log(`Navigating to: ${route}`);
     
@@ -41,7 +41,7 @@ const SidebarItem = ({ icon, text, onClick }) => (
           </buttonss>
         </li>
         <li>
-          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('mail')}>
+          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Message')}>
             <img src={MailIcon} alt="Mail Icon" className={Styles.Sidebar_Icon} />
             <span>Message</span>
           </buttonss>
@@ -92,4 +92,4 @@ const SidebarItem = ({ icon, text, onClick }) => (
     );
   };
   
-  export default Mail;
+  export default Message;
