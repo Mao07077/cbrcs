@@ -62,7 +62,7 @@
     display: flex;
     justify-content: center;
     padding: 10px;
-    margin-top: 100px;
+    margin-top: 50px;
     gap: 100px;
     
   }
@@ -204,8 +204,8 @@
 .Stat_Card {
   display: flex;
   flex-direction: column;
-  width: 400px;
-  height: 180px;
+  width: 300px;
+  height: 160px;
   margin: 10px;
   background-color: #f9f9f9;
   padding: 20px;
@@ -217,7 +217,7 @@
 }
 
 .Stat_Card h1 {
-  font-size: 1.6em;
+  font-size: 1.2em;
   display: flex;
   align-items: center;
   justify-content: center;

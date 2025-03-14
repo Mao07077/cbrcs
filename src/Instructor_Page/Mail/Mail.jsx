@@ -72,11 +72,11 @@ const SidebarItem = ({ icon, text, onClick }) => (
                     style={{ cursor: 'pointer' }}   
                 >
                   <div className={Styles.Email_Text}>
-                    <h2><strong> Name Here</strong></h2>
+                    <h2>Name Here</h2>
                     <p>Active Now</p>
                     </div>
                     <div className={Styles.Button}>
-                    <buttonz type="submit-send">Invite</buttonz>
+                    <buttonz type="submit-send">Message</buttonz>
                     </div>
                 </div>
                 
