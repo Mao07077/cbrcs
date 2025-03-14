@@ -19,9 +19,8 @@
     "Header Header"
     "Menu Content";
   grid-template-columns: 0.1fr 1fr;
-  height: auto;
+  height: 100vh; /* Ensure the full height is covered */
   width: 100vw;
-  
 }
 
 .Maincontainer > div {
@@ -38,15 +37,17 @@
 .Menu {
   grid-area: Menu;
   display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
   width: 100%;
   color: black;
+  position: relative;
   top: 0;
   left: 0;
-  
+  height: 100vh; /* Make sidebar full height */
+  border-right: 2px solid #333; /* Add border to the right */
 }
+
 .Menu ul {
   display: flex;
   flex-direction: column;
@@ -115,61 +116,28 @@
   margin: 10px 10px;
   margin-left: 10px;
   font-size: 1.2em;
-  border-left: 2px solid #333;
-  height: 500px;
+  height: 1000px;
   
  
 }
-
-.HabitsContainer {
-  display: flex;
-  justify-content: center;
-  height: 300px;
-}
-
-.HabitCard {
-  flex: 1;
-  background: white;
-  padding: 15px;
-  border-radius: 8px;
-  text-align: center;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  font-size: 14px;
-  width: 50px;
-  gap: 10px;
-  margin: 10px;
-}
-.HabitCard p {
-  padding:15px;
-  display: flex;
-  justify-content: center;
-}
-
 /* ================= MODULES SECTION ================= */
 .moduleContainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
-  max-width: 1500px; /* Adjust as needed */
+  max-width: 1500px; 
   gap: 10px;
+  margin: -50%;
   
   }
-  
-.moduleTitle {
-  font-size: 24px;
-  font-weight: bold;
-  margin-top: 70px;
-  text-align: center; /* Aligns title to the left */
-}
-
-/* Module Grid */
+  /* Module Grid */
 .ModuleGrid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center; /* Spreads modules */
   width: 100%;
-}
+  gap: 20px;}
 .ModuleGrid p{
   padding: 15px;
   display: flex;
@@ -186,14 +154,10 @@
   border-radius: 10px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
-  transition: transform 0.2s ease-in-out;
-  margin-top: 20px;
+   margin-top: 50px;
   margin-left: 20px;
 }
 
-.moduleCard:hover {
-  transform: scale(1.05);
-}
 
 /* Placeholder for Images */
 .moduleImage {
@@ -215,8 +179,9 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 12px;
+  font-weight: normal;
+  font-family: Arial;
   transition: background-color 0.3s;
 }
 
@@ -227,7 +192,7 @@
   display: flex;
   justify-content: flex-start;
   padding:15px;
-  border-bottom: 4px solid #333;
+  border-bottom: 0.5px solid #333;
  
 }
 @media(max-width: 1000px) {

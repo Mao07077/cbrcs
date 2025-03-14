@@ -51,64 +51,57 @@ const ModuleList = () => {
                   <div className="header-logo">
                       <img src={Icon} alt="logo" />
                   </div>
-                  
-              </div></div>
-    <nav className={Styles.Menu}> 
-    <ul>
-      <li>
-        <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Instructor_Dashboard')}>
-          <img src={Dashboard} alt="Dashboard Icon" className={Styles.Sidebar_Icon} />
-          <span>Dashboard</span>
-        </buttonss>
-      </li>
-      <li>
-        <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('mail')}>
-          <img src={MailIcon} alt="Mail Icon" className={Styles.Sidebar_Icon} />
-          <span>Message</span>
-        </buttonss>
-      </li>
-      <li>
-        <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('studentlist')}>
-          <img src={StudentsIcon} alt="Students Icon" className={Styles.Sidebar_Icon} />
-          <span>StudentList</span>
-        </buttonss>
-      </li>
-      <li>
-        <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('ModuleList')}>
-          <img src={StudentsIcon} alt="Students Icon" className={Styles.Sidebar_Icon} />
-          <span>Module</span>
-        </buttonss>
-      </li>
-    </ul>
-   </nav>
-            <div className={Styles.Content}>
-              <div className={Styles.Greeting_Dashboard}>
-                      <h1>Module</h1>
-                    </div>
-                <h2 className={Styles.sectionTitle}>Your Top 3 Study Habits:</h2>
-                <div className={Styles.HabitsContainer}>
-                    <div className={Styles.HabitCard}><h3>Study With Friends</h3><p>Description Here</p></div>
-                    <div className={Styles.HabitCard}><h3>Listen To Music</h3><p>Description Here</p></div>
-                    <div className={Styles.HabitCard}><h3>Asking For Help</h3><p>Description Here</p></div>
-                </div>
-                <h1 className={Styles.moduleTitle}>Modules</h1>
-                <div className={Styles.ModuleGrid}>
-                    {error ? (
-                        <p>{`Error: ${error}`}</p>
-                    ) : filteredModules.length > 0 ? (
-                        filteredModules.map((module) => (
-                            <div className={Styles.moduleCard} key={module._id}>
-                                <h3>{module.title}</h3>
-                                <p>Topic here</p>
-                                <div className={Styles.moduleImage}>Image here</div>
-                                <button className={Styles.proceedBtn} onClick={() => handleProceedClick(module._id)}>Proceed</button>
-                            </div>
-                        ))
-                    ) : (
-                        <p>No modules available</p>
-                    )}
-                </div>
+              </div>
+          </div>
+          <nav className={Styles.Menu}> 
+            <ul>
+              <li>
+                <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Instructor_Dashboard')}>
+                  <img src={Dashboard} alt="Dashboard Icon" className={Styles.Sidebar_Icon} />
+                  <span>Dashboard</span>
+                </buttonss>
+              </li>
+              <li>
+                <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('mail')}>
+                  <img src={MailIcon} alt="Mail Icon" className={Styles.Sidebar_Icon} />
+                  <span>Message</span>
+                </buttonss>
+              </li>
+              <li>
+                <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('studentlist')}>
+                  <img src={StudentsIcon} alt="Students Icon" className={Styles.Sidebar_Icon} />
+                  <span>StudentList</span>
+                </buttonss>
+              </li>
+              <li>
+                <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('ModuleList')}>
+                  <img src={StudentsIcon} alt="Students Icon" className={Styles.Sidebar_Icon} />
+                  <span>Module</span>
+                </buttonss>
+              </li>
+            </ul>
+          </nav>
+          <div className={Styles.Content}>
+            <div className={Styles.Greeting_Dashboard}>
+                <h1>Module</h1>
             </div>
+            <div className={Styles.ModuleGrid}>
+                {error ? (
+                    <p>{`Error: ${error}`}</p>
+                ) : filteredModules.length > 0 ? (
+                    filteredModules.map((module) => (
+                        <div className={Styles.moduleCard} key={module._id}>
+                            <h3>{module.title}</h3>
+                            <p>Topic here</p>
+                            <div className={Styles.moduleImage}>Image here</div>
+                            <button className={Styles.proceedBtn} onClick={() => handleProceedClick(module._id)}>Proceed</button>
+                        </div>
+                    ))
+                ) : (
+                    <p>No modules available</p>
+                )}
+            </div>
+          </div>
         </div>
     );
 };
