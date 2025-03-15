@@ -1,137 +1,219 @@
 .header {
-    width: 100%;  
-    background-color: #002f87;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .header-content {
-    display: flex;
-    width: 100%;  
-    max-width: 1200px;  
-  }
-  .header-logo img {
-    height: 50px;   
-    width: auto;     
-    max-width: 180px; 
-  }
-  .List_Container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    border: 2px solid #ddd; 
-    border-radius: 8px;
-    overflow: hidden;
-    width: 80vw; 
-    height: auto; 
-    background: #ffffff;
-    margin-top: 140px;
-    margin-left: 50px ;
-    border: 2px solid #002f87; }
-
-  .Greeting_Accountlist {
-    padding: 10px;
-    text-align: center;
-    display: flex;
-    justify-content: flex-start;
-    font-size: 25px;
-    font-style: initial;
-    margin: 10px 10px;
-    margin-left: 10px;
-    font-size: 1.2em;
-    border-bottom: 1px solid #333;
-  }
-  
-  .greeting-studentlist {
-    margin: 10px 220px;
-  margin-left: 20px;
- padding: 10px;
-  font-size: 1.2em;
-  border-bottom: 1px solid #333;
-  }
-  
-  .Container {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    width: 100%; 
-    background: #f7f9fc;
-    border-radius: 8px;
-    flex-grow: 1; 
-    overflow: auto; 
-    box-sizing: border-box;
-}
-  
-  .Search_Input {
-    padding: 10px;
-    width: 50%;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-top: 20px;
-  }
-.Filter_Input{
-  padding: 10px;
-  width: 50%;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-top: 20px;
-}
-  
-  .Table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-    margin-top: 20px;
-    font-size: 1.2em;
-  }
-  
-  .Table th {
-    padding: 10px;
-    border: 1px solid #ccc;
-    background: #eef2f7;
-    color: #333;
-    
-  }
-  
-  .Table td {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-  }
-  
-  .table td.center {
-    text-align: center;
-  }
-  
-  .no-students {
-    padding: 10px;
-    text-align: center;
-    color: #999;
-  }
-
- .No_Accounts
- {
-  display: flex;
-  justify-content: center;
-  margin-top: 50px;
-}
-
-.Create_Button {
+  width: 100%;  
   background-color: #002f87;
-  color: white;
   padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  display: flex;
+  width: 100%;  
+  max-width: 1200px;  
+}
+
+.header-logo img {
+  height: 50px;   
+  width: auto;     
+  max-width: 180px; 
+}
+
+/* Main Container */
+.List_Container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 80vw; 
+  height: auto; 
+  background: #ffffff;
+  margin-top: 100px;
+  margin-left: 50px;
+  border: 2px solid #002f87;
+  padding: 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading Section */
+.Greeting_Accountlist {
+  padding: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  justify-content: flex-start;
+  border-bottom: 2px solid #002f87;
+  margin-bottom: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Filter Section */
+.Filter_Section {
+  display: flex;
+  align-items: center; /* Align items in the same row */
+  gap: 20px; /* Space between elements */
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.Role_Container {
+  display: flex;
+  align-items: center; /* Aligns label with dropdown */
+  gap: 10px; /* Adjust space between label and dropdown */
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.Role_Container h2 {
+  margin: 0;
   font-size: 16px;
   font-weight: bold;
-  transition: all 0.3s ease;
+  display: flex;
+  align-items: center; /* Ensures text aligns with dropdown */
+  font-family: Arial, Helvetica, sans-serif;
+}
+.Search_Container {
+  display: flex;
+  align-items: center; /* Aligns h2 and input vertically */
+  gap: 10px; /* Adjust space between label and input */
+}
+
+.Search_Container h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center; /* Ensures text aligns with input */
+  font-family: Arial, Helvetica, sans-serif;
+}
+.Search_Input, .Role_Dropdown {
+  width: 250px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  margin-top: 5px; /* Instead of using margin on <h2>, add space here */
+  font-family: Arial, Helvetica, sans-serif;
+}
+.Search_Input {
+  width: 250px;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  margin-top: 30px; /* Ensure input stays in place */
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.Search_Input:focus {
+  border-color: #002f87;
+  box-shadow: 0px 0px 5px rgba(0, 47, 135, 0.3);
+}
+
+/* Role Dropdown */
+.Role_Dropdown {
+  width: 200px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.Role_Dropdown:hover,
+.Role_Dropdown:focus {
+  border-color: #002f87;
+}
+
+/* Create Button */
+.Create_Button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  height: 42px; /* Matches input field height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.Create_Button:hover {
+  background-color: #0056b3;
+}
+/* Table Styles */
+.Table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
   margin-top: 20px;
-  margin-bottom: 20px;
-  width: 10%;
+  font-size: 1em;
+  border-radius: 5px;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.Table thead tr {
+  background: #002f87;
+  color: #fff;
+  text-align: left;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.Table th {
+  padding: 12px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.Table th:hover {
+  background: #004ab3;
+}
+
+.Table td {
+  padding: 12px;
+  border: 1px solid #ccc;
+}
+
+/* Center Alignment for Profile Column */
+.Table td.center {
+  text-align: center;
+}
+
+/* No Accounts Message */
+.No_Accounts {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-size: 18px;
+  font-weight: semi-bold;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #666;
+}
+
+/* Delete Button */
+.delete-button {
+  background: #dc3545;
+  color: #fff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.delete-button:hover {
+  background: #b02a37;
+  transform: scale(1.05);
 }
