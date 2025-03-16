@@ -30,7 +30,7 @@
   width: 80vw; 
   height: auto; 
   background: #ffffff;
-  margin-top: 100px;
+  margin-top: 140px;
   margin-left: 50px;
   border: 2px solid #002f87;
   padding: 20px;
@@ -46,31 +46,37 @@
   justify-content: flex-start;
   border-bottom: 2px solid #002f87;
   margin-bottom: 20px;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Filter Section */
 .Filter_Section {
   display: flex;
-  align-items: center; /* Align items in the same row */
-  gap: 20px; /* Space between elements */
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Search Input */
 .Role_Container {
   display: flex;
   align-items: center; /* Aligns label with dropdown */
   gap: 10px; /* Adjust space between label and dropdown */
-  font-family: Arial, Helvetica, sans-serif;
+  margin-top: 10px;
+  height: 30px!important; /* Adjust height as needed */;
 }
-
 .Role_Container h2 {
   margin: 0;
   font-size: 16px;
   font-weight: bold;
   display: flex;
   align-items: center; /* Ensures text aligns with dropdown */
-  font-family: Arial, Helvetica, sans-serif;
+  margin-top: 5px; /* Adjust this value as needed */
 }
 .Search_Container {
   display: flex;
@@ -80,33 +86,25 @@
 
 .Search_Container h2 {
   margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   font-weight: bold;
   display: flex;
   align-items: center; /* Ensures text aligns with input */
-  font-family: Arial, Helvetica, sans-serif;
+  margin-top: 10px; /* Adjust this value as needed */
 }
-.Search_Input, .Role_Dropdown {
-  width: 250px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  outline: none;
-  margin-top: 5px; /* Instead of using margin on <h2>, add space here */
-  font-family: Arial, Helvetica, sans-serif;
-}
+
 .Search_Input {
-  width: 250px;
-  height: 40px;
-  padding: 10px;
+  height: 30px; /* Adjust height as needed */
+  padding: 8px 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
   outline: none;
-  margin-top: 30px; /* Ensure input stays in place */
   font-family: Arial, Helvetica, sans-serif;
+  
 }
+
 
 .Search_Input:focus {
   border-color: #002f87;
@@ -133,23 +131,23 @@
 
 /* Create Button */
 .Create_Button {
-  padding: 10px 20px;
+  padding: 10px 15px;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
+  height: 40px;
   cursor: pointer;
   font-size: 16px;
-  height: 42px; /* Matches input field height */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: Arial, Helvetica, sans-serif;
+  transition: all 0.3s ease-in-out;
+  margin-top: 10px;
 }
 
 .Create_Button:hover {
   background-color: #0056b3;
+  transform: scale(1.05);
 }
+
 /* Table Styles */
 .Table {
   width: 100%;
@@ -159,15 +157,11 @@
   font-size: 1em;
   border-radius: 5px;
   overflow: hidden;
-  font-family: Arial, Helvetica, sans-serif;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .Table thead tr {
   background: #002f87;
   color: #fff;
-  text-align: left;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .Table th {
@@ -197,8 +191,7 @@
   align-items: center;
   padding: 20px;
   font-size: 18px;
-  font-weight: semi-bold;
-  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
   color: #666;
 }
 

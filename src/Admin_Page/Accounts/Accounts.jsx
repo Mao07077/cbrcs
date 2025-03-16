@@ -75,59 +75,76 @@ function Accounts() {
                     <h1>Accounts List</h1>
                 </div>
 
-                <div className={Styles.Container}>
-                    <h2>Search:</h2>
-                    <input
-                        type="text"
-                        placeholder="Account No. or Name"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className={Styles.Search_Input}
-                    />
-                    <h2>Filter by Role:</h2>
-                    <input
-                        type="text"
-                        placeholder="Role"
-                        value={roleFilter}
-                        onChange={(e) => setRoleFilter(e.target.value)}
-                        className={Styles.Filter_Input}
-                    />
-                    <buttons onClick={handleCreate} className={Styles.Create_Button}>Create Account</buttons>
-                    <table className={Styles.Table}>
-                        <thead>
-                            <tr>
-                                <th onClick={() => handleSort("profile")}>Profile</th>
-                                <th onClick={() => handleSort("accountNo")}>Account No.</th>
-                                <th onClick={() => handleSort("name")}>Account Name</th>
-                                <th onClick={() => handleSort("role")}>Role</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        </table>
-                        <tbody>
-                            {filteredAccounts.length > 0 ? (
-                                filteredAccounts.map((account, index) => (
-                                    <tr key={index}>
-                                        <td className="center">{account.profile}</td>
-                                        <td>{account.accountNo}</td>
-                                        <td>{account.name}</td>
-                                        <td>{account.role}</td>
-                                        <td>
-                                            <button onClick={() => handleDelete(index)} className="delete-button">Delete</button>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="5" className={Styles.No_Accounts}>
-                                        No accounts found.
+                {/* Filters Section */}
+                <div className={Styles.Filter_Section}>
+                    {/* Search Bar */}
+                    <div className={Styles.Search_Container}>
+                        <h2>Search:</h2>
+                        <input
+                            type="text"
+                            placeholder="Account No. or Name"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className={Styles.Search_Input}
+                        />
+                    </div>
+
+                    {/* Role Filter Dropdown */}
+                    <div className={Styles.Role_Container}>
+                        <h2>Filter by Role:</h2>
+                        <select
+                            value={roleFilter}
+                            onChange={(e) => setRoleFilter(e.target.value)}
+                            className={Styles.Role_Dropdown}
+                        >
+                            <option value="">Select Role</option>
+                            <option value="Instructor">Instructor</option>
+                            <option value="Student">Student</option>
+                        </select>
+                    </div>
+
+                    {/* Create Account Button */}
+                    <button onClick={handleCreate} className={Styles.Create_Button}>
+                        Create Account
+                    </button>
+                </div>
+
+                {/* Table Section */}
+                <table className={Styles.Table}>
+                    <thead>
+                        <tr>
+                            <th onClick={() => handleSort("profile")}>Profile</th>
+                            <th onClick={() => handleSort("accountNo")}>Account No.</th>
+                            <th onClick={() => handleSort("name")}>Account Name</th>
+                            <th onClick={() => handleSort("role")}>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredAccounts.length > 0 ? (
+                            filteredAccounts.map((account, index) => (
+                                <tr key={index}>
+                                    <td className="center">{account.profile}</td>
+                                    <td>{account.accountNo}</td>
+                                    <td>{account.name}</td>
+                                    <td>{account.role}</td>
+                                    <td>
+                                        <button onClick={() => handleDelete(index)} className="delete-button">
+                                            Delete
+                                        </button>
                                     </td>
                                 </tr>
-                            )
-                            }
-                        </tbody>
-                   </div>
-                </div>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="5" className={Styles.No_Accounts}>
+                                    No accounts found.
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
         </>
     );
 }
