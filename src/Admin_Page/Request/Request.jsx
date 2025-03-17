@@ -1,13 +1,51 @@
 import React, { useState, useEffect } from "react";
-import AdminHeader from '../../Components/Admin_Header';
+import AdminHeader from "../../Components/Admin_Header";
 import Styles from "./Request.module.css";
 
 function Request() {
-    const [requests, setRequests] = useState([]);
+    const [requests, setRequests] = useState([
+        {
+            _id: "1",
+            id_number: "202312345",
+            firstname: "John",
+            lastname: "Doe",
+            program: "Computer Science",
+            update_data: {
+                firstname: "Johnny",
+                lastname: "Dough",
+                program: "Software Engineering",
+            }
+        },
+        {
+            _id: "2",
+            id_number: "202398765",
+            firstname: "Jane",
+            lastname: "Smith",
+            program: "Information Technology",
+            update_data: {
+                firstname: "Janet",
+                lastname: "Smythe",
+                program: "Data Science",
+            }
+        },
+        {
+            _id: "3",
+            id_number: "202354321",
+            firstname: "Michael",
+            lastname: "Johnson",
+            program: "Cyber Security",
+            update_data: {
+                firstname: "Mike",
+                lastname: "Johns",
+                program: "Network Engineering",
+            }
+        }
+    ]);
+    
     const [selectedRequest, setSelectedRequest] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [showPopup, setShowPopup] = useState(false);
 
+    // Function to fetch requests from the API (disabled for now)
     const fetchRequests = async () => {
         try {
             const response = await fetch("http://localhost:8000/admin/requests");
@@ -19,24 +57,24 @@ function Request() {
             }
         } catch (error) {
             console.error("Error fetching requests:", error);
-        } finally {
-            setLoading(false);
         }
     };
 
+    // Disabled API fetch for testing with sample data
     useEffect(() => {
-        fetchRequests();
+        // fetchRequests();
     }, []);
 
+    // Handle viewing a request
     const handleView = (index) => {
-        console.log("Viewing request at index:", index);
         setSelectedRequest(requests[index]);
-        setShowPopup(true); 
+        setShowPopup(true);
     };
 
+    // Handle accepting a request
     const handleAccept = async () => {
         if (!selectedRequest) return;
-        console.log("Accepting request:", selectedRequest);
+
         try {
             const response = await fetch(`http://localhost:8000/admin/requests/accept/${selectedRequest._id}`, {
                 method: "POST",
@@ -44,11 +82,11 @@ function Request() {
                 body: JSON.stringify(selectedRequest.update_data),
             });
             const result = await response.json();
+
             if (result.success) {
                 alert("Request accepted and changes applied!");
-                setSelectedRequest(null);
-                setShowPopup(false); 
-                fetchRequests();
+                setRequests(requests.filter(req => req._id !== selectedRequest._id)); // Remove accepted request
+                setShowPopup(false);
             } else {
                 alert("Failed to apply changes.");
             }
@@ -57,19 +95,20 @@ function Request() {
         }
     };
 
+    // Handle declining a request
     const handleDecline = async () => {
         if (!selectedRequest) return;
-        console.log("Declining request:", selectedRequest);
+
         try {
             const response = await fetch(`http://localhost:8000/admin/requests/decline/${selectedRequest._id}`, {
                 method: "DELETE",
             });
             const result = await response.json();
+
             if (result.success) {
                 alert("Request declined.");
-                setSelectedRequest(null);
-                setShowPopup(false); 
-                fetchRequests(); 
+                setRequests(requests.filter(req => req._id !== selectedRequest._id)); // Remove declined request
+                setShowPopup(false);
             } else {
                 alert("Failed to decline request.");
             }
@@ -78,13 +117,12 @@ function Request() {
         }
     };
 
-    if (loading) return <div>Loading...</div>;
-
     return (
         <>
             <header className="header">
                 <AdminHeader />
             </header>
+
             <div className={Styles.List_Container}>
                 <div className={Styles.Greeting_Requestlist}>
                     <h1>Requests List</h1>
@@ -106,7 +144,7 @@ function Request() {
                                         <td>{request.id_number}</td>
                                         <td>{`${request.firstname} ${request.lastname}`}</td>
                                         <td>
-                                            <button onClick={() => handleView(index)} className="view-button">
+                                            <button onClick={() => handleView(index)} className={Styles.ViewButton}>
                                                 View
                                             </button>
                                         </td>
@@ -125,35 +163,24 @@ function Request() {
             </div>
 
             {showPopup && selectedRequest && (
-                <div className="popup-overlay">
-                    <div className="popup-content">
+                <div className={Styles.PopupOverlay}>
+                    <div className={Styles.PopupContent}>
                         <h2>Request Details</h2>
-                        <p>
-                            <strong>Account No:</strong> {selectedRequest.id_number}
-                        </p>
-                        <p>
-                            <strong>Current Name:</strong> {`${selectedRequest.firstname} ${selectedRequest.lastname}`}
-                        </p>
-                        <p>
-                            <strong>Requested First Name:</strong> {selectedRequest.update_data.firstname}
-                        </p>
-                        <p>
-                            <strong>Requested Last Name:</strong> {selectedRequest.update_data.lastname}
-                        </p>
-                        <p>
-                            <strong>Current Program:</strong> {selectedRequest.program}
-                        </p>
-                        <p>
-                            <strong>Requested Program:</strong> {selectedRequest.update_data.program}
-                        </p>
-                        <div className="popup-actions">
-                            <button onClick={handleAccept} className="accept-button">
+                        <p><strong>Account No:</strong> {selectedRequest.id_number}</p>
+                        <p><strong>Current Name:</strong> {`${selectedRequest.firstname} ${selectedRequest.lastname}`}</p>
+                        <p><strong>Requested First Name:</strong> {selectedRequest.update_data.firstname}</p>
+                        <p><strong>Requested Last Name:</strong> {selectedRequest.update_data.lastname}</p>
+                        <p><strong>Current Program:</strong> {selectedRequest.program}</p>
+                        <p><strong>Requested Program:</strong> {selectedRequest.update_data.program}</p>
+                        
+                        <div className={Styles.PopupActions}>
+                            <button onClick={handleAccept} className={Styles.AcceptButton}>
                                 Accept
                             </button>
-                            <button onClick={handleDecline} className="decline-button">
+                            <button onClick={handleDecline} className={Styles.DeclineButton}>
                                 Decline
                             </button>
-                            <button onClick={() => setShowPopup(false)} className="close-button">
+                            <button onClick={() => setShowPopup(false)} className={Styles.CloseButton}>
                                 Close
                             </button>
                         </div>
