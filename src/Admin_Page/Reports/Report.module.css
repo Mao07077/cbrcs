@@ -1,35 +1,160 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-color: #f5f5f5; 
-  }
-
-
-.Report_Container{
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    border: 2px solid #ddd; 
-    border-radius: 8px;
-    overflow: hidden;
-    width: 80vw; 
-    height: auto; 
-    background: #ffffff;
-    margin-top: 140px;
-    margin-left: 50px ;
-    border: 2px solid #002f87;
+/* Report Container - Positioned closer to the sidebar */
+.ReportWrapper {
+  width: 150%;  /* Make it longer */
+  margin-top: 100px;
+  margin-left: -100px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid #0d47a1;
+  height: 800px;
 }
-.Greeting_Report {
-    padding: 10px;
-    text-align: center;
-    display: flex;
-    justify-content: flex-start;
-    font-size: 25px;
-    font-style: initial;
-    margin: 10px 10px;
-    margin-left: 10px;
-    font-size: 1.2em;
-    border-bottom: 1px solid #333;
+
+/* Center the title */
+.ReportTitle {
+  font-size: 28px;
+  font-weight: bold;
+  color: #0d47a1;
+  text-align: left;
+  margin-bottom: 20px;
+  padding-left: 15px;
+  border-bottom: #060606 1px solid;
+  width: 100%;
+}
+.ReportTitle h2 {
+  margin-bottom: 5px;
+  padding: 20px;
+}
+
+/* Search & Filter Section */
+.ReportSearchFilter {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+.ReportSearchContainer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.ReportSearchInput {
+  width: 180px;
+  height: 35px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+.ReportFilterContainer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.ReportFilterDropdown {
+  width: 120px;
+  height: 35px; /* Same height as search input */
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+.ReportLabel {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+
+/* Adjust Table Container */
+.ReportTableContainer {
+  overflow-x: auto;
+  padding: 0 15px;
+}
+
+.ReportTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ReportTable th, .ReportTable td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+/* Make Status Colors Stand Out */
+.Pending {
+  color: red;
+  font-weight: bold;
+}
+
+.InProgress {
+  color: orange;
+  font-weight: bold;
+}
+
+.Resolved {
+  color: green;
+  font-weight: bold;
+}
+
+/* Adjust Button Styles */
+.ReportViewButton, .ReportResolveButton {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  margin: 3px;
+  gap: 5px;
+}
+
+.ReportViewButton {
+  background-color: #1976d2;
+}
+
+.ReportResolveButton {
+  background-color: #388e3c;
+}
+
+/* Responsive - Adjust for smaller screens */
+@media (max-width: 1200px) {
+  .ReportWrapper {
+      width: 90%;
+      margin-left: 220px;
   }
+}
+
+@media (max-width: 900px) {
+  .ReportWrapper {
+      width: 95%;
+      margin-left: 180px;
+  }
+}
+
+@media (max-width: 600px) {
+  .ReportWrapper {
+      width: 100%;
+      margin-left: 0;
+      padding: 10px;
+  }
+}
+/* Set Arial as the default font for the entire Report page */
+.ReportWrapper, 
+.ReportTitle, 
+.ReportSearchFilter, 
+.ReportSearchContainer, 
+.ReportSearchInput, 
+.ReportFilterContainer, 
+.ReportFilterDropdown, 
+.ReportLabel, 
+.ReportTable, 
+.ReportTable th, 
+.ReportTable td, 
+.ReportViewButton, 
+.ReportResolveButton {
+    font-family: Arial, sans-serif;
+}
