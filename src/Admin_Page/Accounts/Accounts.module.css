@@ -1,25 +1,123 @@
-.header {
-  width: 100%;  
+*{
+  margin: 0;
+  padding: 0;
+}
+body {
+ 
+  font-family: Consolas, sans-serif;
+  box-sizing: border-box;
+}
+.Maincontainer {
+  display: grid;
+  grid-template-areas:
+    "Header Header"
+    "Menu Content";
+  grid-template-columns: 0.1fr 1fr;
+  height: auto;
+  width: 100vw;
+  
+}
+.Maincontainer > div {
+  padding: 10px;
+}
+.Maincontainer > div.Content {
+  display: flex;
+  justify-content: flex-start ;
+  height: auto;
+  grid-area: Content;
+}
+.Header {
+  grid-area: Header;
   background-color: #002f87;
-  padding: 10px 20px;
   display: flex;
+}
+
+.Menu {
+  grid-area: Menu;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-items: flex-start;
+  width: 100%;
+  color: black;
+  top: 0;
+  left: 0;
+  
+}
+.Menu ul {
+  display: flex;
+  flex-direction: column;
+  justify-content:  flex-start;
+  flex: 1;
+  gap: 8%;
+  margin-top: 80px;
+}
+.Menu ul li {
+  display: flex;
+  justify-content: flex-start;
+  text-align: center;
+  margin-left: 10px;
+  padding: 5px 10px;
+  font-size: 24px;
+  cursor: pointer;
+  outline: none;
+  color: #000;
+  background: #f4f4f4;
+  border: none;
+  }
+
+  .Menu ul li a {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      color: black;
+      font-size: 50%;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .Menu span{
+      font-size: 15px;
+      }
+      
+      .Menu img {
+        margin: 0 auto;
+        width: 50px;
+        height: 40px;
+      }
+      .Sidebar_Icon{
+        margin: 0 auto;
+        width: 50px;
+        height: 40px;
+        display:flex;
+        justify-content: center;
+      }
+.Sidebar_Item{
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: left;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  align-self: center;
+  gap: 10px;
 }
-
-.header-content {
+.Content{
+  padding: 10px;
+  text-align: center;
   display: flex;
-  width: 100%;  
-  max-width: 1200px;  
-}
+  flex-direction: column;
+  justify-content: flex-start;
+  font-size: 25px;
+  font-style: initial;
+  margin: 10px 10px;
+  margin-left: 10px;
+  font-size: 1.2em;
+  border-left: 2px solid #333;
+  min-height: 100vh;
 
-.header-logo img {
-  height: 50px;   
-  width: auto;     
-  max-width: 180px; 
+ 
+  
 }
-
 /* Main Container */
 .List_Container {
   display: flex;
@@ -44,7 +142,7 @@
   font-weight: bold;
   display: flex;
   justify-content: flex-start;
-  border-bottom: 2px solid #002f87;
+  border-bottom: 2px solid #030914;
   margin-bottom: 20px;
 }
 
@@ -152,7 +250,6 @@
 .Table {
   width: 100%;
   border-collapse: collapse;
-  text-align: left;
   margin-top: 20px;
   font-size: 1em;
   border-radius: 5px;
@@ -162,12 +259,14 @@
 .Table thead tr {
   background: #002f87;
   color: #fff;
+  width: 100%;
 }
 
 .Table th {
   padding: 12px;
   border: 1px solid #ccc;
   cursor: pointer;
+  
 }
 
 .Table th:hover {
@@ -186,6 +285,15 @@
 
 /* No Accounts Message */
 .No_Accounts {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #666;
+}
+.No_Accounts p{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -209,4 +317,74 @@
 .delete-button:hover {
   background: #b02a37;
   transform: scale(1.05);
+}
+
+
+@media(max-width: 1000px) {
+  .Menu{
+    border-top: 1px solid #030000;
+    
+  }
+  .Menu ul{
+    display: flex;
+    flex-direction: row;
+    height: 5px;
+    justify-content: center;
+    padding-bottom: 50px;
+    margin-top: 10px;
+  }
+  .Menu ul li {
+    display: flex;
+    flex-direction: row;
+    height: 5px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    
+  }
+  .Menu img {
+    margin: 0 auto;
+    width: 20px;
+    height: 20px;
+  }
+  .Menu span{
+    font-size: 10px;
+    }
+  .Maincontainer{
+    display: grid;
+    grid-template-areas:
+      "Header Header"
+      "Content Content"
+      "Menu Menu";
+  }
+  .Search_Input {
+    display: flex;
+    justify-content: center;
+    height: 30px;
+    padding: 4px 6px;
+    border: 0.5px solid #ccc;
+    border-radius: 3px;
+    font-size: 10px;
+    outline: none;
+    font-family: Arial, Helvetica, sans-serif;
+    
+  }
+  .Search_Container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Aligns h2 and input vertically */
+    gap: 5px; /* Adjust space between label and input */
+  }
+  .Filter_Section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
 }
