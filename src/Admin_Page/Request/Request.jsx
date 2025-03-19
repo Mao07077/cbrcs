@@ -1,8 +1,27 @@
 import React, { useState, useEffect } from "react";
 import AdminHeader from "../../Components/Admin_Header";
 import Styles from "./Request.module.css";
+import Dashboard from '../../icon/dashboard.png'; 
+import Icon from '../../icon/actual.png';
+import Accounts from '../../icon/name.png';
+import Report from '../../icon/Reports.png';
+import AdminPost from '../../icon/Upload.png';
+import Requests from '../../icon/request.png';
 
-function Request() {
+const SidebarItem = ({ icon, text, onClick }) => (
+    <li>
+      <button className="sidebar-item" onClick={onClick}>
+        <img src={icon} alt={text} className="sidebar-icon" />
+        <span>{text}</span>
+      </button>
+    </li>
+  );
+const Request = () => {
+    const handleNavigation = (route) => {
+        console.log(`Navigating to: ${route}`);
+      
+        window.location.href = `/${route}`;
+      };
     const [requests, setRequests] = useState([
         {
             _id: "1",
@@ -118,16 +137,53 @@ function Request() {
     };
 
     return (
-        <>
-            <header className="header">
-                <AdminHeader />
-            </header>
-
-            <div className={Styles.List_Container}>
-                <div className={Styles.Greeting_Requestlist}>
-                    <h1>Requests List</h1>
-                </div>
-
+      
+  <div className={Styles.Maincontainer}>
+    <div className={Styles.Header}> 
+      <div className="header-content">
+          <div className="header-logo">
+              <img src={Icon} alt="logo" />
+          </div>
+          
+      </div></div>
+    <nav className={Styles.Menu}> 
+      <ul>
+        <li>
+          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Admin_Dashboard')}>
+            <img src={Dashboard} alt="Dashboard Icon" className={Styles.Sidebar_Icon} />
+            <span>Dashboard</span>
+          </buttonss>
+        </li>
+        <li>
+          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Accounts')}>
+            <img src={Accounts} alt="Accounts Icon" className={Styles.Sidebar_Icon} />
+            <span>Accounts</span>
+          </buttonss>
+        </li>
+        <li>
+          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Adminpost')}>
+            <img src={AdminPost} alt="Adminpost Icon" className={Styles.Sidebar_Icon} />
+            <span>Uploads</span>
+          </buttonss>
+        </li>
+        <li>
+          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Report')}>
+            <img src={Report} alt="Report Icon" className={Styles.Sidebar_Icon} />
+            <span>Report</span>
+          </buttonss>
+        </li>
+        <li>
+          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Request')}>
+            <img src={Requests} alt="Request Icon" className={Styles.Sidebar_Icon} />
+            <span>Request</span>
+          </buttonss>
+        </li>
+      </ul>
+     </nav>
+    <div className={Styles.Content}>
+      <div className={Styles.Greeting_Dashboard}>
+              <h1>Request List</h1>
+            </div>
                 <div className={Styles.Container}>
                     <table className={Styles.Table}>
                         <thead>
@@ -186,9 +242,10 @@ function Request() {
                         </div>
                     </div>
                 </div>
-            )}
-        </>
-    );
-}
+                 )}
+                </div>
+                
+  );
+};
 
 export default Request;
