@@ -41,13 +41,11 @@
 
 .habit-title {
   font-weight: bold;
+  align-items: center;
+  margin-top: 30px;
 }
 
-.habit-description {
-  font-size: 14px;
-  color: gray;
-  margin-top: 20px;
-}
+
 
 .grid-container {
   display: grid;

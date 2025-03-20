@@ -32,8 +32,7 @@ const StudyHabits = () => {
           {studyHabits.map((habit, index) => (
             <div key={index} className="habit-card">
               <p className="habit-title">{habit}</p>
-              <p className="habit-description">Description Here</p>
-            </div>
+               </div>
           ))}
         </div>
       </div>
@@ -43,7 +42,6 @@ const StudyHabits = () => {
           {top10StudyHabits.map((habit, index) => (
             <div key={index} className="habit-card">
               <p className="habit-title">{index + 1}. {habit}</p>
-              <p className="habit-description">Description Here</p>
             </div>
           ))}
         </div>
