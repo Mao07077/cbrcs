@@ -544,19 +544,19 @@ const questions = [
                                     
                                         return (
                                             <div>
-                                                <div className="head-content">
-                                                    <div className="survey-logo">
+                                                <div className="custom-head-content">
+                                                    <div className="custom-survey-logo">
                                                         <img src={Icon} alt="actual" />
                                                     </div>
                                                 </div>
-                                                <div className="survey-container">
-                                                    <div className="survey-box">
+                                                <div className="custom-survey-container">
+                                                    <div className="custom-survey-box">
                                                         <h3>{questions[page].category}</h3>
                                                         {questions[page].questions.map((q, index) => (
-                                                            <div key={index} className="question-block">
+                                                            <div key={index} className="custom-question-block">
                                                                 <p>{q.question}</p>
                                                                 {q.choices.map((choice, i) => (
-                                                                    <label key={i} className="choice">
+                                                                    <label key={i} className="custom-choice">
                                                                         <input 
                                                                             type="radio" 
                                                                             name={`q${index + page * questionsPerPage}`} 
@@ -570,17 +570,17 @@ const questions = [
                                                             </div>
                                                         ))}
                                                     </div>
-                                                    <div className="navigation-buttons">
-                                                        {page > 0 && <button onClick={handleBack}>Back</button>}
+                                                    <div className="custom-navigation-buttons">
+                                                        {page > 0 && <button className="custom-button" onClick={handleBack}>Back</button>}
                                                         {page < questions.length - 1 ? (
-                                                            <button onClick={handleNext} disabled={!allAnswered()}>Next</button>
+                                                            <button className="custom-button" onClick={handleNext} disabled={!allAnswered()}>Next</button>
                                                         ) : (
-                                                            <button disabled={!allAnswered()}>Submit</button>
+                                                            <button className="custom-button" disabled={!allAnswered()}>Submit</button>
                                                         )}
                                                     </div>
                                                 </div>
                                             </div>
                                         );
-                                    };
-                                    
-                                    export default Survey;
+                                    }
+                                        
+                                        export default Survey;

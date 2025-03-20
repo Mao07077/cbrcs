@@ -1,4 +1,4 @@
-.survey-container {
+.custom-survey-container {
     width: 100%; /* Utilize full screen width */
     max-width: 1100px; /* Wider container for better visibility */
     min-width: 600px; /* Prevents it from being too narrow */
@@ -14,7 +14,7 @@
     align-items: center; /* Keeps everything centered */
 }
 
-.head-content {
+.custom-head-content {
     background-color: #0d47a1;
     color: white;
     padding: 10px 15px; /* Reduce padding to make it shorter */
@@ -31,13 +31,14 @@
 }
 
 
-.survey-logo img {
+.custom-survey-logo img {
     width: 150px;
     height: auto;
     object-fit: contain;
     margin-left: 15px; /* Adds space from the left */
 }
-.survey-box {
+
+.custom-survey-box {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -49,27 +50,52 @@
     padding-bottom: 50px; /* Prevents overlap with buttons */
 }
 
-
-.question-block {
+.custom-question-block {
     margin-bottom: 20px;
     text-align: left;
     font-size: 20px;
 }
 
-.choice {
+.custom-choice {
     display: flex;
     align-items: center;
     margin: 15px 0;
-    margin-left: 20px;
     font-size: 16px;
+    gap: 10px; /* Space between checkbox and text */
+    flex-direction: row; /* Ensures the checkbox is on the left */
 }
 
-.choice input {
-    margin-right: 12px;
-    transform: scale(1.2); /* Makes radio buttons slightly bigger */
+.custom-choice input {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    appearance: none; /* Removes default checkbox styles */
+    border: 2px solid #0d47a1;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.navigation-buttons {
+.custom-choice input:checked {
+    background-color: #0d47a1;
+    border: 2px solid #0d47a1;
+    position: relative;
+}
+
+.custom-choice input:checked::after {
+    content: "✔";
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.custom-navigation-buttons {
     display: flex;
     justify-content: right;
     margin-top: 20px;
@@ -77,7 +103,7 @@
     width: 100%;
 }
 
-button {
+.custom-button {
     background-color: #0d47a1;
     color: white;
     border: none;
@@ -88,11 +114,11 @@ button {
     width: auto; /* Prevents button from stretching too much */
 }
 
-button:hover {
+.custom-button:hover {
     background-color: #1565c0;
 }
 
-button:disabled {
+.custom-button:disabled {
     background-color: #b0bec5;
     cursor: not-allowed;
 }
