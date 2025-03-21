@@ -10,8 +10,8 @@ import Icon from '../../icon/actual.png';
 
 const SidebarItem = ({ icon, text, onClick }) => (
   <li>
-    <button className="sidebar-item" onClick={onClick}>
-      <img src={icon} alt={text} className="sidebar-icon" />
+    <button className={Styles.Sidebar_Item} onClick={onClick}>
+      <img src={icon} alt={text} className={Styles.Sidebar_Icon} />
       <span>{text}</span>
     </button>
   </li>
@@ -33,49 +33,26 @@ const InstructorDashboard = () => {
 
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const handleCreate = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
-
-  const triggerFileUpload = () => {
-    document.getElementById("fileInput").click();
-  };
-
   useEffect(() => {
     const fetchStats = async () => {
       const mockStats = {
         totalStudents: 0, 
         engagementRate: 0, 
       };
-
       setTimeout(() => {
         setStats(mockStats);
       }, 1000);
     };
-
     fetchStats();
   }, []);
 
   useEffect(() => {
-    const simulateBackendFetch = async () => {
-      return new Promise((resolve) =>
+    const fetchAttendanceData = async () => {
+      const data = await new Promise((resolve) =>
         setTimeout(() => resolve([70, 50, 90, 60, 40]), 1000)
       );
-    };
-
-    const fetchAttendanceData = async () => {
-      const data = await simulateBackendFetch();
       setAttendanceData(data);
     };
-
     fetchAttendanceData();
   }, []);
 
@@ -86,7 +63,6 @@ const InstructorDashboard = () => {
         setModules(mockModules);
       }, 1000);
     };
-
     fetchModules();
   }, []);
 
@@ -102,30 +78,10 @@ const InstructorDashboard = () => {
 
       <nav className={Styles.Menu}> 
         <ul>
-          <li>
-            <button className={Styles.Sidebar_Item} onClick={() => handleNavigation('Instructor_Dashboard')}>
-              <img src={Dashboard} alt="Dashboard Icon" className={Styles.Sidebar_Icon} />
-              <span>Dashboard</span>
-            </button>
-          </li>
-          <li>
-            <button className={Styles.Sidebar_Item} onClick={() => handleNavigation('mail')}>
-              <img src={MailIcon} alt="Mail Icon" className={Styles.Sidebar_Icon} />
-              <span>Message</span>
-            </button>
-          </li>
-          <li>
-            <button className={Styles.Sidebar_Item} onClick={() => handleNavigation('studentlist')}>
-              <img src={StudentsIcon} alt="Students Icon" className={Styles.Sidebar_Icon} />
-              <span>StudentList</span>
-            </button>
-          </li>
-          <li>
-            <button className={Styles.Sidebar_Item} onClick={() => handleNavigation('ModuleList')}>
-              <img src={StudentsIcon} alt="Students Icon" className={Styles.Sidebar_Icon} />
-              <span>Module</span>
-            </button>
-          </li>
+          <SidebarItem icon={Dashboard} text="Dashboard" onClick={() => handleNavigation('Instructor_Dashboard')} />
+          <SidebarItem icon={MailIcon} text="Message" onClick={() => handleNavigation('mail')} />
+          <SidebarItem icon={StudentsIcon} text="StudentList" onClick={() => handleNavigation('studentlist')} />
+          <SidebarItem icon={StudentsIcon} text="Module" onClick={() => handleNavigation('ModuleList')} />
         </ul>
       </nav>
 
@@ -152,13 +108,8 @@ const InstructorDashboard = () => {
             </div>
             <hr className={Styles.Divider} />
             <div className={Styles.AnnouncementActions}>
-              <input
-                type="file"
-                id="fileInput"
-                style={{ display: "none" }}
-                onChange={handleFileChange}
-              />
-              <button className={Styles.AttachFile} onClick={triggerFileUpload}>
+              <input type="file" id="fileInput" style={{ display: "none" }} onChange={(e) => setSelectedFile(e.target.files[0])} />
+              <button className={Styles.AttachFile} onClick={() => document.getElementById("fileInput").click()}>
                 + Attach file
               </button>
               {selectedFile && <span className={Styles.FileName}>{selectedFile.name}</span>}
@@ -176,10 +127,7 @@ const InstructorDashboard = () => {
                   <div
                     key={index}
                     className={Styles.Bar}
-                    style={{
-                      height: `${value}%`,
-                      transition: 'height 0.5s ease-in-out',
-                    }}
+                    style={{ height: `${value}%`, transition: 'height 0.5s ease-in-out' }}
                     title={`Attendance: ${value}%`}
                   ></div>
                 ))
@@ -202,18 +150,12 @@ const InstructorDashboard = () => {
             )}
           </div>
         </div>
-        
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={closeModal}
-          contentLabel="Create Module"
-          className={Styles.Modal}
-          overlayClassName="overlay"
-        >
-          <CreateModule />
-          <button onClick={closeModal}>Close</button>
-        </Modal>
       </div>
+
+      <footer className={Styles.InstructorFooter}>
+        <img src={Icon} alt="CBRC Logo" />
+        <p>&copy; 2024 Dr. Carl Balita Review Center. All Rights Reserved.</p>
+      </footer>
     </div>
   );
 };

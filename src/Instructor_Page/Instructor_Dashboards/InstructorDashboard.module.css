@@ -4,8 +4,8 @@
 }
 .body {
  
-  font-family: Consolas, sans-serif;
-  box-sizing: border-box;
+font-family: Arial, Helvetica, sans-serif;  
+box-sizing: border-box;
 }
 .Maincontainer {
   display: grid;
@@ -15,6 +15,7 @@
   grid-template-columns: 0.1fr 1fr;
   height: auto;
   width: 100vw;
+  position: relative;
   
 }
 .Maincontainer > div {
@@ -120,6 +121,9 @@
   max-width: 500px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin-left: 400px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .AnnouncementInput {
@@ -128,6 +132,9 @@
   gap: 10px;
   padding: 10px;
   background: white;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .InputField {
@@ -137,7 +144,11 @@
   font-size: 14px;
   padding: 8px;
   border-radius: 20px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
+
 
 .Divider {
   border: none;
@@ -155,7 +166,7 @@
   background: none;
   border: none;
   font-size: 14px;
-  color: #439cf4;
+  color: #6b6f73;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -350,6 +361,37 @@
   font-size: 1.5em;
   margin-left: 10px;
 }
+.InstructorFooter {
+  background-color: #002f87;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  font-weight: bold;
+  width: 100%;
+  height: auto;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+
+.InstructorFooter img {
+  width: 100px;
+  height: auto;
+}
+
+.InstructorFooter p {
+  margin: 0;
+  font-size: 14px;
+  text-align: center;
+  white-space: nowrap;
+}
+
 @media(max-width: 1000px) {
 .Menu ul{
   display: flex;
