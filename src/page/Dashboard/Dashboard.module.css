@@ -1,19 +1,127 @@
-/* Dashboard.module.css */
+*{
+    margin: 0;
+    padding: 0;
+  }
+  body {
+   
+    font-family: Consolas, sans-serif;
+    box-sizing: border-box;
+  }
+  .MainContainer {
+    display: grid;
+    grid-template-areas:
+      "Header Header"
+      "Menu Content";
+    grid-template-columns: 0.1fr 1fr;
+    height: auto;
+    width: 100vw;
+    
+  }
+  .MainContainer > div {
+    padding: 10px;
+  }
+  .MainContainer > div.Content {
+    display: flex;
+    justify-content: flex-start ;
+    height: auto;
+    grid-area: Content;
+  }
+  .Header {
+    grid-area: Header;
+    background-color: #002f87;
+  }
+  .Greeting_Dashboard{
+    display: flex;
+    justify-content: flex-start;
+    padding:15px;
+    border-bottom: 4px solid #333;
+   
+  }
+  .Menu {
+    grid-area: Menu;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-items: flex-start;
+    width: 100%;
+    color: black;
+    top: 0;
+    left: 0;
+    border-right: 2px solid #333;
 
-/* General Layout */
-.Main_Dashboard {
+    
+  }
+  .Menu ul {
     display: flex;
     flex-direction: column;
+    justify-content:  flex-start;
+    flex: 1;
+    gap: 5%;
+    margin-top: 80px;
+  }
+  .Menu ul li {
+    display: flex;
+    justify-content: flex-start;
+    text-align: center;
+    margin-left: 10px;
+    padding: 5px 10px;
+    font-size: 24px;
+    cursor: pointer;
+    outline: none;
+    color: #000;
+    background: #f4f4f4;
+    border: none;
+    }
+
+    .Menu ul li a {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        color: black;
+        font-size: 50%;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      .Menu span{
+        font-size: 15px;
+        }
+        
+        .Menu img {
+          margin: 0 auto;
+          width: 50px;
+          height: 40px;
+        }
+        .Sidebar_Icon{
+          margin: 0 auto;
+          width: 50px;
+          height: 40px;
+          display:flex;
+          justify-content: center;
+        }
+ .Sidebar_Item{
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    max-width: 1200px; /* Prevents UI from stretching too much */
-    margin: auto;
-    width: 2000px;
-    margin-top: 150px;
-    background-color: #f0f2ff;
+    align-self: center;
+    gap: 10px;
 }
+.Content{
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 25px;
+    font-style: initial;
+    margin: 10px 10px;
+    margin-left: 10px;
+    font-size: 1.2em;
+   
+    
+  }
 
 /* Title */
 .Title h1 {
@@ -24,7 +132,7 @@
 }
 
 /* Performance Overview */
-.PerformanceOverview {
+.PerformanceOverview { 
     text-align: center;
     width: 100%;
     max-width: 600px;
@@ -46,7 +154,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
     width: 250px;
     height: 250px;
     margin: auto;
@@ -64,12 +171,12 @@
 .StrengthWeaknessContainer {
     display: flex;
     justify-content: space-around;
-    width: 150%;
+    text-align: center;
     max-width: 600px;
     margin-bottom: 30px;
     height: 150px;
     gap: 15px;
-    
+    width: 450px;
 }
 
 .StrengthCard, .WeaknessCard {
@@ -134,4 +241,84 @@
 canvas {
     max-width: 100% !important;
     height: auto !important;
+}
+
+.Section{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+@media(max-width: 1000px) {
+  .Menu{
+    border-top: 2px solid #333;
+
+  }
+  
+    .Menu ul{
+      display: flex;
+      flex-direction: row;
+      height: 5px;
+      justify-content: center;
+      padding-bottom: 50px;
+      margin-top: 10px;
+    }
+    .Menu ul li {
+      display: flex;
+      flex-direction: row;
+      height: 5px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      
+    }
+    .Menu img {
+      margin: 0 auto;
+      width: 20px;
+      height: 20px;
+    }
+    .Menu span{
+      font-size: 10px;
+      }
+    .MainContainer{
+      display: grid;
+      grid-template-areas:
+        "Header Header"
+        "Content Content"
+        "Menu Menu";
+    }
+    
+
+    .Content h1 {
+      font-size: 50px;
+      font-weight: bold;
+      margin-bottom: 20px;
+  }
+  .PerformanceOverview ,h2 {
+    font-size: 25px;
+    font-weight: bold;
+   
+}
+  .StrengthCard, .WeaknessCard {
+   font-size: 13px ;
+}
+
+  .HabitCard {
+    background: #f3f4f6;
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    font-size: 13px;
+    text-align: center;
+    width: 150px;
+    height: 100px;
+    margin-top: 30px;
+    flex: 1;
+    min-width: 120px;
+    border: 0.5px solid #121212;
+
+}
+.StudyHabitsContainer,h3{
+  font-size: 16px;
+}
 }

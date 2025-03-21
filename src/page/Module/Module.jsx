@@ -1,9 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Styles from './module.module.css';
-import Header from '../../Components/Header';
+import Icon from '../../icon/actual.png';
+import NameIcon from '../../icon/name.png';
+import ModuleIcon from '../../icon/module.png';
+import DashboardIcon from '../../icon/dashboard.png';
+import RequestIcon from '../../icon/request.png';
+import HelpIcon from '../../icon/help.png';
 
+const SidebarItem = ({ icon, text, onClick }) => (
+  <li>
+    <button className="sidebar-item" onClick={onClick}>
+      <img src={icon} alt={text} className="sidebar-icon" />
+      <span>{text}</span>
+    </button>
+  </li>
+);
 const ModuleDashboard = () => {
+  const handleNavigation = (route) => {
+    console.log(`Navigating to: ${route}`);
+  
+    window.location.href = `/${route}`;
+  };
   const [modules, setModules] = useState([]);
   const [error, setError] = useState(null);
   const [userProgram, setUserProgram] = useState(null);
@@ -57,8 +75,52 @@ const ModuleDashboard = () => {
   };
 
   return (
+    <div className={Styles.MainContainer}>
+    <div className={Styles.Header}> 
+         <div className="header-content">
+             <div className="header-logo">
+                 <img src={Icon} alt="logo" />
+             </div>
+             </div>
+         </div>
+      <nav className={Styles.Menu}> 
+          <ul>
+            <li>
+              <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('profile')}>
+                <img src={NameIcon} alt="Name Icon" className={Styles.Sidebar_Icon} />
+                <span>Profile</span>
+              </buttonss>
+            </li>
+            <li>
+              <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('module')}>
+                <img src={ModuleIcon} alt="Module Icon" className={Styles.Sidebar_Icon} />
+                <span>Module</span>
+              </buttonss>
+            </li>
+            <li>
+              <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('dashboard')}>
+                <img src={DashboardIcon} alt="Dashboard Icon" className={Styles.Sidebar_Icon} />
+                <span>Dashboard</span>
+              </buttonss>
+            </li>
+            <li>
+              <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Request')}>
+                <img src={HelpIcon} alt="help Icon" className={Styles.Sidebar_Icon} />
+                <span>Study Habits</span>
+              </buttonss>
+            </li>
+            <li>
+              <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('settings')}>
+                <img src={RequestIcon} alt="Request Icon" className={Styles.Sidebar_Icon} />
+                <span>Request</span>
+              </buttonss>
+            </li>
+           
+          </ul>
+         </nav>
+<div className={Styles.Content}>
     <div className={Styles.ModuleDashboard}>
-      <Header />
+      
 
       {/* Unified Module Container */}
       <div className={Styles.Module_Container}>
@@ -95,6 +157,8 @@ const ModuleDashboard = () => {
         </div>
       </div>
     </div>
+    </div>
+</div>
   );
 };
 

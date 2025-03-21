@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Styles from './profile.module.css';
-
 import nameIcon from '../../icon/name.png';
-import Header from '../../Components/Header';
+import Icon from '../../icon/actual.png';
+import NameIcon from '../../icon/name.png';
+import ModuleIcon from '../../icon/module.png';
+import DashboardIcon from '../../icon/dashboard.png';
+import RequestIcon from '../../icon/request.png';
+import HelpIcon from '../../icon/help.png';
 
 import {
   Chart as ChartJS,
@@ -23,8 +27,16 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
+const SidebarItem = ({ icon, text, onClick }) => (
+  <li>
+    <button className="sidebar-item" onClick={onClick}>
+      <img src={icon} alt={text} className="sidebar-icon" />
+      <span>{text}</span>
+    </button>
+  </li>
+);
 const DailyActivityBarChart = ({ dailyData }) => {
+  
   const data = {
     labels: dailyData.map(item => item.day),
     datasets: [
@@ -66,6 +78,11 @@ const DailyActivityBarChart = ({ dailyData }) => {
 };
 
 const Profile = () => {
+  const handleNavigation = (route) => {
+    console.log(`Navigating to: ${route}`);
+  
+    window.location.href = `/${route}`;
+  };
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -120,19 +137,59 @@ const Profile = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className={Styles.profilePage}>
-      <Header />
-
-      <div className={Styles.topSection}>
+     <div className={Styles.MainContainer}>
+                <div className={Styles.Header}> 
+                     <div className="header-content">
+                         <div className="header-logo">
+                             <img src={Icon} alt="logo" />
+                         </div>
+                         </div>
+                     </div>
+                  <nav className={Styles.Menu}> 
+                      <ul>
+                        <li>
+                          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('profile')}>
+                            <img src={NameIcon} alt="Name Icon" className={Styles.Sidebar_Icon} />
+                            <span>Profile</span>
+                          </buttonss>
+                        </li>
+                        <li>
+                          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('module')}>
+                            <img src={ModuleIcon} alt="Module Icon" className={Styles.Sidebar_Icon} />
+                            <span>Module</span>
+                          </buttonss>
+                        </li>
+                        <li>
+                          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('dashboard')}>
+                            <img src={DashboardIcon} alt="Dashboard Icon" className={Styles.Sidebar_Icon} />
+                            <span>Dashboard</span>
+                          </buttonss>
+                        </li>
+                        <li>
+                          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Request')}>
+                            <img src={HelpIcon} alt="help Icon" className={Styles.Sidebar_Icon} />
+                            <span>Study Habits</span>
+                          </buttonss>
+                        </li>
+                        <li>
+                          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('settings')}>
+                            <img src={RequestIcon} alt="Request Icon" className={Styles.Sidebar_Icon} />
+                            <span>Request</span>
+                          </buttonss>
+                        </li>
+                       
+                      </ul>
+                     </nav>
+    <div className={Styles.Content}>
+      
+      <div className={Styles.TopSection}>
         <h2>Account Profile</h2>
-        <div className={Styles.dateInfo}>
-          <p>Date Started and End Date</p>
-          <p>09/20/2004 - 03/12/2025</p>
-        </div>
+      
       </div>
 
       {/* Profile Icon with Upload */}
-      <div className={Styles.iconContainer}>
+      <div className={Styles.Pair}>
+      <div className={Styles.IconContainer}>
         <img src={profileImage} alt="Profile Icon" />
         <input
           type="file"
@@ -148,27 +205,32 @@ const Profile = () => {
           Edit
         </button>
       </div>
-
+      <div className={Styles.DateInfo}>
+          <p>Date Started and End Date</p>
+          <p>09/20/2004 - 03/12/2025</p>
+        </div>
+      </div>
       {/* Personal Info */}
-      <div className={Styles.infoCard}>
+      <div className={Styles.Info}>
+      <div className={Styles.InfoCard}>
         <label>Name: {profile?.firstname} {profile?.lastname}</label>
         <label>Age: {profile?.age || "N/A"}</label>
         <label>Id Number: {profile?.id_number}</label>
         <label>Program: {profile?.program}</label>
       </div>
-
+      </div>
       {/* Study Habits */}
       <h3 className={Styles.studyTitle}>Your Top 3 Study Habits:</h3>
-      <div className={Styles.habitsWrapper}>
-        <div className={Styles.habitCard}>
+      <div className={Styles.HabitsWrapper}>
+        <div className={Styles.HabitCard}>
           <h4>Study With Friends</h4>
           <p>Description Here</p>
         </div>
-        <div className={Styles.habitCard}>
+        <div className={Styles.HabitCard}>
           <h4>Listen To Music</h4>
           <p>Description Here</p>
         </div>
-        <div className={Styles.habitCard}>
+        <div className={Styles.HabitCard}>
           <h4>Asking For Help</h4>
           <p>Description Here</p>
         </div>
@@ -179,6 +241,7 @@ const Profile = () => {
         <h3>Daily Activity</h3>
         <DailyActivityBarChart dailyData={dailyData} />
       </div>
+    </div>
     </div>
   );
 };
