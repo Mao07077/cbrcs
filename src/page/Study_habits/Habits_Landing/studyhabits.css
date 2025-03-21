@@ -1,9 +1,15 @@
 .container {
-  max-width: 800px;
-  margin: 0 auto;
+  position: absolute;
+  left: 180px; 
+  top: 80px;
+  width: calc(100% - 260px); 
   padding: 20px;
-  margin-top: 80px;
+  padding-bottom: 100px;
+  height: 60%;
+  font-family: Arial, Helvetica, sans-serif;
 }
+
+
 
 .title {
   font-size: 24px;
@@ -24,31 +30,139 @@
 
 .top-habits {
   display: flex;
+  flex-wrap: wrap; /* Allows wrapping on smaller screens */
   gap: 10px;
+  justify-content: center;
+  font-size: 14px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 90%; /* Adjusted for better responsiveness */
+  max-width: 800px; /* Prevents excessive stretching */
 }
 
 .habit-card {
-  background: #d4ccf6;
-  border: 1px solid #ddd;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  flex: 1 1 calc(33.333% - 20px); /* Makes cards adjust based on available space */
+  max-width: 220px; /* Prevents overly large cards */
+  min-width: 150px; /* Ensures they don’t shrink too much */
+  min-height: 100px; /* Maintains original height */
+  height: auto; /* Allows it to expand if needed */
   text-align: center;
-  flex: 1;
-  height: 100px;
-  gap: 10px;
+  background-color: #F8F9FA;
+  border: #000 1px solid;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  white-space: normal; /* Allows wrapping */
+  overflow-wrap: break-word; /* Ensures long words break */
+  text-align: center;
 }
 
 .habit-title {
+  font-size: clamp(10px, 1.2vw, 16px);
   font-weight: bold;
-  align-items: center;
-  margin-top: 30px;
+  text-align: center;
+  width: fit-content;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  white-space: normal; /* Allows multi-line text */
 }
-
 
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust dynamically */
+  gap: 15px; /* Increased spacing for better layout */
+}
+.footer {
+  background-color: #002f87;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  width: 100%;
+  height: 70px;
+  position: fixed; /* Keeps it at the bottom */
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Adds spacing between the logo and text */
+}
+
+.footer img {
+  width: 120px;
+  height: auto;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 14px;
+  text-align: center;
+}
+@media (max-width: 768px) {
+  /* Top Habits Section */
+  .top-habits {
+    width: 100%; /* Full width on smaller screens */
+    gap: 8px;
+    padding: 0 10px; /* Ensures space on both sides */
+    justify-content: center;
+  }
+
+  .habit-card {
+    flex: 1 1 calc(50% - 10px); /* Two columns on tablets */
+    min-width: 120px;
+    min-height: 90px;
+    max-width: 100%; /* Prevents overflow */
+  }
+
+  /* Footer Adjustments */
+  .footer {
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+  }
+
+  .footer img {
+    width: 80px;
+  }
+
+  .footer p {
+    font-size: 10px;
+    text-align: center;
+    margin: 5px auto; /* Centers text */
+  }
+}
+
+@media (max-width: 480px) {
+  /* Adjust Top Habits Section for Small Screens */
+  .top-habits {
+    flex-direction: column; /* Stack cards in one column */
+    align-items: center;
+    padding: 0 10px;
+  }
+
+  .habit-card {
+    flex: 1 1 100%;
+    min-width: auto;
+    min-height: 80px;
+    max-width: 80%; /* Prevents overflow on smaller screens */
+    margin-right: auto; /* Moves slightly to the right */
+    margin-left: auto; /* Centers the cards */
+  }
+
+  /* Footer Adjustments for Very Small Screens */
+  .footer img {
+    width: 60px;
+  }
+  .footer  {
+height: 60px;  }
+  .footer p {
+    font-size: 9px;
+  }
 }
