@@ -199,11 +199,21 @@ const Dashboard = ({ isModal = false }) => {
             </div>
             <section className={Styles.StudyHabitsSection}>
                 <h3>Top 3 Study Habits:</h3>
-                <div className={Styles.StudyHabitsContainer}>
-                    <div className={Styles.HabitCard}>Study With Friends</div>
-                    <div className={Styles.HabitCard}>Listen To Music</div>
-                    <div className={Styles.HabitCard}>Asking For Help</div>
-                </div>
+                <div className={Styles.HabitsWrapper}>
+    <div className={Styles.HabitCard} onClick={() => handleNavigation('learn_together')}>
+    <h4 className={Styles.HabitTitle}>Learn Together</h4>
+    <p className={Styles.HabitDescription}>Group Call</p>
+  </div>
+  <div className={Styles.HabitCard} onClick={() => handleNavigation('scheduler')}>
+    <h4 className={Styles.HabitTitle}>Scheduler</h4>
+    <p className={Styles.HabitDescription}>Create your own schedule</p>
+  </div>
+  <div className={Styles.HabitCard} onClick={() => handleNavigation('chat')}>
+    <h4 className={Styles.HabitTitle}>Instructor Chat</h4>
+    <p className={Styles.HabitDescription}>Seek guidance from teachers</p>
+  </div>
+</div>
+
             </section>
             <section className={Styles.ProgressChartSection}>
                 <h3>Post-Test Scores</h3>

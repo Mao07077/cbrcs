@@ -124,11 +124,13 @@
   }
 
 /* Title */
-.Title h1 {
+.Title  {
     font-size: 30px;
     font-weight: bold;
     text-align: left;
     margin-bottom: 20px;
+    border-bottom: 1px solid #121212;
+    padding: 10px;
 }
 
 /* Performance Overview */
@@ -193,48 +195,114 @@
 }
 
 /* Study Habits */
+.HabitsWrapper {
+  display: flex;
+  flex-direction: row; /* Aligns items horizontally */
+  justify-content: center; /* Centers them */
+  flex-wrap: wrap; /* Allows wrapping if space is limited */
+  gap: 20px; /* Space between cards */
+  width: 100%;
+}
 .StudyHabitsSection {
-    text-align: center;
-    width: 100%;
-    max-width: 800px;
-    margin-bottom: 30px;
+  text-align: center;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 30px;
+  margin-left: 0; /* Ensure it aligns to the left */
+  padding: 0 15px; /* Optional: Adds spacing */
+}
+
+.StudyHabitsSection h3 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #121212;
+  border-top: 1px solid #121212;
+  margin-left: 20px;
+  width: 85vw; /* Full screen width */
+  position: relative; /* Ensures it spans properly */
+  left: 50%;
+  transform: translateX(-50%); /* Centers the border */
 }
 
 .StudyHabitsContainer {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap; /* Ensures habits wrap properly on smaller screens */
+  display: flex;
+  justify-content: flex-start; /* Aligns to the left */
+  gap: 15px;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
-.HabitCard {
-    background: #f3f4f6;
-    padding: 10px 20px;
-    border-radius: 10px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-    font-weight: bold;
-    text-align: center;
-    width: 150px;
-    height: 100px;
-    margin-top: 30px;
-    flex: 1;
-    min-width: 120px;
-    border: 0.5px solid #121212;
 
+.HabitCard {
+  flex: 1 1 220px; /* Allows flexibility */
+  max-width: 220px; /* Prevents stretching */
+  text-align: center;
+  background-color: #F8F9FA;
+  border: 1px solid #000;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Centers content */
+  font-size: 14px;
+  white-space: normal;
+  overflow-wrap: break-word;
+  text-decoration: none;
+  color: black;
+  margin: 0; /* Ensures no extra margins */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  margin-top: 20px;
+}
+
+.HabitCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #e3f2fd;
+}
+
+.HabitTitle {
+  font-size: clamp(14px, 1.5vw, 18px);
+  font-weight: bold;
+  text-align: center;
+  width: fit-content;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  white-space: normal;
+  color: rgb(17, 16, 17);
+}
+
+.HabitDescription {
+  font-size: 14px;
+  color: #555;
+  margin-top: 5px;
 }
 
 /* Progress Chart */
 .ProgressChartSection {
-    text-align: center;
-    width: 100%;
-    max-width: 900px;
-    margin-top: 20px;
+  text-align: center;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 30px;
+  margin-left: 0; /* Ensure it aligns to the left */
+  padding: 0 15px; /* Optional: Adds spacing */
 }
 
 .ProgressChartSection h3 {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #121212;
+  border-top: 1px solid #121212;
+  margin-left: 20px;
+  width: 85vw; /* Full screen width */
+  position: relative; /* Ensures it spans properly */
+  left: 50%;
+  transform: translateX(-50%); /* Centers the border */
 }
 
 /* Fix ChartJS Overflow */
