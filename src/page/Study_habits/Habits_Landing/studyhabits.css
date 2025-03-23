@@ -22,11 +22,17 @@
   margin-top: 20px;
 }
 
-.subtitle {
+.subtitle2 {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 10px;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  font-size: clamp(10px, 1vw, 14px); /* Allows description to shrink slightly */
+ 
+  padding: 15px 0; /* Adds space above and below the text */
 }
+
 
 .top-habits {
   display: flex;
@@ -41,11 +47,11 @@
 }
 
 .habit-card {
-  flex: 1 1 calc(33.333% - 20px); /* Makes cards adjust based on available space */
-  max-width: 220px; /* Prevents overly large cards */
-  min-width: 150px; /* Ensures they don’t shrink too much */
-  min-height: 100px; /* Maintains original height */
-  height: auto; /* Allows it to expand if needed */
+  flex: 1 1 calc(33.333% - 20px);
+  max-width: 220px;
+  min-width: 150px;
+  min-height: 100px;
+  height: auto;
   text-align: center;
   background-color: #F8F9FA;
   border: #000 1px solid;
@@ -53,16 +59,27 @@
   border-radius: 10px;
   font-weight: bold;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   font-size: 14px;
-  white-space: normal; /* Allows wrapping */
-  overflow-wrap: break-word; /* Ensures long words break */
+  white-space: normal;
+  overflow-wrap: break-word;
   text-align: center;
+  margin-top: 20px;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth hover effect */
 }
 
+.habit-card:hover {
+  transform: scale(1.05); /* Slightly enlarges the card */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow effect */
+  background-color: #e3f2fd; /* Light blue background on hover */
+}
+
+
+
 .habit-title {
-  font-size: clamp(10px, 1.2vw, 16px);
+  font-size: clamp(14px, 1.5vw, 18px);
   font-weight: bold;
   text-align: center;
   width: fit-content;
@@ -71,6 +88,11 @@
   white-space: normal; /* Allows multi-line text */
 }
 
+.habit-description {
+  font-size: 14px;
+  color: #555;
+  margin-top: 5px;
+}
 
 .grid-container {
   display: grid;

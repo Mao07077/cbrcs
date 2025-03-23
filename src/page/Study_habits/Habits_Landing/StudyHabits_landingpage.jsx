@@ -1,21 +1,23 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./studyhabits.css";
 import Header from "../../../Components/Header";
-import Icon from "../../../icon/actual.png"; // Adjust path as needed
+import Icon from "../../../icon/actual.png";
 
-const studyHabits = ["Study with Friends", "Time Management", "Asking For Help"];
+const studyHabits = [
+  { title: "Learn Together", description: "Group Call", path: "/learn_together" },
+  { title: "Scheduler", description: "Create your own schedule", path: "/Scheduler" },
+  { title: "Instructor Chat", description: "Seek guidance from teachers", path: "/chat" },
+];
 
 const top10StudyHabits = [
-  "Study with Friends",
-  "Asking for Help",
-  "Test Yourself Periodically",
-  "Create a Study Schedule",
-  "Time Management",
-  "Set Study Goals",
-  "Organizing Notes",
-  "Use of Technology",
-  "Use Flashcards",
-  "Review Schoolwork on Weekends",
+  { title: "Learn Together", description: "Group Call", path: "/learn_together" },
+  { title: "Instructor Chat", description: "Seek guidance from teachers", path: "/chat" },
+  { title: "Modules", description: "Regular self-assessment.", path: "/module" },
+  { title: "Scheduler", description: "Create your own schedule.", path: "/Scheduler" },
+  { title: "Notes Organizer", description: "Well-structured notes make revision easier.", path: "/notes" },
+  { title: "Listen to Music", description: "Listen to music while studying.", path: "/Music" },
+  { title: "Use Flashcards", description: "Great for memorizing key facts quickly.", path: "/Flashcard" },
 ];
 
 const StudyHabits = () => {
@@ -29,26 +31,27 @@ const StudyHabits = () => {
           <h3 className="subtitle">Your Top 3 Study Habits:</h3>
           <div className="top-habits">
             {studyHabits.map((habit, index) => (
-              <div key={index} className="habit-card">
-                <p className="habit-title">{habit}</p>
-              </div>
+              <Link to={habit.path} key={index} className="habit-card">
+                <p className="habit-title">{habit.title}</p>
+                <p className="habit-description">{habit.description}</p>
+              </Link>
             ))}
           </div>
-        </div>
 
-        <div className="section">
-          <h3 className="subtitle">Top 10 Study Habits</h3>
+          <h3 className="subtitle2">Explore More Study Techniques:</h3>
+
           <div className="grid-container">
             {top10StudyHabits.map((habit, index) => (
-              <div key={index} className="habit-card">
-                <p className="habit-title">{index + 1}. {habit}</p>
-              </div>
+              <Link to={habit.path} key={index} className="habit-card">
+                <p className="habit-title">{index + 1}. {habit.title}</p>
+                <p className="habit-description">{habit.description}</p>
+              </Link>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Footer is now outside of the container */}
+      {/* Footer */}
       <div className="footer">
         <img src={Icon} alt="CBRC Logo" />
         <p>&copy; 2024 Dr. Carl Balita Review Center. All Rights Reserved.</p>

@@ -125,7 +125,6 @@ body {
 }
 .ModuleDashboard {
   padding: 20px;
-  margin-top: 100px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -143,42 +142,13 @@ body {
   margin-left: 10px; 
 }
 
-.StudyHabitsSection {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.HabitsContainer {
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-  flex-wrap: wrap;
-}
-
-.HabitCard {
-  background: #d4ccf6;
-  padding: 20px 40px;
-  border-radius: 10px;
-  font-weight: bold;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  width: 25%;
-  text-align: center;
-  margin-top: 20px;
-  height: 100px;
-
-  display: flex; 
-  align-items: center;  
-  justify-content: center; 
-}
-
-
 .Module_Container h1 {
   border-top: 1px solid #333;
   border-bottom: 1px solid #333;
   padding: 15px 0;
   width: 100%;
   text-align: left;
-  font-size: 26px;
+  font-size: 30px;
   font-weight: bold;
   margin-bottom: 25px;
 }
