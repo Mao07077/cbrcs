@@ -17,7 +17,7 @@ const top10StudyHabits = [
   { title: "Scheduler", description: "Create your own schedule.", path: "/Scheduler" },
   { title: "Notes Organizer", description: "Well-structured notes make revision easier.", path: "/notes" },
   { title: "Listen to Music", description: "Listen to music while studying.", path: "/Music" },
-  { title: "Use Flashcards", description: "Great for memorizing key facts quickly.", path: "/Flashcard" },
+  { title: "Use Flashcards", description: "Great for memorizing key facts quickly.", path: "/Flashcard_landing" },
 ];
 
 const StudyHabits = () => {

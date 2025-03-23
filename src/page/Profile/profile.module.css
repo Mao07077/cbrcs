@@ -127,7 +127,7 @@ body {
    .profilePage {
     /* Centers the content and provides spacing around */
     max-width: 1200px;
-    width: 200%;
+    width: 100%;
     margin: 0 auto;
     padding: 20px;
     font-family: Arial, sans-serif;
@@ -142,7 +142,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 50px; /* space below header/sidebar */
+    margin-top: 20px; /* space below header/sidebar */
     margin-bottom: 50px;
     padding-bottom: 20px;
     border-bottom: 2px solid #333;
@@ -160,129 +160,189 @@ body {
     text-align: right;
     font-size: 0.9rem;
     color: #666;
+    padding-right: 15px;
   }
   .DateInfo p {
-    padding: 10px;
+    padding: 8px;
     margin: 0;
   }
   
-  /* -------------
-     Profile Icon
-     ------------- */
-     .IconContainer {
-      display: flex;
-      flex-direction:   column; 
-      padding-bottom: 10px;
-    }
     
+    /* -------------
+       Profile Icon
+       ------------- */
+    .IconContainer {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 10px;
+      align-items: center;
+    }
+      
     .IconContainer img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
+      width: 140px; /* Ensuring uniform size */
+      height: 140px;
       border-radius: 50%;
+      object-fit: cover;
       border: 2px solid #060606;
     }
-    .IconContainer img {
-      width: 140px; /* Adjust size as needed */
-      height: 150px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-    .Pair{
+    
+    .Pair {
       display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      border-bottom: 1px solid #333;
-
-    }
+      justify-content: center; /* Center items */
+      align-items: center;
+      padding-bottom: 15px;
+      gap: 40px; /* Reduce gap */
+      width: 50%; /* Restrict width */
+      margin: 0 auto; /* Center the entire pair */
+      margin-left: 300px;
+  }
+  
+    
     .editButton {
       margin-top: 10px;
-      padding: 5px 10px;
+      padding: 6px 12px;
       font-size: 14px;
       background-color: #007bff;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      transition: background 0.3s ease;
-      width: 100px;
-      margin-left: 15px;
+      transition: background 0.3s ease, transform 0.2s ease-in-out;
+      width: 110px;
+      margin-left: 0px;
     }
-    
+      
     .editButton:hover {
       background-color: #0056b3;
+      transform: scale(1.05);
     }
-  /* -------------
-     Personal Info Card
-     ------------- */
-  .Info{
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
     
-    padding-top:20px;
-  }
-  .InfoCard {
-    align-items: flex-start;
-    background-color: #fff;
-    border: 1px solid #121212;
-    height:250px;
-    border-radius: 8px;
-    padding: 20px 30px;
-    margin-bottom: 40px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 80%;
-    margin: 0 auto 40px; /* Center and spacing from bottom */
-  }
+    /* -------------
+       Personal Info Card
+       ------------- */
+    .Info {
+      display: flex;
+      justify-content: center; /* Center content horizontally */
+      align-items: center;
+      padding-top: 20px;
+      gap: 20px; /* Reduce space between profile and info card */
+    }
+    
+    .InfoCard {
+      align-items: flex-start;
+      background-color: #fff;
+      border: 1px solid #121212;
+      height: auto;
+      min-height: 250px;
+      border-radius: 8px;
+      padding: 20px 30px;
+      margin-bottom: 40px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%; /* Adjusted width to 50% */
+      margin: 0 auto; /* Center the info card */
+    }
+    
+    .InfoCard label {
+      margin-top: 8px;
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: #333;
+    }
   
-  .InfoCard label {
-    margin-top: 10px;
-    font-size: 1.4rem;
-    font-weight: 500;
-  }
+
+  
+ 
   
   /* -------------
      Study Habits
      ------------- */
-  .studyTitle {
-    text-align: center;
-    font-size: 1.3rem;
-    margin-bottom: 20px;
-  }
-  
-  .HabitsWrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 30px;
-    margin-bottom: 40px;
-  }
-  
-  .HabitCard {
-    background-color: #fff;
-    border: 1px solid #121212;
-    border-radius: 8px;
-    width: 300px;
-    height: 100px;
-    text-align: center;
-    padding: 30px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    gap: 20px;
-  }
-  
-  .HabitCard h4 {
-    margin: 0 0 10px;
-    font-size: 1.1rem;
-    color: #002f87;
-  }
-  .HabitCard p {
-    font-size: 0.9rem;
-    color: #555;
-    margin-left:60px;
-  }
+     .HabitsWrapper {
+      display: flex;
+      flex-direction: row; /* Aligns items horizontally */
+      justify-content: center; /* Centers them */
+      flex-wrap: wrap; /* Allows wrapping if space is limited */
+      gap: 20px; /* Space between cards */
+      width: 100%;
+    }
+        .StudyTitle {
+      display: flex;
+      justify-content: center;
+      font-size: 1.8rem;
+      width: 100%;
+      text-align: center;
+      border-top: 1px solid black;
+      border-bottom: 1px solid black;
+      padding: 10px;
+    }
+    
+       
+       
+    .StudyHabitsTitle {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .StudyHabitsGrid {
+      display: flex;
+      flex-direction: row; /* Ensures horizontal layout */
+      justify-content: center; /* Centers content */
+      flex-wrap: wrap; /* Prevents overflow */
+      gap: 20px; /* Spacing between habit cards */
+      width: 100%;
+      align-items: stretch; /* Ensures equal height */
+    }
+
+    
+    
+    .HabitCard {
+      flex: 1 1 220px; /* Allows flexibility */
+      max-width: 220px; /* Prevents stretching */
+      text-align: center;
+      background-color: #F8F9FA;
+      border: 1px solid #000;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center; /* Centers content */
+      font-size: 14px;
+      white-space: normal;
+      overflow-wrap: break-word;
+      text-decoration: none;
+      color: black;
+      margin: 0; /* Ensures no extra margins */
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    
+    .HabitCard:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      background-color: #e3f2fd;
+    }
+    
+    .HabitTitle {
+      font-size: clamp(14px, 1.5vw, 18px);
+      font-weight: bold;
+      text-align: center;
+      width: fit-content;
+      max-width: 100%;
+      overflow-wrap: break-word;
+      white-space: normal;
+      color: rgb(17, 16, 17);
+    }
+    
+    .HabitDescription {
+      font-size: 14px;
+      color: #555;
+      margin-top: 5px;
+    }
+    
   
   /* -------------
      Chart Section
@@ -290,14 +350,19 @@ body {
   .chartSection {
     text-align: center;
     margin-bottom: 60px;
+    width: 100%;
   }
   .chartSection h3 {
-    font-size: 1.3rem;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    font-size: 1.5rem;
     margin-bottom: 20px;
+    margin-top: 50px;
+    padding: 10px;
   }
   .chartSection img {
     max-width: 600px;
-    width: 100%;
+    width: 60%;
     height: auto;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -348,8 +413,5 @@ body {
     align-items: flex-start;
     gap: 10px;
   }
-  .HabitsWrapper {
-    flex-direction: column;
-    align-items: center;
-  }
+ 
   

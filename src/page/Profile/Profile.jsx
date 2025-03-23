@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Styles from './profile.module.css';
 import nameIcon from '../../icon/name.png';
 import Icon from '../../icon/actual.png';
@@ -189,52 +190,52 @@ const Profile = () => {
 
       {/* Profile Icon with Upload */}
       <div className={Styles.Pair}>
-      <div className={Styles.IconContainer}>
-        <img src={profileImage} alt="Profile Icon" />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          style={{ display: 'none' }}
-          id="profileImageUpload"
-        />
-        <button
-          className={Styles.editButton}
-          onClick={() => document.getElementById('profileImageUpload').click()}
-        >
-          Edit
-        </button>
-      </div>
-      <div className={Styles.DateInfo}>
-          <p>Date Started and End Date</p>
-          <p>09/20/2004 - 03/12/2025</p>
-        </div>
-      </div>
-      {/* Personal Info */}
-      <div className={Styles.Info}>
-      <div className={Styles.InfoCard}>
-        <label>Name: {profile?.firstname} {profile?.lastname}</label>
-        <label>Age: {profile?.age || "N/A"}</label>
-        <label>Id Number: {profile?.id_number}</label>
-        <label>Program: {profile?.program}</label>
-      </div>
-      </div>
-      {/* Study Habits */}
-      <h3 className={Styles.studyTitle}>Your Top 3 Study Habits:</h3>
+  <div className={Styles.IconContainer}>
+    <img src={profileImage} alt="Profile Icon" />
+    <input
+      type="file"
+      accept="image/*"
+      onChange={handleImageChange}
+      style={{ display: 'none' }}
+      id="profileImageUpload"
+    />
+    <button
+      className={Styles.editButton}
+      onClick={() => document.getElementById('profileImageUpload').click()}
+    >
+      Edit
+    </button>
+  </div>
+
+  <div className={Styles.InfoCard}>
+    <label>Name: {profile?.firstname} {profile?.lastname}</label>
+    <label>Age: {profile?.age || "N/A"}</label>
+    <label>Id Number: {profile?.id_number}</label>
+    <label>Program: {profile?.program}</label>
+    <div className={Styles.DateInfo}>
+      <p>Date Started and End Date</p>
+      <p>09/20/2004 - 03/12/2025</p>
+    </div>
+  </div>
+</div>
+
       <div className={Styles.HabitsWrapper}>
-        <div className={Styles.HabitCard}>
-          <h4>Study With Friends</h4>
-          <p>Description Here</p>
-        </div>
-        <div className={Styles.HabitCard}>
-          <h4>Listen To Music</h4>
-          <p>Description Here</p>
-        </div>
-        <div className={Styles.HabitCard}>
-          <h4>Asking For Help</h4>
-          <p>Description Here</p>
-        </div>
-      </div>
+  <h3 className={Styles.StudyTitle}>Your Top 3 Study Habits</h3>
+  <div className={Styles.HabitCard} onClick={() => handleNavigation('/group-call')}>
+    <h4 className={Styles.HabitTitle}>Learn Together</h4>
+    <p className={Styles.HabitDescription}>Group Call</p>
+  </div>
+  <div className={Styles.HabitCard} onClick={() => handleNavigation('/scheduler')}>
+    <h4 className={Styles.HabitTitle}>Scheduler</h4>
+    <p className={Styles.HabitDescription}>Create your own schedule</p>
+  </div>
+  <div className={Styles.HabitCard} onClick={() => handleNavigation('/instructor-chat')}>
+    <h4 className={Styles.HabitTitle}>Instructor Chat</h4>
+    <p className={Styles.HabitDescription}>Seek guidance from teachers</p>
+  </div>
+</div>
+
+
 
       {/* Daily Activity Bar Chart */}
       <div className={Styles.chartSection}>
