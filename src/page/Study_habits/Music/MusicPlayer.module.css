@@ -1,115 +1,161 @@
+/* Page Layout */
 .page_container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-        padding: 20px;
-    width: 100%;
-    margin-top: 30px;
-  }
-  
-  .music_player_container {
-    background: white;
-    padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    width: 200%;
-    max-width: 1200px;
-    text-align: center;
-    position: relative;
-  }
-  
-  .header {
-    font-size: 32px;
-    font-weight: bold;
-    text-align: center;
-    color: #003366;
-    margin-bottom: 20px;
-  }
-  
-  .albumArt img {
-    width: 150px;
-    height: 150px;
-    border-radius: 12px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .genreSelector button {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    margin: 5px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 18px;
-    transition: background 0.3s ease;
-  }
-  
-  .genreSelector button:hover {
-    background: #0056b3;
-  }
-  
-  .songList {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    margin-top: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 80%;
-    margin-left: 50px; ;
-  }
-  
-  .songList div {
-    padding: 14px;
-    cursor: pointer;
-    border-bottom: 1px solid #ddd;
-    font-size: 18px;
-    transition: color 0.3s ease, background 0.3s ease;
-    border-radius: 6px;
-  }
-  
-  .songList div:hover {
-    background: #f0f0f0;
-  }
-  
-  .songList div:last-child {
-    border-bottom: none;
-  }
-  
-  .activeSong {
-    font-weight: bold;
-    color: #007bff;
-    text-decoration: underline;
-  }
-  
-  .controls {
-    margin-top: 25px;
-  }
-  
-  .controls button {
-    background: #28a745;
-    color: white;
-    border: none;
-    padding: 14px 24px;
-    margin: 8px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 18px;
-    transition: background 0.3s ease;
-  }
-  
-  .controls button:hover {
-    background: #218838;
-  }
-  
-  .nowPlaying {
-    margin-top: 20px;
-    font-size: 22px;
-    font-weight: bold;
-    color: #333;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 210%;
+  background: linear-gradient(to bottom, #0f172a, #1e40af); /* Dark modern gradient */
+  margin-left: -55%;
+}
+
+/* Music Player Container */
+.music_player_container {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  width: 600px;
+  text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header */
+.header {
+  font-size: 28px;
+  font-weight: bold;
+  color: #1e3a8a;
+  margin-bottom: 20px;
+}
+
+/* Album Art */
+.albumArt img {
+  width: 220px;
+  height: 220px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.albumArt img:hover {
+  transform: scale(1.05);
+}
+
+/* Genre Selector */
+.genreSelector {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.genreSelector button {
+  background: #1e3a8a;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.genreSelector button:hover {
+  background: #3b82f6;
+  transform: scale(1.1);
+}
+
+/* Song List */
+.songList {
+  background: #f1f5f9;
+  padding: 15px;
+  border-radius: 12px;
+  width: 100%;
+  max-height: 200px; /* More scrollable space */
+  overflow-y: auto;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.songList div {
+  padding: 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #ccc;
+  font-size: 18px;
+  transition: background 0.3s ease, color 0.3s ease;
+  border-radius: 6px;
+}
+
+.songList div:hover {
+  background: #e2e8f0;
+  color: #1e40af;
+  font-weight: bold;
+}
+
+.songList div:last-child {
+  border-bottom: none;
+}
+
+/* Active Song */
+.activeSong {
+  font-weight: bold;
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+/* Progress Bar */
+.progressBarContainer {
+  width: 100%;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  margin-top: 15px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.progressBar {
+  width: 0%;
+  height: 100%;
+  background: #1e3a8a;
+  transition: width 0.3s ease;
+}
+
+/* Controls */
+.controls {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.controls button {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 16px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.controls button:hover {
+  background: #059669;
+  transform: scale(1.1);
+}
+
+/* Now Playing */
+.nowPlaying {
+  margin-top: 15px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  letter-spacing: 0.5px;
+}
