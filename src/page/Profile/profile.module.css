@@ -407,7 +407,17 @@ body {
           "Content Content"
           "Menu Menu";
       }
+      .Pair {
+        display: flex;
+        justify-content: center; 
+        align-items: center;
+        padding-bottom: 15px;
+        gap: 40px; 
+        width: 100%;
+        margin: 0 auto;
+        
   }
+}
   .topSection {
     flex-direction: column;
     align-items: flex-start;
