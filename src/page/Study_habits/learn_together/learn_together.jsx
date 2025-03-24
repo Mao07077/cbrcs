@@ -2,9 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./learn_together.module.css";
 import Header from "../../../Components/Header";
 import Icon from '../../../icon/actual.png';
+import CallIcon from '../../../icon/Call.png';
+import EndcallIcon from '../../../icon/Endcall.png';
+import MuteIcon from '../../../icon/Mutemic.png';
+import SharescreenIcon from '../../../icon/Sharescreen.png';
+import OffcamIcon from '../../../icon/Offcam.png';
+import OpencamIcon from '../../../icon/Opencam.png';
+import MicIcon from "../../../icon/Mic.png"; // Properly imported the new Mic icon
 
 const WebRTCComponent = () => {
-    // Pre-fill sample participants for testing
     const [students, setStudents] = useState([
         { id: "1", name: "Alice Johnson" },
         { id: "2", name: "Bob Smith" },
@@ -31,7 +37,7 @@ const WebRTCComponent = () => {
         socket.onmessage = (event) => {
             const data = JSON.parse(event.data);
             if (data.type === "active_students") {
-                setStudents(data.students); // Replace sample names with real ones when data arrives
+                setStudents(data.students);
             } else if (data.type === "chat") {
                 setChatMessages(prevMessages => [...prevMessages, data.message]);
             }
@@ -42,11 +48,17 @@ const WebRTCComponent = () => {
     }, []);
 
     const startCall = async (targetStudentId) => {
+        console.log("Starting Call...");
         try {
             const pc = new RTCPeerConnection();
             setPeerConnection(pc);
 
             const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            if (!mediaStream) {
+                console.log("Failed to get media stream");
+                return;
+            }
+
             videoRef.current.srcObject = mediaStream;
             setStream(mediaStream);
             
@@ -56,6 +68,7 @@ const WebRTCComponent = () => {
             await pc.setLocalDescription(offer);
             
             ws.send(JSON.stringify({ type: "offer", target: targetStudentId, offer }));
+            console.log("Call Started");
         } catch (error) {
             console.error("Error starting call:", error);
         }
@@ -77,25 +90,46 @@ const WebRTCComponent = () => {
     };
 
     const endCall = () => {
-        if (stream) {
+        console.log("End Call Clicked");
+        if (stream && stream.getTracks) {
             stream.getTracks().forEach(track => track.stop());
+            setStream(null);
         }
-        videoRef.current.srcObject = null;
-        setStream(null);
+        if (videoRef.current) {
+            videoRef.current.srcObject = null;
+        }
     };
 
     const toggleMute = () => {
-        if (stream) {
-            stream.getAudioTracks().forEach(track => (track.enabled = !track.enabled));
-            setIsMuted(!isMuted);
+        console.log("Mute Button Clicked");
+        if (!stream) {
+            console.log("No active stream");
+            return;
         }
+        const audioTracks = stream.getAudioTracks();
+        if (audioTracks.length === 0) {
+            console.log("No audio tracks found");
+            return;
+        }
+        audioTracks.forEach(track => track.enabled = !track.enabled);
+        setIsMuted(!isMuted);
+        console.log("Mic Toggled:", !isMuted);
     };
 
     const toggleCamera = () => {
-        if (stream) {
-            stream.getVideoTracks().forEach(track => (track.enabled = !track.enabled));
-            setIsCameraOff(!isCameraOff);
+        console.log("Camera Button Clicked");
+        if (!stream) {
+            console.log("No active stream");
+            return;
         }
+        const videoTracks = stream.getVideoTracks();
+        if (videoTracks.length === 0) {
+            console.log("No video tracks found");
+            return;
+        }
+        videoTracks.forEach(track => track.enabled = !track.enabled);
+        setIsCameraOff(!isCameraOff);
+        console.log("Camera Toggled:", !isCameraOff);
     };
 
     return (
@@ -112,15 +146,22 @@ const WebRTCComponent = () => {
                     <video ref={videoRef} autoPlay playsInline className={styles.mainVideo}></video>
                 </div>
                 
+                {/* Controls */}
                 <div className={styles.controls}>
-                    <button onClick={shareScreen} className={styles.actionButton}>Share Screen</button>
-                    <button onClick={() => startCall(students[0]?.id)} className={styles.actionButton}>Start a Call</button>
-                    <button onClick={endCall} className={styles.endButton}>End Call</button>
-                    <button onClick={toggleMute} className={styles.actionButton}>
-                        {isMuted ? "Unmute" : "Mute"} Audio
+                    <button className={styles.callButton} onClick={() => startCall("some_student_id")}>
+                        <img src={CallIcon} alt="Call" />
                     </button>
-                    <button onClick={toggleCamera} className={styles.actionButton}>
-                        {isCameraOff ? "Turn On Camera" : "Turn Off Camera"}
+                    <button className={styles.endButton} onClick={endCall}>
+                        <img src={EndcallIcon} alt="End Call" />
+                    </button>
+                    <button className={styles.micButton} onClick={toggleMute}>
+                        <img src={isMuted ? MicIcon : MuteIcon} alt="Mute Mic" />
+                    </button>
+                    <button className={styles.screenButton} onClick={shareScreen}>
+                        <img src={SharescreenIcon} alt="Share Screen" />
+                    </button>
+                    <button className={styles.camButton} onClick={toggleCamera}>
+                        <img src={isCameraOff ? OffcamIcon : OpencamIcon} alt="Toggle Camera" />
                     </button>
                 </div>
             </div>

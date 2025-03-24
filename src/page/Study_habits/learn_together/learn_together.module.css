@@ -1,23 +1,21 @@
 /* General Container */
 .container {
     display: flex;
-    height: 100vh;
+    height: 80vh;
     background-color: #231092; 
     color: black;
     margin-top: 100px;
-    height: 80vh;
 }
 
 /* Main Content */
 .mainContent {
-    flex: 4; /* Increased width */
+    flex: 4; 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 20px;
-    margin-top: 10px; /* Adjusted margin */
-    height: 80vh; /* Adjusted height */
+    margin-top: 10px;
 }
 
 /* Main Video Section */
@@ -27,13 +25,11 @@
     height: 400px;
     background: white;
     border-radius: 10px;
-    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    margin-top: 10px;
-    border: 2px solid #d1d1d1; /* Light gray border */
+    border: 2px solid #d1d1d1;
 }
 
 .mainVideo {
@@ -44,56 +40,64 @@
 
 /* Controls */
 .controls {
-    margin-top: 20px;
+    margin-top: 15px;
     display: flex;
-    gap: 15px;
+    gap: 10px;
     flex-wrap: wrap;
     justify-content: center;
 }
 
-.actionButton, .endButton {
-    padding: 10px 15px;
-    font-size: 16px;
+/* Buttons */
+.controls button {
+    width: 45px; /* Reduced size */
+    height: 45px; /* Reduced size */
+    background-color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
     transition: 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.actionButton {
-    background-color: #007bff;
-    color: white;
+/* Button Images (Icons) */
+.controls button img {
+    width: 20px; /* Reduced size */
+    height: 20px; /* Reduced size */
+    object-fit: contain;
 }
 
-.actionButton:hover {
-    background-color: #0056b3;
+/* Button Hover Effect */
+.controls button:hover {
+    background-color: #f0f0f0;
 }
 
-/* End Button */
-.endButton {
-    background-color: #ff4d4d; /* Light red */
-    color: white;
+/* End Call Button */
+.end-call-btn {
+    background-color: #ff4d4d;
 }
 
-.endButton:hover {
+.end-call-btn:hover {
     background-color: #cc0000;
 }
-
 /* Sidebar */
 .sidebar {
     flex: 1.5;
-    background: #e0e0e0; /* Light gray */
+    background: #e0e0e0;
     padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-/* Chat Box */
+/* Chat Section */
 .chatSection {
     margin-top: 20px;
 }
 
+/* Chat Box */
 .chatBox {
     background: white;
     padding: 15px;
@@ -123,10 +127,14 @@
     outline: none;
     border-color: #007bff;
 }
+
+/* Logo */
 .logo {
-    width: 150px;  /* Adjust width */
-    height: 60px;  /* Adjust height */
+    width: 120px;  
+    height: 50px;  
 }
+
+/* Participants */
 .participantList {
     list-style: none;
     padding: 0;
@@ -143,6 +151,7 @@
     margin-bottom: 5px;
 }
 
+/* Invite Button */
 .inviteButton {
     background-color: #007bff;
     color: white;
@@ -156,6 +165,7 @@
     background-color: #0056b3;
 }
 
+/* No Participants */
 .noParticipants {
     font-style: italic;
     color: gray;
