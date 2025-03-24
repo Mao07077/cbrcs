@@ -11,15 +11,43 @@ box-sizing: border-box;
   display: grid;
   grid-template-areas:
     "Header Header"
-    "Menu Content";
-  grid-template-columns: 0.1fr 1fr;
+    "Menu Content"
+    "Footer Footer";
+  grid-template-columns: 0.1fr 1fr ;
   height: auto;
   width: 100vw;
-  position: relative;
   
 }
 .Maincontainer > div {
   padding: 10px;
+}
+.Footer {
+  background-color: #002f87;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  font-weight: bold;
+  width: 100%;
+  height: auto;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+
+.Footer img {
+  width: 100px;
+  height: auto;
+}
+
+.Footer p {
+  margin: 0;
+  font-size: 14px;
+  text-align: center;
+  white-space: nowrap;
 }
 .Header {
   grid-area: Header;
@@ -36,6 +64,7 @@ box-sizing: border-box;
   color: rgb(5, 5, 5);
   top: 0;
   left: 0;
+  border-right: 2px solid #333;
   
 }
 .Menu ul {
@@ -43,8 +72,8 @@ box-sizing: border-box;
   flex-direction: column;
   justify-content:  flex-start;
   flex: 1;
-  gap: 8%;
-  margin-top: 80px;
+  gap: 2%;
+  margin-top: 40px;
 }
 .Menu ul li {
   display: flex;
@@ -64,10 +93,15 @@ box-sizing: border-box;
     justify-content: center;
     padding: 10px;
     margin-top: 50px;
+    margin-bottom: 50px;
     gap: 100px;
     
   }
-  
+  .Create_Module{
+    margin-top: 0;
+    display: flex;
+    justify-content: center;
+  }
   .Sidebar_Item{
     display: flex;
     flex-direction: row;
@@ -114,13 +148,13 @@ box-sizing: border-box;
   grid-area: Content;
 }
 .AnnouncementBox {
+  align-items: center;
   background: #f6f7f9;
   border-radius: 12px;
   padding: 15px;
   width: 100%;
   max-width: 500px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-left: 400px;
   word-wrap: break-word;
   overflow-wrap: break-word;
   white-space: normal;
@@ -209,7 +243,7 @@ box-sizing: border-box;
   margin: 10px 10px;
   margin-left: 10px;
   font-size: 1.2em;
-  border-left: 2px solid #333;
+  
 }
 
 .Stat_Card {
@@ -334,11 +368,7 @@ box-sizing: border-box;
   font-size: 0.9em;
   color: #555;
 }
-.Create_Module{
-  margin-top: 0;
-  display: flex;
-  justify-items: center;
-}
+
 .Modal {
   position: absolute;
   top: 50%;
@@ -361,44 +391,17 @@ box-sizing: border-box;
   font-size: 1.5em;
   margin-left: 10px;
 }
-.InstructorFooter {
-  background-color: #002f87;
-  color: white;
-  text-align: center;
-  padding: 15px;
-  font-size: 14px;
-  font-weight: bold;
-  width: 100%;
-  height: auto;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
 
-
-.InstructorFooter img {
-  width: 100px;
-  height: auto;
-}
-
-.InstructorFooter p {
-  margin: 0;
-  font-size: 14px;
-  text-align: center;
-  white-space: nowrap;
-}
 
 @media(max-width: 1000px) {
+
 .Menu ul{
   display: flex;
   flex-direction: row;
   height: 5px;
   justify-content: center;
   padding-bottom: 50px;
+  gap:1px;
 }
 .Menu ul li {
   display: flex;
@@ -407,6 +410,123 @@ box-sizing: border-box;
   margin-top: 10px;
   margin-bottom: 10px;
   
+}
+.Menu img {
+  margin: 0 auto;
+  width: 20px;
+  height: 20px;
+}
+.Menu span{
+  font-size: 10px;
+  }
+.Maincontainer{
+  display: grid;
+  grid-template-areas:
+    "Header Header"
+    "Content Content"
+    "Menu Menu";
+   
+}
+.Create_Module{
+  margin-top: 0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+.AnnouncementBox {
+  align-items: center;
+  background: #f6f7f9;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 350px;
+  margin-right: 50px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.Statistics_Container {
+  display: flex;
+  justify-content: center;
+  padding: 8px;
+  margin-top: 80px;
+  margin-bottom: 50px;
+  gap: 1px;
+  
+}
+.Stat_Card {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  height: 160px;
+  margin: 5px;
+  margin-right: 60px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #002f87;
+
+}
+.Stat_Card h1 {
+  font-size: 0.8em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.Stat_Card h2 {
+  margin-top: 30px;
+  font-size: 1.8em;
+}
+.Content{
+  border-left: 0px;
+  border-bottom: 2px solid #333;
+}
+.Content_Container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 30px;
+}
+.Student_Attendance {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1000px;
+  height: 96%;
+  margin-left: 30px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid #002f87;
+  margin-top: 23px;
+}
+}
+@media(max-width: 600px) {
+.Menu{
+  position: sticky;
+  
+}
+.Menu ul{
+  display: flex;
+  flex-direction: row;
+  height: 5px;
+  justify-content: center;
+  gap: -1px;
+  margin-top: 10px;
+}
+.Menu ul li {
+  display: flex;
+  flex-direction: row;
+  height: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  gap: -1px;
 }
 .Menu img {
   margin: 0 auto;
@@ -427,72 +547,38 @@ box-sizing: border-box;
 .Statistics_Container {
   display: flex;
   justify-content: center;
+  padding: 8px;
+  margin-top: 40px;
+  
+}
+.Create_Module{
+  margin-top: 0;
+  display: flex;
+  justify-content: center;
+}
+.Student_Attendance {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 600px;
+  height: 96%;
+  margin-left: 30px;
   padding: 10px;
-  margin-top: 100px;
-  gap: 10px;
-  
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid #002f87;
+  margin-top: 23px;
 }
 .Stat_Card h1 {
-  font-size: 0.8em;
+  font-size: 0.7em;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .Stat_Card h2 {
   margin-top: 30px;
-  font-size: 2.8em;
-}
-.Content{
-  border-left: 0px;
-  border-bottom: 2px solid #333;
-}
-}
-@media(max-width: 600px) {
-.Menu{
-  position: sticky;
-
-}
-.Menu ul{
-  display: flex;
-  flex-direction: row;
-  height: 5px;
-  justify-content: center;
-  gap: 5%;
-  margin-top: 10px;
-}
-.Menu ul li {
-  display: flex;
-  flex-direction: row;
-  height: 5px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  
-}
-.Menu img {
-  margin: 0 auto;
-  width: 20px;
-  height: 20px;
-}
-.Menu span{
-  font-size: 10px;
-  }
-.Maincontainer{
-  display: grid;
-  grid-template-areas:
-    "Header Header"
-    "Content Content"
-    "Menu Menu";
-   
-}
-.Stat_Card h1 {
-  font-size: 0.8em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.Stat_Card h2 {
-  margin-top: 30px;
-  font-size: 2.8em;
+  font-size: 1.8em;
 }
 .Graph {
   display: flex;
@@ -516,6 +602,15 @@ box-sizing: border-box;
   height: 500px;
   
 }
+.Sidebar_Item{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  background-color: #f5f5f5;
+  color: black;
+  font-family: Arial;
+  }
 }
 .Modules_List{
   display: flex;

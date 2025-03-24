@@ -75,11 +75,12 @@ const InstructorDashboard = () => {
           </div>
         </div>
       </div>
+      
 
       <nav className={Styles.Menu}> 
         <ul>
           <SidebarItem icon={Dashboard} text="Dashboard" onClick={() => handleNavigation('Instructor_Dashboard')} />
-          <SidebarItem icon={MailIcon} text="Message" onClick={() => handleNavigation('mail')} />
+          <SidebarItem icon={MailIcon} text="Message" onClick={() => handleNavigation('Message')} />
           <SidebarItem icon={StudentsIcon} text="StudentList" onClick={() => handleNavigation('studentlist')} />
           <SidebarItem icon={StudentsIcon} text="Module" onClick={() => handleNavigation('ModuleList')} />
         </ul>
@@ -150,12 +151,16 @@ const InstructorDashboard = () => {
             )}
           </div>
         </div>
+      
       </div>
-
-      <footer className={Styles.InstructorFooter}>
+{/* dalawang footer for sidebar at content */}
+  <footer className={Styles.Footer}>
+  </footer>
+  <footer className={Styles.Footer}>
         <img src={Icon} alt="CBRC Logo" />
         <p>&copy; 2024 Dr. Carl Balita Review Center. All Rights Reserved.</p>
-      </footer>
+  </footer>
+  
     </div>
   );
 };
