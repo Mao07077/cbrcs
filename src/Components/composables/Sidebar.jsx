@@ -1,5 +1,5 @@
 import Styles from './Sidebar.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 /**
  * Sidebar component.
  * @param {Object} props - Component props.
@@ -12,13 +12,22 @@ import { Link } from 'react-router-dom';
  */
 
 export default function Sidebar({ routes }) {
+	const navigate = useNavigate();
+
+	function go(url) {
+		navigate(url);
+	}
 	return (
 		<nav className={Styles.nav}>
 			<ul className={Styles.ul}>
 				<h3>Navigation</h3>
 				<hr size="100px"></hr>
 				{routes.map((route, index) => (
-					<li key={index} className={Styles.li}>
+					<li
+						key={index}
+						className={Styles.li}
+						onClick={() => navigate(route.routePath)}
+					>
 						{route.routeIcon && (
 							<span className={Styles.icon}>{route.routeIcon}</span>
 						)}

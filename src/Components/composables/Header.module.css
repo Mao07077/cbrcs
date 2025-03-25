@@ -8,3 +8,7 @@
 	width: auto;
 	max-width: 180px;
 }
+
+.Header > img:hover {
+	cursor: pointer;
+}
