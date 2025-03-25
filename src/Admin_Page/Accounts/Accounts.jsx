@@ -21,11 +21,6 @@ const SidebarItem = ({ icon, text, onClick }) => (
 );
 
 function Accounts() {
-	const handleNavigation = (route) => {
-		console.log(`Navigating to: ${route}`);
-
-		window.location.href = `/${route}`;
-	};
 	const [searchQuery, setSearchQuery] = useState('');
 	const [roleFilter, setRoleFilter] = useState('');
 	const [accounts, setAccounts] = useState([]);
@@ -92,7 +87,6 @@ function Accounts() {
 	return (
 		<div className={Styles.Maincontainer}>
 			<Header></Header>
-
 			<div className={Styles.Content_Wrapper}>
 				<Admin_Sidebar></Admin_Sidebar>
 				<div className={Styles.Content}>

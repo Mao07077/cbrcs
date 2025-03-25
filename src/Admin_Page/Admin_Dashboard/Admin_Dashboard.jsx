@@ -49,9 +49,7 @@ const AdminDashboard = () => {
 	return (
 		// header
 		<div className={Styles.Maincontainer}>
-			<div className={Styles.Header}>
-				<Header></Header>
-			</div>
+			<Header></Header>
 			{/* wrapper */}
 			<div className={Styles.Content_Wrapper}>
 				{/* sidebar */}
