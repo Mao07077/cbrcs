@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
 import Styles from './Admin_Dashboard.module.css';
-import Dashboard from '../../icon/dashboard.png';
-import Icon from '../../icon/actual.png';
-import Accounts from '../../icon/name.png';
-import Report from '../../icon/Reports.png';
-import AdminPost from '../../icon/Upload.png';
-import Request from '../../icon/request.png';
-import { HomeIcon, SquarePen, UserIcon, Flag } from 'lucide-react';
-import Sidebar from '../../Components/composables/Sidebar';
 import Admin_Sidebar from '../../Components/Admin_Sidebar';
 import Footer from '../../Components/composables/Footer';
+import Header from '../../Components/composables/Header';
 
 const AdminDashboard = () => {
 	const [fileName, setFileName] = useState('No file chosen');
@@ -58,11 +50,7 @@ const AdminDashboard = () => {
 		// header
 		<div className={Styles.Maincontainer}>
 			<div className={Styles.Header}>
-				<div className="header-content">
-					<div className="header-logo">
-						<img src={Icon} alt="logo" />
-					</div>
-				</div>
+				<Header></Header>
 			</div>
 			{/* wrapper */}
 			<div className={Styles.Content_Wrapper}>

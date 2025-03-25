@@ -1,6 +1,12 @@
 //
 import Styles from './Footer.module.css';
 import Icon from '../../icon/actual.png';
+
+/**
+ * Footer component.
+ * @returns {JSX.Element} The Footer component.
+ * @description This is a resuable footer  import this to any parent component to apply the footer */
+
 export default function Footer() {
 	return (
 		<footer className={Styles.footer}>

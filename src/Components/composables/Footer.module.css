@@ -28,3 +28,8 @@
 	color: rgb(255, 255, 252);
 	font-size: 0.8rem;
 }
+.Logo_Wrapper > img {
+	height: 50px;
+	width: auto;
+	max-width: 180px;
+}

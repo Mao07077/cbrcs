@@ -1,0 +1,9 @@
+.Header {
+	background-color: #002f87;
+}
+
+.Header > img {
+	height: 50px;
+	width: auto;
+	max-width: 180px;
+}

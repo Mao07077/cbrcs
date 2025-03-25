@@ -164,7 +164,7 @@ body {
 	.Maincontainer {
 		display: grid;
 		grid-template-areas:
-			'Header Header'
+			'logo Header'
 			'Content Content'
 			'Menu Menu';
 	}
