@@ -1,327 +1,310 @@
-*{
-    margin: 0;
-    padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
-  }
-  body {
-   
-    font-family: Consolas, sans-serif;
-    box-sizing: border-box;
-  }
-  .Maincontainer {
-    display: grid;
-    grid-template-areas:
-      "Header Header"
-      "Menu Content";
-    grid-template-columns: 0.1fr 1fr;
-    height: auto;
-    width: 100vw;
-    
-  }
-  .Maincontainer > div {
-    padding: 10px;
-  }
-  .Maincontainer > div.Content {
-    display: flex;
-    justify-content: flex-start ;
-    height: auto;
-    grid-area: Content;
-  }
-  .Header {
-    grid-area: Header;
-    background-color: #002f87;
-    display: flex;
-  }
-  .Greeting_Dashboard{
-    display: flex;
-    justify-content: flex-start;
-    padding:15px;
-    border-bottom: 4px solid #333;
-   
-  }
-  .Menu {
-    grid-area: Menu;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-items: flex-start;
-    width: 100%;
-    color: black;
-    top: 0;
-    left: 0;
-    
-  }
-  .Menu ul {
-    display: flex;
-    flex-direction: column;
-    justify-content:  flex-start;
-    flex: 1;
-    gap: 8%;
-    margin-top: 80px;
-  }
-  .Menu ul li {
-    display: flex;
-    justify-content: flex-start;
-    text-align: center;
-    margin-left: 10px;
-    padding: 5px 10px;
-    font-size: 24px;
-    cursor: pointer;
-    outline: none;
-    color: #000;
-    background: #f4f4f4;
-    border: none;
-    }
-
-    .Menu ul li a {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-decoration: none;
-        color: black;
-        font-size: 50%;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-      }
-      .Menu span{
-        font-size: 15px;
-        }
-        
-        .Menu img {
-          margin: 0 auto;
-          width: 50px;
-          height: 40px;
-        }
-        .Sidebar_Icon{
-          margin: 0 auto;
-          width: 50px;
-          height: 40px;
-          display:flex;
-          justify-content: center;
-        }
- .Sidebar_Item{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    align-self: center;
-    gap: 10px;
+* {
+	margin: 0;
+	padding: 0;
+	font-family: Arial, Helvetica, sans-serif;
 }
-.Content{
-    padding: 10px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    font-size: 25px;
-    font-style: initial;
-    margin: 10px 10px;
-    margin-left: 10px;
-    font-size: 1.2em;
-    border-left: 2px solid #333;
-   
-    
-  }
-  .Statistics_Container {
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-    margin-top: 100px;
-    gap: 100px;
-    
-  }
-  .Stat_Card {
-    display: flex;
-    flex-direction: column;
-    width: 300px;
-    height: 180px;
-    margin: 10px;
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: 2px solid #002f87;
-  
-  }
-  
-  .Stat_Card h1 {
-    font-size: 1.3em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .Stat_Card h2 {
-    margin-top: 30px;
-    font-size: 1.5em;
-  }
-  .List_Students {
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-    margin-top: 100px;
-    gap: 100px;
-  }
-  .Student {
-    display: flex;
-    flex-direction: column;
-    width: 500px;
-    height: 380px;
-    margin: 10px;
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: 2px solid #002f87;
-  }
-  .Student h2{
-    display: flex;
-    justify-content: flex-start;
-    font-size: 1em;
-    border-bottom: 1px solid #333;
-  }
-  .Instructor {
-    display: flex;
-    flex-direction: column;
-    width: 500px;
-    height: 380px;
-    margin: 10px;
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: 2px solid #002f87;
-  }
-  .Instructor h2{
-    font-size: 1em;
-    border-bottom: 1px solid #333;
-  }
+body {
+	font-family: Consolas, sans-serif;
+	box-sizing: border-box;
+}
+.Maincontainer {
+	display: grid;
+	grid-template-areas:
+		'Header Header'
+		'Menu Content';
+	grid-template-columns: 0.1fr 1fr;
+	height: auto;
+	width: 100vw;
+}
+.Maincontainer > div {
+	padding: 10px;
+}
+.Maincontainer > div.Content {
+	display: flex;
+	justify-content: flex-start;
+	height: auto;
+	grid-area: Content;
+}
+.Header {
+	grid-area: Header;
+	background-color: #002f87;
+	display: flex;
+}
+.Greeting_Dashboard {
+	display: flex;
+	justify-content: flex-start;
+	padding: 15px;
+	border-bottom: 4px solid #333;
+}
+.Menu {
+	grid-area: Menu;
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-items: flex-start;
+	width: 100%;
+	color: black;
+	top: 0;
+	left: 0;
+}
+.Menu ul {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	flex: 1;
+	gap: 8%;
+	margin-top: 80px;
+}
+.Menu ul li {
+	display: flex;
+	justify-content: flex-start;
+	text-align: center;
+	margin-left: 10px;
+	padding: 5px 10px;
+	font-size: 24px;
+	cursor: pointer;
+	outline: none;
+	color: #000;
+	background: #f4f4f4;
+	border: none;
+}
 
+.Menu ul li a {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
+	color: black;
+	font-size: 50%;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+}
+.Menu span {
+	font-size: 15px;
+}
 
-  @media(max-width: 1000px) {
-  
-    .Menu ul{
-      display: flex;
-      flex-direction: row;
-      height: 5px;
-      justify-content: center;
-      padding-bottom: 50px;
-      margin-top: 10px;
-    }
-    .Menu ul li {
-      display: flex;
-      flex-direction: row;
-      height: 5px;
-      margin-top: 10px;
-      margin-bottom: 10px;
-      
-    }
-    .Menu img {
-      margin: 0 auto;
-      width: 20px;
-      height: 20px;
-    }
-    .Menu span{
-      font-size: 10px;
-      }
-    .Maincontainer{
-      display: grid;
-      grid-template-areas:
-        "Header Header"
-        "Content Content"
-        "Menu Menu";
-    }
-    .List_Students {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 10px;
-      margin-top: 100px;
-      gap: 10px;
-      
-    }
-    .Statistics_Container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 10px;
-      margin-top: 100px;
-      gap: 10px;
-      
-    }
-    .Stat_Card h1 {
-      font-size: 0.8em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .Stat_Card h2 {
-      margin-top: 30px;
-      font-size: 2.8em;
-    }
-    .Content{
-      border-left: 0px;
-      border-bottom: 2px solid #333;
-    }
-    .Student {
-      display: flex;
-      flex-direction: column;
-      width: 400px;
-      height: 380px;
-      margin: 10px;
-      background-color: #f9f9f9;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      border: 2px solid #002f87;
-    }
-    .Instructor {
-      display: flex;
-      flex-direction: column;
-      width: 400px;
-      height: 380px;
-      margin: 10px;
-      background-color: #f9f9f9;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      border: 2px solid #002f87;
-    }
-    }
- 
+.Menu img {
+	margin: 0 auto;
+	width: 50px;
+	height: 40px;
+}
+.Sidebar_Icon {
+	margin: 0 auto;
+	width: 50px;
+	height: 40px;
+	display: flex;
+	justify-content: center;
+}
+.Sidebar_Item {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	align-self: center;
+	gap: 10px;
+}
+.Content {
+	padding: 10px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	font-size: 25px;
+	font-style: initial;
+	margin: 10px 10px;
+	margin-left: 10px;
+	font-size: 1.2em;
+	border-left: 2px solid #333;
+}
+.Statistics_Container {
+	display: flex;
+	justify-content: center;
+	padding: 10px;
+	margin-top: 100px;
+	gap: 100px;
+}
+.Stat_Card {
+	display: flex;
+	flex-direction: column;
+	width: 300px;
+	height: 180px;
+	margin: 10px;
+	background-color: #f9f9f9;
+	padding: 20px;
+	border-radius: 10px;
+	text-align: center;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	border: 2px solid #002f87;
+}
 
+.Stat_Card h1 {
+	font-size: 1.3em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.Stat_Card h2 {
+	margin-top: 30px;
+	font-size: 1.5em;
+}
+.List_Students {
+	display: flex;
+	justify-content: center;
+	padding: 10px;
+	margin-top: 100px;
+	gap: 100px;
+}
+.Student {
+	display: flex;
+	flex-direction: column;
+	width: 500px;
+	height: 380px;
+	margin: 10px;
+	background-color: #f9f9f9;
+	padding: 20px;
+	border-radius: 10px;
+	text-align: center;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	border: 2px solid #002f87;
+}
+.Student h2 {
+	display: flex;
+	justify-content: flex-start;
+	font-size: 1em;
+	border-bottom: 1px solid #333;
+}
+.Instructor {
+	display: flex;
+	flex-direction: column;
+	width: 500px;
+	height: 380px;
+	margin: 10px;
+	background-color: #f9f9f9;
+	padding: 20px;
+	border-radius: 10px;
+	text-align: center;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	border: 2px solid #002f87;
+}
+.Instructor h2 {
+	font-size: 1em;
+	border-bottom: 1px solid #333;
+}
 
-    @media(max-width: 600px) {
-      .Menu ul{
-        display: flex;
-        flex-direction: row;
-        height: 5px;
-        justify-content: center;
-        padding-bottom: 50px;
-        gap:1px;
-      }
-      .Menu ul li {
-        display: flex;
-        flex-direction: row;
-        height: 5px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        
-      }
-      .Menu img {
-        margin: 0 auto;
-        width: 20px;
-        height: 20px;
-      }
-      .Menu span{
-        font-size: 10px;
-        }
-      
-    }
+@media (max-width: 1000px) {
+	.Menu ul {
+		display: flex;
+		flex-direction: row;
+		height: 5px;
+		justify-content: center;
+		padding-bottom: 50px;
+		margin-top: 10px;
+	}
+	.Menu ul li {
+		display: flex;
+		flex-direction: row;
+		height: 5px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	.Menu img {
+		margin: 0 auto;
+		width: 20px;
+		height: 20px;
+	}
+	.Menu span {
+		font-size: 10px;
+	}
+	.Maincontainer {
+		display: grid;
+		grid-template-areas:
+			'Header Header'
+			'Content Content'
+			'Menu Menu';
+	}
+	.List_Students {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		padding: 10px;
+		margin-top: 100px;
+		gap: 10px;
+	}
+	.Statistics_Container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		padding: 10px;
+		margin-top: 100px;
+		gap: 10px;
+	}
+	.Stat_Card h1 {
+		font-size: 0.8em;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.Stat_Card h2 {
+		margin-top: 30px;
+		font-size: 2.8em;
+	}
+	.Content {
+		border-left: 0px;
+		border-bottom: 2px solid #333;
+	}
+	.Student {
+		display: flex;
+		flex-direction: column;
+		width: 400px;
+		height: 380px;
+		margin: 10px;
+		background-color: #f9f9f9;
+		padding: 20px;
+		border-radius: 10px;
+		text-align: center;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		border: 2px solid #002f87;
+	}
+	.Instructor {
+		display: flex;
+		flex-direction: column;
+		width: 400px;
+		height: 380px;
+		margin: 10px;
+		background-color: #f9f9f9;
+		padding: 20px;
+		border-radius: 10px;
+		text-align: center;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		border: 2px solid #002f87;
+	}
+}
+
+@media (max-width: 600px) {
+	.Menu ul {
+		display: flex;
+		flex-direction: row;
+		height: 5px;
+		justify-content: center;
+		padding-bottom: 50px;
+		gap: 1px;
+	}
+	.Menu ul li {
+		display: flex;
+		flex-direction: row;
+		height: 5px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	.Menu img {
+		margin: 0 auto;
+		width: 20px;
+		height: 20px;
+	}
+	.Menu span {
+		font-size: 10px;
+	}
+}
