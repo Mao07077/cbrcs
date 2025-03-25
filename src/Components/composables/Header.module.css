@@ -1,5 +1,6 @@
 .Header {
 	background-color: #002f87;
+	display: block;
 }
 
 .Header > img {

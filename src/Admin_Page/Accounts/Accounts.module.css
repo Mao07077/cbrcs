@@ -304,39 +304,6 @@ body {
 }
 
 @media (max-width: 1000px) {
-	.Menu {
-		border-top: 1px solid #030000;
-	}
-	.Menu ul {
-		display: flex;
-		flex-direction: row;
-		height: 5px;
-		justify-content: center;
-		padding-bottom: 50px;
-		margin-top: 10px;
-	}
-	.Menu ul li {
-		display: flex;
-		flex-direction: row;
-		height: 5px;
-		margin-top: 15px;
-		margin-bottom: 10px;
-	}
-	.Menu img {
-		margin: 0 auto;
-		width: 20px;
-		height: 20px;
-	}
-	.Menu span {
-		font-size: 10px;
-	}
-	.Maincontainer {
-		display: grid;
-		grid-template-areas:
-			'Header Header'
-			'Content Content'
-			'Menu Menu';
-	}
 	.Search_Input {
 		display: flex;
 		justify-content: center;
