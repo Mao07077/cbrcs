@@ -7,7 +7,7 @@ import Accounts from '../../icon/name.png';
 import Report from '../../icon/Reports.png';
 import AdminPost from '../../icon/Upload.png';
 import Request from '../../icon/request.png';
-import { HomeIcon, UserIcon } from 'lucide-react';
+import { HomeIcon, SquarePen, UserIcon } from 'lucide-react';
 import Sidebar from '../../Components/composables/Sidebar';
 
 const SidebarItem = ({ icon, text, onClick }) => (
@@ -21,14 +21,30 @@ const SidebarItem = ({ icon, text, onClick }) => (
 
 const routes = [
 	{
-		routeName: 'Admin_Dashboard',
-		routePath: '/',
+		routeName: 'Dashboard',
+		routePath: '/Admin_Dashboard',
 		routeIcon: <HomeIcon></HomeIcon>,
 	},
 	{
-		routeName: 'Profile',
-		routePath: '/profile',
+		routeName: 'Accounts',
+		routePath: '/Accounts',
 		routeIcon: <UserIcon></UserIcon>,
+	},
+	{
+		routeName: 'Uploads',
+		routePath: '/Adminpost',
+		routeIcon: <UserIcon></UserIcon>,
+	},
+	{
+		routeName: 'Report',
+		routePath: '/Report',
+		routeIcon: <Flag></Flag>,
+	},
+
+	{
+		routeName: 'Request',
+		routePath: '/Request',
+		routeIcon: <SquarePen></SquarePen>,
 	},
 ];
 
@@ -83,75 +99,6 @@ const AdminDashboard = () => {
 					</div>
 				</div>
 			</div>
-			{/* <nav className={Styles.Menu}>
-				<ul>
-					<li>
-						<buttonss
-							className={Styles.Sidebar_Item}
-							onClick={() => handleNavigation('Admin_Dashboard')}
-						>
-							<img
-								src={Dashboard}
-								alt="Dashboard Icon"
-								className={Styles.Sidebar_Icon}
-							/>
-							<span>Dashboard</span>
-						</buttonss>
-					</li>
-					<li>
-						<buttonss
-							className={Styles.Sidebar_Item}
-							onClick={() => handleNavigation('Accounts')}
-						>
-							<img
-								src={Accounts}
-								alt="Accounts Icon"
-								className={Styles.Sidebar_Icon}
-							/>
-							<span>Accounts</span>
-						</buttonss>
-					</li>
-					<li>
-						<buttonss
-							className={Styles.Sidebar_Item}
-							onClick={() => handleNavigation('Adminpost')}
-						>
-							<img
-								src={AdminPost}
-								alt="Adminpost Icon"
-								className={Styles.Sidebar_Icon}
-							/>
-							<span>Uploads</span>
-						</buttonss>
-					</li>
-					<li>
-						<buttonss
-							className={Styles.Sidebar_Item}
-							onClick={() => handleNavigation('Report')}
-						>
-							<img
-								src={Report}
-								alt="Report Icon"
-								className={Styles.Sidebar_Icon}
-							/>
-							<span>Report</span>
-						</buttonss>
-					</li>
-					<li>
-						<buttonss
-							className={Styles.Sidebar_Item}
-							onClick={() => handleNavigation('Request')}
-						>
-							<img
-								src={Request}
-								alt="Request Icon"
-								className={Styles.Sidebar_Icon}
-							/>
-							<span>Request</span>
-						</buttonss>
-					</li>
-				</ul>
-			</nav> */}
 
 			<Sidebar routes={routes}></Sidebar>
 

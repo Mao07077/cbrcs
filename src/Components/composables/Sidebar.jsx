@@ -10,7 +10,7 @@
 
 export default function Sidebar({ routes }) {
 	return (
-		<div className="sidebar">
+		<nav className="sidebar">
 			<ul>
 				{routes.map((route, index) => (
 					<li key={index} className="sidebar-item">
@@ -19,6 +19,6 @@ export default function Sidebar({ routes }) {
 					</li>
 				))}
 			</ul>
-		</div>
+		</nav>
 	);
 }
