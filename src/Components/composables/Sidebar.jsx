@@ -1,5 +1,5 @@
 import Styles from './Sidebar.module.css';
-
+import { Link } from 'react-router-dom';
 /**
  * Sidebar component.
  * @param {Object} props - Component props.
@@ -22,9 +22,9 @@ export default function Sidebar({ routes }) {
 						{route.routeIcon && (
 							<span className={Styles.icon}>{route.routeIcon}</span>
 						)}
-						<a className={Styles.a} href={route.routePath}>
+						<Link className={Styles.a} to={route.routePath}>
 							{route.routeName}
-						</a>
+						</Link>
 					</li>
 				))}
 			</ul>
