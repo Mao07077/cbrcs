@@ -1,16 +1,17 @@
+/* Container adjustments for responsiveness */
 .container {
   position: absolute;
-  left: 180px; 
+  left: 180px;
   top: 80px;
-  width: calc(100% - 260px); 
+  width: calc(100% - 260px);
   padding: 20px;
   padding-bottom: 100px;
-  height: 60%;
+  height: auto;
+  min-height: 60vh;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-
-
+/* Title adjustments */
 .title {
   font-size: 24px;
   font-weight: bold;
@@ -18,40 +19,42 @@
   padding-bottom: 5px;
 }
 
-.section {
-  margin-top: 20px;
-}
-
+/* Subtitle improvements */
 .subtitle2 {
-  font-size: 18px;
+  font-size: clamp(10px, 1vw, 14px);
   font-weight: bold;
   margin-bottom: 10px;
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
-  font-size: clamp(10px, 1vw, 14px); /* Allows description to shrink slightly */
- 
-  padding: 15px 0; /* Adds space above and below the text */
+  padding: 15px 0;
+}
+.subtitle {
+  font-size: 14px;
+  font-weight: bold;
+margin-top: 15px;
 }
 
-
+/* Top Habits Section */
 .top-habits {
   display: flex;
-  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
   font-size: 14px;
   margin-top: 20px;
   margin-bottom: 20px;
-  width: 90%; /* Adjusted for better responsiveness */
-  max-width: 800px; /* Prevents excessive stretching */
+  width: 90%;
+  max-width: 800px;
 }
 
+/* Habit Card with consistent size */
 .habit-card {
   flex: 1 1 calc(33.333% - 20px);
   max-width: 220px;
   min-width: 150px;
-  min-height: 100px;
-  height: auto;
+  min-height: 120px;
+  width: 90%;
+  height: 120px;
   text-align: center;
   background-color: #F8F9FA;
   border: #000 1px solid;
@@ -61,30 +64,22 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   font-size: 14px;
   white-space: normal;
   overflow-wrap: break-word;
-  text-align: center;
   margin-top: 20px;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth hover effect */
+  transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  text-decoration: none;
 }
 
 .habit-card:hover {
-  transform: scale(1.05); /* Slightly enlarges the card */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow effect */
+  transform: scale(1.02);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   background-color: #e3f2fd;
 }
-.habit-card {
-  text-decoration: none; /* Removes underline from links */
-}
 
-.habit-card .habit-title {
-  text-decoration: none; /* Ensures titles inside cards have no underline */
-  color: black; 
-}
-
-
+/* Habit title adjustments */
 .habit-title {
   font-size: clamp(14px, 1.5vw, 18px);
   font-weight: bold;
@@ -92,7 +87,9 @@
   width: fit-content;
   max-width: 100%;
   overflow-wrap: break-word;
-  white-space: normal; /* Allows multi-line text */
+  white-space: normal;
+  text-decoration: none;
+  color: black;
 }
 
 .habit-description {
@@ -101,11 +98,14 @@
   margin-top: 5px;
 }
 
+/* Responsive grid */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust dynamically */
-  gap: 15px; /* Increased spacing for better layout */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
 }
+
+/* Footer adjustments */
 .footer {
   background-color: #002f87;
   color: white;
@@ -115,13 +115,13 @@
   font-weight: bold;
   width: 100%;
   height: 70px;
-  position: fixed; /* Keeps it at the bottom */
+  position: fixed;
   bottom: 0;
   left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px; /* Adds spacing between the logo and text */
+  gap: 10px;
 }
 
 .footer img {
@@ -132,65 +132,56 @@
 .footer p {
   margin: 0;
   font-size: 14px;
-  text-align: center;
 }
+
+/* Responsive styles */
 @media (max-width: 768px) {
-  /* Top Habits Section */
   .top-habits {
-    width: 100%; /* Full width on smaller screens */
+    width: 100%;
     gap: 8px;
-    padding: 0 10px; /* Ensures space on both sides */
+    padding: 0 10px;
     justify-content: center;
   }
-
   .habit-card {
-    flex: 1 1 calc(50% - 10px); /* Two columns on tablets */
-    min-width: 120px;
-    min-height: 90px;
-    max-width: 100%; /* Prevents overflow */
+    flex: 1 1 calc(50% - 10px);
+    min-width: 100px;
+    min-height: 120px;
+    max-width: 100%;
+    height: 120px;
   }
-
-  /* Footer Adjustments */
   .footer {
     flex-direction: column;
     height: auto;
     padding: 10px;
   }
-
   .footer img {
     width: 80px;
   }
-
   .footer p {
     font-size: 10px;
-    text-align: center;
-    margin: 5px auto; /* Centers text */
   }
 }
 
 @media (max-width: 480px) {
-  /* Adjust Top Habits Section for Small Screens */
   .top-habits {
-    flex-direction: column; /* Stack cards in one column */
+    flex-direction: column;
     align-items: center;
     padding: 0 10px;
   }
-
   .habit-card {
     flex: 1 1 100%;
     min-width: auto;
-    min-height: 80px;
-    max-width: 80%; /* Prevents overflow on smaller screens */
-    margin-right: auto; /* Moves slightly to the right */
-    margin-left: auto; /* Centers the cards */
+    min-height: 120px;
+    max-width: 50%;
+    height: 120px;
+    margin: 0 auto;
   }
-
-  /* Footer Adjustments for Very Small Screens */
   .footer img {
     width: 60px;
   }
-  .footer  {
-height: 60px;  }
+  .footer {
+    height: 60px;
+  }
   .footer p {
     font-size: 9px;
   }
