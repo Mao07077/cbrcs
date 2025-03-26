@@ -7,14 +7,37 @@ const Notes = () => {
   const [content, setContent] = useState("");
   const [showNoteModal, setShowNoteModal] = useState(false);
   const [notes, setNotes] = useState([]);
-
+  const [showDropdown, setShowDropdown] = useState(null); 
+  const [editingIndex, setEditingIndex] = useState(null);
   const handleSave = () => {
     if (!title.trim() || !content.trim()) return;
-    const newNote = { title, content };
-    setNotes([newNote, ...notes]);
+
+    if (editingIndex !== null) {
+  
+      const updatedNotes = [...notes];
+      updatedNotes[editingIndex] = { title, content };
+      setNotes(updatedNotes);
+      setEditingIndex(null);
+    } else {
+
+      setNotes([{ title, content }, ...notes]);
+    }
+
     setTitle("");
     setContent("");
     setShowNoteModal(false);
+  };
+
+  const handleDelete = (index) => {
+    const updatedNotes = notes.filter((_, i) => i !== index);
+    setNotes(updatedNotes);
+  };
+
+  const handleEdit = (index) => {
+    setTitle(notes[index].title);
+    setContent(notes[index].content);
+    setEditingIndex(index);
+    setShowNoteModal(true);
   };
 
   return (
@@ -31,7 +54,23 @@ const Notes = () => {
         {notes.length > 0 ? (
           notes.map((note, index) => (
             <div key={index} className={styles.note_card}>
-              <h3>{note.title}</h3>
+              <div className={styles.note_header}>
+                <h3>{note.title}</h3>
+                <div className={styles.dropdown_container}>
+                  <button
+                    className={styles.dropdown_button}
+                    onClick={() => setShowDropdown(showDropdown === index ? null : index)}
+                  >
+                    ⋮
+                  </button>
+                  {showDropdown === index && (
+                    <div className={styles.dropdown_menu}>
+                      <button onClick={() => handleEdit(index)}>Edit</button>
+                      <button onClick={() => handleDelete(index)}>Delete</button>
+                    </div>
+                  )}
+                </div>
+              </div>
               <p>{note.content}</p>
             </div>
           ))
@@ -44,7 +83,7 @@ const Notes = () => {
         <div className={styles.modal_overlay}>
           <div className={styles.modal_content}>
             <button className={styles.closeBtn} onClick={() => setShowNoteModal(false)}>×</button>
-            <h2 className={styles.modalTitle}>Create a New Note</h2>
+            <h2 className={styles.modalTitle}>{editingIndex !== null ? "Edit Note" : "Create a New Note"}</h2>
             <label className={styles.label}>Title:</label>
             <input
               type="text"
@@ -60,7 +99,7 @@ const Notes = () => {
               rows={5}
             />
             <button className={styles.saveBtn} onClick={handleSave}>
-              Save
+              {editingIndex !== null ? "Update" : "Save"}
             </button>
           </div>
         </div>

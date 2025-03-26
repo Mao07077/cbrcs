@@ -1,12 +1,14 @@
+
 .page_container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   padding: 20px;
   background-color: #f9f9f9;
   margin-top: 80px;
   min-height: 100vh;
 }
+
 
 .border {
   font-size: 24px;
@@ -20,21 +22,20 @@
   background: none;
 }
 
+
 .create_note_btn {
   background-color: #28a745;
   color: white;
-  padding: 10px 20px;
+  padding: 10px 18px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 16px;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  font-size: 15px;
+  margin: 15px 0;
+  width: fit-content;
+  display: block;
 }
 
-.create_note_btn:hover {
-  background-color: #218838;
-}
 
 .notes_grid {
   display: grid;
@@ -44,17 +45,28 @@
   max-width: 1200px;
 }
 
+
 .note_card {
+  position: relative;
   background: white;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
 }
 
+
 .note_card:hover {
-  transform: scale(1.03);
+  background: white !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+  cursor: default !important;
 }
+
+.note_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 
 .no_notes {
   color: #888;
@@ -62,6 +74,7 @@
   text-align: center;
   width: 100%;
 }
+
 
 .modal_overlay {
   position: fixed;
@@ -75,6 +88,7 @@
   align-items: center;
 }
 
+
 .modal_content {
   position: relative;
   background: white;
@@ -86,6 +100,7 @@
   flex-direction: column;
 }
 
+
 .modalTitle {
   text-align: center;
   font-size: 20px;
@@ -93,10 +108,12 @@
   margin-bottom: 10px;
 }
 
+
 .label {
   font-weight: bold;
   margin-top: 10px;
 }
+
 
 .titleInput, .textArea {
   width: 100%;
@@ -117,10 +134,6 @@
   margin-top: 15px;
 }
 
-.saveBtn:hover {
-  background-color: #0056b3;
-}
-
 .closeBtn {
   position: absolute;
   top: 10px;
@@ -131,8 +144,50 @@
   font-size: 24px;
   cursor: pointer;
   color: #555;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.closeBtn:hover {
-  color: #f5f3f3;
+
+.dropdown_container {
+  position: relative;
+  display: inline-block;
+}
+
+
+.dropdown_button {
+  background: none !important;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 5px;
+  color: black;
+}
+
+
+.dropdown_menu {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  background: white;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15);
+  width: 120px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.dropdown_menu button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  color: black;
 }
