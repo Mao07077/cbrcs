@@ -1,333 +1,200 @@
-*{
-  margin: 0;
-  padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
+* {
+	margin: 0;
+	padding: 0;
+	font-family: Arial, Helvetica, sans-serif;
 }
 body {
- 
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 .Maincontainer {
-  display: grid;
-  grid-template-areas:
-    "Header Header"
-    "Menu Content";
-  grid-template-columns: 0.1fr 1fr;
-  width: 100vw;
-  height: 100%;
+	width: 100svw;
+	height: 100svh;
+	display: flex;
+	flex-direction: column;
+}
+.Content_Wrapper {
+	flex: 1;
+	display: flex;
+}
 
-  
+.Greeting_Dashboard {
+	display: flex;
+	justify-content: flex-start;
+	padding: 15px;
+	border-bottom: 4px solid #333;
 }
-.Maincontainer > div {
-  padding: 10px;
-}
-.Maincontainer > div.Content {
-  display: flex;
-  justify-content: flex-start ;
-  grid-area: Content;
-  height: 100%;
 
-}
-.Header {
-  grid-area: Header;
-  background-color: #002f87;
-  display: flex;
-}
-.Greeting_Dashboard{
-  display: flex;
-  justify-content: flex-start;
-  padding:15px;
-  border-bottom: 4px solid #333;
- 
-}
-.Menu {
-  grid-area: Menu;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-items: flex-start;
-  width: 100%;
-  color: black;
-  top: 0;
-  left: 0;
-  border-right: 2px solid #333;
-  
-  
-}
-.Menu ul {
-  display: flex;
-  flex-direction: column;
-  justify-content:  flex-start;
-  flex: 1;
-  gap: 8%;
-  margin-top: 80px;
-}
-.Menu ul li {
-  display: flex;
-  justify-content: flex-start;
-  text-align: center;
-  margin-left: 10px;
-  padding: 5px 10px;
-  font-size: 24px;
-  cursor: pointer;
-  outline: none;
-  color: #000;
-  background: #f4f4f4;
-  border: none;
-  }
-
-  .Menu ul li a {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-decoration: none;
-      color: black;
-      font-size: 50%;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-    .Menu span{
-      font-size: 15px;
-      }
-      
-      .Menu img {
-        margin: 0 auto;
-        width: 50px;
-        height: 40px;
-      }
-      .Sidebar_Icon{
-        margin: 0 auto;
-        width: 50px;
-        height: 40px;
-        display:flex;
-        justify-content: center;
-      }
-.Sidebar_Item{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  align-self: center;
-  gap: 10px;
-}
-.Content{
-  padding: 10px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  font-size: 25px;
-  font-style: initial;
-  margin: 10px 10px;
-  margin-left: 10px;
-  font-size: 1.2em;
-  height: 100;
- 
-  
+.Content {
+	padding: 10px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	font-size: 25px;
+	font-style: initial;
+	margin: 10px 10px;
+	margin-left: 10px;
+	font-size: 1.2em;
+	height: 100%;
+	width: 100%;
 }
 /* Report Container - Positioned closer to the sidebar */
 .ReportWrapper {
-  width: 150%;  /* Make it longer */
-  margin-top: 100px;
-  margin-left: -100px;
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  border: 2px solid #0d47a1;
-  height: 8000px;
+	width: 150%; /* Make it longer */
+	margin-top: 100px;
+	margin-left: -100px;
+	background: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+	border: 2px solid #0d47a1;
+	height: 8000px;
 }
 
 /* Center the title */
 .ReportTitle {
-  font-size: 28px;
-  font-weight: bold;
-  color: #0d47a1;
-  text-align: left;
-  margin-bottom: 20px;
-  padding-left: 15px;
-  border-bottom: #060606 1px solid;
-  width: 100%;
+	font-size: 28px;
+	font-weight: bold;
+	color: #0d47a1;
+	text-align: left;
+	margin-bottom: 20px;
+	padding-left: 15px;
+	border-bottom: #060606 1px solid;
+	width: 100%;
 }
 .ReportTitle h2 {
-  margin-bottom: 5px;
-  padding: 20px;
+	margin-bottom: 5px;
+	padding: 20px;
 }
 
 /* Search & Filter Section */
 .ReportSearchFilter {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 15px;
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	margin-bottom: 15px;
 }
 .ReportSearchContainer {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+	display: flex;
+	align-items: center;
+	gap: 5px;
 }
 .ReportSearchInput {
-  width: 180px;
-  height: 35px;
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
+	width: 180px;
+	height: 35px;
+	padding: 5px 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 14px;
 }
 .ReportFilterContainer {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+	display: flex;
+	align-items: center;
+	gap: 5px;
 }
 .ReportFilterDropdown {
-  width: 120px;
-  height: 35px; /* Same height as search input */
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
+	width: 120px;
+	height: 35px; /* Same height as search input */
+	padding: 5px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 14px;
 }
 .ReportLabel {
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  font-weight: bold;
+	display: flex;
+	align-items: center;
+	font-size: 14px;
+	font-weight: bold;
 }
-
 
 /* Adjust Table Container */
 .ReportTableContainer {
-  padding: 0 15px;
-  height: 800px;
-
+	padding: 0 15px;
+	height: 800px;
 }
 
 .ReportTable {
-  border-collapse: collapse;
-  width: 100%;
-  
+	border-collapse: collapse;
+	width: 100%;
 }
 
-.ReportTable th, .ReportTable td {
-  border: 1px solid #ddd;
-  padding: 12px;
-  text-align: center;
+.ReportTable th,
+.ReportTable td {
+	border: 1px solid #ddd;
+	padding: 12px;
+	text-align: center;
 }
 
 /* Make Status Colors Stand Out */
 .Pending {
-  color: red;
-  font-weight: bold;
+	color: red;
+	font-weight: bold;
 }
 
 .InProgress {
-  color: orange;
-  font-weight: bold;
+	color: orange;
+	font-weight: bold;
 }
 
 .Resolved {
-  color: green;
-  font-weight: bold;
+	color: green;
+	font-weight: bold;
 }
 
 /* Adjust Button Styles */
-.ReportViewButton, .ReportResolveButton {
-  padding: 8px 14px;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  cursor: pointer;
-  margin: 3px;
-  gap: 5px;
+.ReportViewButton,
+.ReportResolveButton {
+	padding: 8px 14px;
+	border: none;
+	border-radius: 5px;
+	color: white;
+	cursor: pointer;
+	margin: 3px;
+	gap: 5px;
 }
 
 .ReportViewButton {
-  background-color: #1976d2;
+	background-color: #1976d2;
 }
 
 .ReportResolveButton {
-  background-color: #388e3c;
+	background-color: #388e3c;
 }
-
 
 /* Set Arial as the default font for the entire Report page */
-.ReportWrapper, 
-.ReportTitle, 
-.ReportSearchFilter, 
-.ReportSearchContainer, 
-.ReportSearchInput, 
-.ReportFilterContainer, 
-.ReportFilterDropdown, 
-.ReportLabel, 
-.ReportTable, 
-.ReportTable th, 
-.ReportTable td, 
-.ReportViewButton, 
+.ReportWrapper,
+.ReportTitle,
+.ReportSearchFilter,
+.ReportSearchContainer,
+.ReportSearchInput,
+.ReportFilterContainer,
+.ReportFilterDropdown,
+.ReportLabel,
+.ReportTable,
+.ReportTable th,
+.ReportTable td,
+.ReportViewButton,
 .ReportResolveButton {
-    font-family: Arial, sans-serif;
+	font-family: Arial, sans-serif;
 }
 
-@media(max-width: 1000px) {
-  .Menu{
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    gap: 10px;
-    border-top: 2px solid #333;
-    
-  }
-  .Menu ul{
-    display: flex;
-    flex-direction: row;
-    height: 5px;
-    justify-content: center;
-    padding-bottom: 50px;
-    margin-top: 10px;
-    gap: 5px;
-    
-  }
-  .Menu ul li {
-    display: flex;
-    flex-direction: column;
-    height: 5px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    
-  }
-  .Menu img {
-    margin: 0 auto;
-    width: 20px;
-    height: 20px;
-  }
-  .Menu span{
-    font-size: 10px;
-    }
-  .Maincontainer{
-    display: grid;
-    grid-template-areas:
-      "Header Header"
-      "Content Content"
-      "Menu Menu";
-  }
+@media (max-width: 1000px) {
+	.ReportTableContainer {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+		height: 100%;
+	}
+	.ReportTable td,
+	.ReportTable th {
+		border: 1px solid #ddd;
+		padding: 14px;
+		text-align: center;
+		font-size: 14px;
+	}
 
-.ReportTableContainer{
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-
-}
-.ReportTable td,.ReportTable th {
-  border: 1px solid #ddd;
-  padding: 14px;
-  text-align: center;
-  font-size: 14px;
-}
-
-.ReportWrapper {
-  width: 100%;
-  margin-left: 220px;
-}
-
+	.ReportWrapper {
+		width: 100%;
+		margin-left: 220px;
+	}
 }

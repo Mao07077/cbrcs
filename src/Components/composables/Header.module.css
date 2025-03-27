@@ -1,0 +1,14 @@
+.Header {
+	background-color: #002f87;
+	display: block;
+}
+
+.Header > img {
+	height: 50px;
+	width: auto;
+	max-width: 180px;
+}
+
+.Header > img:hover {
+	cursor: pointer;
+}
