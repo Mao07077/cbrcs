@@ -1,290 +1,191 @@
-*{
-  margin: 0;
-  padding: 0;
+* {
+	margin: 0;
+	padding: 0;
 }
 body {
- 
-  font-family: Consolas, sans-serif;
-  box-sizing: border-box;
+	font-family: Consolas, sans-serif;
+	box-sizing: border-box;
 }
 .Maincontainer {
-  display: grid;
-  grid-template-areas:
-    "Header Header"
-    "Menu Content";
-  grid-template-columns: 0.1fr 1fr;
-  width: 100vw;
-  
+	width: 100svw;
+	height: 100svh;
+	display: flex;
+	flex-direction: column;
 }
-.Maincontainer > div {
-  padding: 10px;
+.Content_Wrapper {
+	flex: 1;
+	display: flex;
 }
-.Header {
-  grid-area: Header;
-  background-color: #002f87;
-  display: flex;
-}
-.Menu {
-  grid-area: Menu;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 100%;
-  color: black;
-  position: relative;
-  top: 0;
-  left: 0;
-   height: 100vh; /* Make sidebar full height */
-  border-right: 2px solid #333; /* Add border to the right */
-} 
-.Menu ul {
-  display: flex;
-  flex-direction: column;
-  justify-content:  flex-start;
-  flex: 1;
-  gap: 10%;
-  margin-top: 80px;
-}
-.Menu ul li {
-  display: flex;
-  justify-content: flex-start;
-  text-align: center;
-  margin-left: 10px;
-  padding: 5px 10px;
-  font-size: 24px;
-  cursor: pointer;
-  outline: none;
-  color: #000;
-  background: #f4f4f4;
-  border: none;
-  }
-.Sidebar_Item{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    align-self: center;
-    gap: 10px;
-    }
-.Menu ul li a {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-decoration: none;
-      color: black;
-      font-size: 50%;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-.Menu span{
-      font-size: 15px;
-      }
-      
-.Menu img {
-        margin: 0 auto;
-        width: 50px;
-        height: 40px;
-      }
-.Sidebar_Icon{
-        margin: 0 auto;
-        width: 50px;
-        height: 40px;
-        display:flex;
-        justify-content: center;
-      }
-      
-.Maincontainer > div.Content {
-  display: flex;
-  justify-content: flex-start ;
-  height: auto;
-  grid-area: Content;
-}
-.Content{
-  padding: 10px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  font-size: 25px;
-  font-style: initial;
-  margin: 10px 10px;
-  margin-left: 10px;
-  font-size: 1.2em;
- 
- 
+
+.Content {
+	width: 100%;
+	padding: 10px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	font-size: 25px;
+	font-style: initial;
+	margin: 10px 10px;
+	margin-left: 10px;
+	font-size: 1.2em;
 }
 
 .drop-zone {
-  border: 2px dashed #ccc;
-  border-radius: 10px;
-  padding: 20px;
-  text-align: center;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-  margin-top: 10px;
+	border: 2px dashed #ccc;
+	border-radius: 10px;
+	padding: 20px;
+	text-align: center;
+	cursor: pointer;
+	transition: background-color 0.2s ease-in-out;
+	margin-top: 10px;
 }
 
 .drop-zone.dragging {
-  background-color: #e0f7fa; 
-  border-color: #00796b;
+	background-color: #e0f7fa;
+	border-color: #00796b;
 }
 
 .file-label {
-  font-size: 1em;
-  color: #333;
+	font-size: 1em;
+	color: #333;
 }
 
 #file-chosen {
-  display: block;
-  margin-top: 10px;
-  font-size: 0.9em;
-  color: #555;
+	display: block;
+	margin-top: 10px;
+	font-size: 0.9em;
+	color: #555;
 }
 
-
-.Greeting_Dashboard{
-  display: flex;
-  justify-content: flex-start;
-  padding:15px;
-  border-bottom: 0.5px solid #333;
- 
+.Greeting_Dashboard {
+	display: flex;
+	justify-content: flex-start;
+	padding: 15px;
+	border-bottom: 0.5px solid #333;
 }
-.Email_Item{
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: row;
-  padding: 10px;
-  margin: 50px;
-  border-bottom: 1px solid #333;
-  justify-content: space-between;
+.Email_Item {
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: row;
+	padding: 10px;
+	margin: 50px;
+	border-bottom: 1px solid #333;
+	justify-content: space-between;
 }
 .Email_Text {
-  font-size: 1em;
-  display:flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  text-align: end;
-
+	font-size: 1em;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	text-align: end;
 }
 .Email_Text h2 {
-font-family: Arial, Helvetica, sans-serif;
-font-weight: normal;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: normal;
 }
-.Email_Text p{
-  display: flex;
-  align-items: center;
-  font-size: 15px;
-  margin-left: 20px;
+.Email_Text p {
+	display: flex;
+	align-items: center;
+	font-size: 15px;
+	margin-left: 20px;
 }
 
-.Button{
-  width: 8%;
-  height: 40px;
-  padding: 12px;
-  background-color: #032a6e;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  font-size: 14px;
-}
-@media(max-width: 1000px) {
-.Menu ul{
-  display: flex;
-  flex-direction: row;
-  height: 5px;
-  justify-content: center;
-  padding-bottom: 50px;
-}
-.Menu ul li {
-  display: flex;
-  flex-direction: row;
-  height: 5px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  
-}
-.Menu img {
-  margin: 0 auto;
-  width: 20px;
-  height: 20px;
-}
-.Menu span{
-  font-size: 10px;
-  }
-.Maincontainer{
-  display: grid;
-  grid-template-areas:
-    "Header Header"
-    "Content Content"
-    "Menu Menu";
-   
-}
 .Button {
-  font-size: 15px;
-  width: 20%;
-  padding: 12px;
-  background-color: #032a6e;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
+	width: 8%;
+	height: 40px;
+	padding: 12px;
+	background-color: #032a6e;
+	color: white;
+	border: none;
+	border-radius: 10px;
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	font-size: 14px;
 }
-.Email_Text h2{
-  font-size: 0.8em;
-  display:flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  text-align: end;
+@media (max-width: 1000px) {
+	.Menu ul {
+		display: flex;
+		flex-direction: row;
+		height: 5px;
+		justify-content: center;
+		padding-bottom: 50px;
+	}
+	.Menu ul li {
+		display: flex;
+		flex-direction: row;
+		height: 5px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	.Menu img {
+		margin: 0 auto;
+		width: 20px;
+		height: 20px;
+	}
+	.Menu span {
+		font-size: 10px;
+	}
 
+	.Button {
+		font-size: 15px;
+		width: 20%;
+		padding: 12px;
+		background-color: #032a6e;
+		color: white;
+		border: none;
+		border-radius: 10px;
+		display: flex;
+		justify-content: center;
+		gap: 10px;
+	}
+	.Email_Text h2 {
+		font-size: 0.8em;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		text-align: end;
+	}
+	.Email_Text p {
+		display: flex;
+		align-items: center;
+		font-size: 12px;
+		margin-left: 20px;
+	}
+	.Content {
+		border-left: 0px;
+		border-bottom: 2px solid #333;
+	}
 }
-.Email_Text p{
-  display: flex;
-  align-items: center;
-  font-size: 12px;
-  margin-left: 20px;
-}
-.Content{
-  border-left: 0px;
-  border-bottom: 2px solid #333;
- 
- 
-}
-}
-@media(max-width: 600px) {
-.Menu ul{
-  display: flex;
-  flex-direction: row;
-  height: 5px;
-  justify-content: center;
-  gap: 5%;
-  margin-top: 10px;
-}
-.Menu ul li {
-  display: flex;
-  flex-direction: row;
-  height: 5px;
-  margin-bottom: 10px;
-  
-}
-.Menu img {
-  margin: 0 auto;
-  width: 20px;
-  height: 20px;
-}
-.Menu span{
-  font-size: 10px;
-  }
-.Maincontainer{
-  display: grid;
-  grid-template-areas:
-    "Header Header"
-    "Content Content"
-    "Menu Menu";
-}
+@media (max-width: 600px) {
+	.Menu ul {
+		display: flex;
+		flex-direction: row;
+		height: 5px;
+		justify-content: center;
+		gap: 5%;
+		margin-top: 10px;
+	}
+	.Menu ul li {
+		display: flex;
+		flex-direction: row;
+		height: 5px;
+		margin-bottom: 10px;
+	}
+	.Menu img {
+		margin: 0 auto;
+		width: 20px;
+		height: 20px;
+	}
+	.Menu span {
+		font-size: 10px;
+	}
+	.Maincontainer {
+		display: grid;
+		grid-template-areas:
+			'Header Header'
+			'Content Content'
+			'Menu Menu';
+	}
 }

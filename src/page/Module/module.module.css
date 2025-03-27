@@ -17,12 +17,7 @@ body {
 	flex: 1;
 	display: flex;
 }
-.MainContainer > div.Content {
-	display: flex;
-	justify-content: flex-start;
-	height: auto;
-	grid-area: Content;
-}
+
 .Header {
 	grid-area: Header;
 	background-color: #002f87;
@@ -34,74 +29,7 @@ body {
 	padding: 15px;
 	border-bottom: 4px solid #333;
 }
-.Menu {
-	grid-area: Menu;
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: row;
-	justify-items: flex-start;
-	width: 100%;
-	color: black;
-	top: 0;
-	left: 0;
-}
-.Menu ul {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	flex: 1;
-	gap: 10%;
-	margin-top: 80px;
-}
-.Menu ul li {
-	display: flex;
-	justify-content: flex-start;
-	text-align: center;
-	margin-left: 10px;
-	padding: 5px 10px;
-	font-size: 24px;
-	cursor: pointer;
-	outline: none;
-	color: #000;
-	background: #f4f4f4;
-	border: none;
-}
 
-.Menu ul li a {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	text-decoration: none;
-	color: black;
-	font-size: 50%;
-	align-items: center;
-	justify-content: center;
-	gap: 10px;
-}
-.Menu span {
-	font-size: 15px;
-}
-
-.Menu img {
-	margin: 0 auto;
-	width: 50px;
-	height: 40px;
-}
-.Sidebar_Icon {
-	margin: 0 auto;
-	width: 50px;
-	height: 40px;
-	display: flex;
-	justify-content: center;
-}
-.Sidebar_Item {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	align-self: center;
-	gap: 10px;
-}
 .Content {
 	width: 100%;
 	padding: 10px;

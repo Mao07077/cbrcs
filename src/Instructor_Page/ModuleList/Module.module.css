@@ -1,290 +1,135 @@
-
-*{
-  margin: 0;
-  padding: 0;
+* {
+	margin: 0;
+	padding: 0;
 }
 .body {
- 
-  font-family: Consolas, sans-serif;
-  box-sizing: border-box;
+	font-family: Consolas, sans-serif;
+	box-sizing: border-box;
 }
 .Header {
-  grid-area: Header;
-  background-color: #002f87;
-  display: flex;
+	grid-area: Header;
+	background-color: #002f87;
+	display: flex;
 }
 .MainContainer {
-  display: grid;
-  grid-template-areas:
-    "Header Header"
-    "Menu Content";
-  grid-template-columns: 0.1fr 1fr;
-  height: 100vh; /* Ensure the full height is covered */
-  width: 100vw;
+	display: flex;
+	flex-direction: column;
+	height: 100svh;
+	width: 100vw;
+}
+.Content_Wrapper {
+	flex: 1;
+	display: flex;
 }
 
-.Maincontainer > div {
-  padding: 10px;
-}
+.Content {
+	width: 100%;
 
-
-.MainContainer > div.Content {
-  display: flex;
-  justify-content: flex-start ;
-  height: auto;
-  grid-area: Content;
-}
-.Menu {
-  grid-area: Menu;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 100%;
-  color: black;
-  position: relative;
-  top: 0;
-  left: 0;
-  height: 100vh; /* Make sidebar full height */
-  border-right: 2px solid #333; /* Add border to the right */
-}
-
-.Menu ul {
-  display: flex;
-  flex-direction: column;
-  justify-content:  flex-start;
-  flex: 1;
-  gap: 15%;
-  margin-top: 80px;
-}
-.Menu ul li {
-  display: flex;
-  justify-content: flex-start;
-  text-align: center;
-  margin-left: 10px;
-  padding: 5px 10px;
-  font-size: 24px;
-  cursor: pointer;
-  outline: none;
-  color: #000;
-  background: #f4f4f4;
-  border: none;
-  }
-  .Menu ul li a {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    color: black;
-    font-size: 50%;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-  }
-  .Menu span{
-    font-size: 15px;
-    }
-    
-    .Menu img {
-      margin: 0 auto;
-      width: 50px;
-      height: 40px;
-    }
-    .Sidebar_Icon{
-      margin: 0 auto;
-      width: 50px;
-      height: 40px;
-      display:flex;
-      justify-content: center;
-    }
-   
-    .Sidebar_Item{
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      align-self: center;
-      gap: 10px;
-      }
-.Content{
-  padding: 10px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  font-size: 25px;
-  font-style: initial;
-  margin: 10px 10px;
-  margin-left: 10px;
-  font-size: 1.2em;
-  height: 1000px;
-  
- 
+	padding: 10px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	font-size: 25px;
+	font-style: initial;
+	margin: 10px 10px;
+	margin-left: 10px;
+	font-size: 1.2em;
+	height: 1000px;
 }
 /* ================= MODULES SECTION ================= */
 .moduleContainer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 1500px; 
-  gap: 10px;
-  margin: -50%;
-  
-  }
-  /* Module Grid */
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 100%;
+	max-width: 1500px;
+	gap: 10px;
+	margin: -50%;
+}
+/* Module Grid */
 .ModuleGrid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center; /* Spreads modules */
-  width: 100%;
-  gap: 20px;}
-.ModuleGrid p{
-  padding: 15px;
-  display: flex;
-  justify-items: center;
-  text-align: center;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center; /* Spreads modules */
+	width: 100%;
+	gap: 20px;
+}
+.ModuleGrid p {
+	padding: 15px;
+	display: flex;
+	justify-items: center;
+	text-align: center;
 }
 
 /* Individual Module Card */
 .moduleCard {
-  flex: 1;
-  max-width: 300px; /* Prevents cards from getting too big */
-  padding: 15px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-   margin-top: 50px;
-  margin-left: 20px;
+	flex: 1;
+	max-width: 300px; /* Prevents cards from getting too big */
+	padding: 15px;
+	background: white;
+	border-radius: 10px;
+	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+	text-align: center;
+	margin-top: 50px;
+	margin-left: 20px;
 }
-
 
 /* Placeholder for Images */
 .moduleImage {
-  width: 100%;
-  height: 150px;
-  background-color: #d9d9d9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  margin: 10px 0;
+	width: 100%;
+	height: 150px;
+	background-color: #d9d9d9;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 8px;
+	margin: 10px 0;
 }
 
 /* Proceed Button */
 .proceedBtn {
-  background-color: #002c77;
-  color: white;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: normal;
-  font-family: Arial;
-  transition: background-color 0.3s;
+	background-color: #002c77;
+	color: white;
+	padding: 8px 12px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 12px;
+	font-weight: normal;
+	font-family: Arial;
+	transition: background-color 0.3s;
 }
 
 .proceedBtn:hover {
-  background-color: #001a4d;
+	background-color: #001a4d;
 }
-.Greeting_Dashboard{
-  display: flex;
-  justify-content: flex-start;
-  padding:15px;
-  border-bottom: 0.5px solid #333;
- 
+.Greeting_Dashboard {
+	display: flex;
+	justify-content: flex-start;
+	padding: 15px;
+	border-bottom: 0.5px solid #333;
 }
-@media(max-width: 1000px) {
-  .Menu{
-    margin-top: -50px;
-  }
-  .Menu ul{
-    display: flex;
-    flex-direction: row;
-    height: 5px;
-    justify-content: center;
-    padding-bottom: 50px;
-  }
-  .Menu ul li {
-    display: flex;
-    flex-direction: row;
-    height: 5px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    
-  }
-  .Menu img {
-    margin: 0 auto;
-    width: 20px;
-    height: 20px;
-  }
-  .Menu span{
-    font-size: 10px;
-    }
-  .MainContainer{
-    display: grid;
-    grid-template-areas:
-      "Header Header"
-      "Content Content"
-      "Menu Menu";
-  }
-  .HabitsContainer {
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  .HabitCard {
-    flex: 1;
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    font-size: 10px;
-    width: 50px;
-    min-width: 200px;
-    height: 100%;
-    gap: 10px;
-    margin: 10px;
-  }
- .Content{
-  border-left: 0px;
-  border-bottom: 2px solid #333;
- }
-  }
-  @media(max-width: 600px) {
-  .Menu ul{
-    display: flex;
-    flex-direction: row;
-    height: 5px;
-    justify-content: center;
-    gap: 5%;
-  }
-  .Menu ul li {
-    display: flex;
-    flex-direction: row;
-    height: 5px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    
-  }
-  .Menu img {
-    margin: 0 auto;
-    width: 20px;
-    height: 20px;
-  }
-  .Menu span{
-    font-size: 10px;
-    }
-  .MainContainer{
-    display: grid;
-    grid-template-areas:
-      "Header Header"
-      "Content Content"
-      "Menu Menu";
-     
-  }
+@media (max-width: 1000px) {
+	.HabitsContainer {
+		padding: 10px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+	.HabitCard {
+		flex: 1;
+		background: white;
+		padding: 15px;
+		border-radius: 8px;
+		text-align: center;
+		box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+		font-size: 10px;
+		width: 50px;
+		min-width: 200px;
+		height: 100%;
+		gap: 10px;
+		margin: 10px;
+	}
 }
