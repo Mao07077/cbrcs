@@ -1,16 +1,16 @@
-import { SquarePen, UserIcon, Book, Upload, IdCard } from 'lucide-react';
+import { HomeIcon, SquarePen, UserIcon, Flag, Upload } from 'lucide-react';
 import Sidebar from './composables/Sidebar';
 
 const routes = [
 	{
 		routeName: 'Profile',
 		routePath: '/profile',
-		routeIcon: <UserIcon></UserIcon>,
+		routeIcon: <HomeIcon></HomeIcon>,
 	},
 	{
 		routeName: 'Modules',
 		routePath: '/module',
-		routeIcon: <Book></Book>,
+		routeIcon: <UserIcon></UserIcon>,
 	},
 	{
 		routeName: 'Dashboard',
@@ -18,18 +18,18 @@ const routes = [
 		routeIcon: <Upload></Upload>,
 	},
 	{
-		routeName: 'Study Habits',
-		routePath: '/StudyHabits_landingpage',
-		routeIcon: <IdCard></IdCard>,
+		routeName: 'Request',
+		routePath: '/settings',
+		routeIcon: <Flag></Flag>,
 	},
 
 	{
-		routeName: 'Request',
-		routePath: '/Settings',
+		routeName: 'Help',
+		routePath: '/help',
 		routeIcon: <SquarePen></SquarePen>,
 	},
 ];
 
-export default function Student_Sidebar() {
+export default function Study_Habits_Sidebar() {
 	return <Sidebar routes={routes}></Sidebar>;
 }
