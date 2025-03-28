@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Styles from './Dashboard.module.css';
-import Icon from '../../icon/actual.png';
-import NameIcon from '../../icon/name.png';
-import ModuleIcon from '../../icon/module.png';
-import DashboardIcon from '../../icon/dashboard.png';
-import RequestIcon from '../../icon/request.png';
-import HelpIcon from '../../icon/help.png';
 
 import {
 	Chart as ChartJS,
