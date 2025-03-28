@@ -19,7 +19,7 @@ const routes = [
 	},
 	{
 		routeName: 'Study Habits',
-		routePath: '/request',
+		routePath: '/StudyHabits_landingpage',
 		routeIcon: <IdCard></IdCard>,
 	},
 
