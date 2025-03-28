@@ -1,95 +1,53 @@
 import React, { useEffect } from 'react';
-import Styles from "./Message.module.css";
-import Dashboard from '../../icon/dashboard.png'; 
-import MailIcon from '../../icon/Mail.png';
-import StudentsIcon from '../../icon/Students.png';
-import Icon from '../../icon/actual.png';
+import Styles from './Message.module.css';
+import Header from '../../Components/composables/Header';
+import Footer from '../../Components/composables/Footer';
+import Instructor_Sidebar from '../../Components/Instructor_Sidebar';
 
+const Message = () => {
+	const handleNavigation = (route) => {
+		console.log(`Navigating to: ${route}`);
 
+		window.location.href = `/${route}`;
+	};
 
- 
-const SidebarItem = ({ icon, text, onClick }) => (
-    <li>
-      <button className="sidebar-item" onClick={onClick}>
-        <img src={icon} alt={text} className="sidebar-icon" />
-        <span>{text}</span>
-      </button>
-    </li>
-  );
-  const Message = () => {
-    const handleNavigation = (route) => {
-      console.log(`Navigating to: ${route}`);
-    
-      window.location.href = `/${route}`;
-    };
-  
-    return (
-      <div className={Styles.Maincontainer}>
-    <div className={Styles.Header}> 
-      <div className="header-content">
-          <div className="header-logo">
-              <img src={Icon} alt="logo" />
-          </div>
-          
-      </div></div>
-    <nav className={Styles.Menu}> 
-      <ul>
-        <li>
-          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Instructor_Dashboard')}>
-            <img src={Dashboard} alt="Dashboard Icon" className={Styles.Sidebar_Icon} />
-            <span>Dashboard</span>
-          </buttonss>
-        </li>
-        <li>
-          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('Message')}>
-            <img src={MailIcon} alt="Mail Icon" className={Styles.Sidebar_Icon} />
-            <span>Message</span>
-          </buttonss>
-        </li>
-        <li>
-          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('studentlist')}>
-            <img src={StudentsIcon} alt="Students Icon" className={Styles.Sidebar_Icon} />
-            <span>StudentList</span>
-          </buttonss>
-        </li>
-        <li>
-          <buttonss className={Styles.Sidebar_Item} onClick={() => handleNavigation('ModuleList')}>
-            <img src={StudentsIcon} alt="Students Icon" className={Styles.Sidebar_Icon} />
-            <span>Module</span>
-          </buttonss>
-        </li>
-      </ul>
-     </nav>
-    <div className={Styles.Content}>
-    <div className={Styles.Greeting_Dashboard}>
-        <h1>Messages</h1>
-      </div>
-    <div className={Styles.Mail_Bar}>
-            {Array.from({ length: 10 }).map((_, index) => (
-                <div className={Styles.Email_Item} 
-                    key={index} 
-                    onClick={() => handleEmailClick(index)}    
-                    style={{ cursor: 'pointer' }}   
-                >
-                  <div className={Styles.Email_Text}>
-                    <h2>Name Here</h2>
-                    <p>Active Now</p>
-                    </div>
-                    <div className={Styles.Button}>
-                    <buttonz type="submit-send">Message</buttonz>
-                    </div>
-                </div>
-                
-              ))}
-          </div>
-              <div classname={Styles.Email_Details}>
-              <hr />
-             
-          </div>
-      </div>
-  
-    </div>
-    );
-  };
-  
-  export default Message;
+	return (
+		<div className={Styles.Maincontainer}>
+			<Header></Header>
+
+			<div className={Styles.Content_Wrapper}>
+				<Instructor_Sidebar></Instructor_Sidebar>
+				<div className={Styles.Content}>
+					<div className={Styles.Greeting_Dashboard}>
+						<h1>Messages</h1>
+					</div>
+					<div className={Styles.Mail_Bar}>
+						{Array.from({ length: 10 }).map((_, index) => (
+							<div
+								className={Styles.Email_Item}
+								key={index}
+								onClick={() => handleEmailClick(index)}
+								style={{ cursor: 'pointer' }}
+							>
+								<div className={Styles.Email_Text}>
+									<h2>Name Here</h2>
+									<p>Active Now</p>
+								</div>
+								<div className={Styles.Button}>
+									<buttonz type="submit-send">Message</buttonz>
+								</div>
+							</div>
+						))}
+					</div>
+					<div classname={Styles.Email_Details}>
+						<hr />
+					</div>
+				</div>
+			</div>
+
+			<Footer></Footer>
+		</div>
+	);
+};
+
+export default Message;

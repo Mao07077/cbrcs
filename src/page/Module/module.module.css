@@ -1,239 +1,150 @@
-*{
-  margin: 0;
-  padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
+* {
+	margin: 0;
+	padding: 0;
+	font-family: Arial, Helvetica, sans-serif;
 }
 body {
- 
-  font-family: Consolas, sans-serif;
-  box-sizing: border-box;
+	font-family: Consolas, sans-serif;
+	box-sizing: border-box;
 }
 .MainContainer {
-  display: grid;
-  grid-template-areas:
-    "Header Header"
-    "Menu Content";
-  grid-template-columns: 0.1fr 1fr;
-  height: auto;
-  width: 100vw;
-  
+	display: flex;
+	flex-direction: column;
+	height: auto;
+	width: 100vw;
 }
-.MainContainer > div {
-  padding: 10px;
+.Content_Wrapper {
+	flex: 1;
+	display: flex;
 }
-.MainContainer > div.Content {
-  display: flex;
-  justify-content: flex-start ;
-  height: auto;
-  grid-area: Content;
-}
-.Header {
-  grid-area: Header;
-  background-color: #002f87;
-  display: flex;
-}
-.Greeting_Dashboard{
-  display: flex;
-  justify-content: flex-start;
-  padding:15px;
-  border-bottom: 4px solid #333;
- 
-}
-.Menu {
-  grid-area: Menu;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-items: flex-start;
-  width: 100%;
-  color: black;
-  top: 0;
-  left: 0;
-  
-}
-.Menu ul {
-  display: flex;
-  flex-direction: column;
-  justify-content:  flex-start;
-  flex: 1;
-  gap: 10%;
-  margin-top: 80px;
-}
-.Menu ul li {
-  display: flex;
-  justify-content: flex-start;
-  text-align: center;
-  margin-left: 10px;
-  padding: 5px 10px;
-  font-size: 24px;
-  cursor: pointer;
-  outline: none;
-  color: #000;
-  background: #f4f4f4;
-  border: none;
-  }
 
-  .Menu ul li a {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-decoration: none;
-      color: black;
-      font-size: 50%;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-    .Menu span{
-      font-size: 15px;
-      }
-      
-      .Menu img {
-        margin: 0 auto;
-        width: 50px;
-        height: 40px;
-      }
-      .Sidebar_Icon{
-        margin: 0 auto;
-        width: 50px;
-        height: 40px;
-        display:flex;
-        justify-content: center;
-      }
-.Sidebar_Item{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  align-self: center;
-  gap: 10px;
+.Header {
+	grid-area: Header;
+	background-color: #002f87;
+	display: flex;
 }
-.Content{
-  padding: 10px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  font-size: 25px;
-  font-style: initial;
-  margin: 10px 10px;
-  margin-left: 10px;
-  font-size: 1.2em;
-  border-left: 2px solid #333;
- 
-  
+.Greeting_Dashboard {
+	display: flex;
+	justify-content: flex-start;
+	padding: 15px;
+	border-bottom: 4px solid #333;
+}
+
+.Content {
+	width: 100%;
+	padding: 10px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	font-size: 25px;
+	font-style: initial;
+	margin: 10px 10px;
+	margin-left: 10px;
+	font-size: 1.2em;
 }
 .ModuleDashboard {
-  padding: 20px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
+	padding: 20px;
+	width: 100%;
+	display: flex;
+	justify-content: center;
 }
 
 .Module_Container {
-  background: white;
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 96%; 
-  max-width: 1550px; 
-  min-height: 85vh;
-  margin-left: 10px; 
+	background: white;
+	padding: 40px;
+	border-radius: 15px;
+	box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.1);
+	text-align: center;
+	width: 96%;
+	max-width: 1550px;
+	min-height: 85vh;
+	margin-left: 10px;
 }
 
 .Module_Container h1 {
-  border-top: 1px solid #333;
-  border-bottom: 1px solid #333;
-  padding: 15px 0;
-  width: 100%;
-  text-align: left;
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 25px;
+	border-top: 1px solid #333;
+	border-bottom: 1px solid #333;
+	padding: 15px 0;
+	width: 100%;
+	text-align: left;
+	font-size: 30px;
+	font-weight: bold;
+	margin-bottom: 25px;
 }
 
 .Module_Grid {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
+	display: flex;
+	justify-content: center;
+	gap: 40px;
+	flex-wrap: wrap;
 }
 
 .ModuleCard {
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 340px; 
+	background: white;
+	padding: 25px;
+	border-radius: 10px;
+	box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.1);
+	text-align: center;
+	width: 340px;
 }
 
 .ModuleImage {
-  width: 200px;
-  height: 140px;
-  background: #f0f0f0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 15px auto;
+	width: 200px;
+	height: 140px;
+	background: #f0f0f0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 15px auto;
 }
 
 .ProceedBtn {
-  background-color: #002ead;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 18px;
+	background-color: #002ead;
+	color: white;
+	padding: 12px 24px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 18px;
 }
 
+@media (max-width: 1000px) {
+	.Menu ul {
+		display: flex;
+		flex-direction: row;
+		height: 5px;
+		justify-content: center;
+		padding-bottom: 50px;
+		margin-top: 10px;
+	}
+	.Menu ul li {
+		display: flex;
+		flex-direction: row;
+		height: 5px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	.Menu img {
+		margin: 0 auto;
+		width: 20px;
+		height: 20px;
+	}
+	.Menu span {
+		font-size: 10px;
+	}
 
-@media(max-width: 1000px) {
-  
-  .Menu ul{
-    display: flex;
-    flex-direction: row;
-    height: 5px;
-    justify-content: center;
-    padding-bottom: 50px;
-    margin-top: 10px;
-  }
-  .Menu ul li {
-    display: flex;
-    flex-direction: row;
-    height: 5px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    
-  }
-  .Menu img {
-    margin: 0 auto;
-    width: 20px;
-    height: 20px;
-  }
-  .Menu span{
-    font-size: 10px;
-    }
-  .MainContainer{
-    display: grid;
-    grid-template-areas:
-      "Header Header"
-      "Content Content"
-      "Menu Menu";
-  }
-  .HabitCard{
-    font-size: 12px;
-  }
- .ModuleDashboard {
-    padding: 20px;
-    margin-top: 10px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-  .Module_Container h1 {
-    text-align: center;
-  }
+	.HabitCard {
+		font-size: 12px;
+	}
+	.ModuleDashboard {
+		padding: 20px;
+		margin-top: 10px;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+	}
+	.Module_Container h1 {
+		text-align: center;
+	}
 }
