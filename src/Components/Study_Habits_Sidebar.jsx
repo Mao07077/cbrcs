@@ -1,4 +1,11 @@
-import { HomeIcon, SquarePen, UserIcon, Flag, Upload } from 'lucide-react';
+import {
+	HomeIcon,
+	SquarePen,
+	UserIcon,
+	Flag,
+	Upload,
+	IdCard,
+} from 'lucide-react';
 import Sidebar from './composables/Sidebar';
 
 const routes = [
@@ -18,15 +25,15 @@ const routes = [
 		routeIcon: <Upload></Upload>,
 	},
 	{
-		routeName: 'Request',
-		routePath: '/settings',
-		routeIcon: <Flag></Flag>,
+		routeName: 'Study Habits',
+		routePath: '/StudyHabits_landingpage',
+		routeIcon: <IdCard></IdCard>,
 	},
 
 	{
-		routeName: 'Help',
-		routePath: '/help',
-		routeIcon: <SquarePen></SquarePen>,
+		routeName: 'Request',
+		routePath: '/settings',
+		routeIcon: <Flag></Flag>,
 	},
 ];
 

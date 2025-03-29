@@ -14,12 +14,7 @@ export default function Header({ isStudyHabits }) {
 	if (isStudyHabits) {
 		return (
 			<header className={Styles.Header_SH}>
-				<img
-					src={Logo}
-					alt="logo"
-					className={Styles.Logo_SH}
-					onClick={() => navigate('/StudyHabits_landingpage')}
-				/>
+				<img src={Icon} alt="logo" onClick={() => navigate('/')} />
 				<div className={Styles.SH_Wrapper}>
 					<Link to={'/StudyHabits_landingpage'}>
 						<ArrowBigLeft size={32}></ArrowBigLeft>
