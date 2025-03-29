@@ -1,174 +1,171 @@
 .chatContainer {
-  display: flex;
-  width: 600%;
-  max-width: 900px;
-  margin: auto;
-  height: 550px;
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  margin-top: 150px;
-  margin-right: 400px;
+	width: 100svw;
+	height: 100svh;
 }
 
+.content_Wrapper {
+	display: flex;
+	width: 100%;
+	height: 100%;
+}
 /* Sidebar */
 .sidebar {
-  width: 35%;
-  background: #f7f7f99d;
-  padding: 15px;
-  border-right: 1px solid #ddd;
-  overflow-y: auto;
+	width: 35%;
+	background: #f7f7f99d;
+	padding: 15px;
+	border-right: 1px solid #ddd;
+	overflow-y: auto;
 }
 
 .sidebar h3 {
-  margin-bottom: 10px;
-  color: rgb(11, 11, 11);
+	margin-bottom: 10px;
+	color: rgb(11, 11, 11);
 }
 
 .instructorItem {
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s;
-  border-bottom: 1px solid rgb(11, 11, 11);
+	display: flex;
+	align-items: center;
+	padding: 12px;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: background 0.2s;
+	border-bottom: 1px solid rgb(11, 11, 11);
 }
 
 .instructorItem:hover {
-  background: #e9e9e9;
+	background: #e9e9e9;
 }
 
 .instructorAvatar {
-  width: 40px;
-  height: 40px;
-  background: #ccc;
-  border-radius: 50%;
-  margin-right: 10px;
+	width: 40px;
+	height: 40px;
+	background: #ccc;
+	border-radius: 50%;
+	margin-right: 10px;
 }
 
 .instructorInfo {
-  display: flex;
-  flex-direction: column;
-  color: rgb(7, 7, 7);
+	display: flex;
+	flex-direction: column;
+	color: rgb(7, 7, 7);
 }
 
 /* Status Indicators */
-.activeStatus, .inactiveStatus {
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  margin-top: 2px;
+.activeStatus,
+.inactiveStatus {
+	font-size: 12px;
+	display: flex;
+	align-items: center;
+	margin-top: 2px;
 }
 
 .statusDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  margin-right: 5px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	margin-right: 5px;
 }
 
 .activeStatus .statusDot {
-  background-color: green;
+	background-color: green;
 }
 
 .inactiveStatus .statusDot {
-  background-color: gray;
+	background-color: gray;
 }
 
 .previewText {
-  font-size: 12px;
-  color: gray;
+	font-size: 12px;
+	color: gray;
 }
 
 /* Chat Section */
 .chatSection {
-  width: 65%;
-  display: flex;
-  flex-direction: column;
+	width: 65%;
+	display: flex;
+	flex-direction: column;
 }
 
 .chatHeader {
-  display: flex;
-  align-items: center;
-  padding: 15px;
-  background: rgb(48, 10, 173);
-  border-bottom: 1px solid #ddd;
+	display: flex;
+	align-items: center;
+	padding: 15px;
+	background: rgb(48, 10, 173);
+	border-bottom: 1px solid #ddd;
 }
 
 .chatHeader h3 {
-  margin-left: 10px;
-  color: white;
+	margin-left: 10px;
+	color: white;
 }
 
 /* Messages */
 .messages {
-  flex: 1;
-  padding: 15px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+	flex: 1;
+	padding: 15px;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 }
 
 .userMessage {
-  display: flex;
-  justify-content: flex-end;
+	display: flex;
+	justify-content: flex-end;
 }
 
 .instructorMessage {
-  display: flex;
-  justify-content: flex-start;
+	display: flex;
+	justify-content: flex-start;
 }
 
 .messageBubble {
-  padding: 10px;
-  border-radius: 12px;
-  max-width: 70%;
+	padding: 10px;
+	border-radius: 12px;
+	max-width: 70%;
 }
 
 .userMessage .messageBubble {
-  background-color: #d1e7ff;
+	background-color: #d1e7ff;
 }
 
 .instructorMessage .messageBubble {
-  background-color: #f1f1f1;
+	background-color: #f1f1f1;
 }
 
 /* Input Section */
 .inputContainer {
-  display: flex;
-  padding: 10px;
-  border-top: 1px solid #ddd;
-  background: white;
+	display: flex;
+	padding: 10px;
+	border-top: 1px solid #ddd;
+	background: white;
 }
 
 .input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
+	flex: 1;
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #ddd;
 }
 
 .sendButton {
-  background-color: blue;
-  color: white;
-  border: none;
-  padding: 10px;
-  margin-left: 10px;
-  cursor: pointer;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  margin-top: 25px;
+	background-color: blue;
+	color: white;
+	border: none;
+	padding: 10px;
+	margin-left: 10px;
+	cursor: pointer;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	margin-top: 25px;
 }
 
 /* When no chat is selected */
 .noChatSelected {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: gray;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	color: gray;
 }

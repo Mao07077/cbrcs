@@ -1,6 +1,17 @@
-.Header {
+.Header,
+.Header_SH {
 	background-color: #002f87;
 	display: block;
+}
+.Header_SH {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.SH_Wrapper > button {
+	width: auto;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .Header > img {
@@ -9,6 +20,30 @@
 	max-width: 180px;
 }
 
+.SH_Wrapper > a {
+	color: yellow;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+	text-decoration: none;
+}
+
+.Header_SH > img {
+	height: 50px;
+	width: auto;
+	max-width: 180px;
+}
+
 .Header > img:hover {
 	cursor: pointer;
+}
+
+.SH_Wrapper {
+	width: fit-content;
+	height: fit-content;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
 }

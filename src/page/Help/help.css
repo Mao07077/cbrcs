@@ -1,57 +1,72 @@
-
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: #f4f4f4;
 }
-
 
 /* Header styling */
 .header {
-    width: 100%;
-    background-color: #002f87;
-    padding: 10px;
-    color: white;
-    text-align: left;
-    position: fixed;
-    top: 0;
-    left: 0;
+	width: 100%;
+	background-color: #002f87;
+	padding: 10px;
+	color: white;
+	text-align: left;
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+.help_wrapper {
+	width: 100%;
+	height: 100%;
+	display: flex;
+}
+
+.help_container {
+	width: 100svw;
+	min-height: 100svh;
+	height: 100svh;
+}
+
+.help_content {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .header h1 {
-    margin: 0;
-    font-size: 1.5em; /* Adjusted for better readability */
-    display: inline-block; /* Added to keep the title inline */
+	margin: 0;
+	font-size: 1.5em; /* Adjusted for better readability */
+	display: inline-block; /* Added to keep the title inline */
 }
 
 .header img {
-    float: right; /* Float images to the right */
-    margin-left: 1%; 
-    margin-right: 2%;/* Add some space between images */
-    width: 2%;
-    height: 2%;
+	float: right; /* Float images to the right */
+	margin-left: 1%;
+	margin-right: 2%; /* Add some space between images */
+	width: 2%;
+	height: 2%;
 }
-
 
 /* Contact box styling */
 .contact-box {
-    background-color: white;
-    padding: 80px;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    border: 2px solid #002f87;
-    
+	background-color: white;
+	padding: 80px;
+	border-radius: 8px;
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+	/* adjust nyo nalang to */
+	width: 500px;
+	height: 500px;
+	border: 2px solid #002f87;
 }
 .contact-box h2 {
-    display: flex;
-    flex-direction: row;
-    text-align: center;
-    font-size: 1.5em;
-    color: #333;
-    border-bottom: 2px solid #002f87;
-    padding-bottom: 10px;
+	display: flex;
+	flex-direction: row;
+	text-align: center;
+	font-size: 1.5em;
+	color: #333;
+	border-bottom: 2px solid #002f87;
+	padding-bottom: 10px;
 }
-
-
