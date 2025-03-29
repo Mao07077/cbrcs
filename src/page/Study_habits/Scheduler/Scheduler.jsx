@@ -59,7 +59,7 @@ const ScheduleTable = () => {
 
 	return (
 		<div className={styles.container}>
-			<Header></Header>
+			<Header isStudyHabits={true}></Header>
 			<div className={styles.content_wrapper}>
 				<Study_Habits_Sidebar></Study_Habits_Sidebar>
 

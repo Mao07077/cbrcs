@@ -1,28 +1,25 @@
 import React from 'react';
 import './help.css';
-import Header from '../../Components/Header';
-import nameIcon from '../../icon/name.png';
-import moduleIcon from '../../icon/module.png';
-import dashboardIcon from '../../icon/dashboard.png';
-import settingsIcon from '../../icon/settings.png';
-import helpIcon from '../../icon/help.png';
-import logoIcon from '../../icon/logo.png';
-
-
+import Header from '../../Components/composables/Header';
+import Study_Habits_Sidebar from '../../Components/Study_Habits_Sidebar';
+import Footer from '../../Components/composables/Footer';
 
 const HelpPage = () => {
-    return (
-        <div>
-            <header className="header">
-                <Header />
-            </header>
-            <main className="help-container">
-                <div className="contact-box">
-                    <h2>Contact Us</h2>
-                </div>
-            </main>
-        </div>
-    );
+	return (
+		<div className="help_container">
+			<Header isStudyHabits={true}></Header>
+			<div className="help_wrapper">
+				<Study_Habits_Sidebar></Study_Habits_Sidebar>
+				<main className="help_content">
+					<div className="contact-box">
+						<h2>Contact Us</h2>
+					</div>
+				</main>
+			</div>
+
+			<Footer></Footer>
+		</div>
+	);
 };
 
 export default HelpPage;

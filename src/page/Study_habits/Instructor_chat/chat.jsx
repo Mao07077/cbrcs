@@ -31,7 +31,7 @@ const Chat = () => {
 
 	return (
 		<div className={styles.chatContainer}>
-			<Header />
+			<Header isStudyHabits={true}></Header>
 			{/* Sidebar with Instructor List */}
 			<div className={styles.content_Wrapper}>
 				<Study_Habits_Sidebar></Study_Habits_Sidebar>

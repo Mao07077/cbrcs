@@ -65,7 +65,7 @@ const Flashcards = ({ subject = 'Computer Programming' }) => {
 
 	return (
 		<div className={styles.container}>
-			<Header></Header>
+			<Header isStudyHabits={true}></Header>
 			<div className={styles.content_wrapper}>
 				<h2 className={styles.title}>FLASHCARDS</h2>
 				<p className={styles.subject}>
@@ -117,7 +117,6 @@ const Flashcards = ({ subject = 'Computer Programming' }) => {
 					)}
 				</div>
 			</div>
-
 			<Footer></Footer>
 		</div>
 	);

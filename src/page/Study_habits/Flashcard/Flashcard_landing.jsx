@@ -70,7 +70,7 @@ const FlashcardsLandingPage = () => {
 
 	return (
 		<div className={Styles.page_container}>
-			<Header />
+			<Header isStudyHabits={true}></Header>
 			<div className={Styles.content_wrapper}>
 				<Study_Habits_Sidebar></Study_Habits_Sidebar>
 				<div className={Styles.module_container}>

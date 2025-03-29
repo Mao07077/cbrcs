@@ -66,7 +66,7 @@ const top10StudyHabits = [
 const StudyHabits = () => {
 	return (
 		<div className="Container_SHL">
-			<Header></Header>
+			<Header isStudyHabits={true}></Header>
 			<div className="Content_Wrapper_SHL">
 				<Study_Habits_Sidebar></Study_Habits_Sidebar>
 				<div className="Content_SHL">

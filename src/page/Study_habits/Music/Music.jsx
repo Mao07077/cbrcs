@@ -82,7 +82,7 @@ const MusicPlayer = () => {
 
 	return (
 		<div className={styles.page_container}>
-			<Header />
+			<Header isStudyHabits={true}></Header>
 			<div className={styles.container_wrapper}>
 				<Study_Habits_Sidebar></Study_Habits_Sidebar>
 				<div className={styles.music_wrapper}>
