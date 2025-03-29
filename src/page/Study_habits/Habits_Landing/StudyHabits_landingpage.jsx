@@ -5,7 +5,7 @@ import './studyhabits.css';
 import Icon from '../../../icon/actual.png';
 import Study_Habits_Sidebar from '../../../Components/Study_Habits_Sidebar';
 import Header from '../../../Components/composables/Header';
-import Footer from '../../../Components/composables/Footer';
+import Footer from '../../../Components/composables/FooterSH';
 
 const studyHabits = [
 	{

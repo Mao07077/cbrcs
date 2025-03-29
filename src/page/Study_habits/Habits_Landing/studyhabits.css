@@ -1,4 +1,3 @@
-/* Container adjustments for responsiveness */
 .Container_SHL {
 	width: 100svw;
 	height: 100vh;
@@ -12,75 +11,73 @@
 	width: 100%;
 	height: 100%;
 }
-/* Title adjustments */
+
+/* Title adjustments - Removed underline & moved slightly right */
 .title {
 	font-size: 24px;
 	font-weight: bold;
-	border-bottom: 2px solid #000;
-	padding-bottom: 5px;
+	margin-top: 20px;
+	padding-left: 15px; /* Moves to the right */
+	border-bottom:solid 1px rgb(187, 182, 182); /* Underline effect */
 }
 
-/* Subtitle improvements */
 .subtitle2 {
 	font-size: clamp(10px, 1vw, 14px);
 	font-weight: bold;
 	margin-bottom: 10px;
-	border-top: 1px solid #000;
-	border-bottom: 1px solid #000;
 	padding: 15px 0;
+	padding-left: 15px; /* Moves to the right */
+	border-bottom:solid 1px rgb(187, 182, 182); /* Underline effect */
+	margin-top: 30px;
+	border-top: solid 1px rgb(187, 182, 182); /* Underline effect */;
 }
+
+/* Normal subtitle */
 .subtitle {
 	font-size: 14px;
 	font-weight: bold;
 	margin-top: 15px;
+	padding-left: 15px; /* Moves to the right */
 }
 
-/* Top Habits Section */
-.top-habits {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 10px;
-	justify-content: center;
-	font-size: 14px;
-	margin-top: 20px;
-	margin-bottom: 20px;
-	width: 90%;
-	max-width: 800px;
-}
-
-/* Habit Card with consistent size */
+/* Habit Cards */
 .habit-card {
-	flex: 1 1 calc(33.333% - 20px);
-	max-width: 220px;
-	min-width: 150px;
-	min-height: 120px;
-	width: 90%;
-	height: 120px;
+	flex: 1 1 200px; /* Smaller fixed width */
+	max-width: 200px;
+	min-width: 200px;
+	height: 100px; /* Adjusted height */
 	text-align: center;
-	background-color: #f8f9fa;
-	border: #000 1px solid;
-	padding: 12px;
-	border-radius: 10px;
+	background-color: #F8F9FA;
+	border: 1px solid #060606;
+	padding: 10px;
+	border-radius: 8px;
 	font-weight: bold;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	font-size: 14px;
-	white-space: normal;
-	overflow-wrap: break-word;
-	margin-top: 20px;
+	font-size: 13px;
 	transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-	text-decoration: none;
+	margin-top: 20px;
 }
 
+/* Center the habit section */
+.top-habits {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    width: 100%;
+}
+
+/* Subtle Hover Effect */
 .habit-card:hover {
 	transform: scale(1.02);
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-	background-color: #e3f2fd;
+	box-shadow: 2px 2px 10px rgba(106, 13, 173, 0.2);
 }
 
-/* Habit title adjustments */
+/* Habit title improvements */
 .habit-title {
 	font-size: clamp(14px, 1.5vw, 18px);
 	font-weight: bold;
@@ -93,102 +90,53 @@
 	color: black;
 }
 
+/* Description inside habit cards */
 .habit-description {
 	font-size: 14px;
 	color: #555;
 	margin-top: 5px;
 }
 
-/* Responsive grid */
-.grid-container {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-	gap: 15px;
-}
-
-/* Footer adjustments */
-.footer {
-	background-color: #002f87;
-	color: white;
-	text-align: center;
-	padding: 20px;
-	font-size: 16px;
-	font-weight: bold;
-	width: 100%;
-	height: 70px;
-	position: fixed;
-	bottom: 0;
-	left: 0;
+/* Responsive Layout */
+.top-habits, .grid-container {
 	display: flex;
-	align-items: center;
+	flex-wrap: wrap;
 	justify-content: center;
-	gap: 10px;
+	gap: 12px;
+}
+/* Remove underline from all links inside habit-card */
+.habit-card {
+    text-decoration: none !important;
+    color: inherit !important;
 }
 
-.footer img {
-	width: 120px;
-	height: auto;
+/* Specifically target <p> inside the links */
+.habit-card p {
+    text-decoration: none !important;
 }
 
-.footer p {
-	margin: 0;
-	font-size: 14px;
+/* Override all link states to prevent underline */
+.habit-card:link,
+.habit-card:visited,
+.habit-card:hover,
+.habit-card:active {
+    text-decoration: none !important;
+    color: inherit !important;
 }
 
-/* Responsive styles */
+/* Mobile Adjustments */
 @media (max-width: 768px) {
-	.top-habits {
-		width: 100%;
-		gap: 8px;
-		padding: 0 10px;
+	.top-habits, .grid-container {
 		justify-content: center;
 	}
-	.habit-card {
-		flex: 1 1 calc(50% - 10px);
-		min-width: 100px;
-		min-height: 120px;
-		max-width: 100%;
-		height: 120px;
-	}
-	.footer {
-		flex-direction: column;
-		height: auto;
-		padding: 10px;
-	}
-	.footer img {
-		width: 80px;
-	}
-	.footer p {
-		font-size: 10px;
-	}
-}
 
-@media (max-width: 480px) {
-	.Container_SHL {
-		width: 100svw;
-		height: auto;
-		min-height: 100svh;
-	}
-	.top-habits {
-		flex-direction: column;
-		align-items: center;
-		padding: 0 10px;
-	}
 	.habit-card {
-		flex: 1 1 100%;
-		min-width: auto;
-		min-height: 120px;
-		max-width: 50%;
-		height: 120px;
-		margin: 0 auto;
+		max-width: 170px;
+		min-width: 150px;
 	}
-	.footer img {
-		width: 60px;
-	}
-	.footer {
-		height: 60px;
-	}
-	.footer p {
-		font-size: 9px;
+
+	/* Keep titles aligned on mobile */
+	.title, .subtitle, .subtitle2 {
+		padding-left: 10px;
 	}
 }
