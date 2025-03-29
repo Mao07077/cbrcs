@@ -1,7 +1,8 @@
 /* Container adjustments for responsiveness */
 .Container_SHL {
 	width: 100svw;
-	height: 100svh;
+	height: 100vh;
+	min-height: auto;
 }
 .Content_Wrapper_SHL {
 	display: flex;
@@ -163,6 +164,11 @@
 }
 
 @media (max-width: 480px) {
+	.Container_SHL {
+		width: 100svw;
+		height: auto;
+		min-height: 100svh;
+	}
 	.top-habits {
 		flex-direction: column;
 		align-items: center;
