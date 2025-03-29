@@ -1,180 +1,281 @@
 .page_container {
-	width: 100svw;
-	height: 100svh;
-	min-height: 100svh;
+    width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
 }
+
 .container_wrapper {
-	display: flex;
-	width: 100%;
-	height: 100%;
+    display: flex;
+    width: 100%;
+    height: 100%;
 }
+
 .content_wrapper {
-	width: 100%;
-	height: 100%;
+    width: 100%;
+    height: 100%;
 }
+
 .border {
-	font-size: 24px;
-	font-weight: bold;
-	text-align: left;
-	padding: 15px 0;
-	border-bottom: 2px solid #003366;
-	width: 100%;
-	max-width: 1200px;
-	color: #0b0b0b;
-	background: none;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: left;
+    padding: 15px 0;
+    border-bottom: 2px solid #003366;
+    width: 100%;
+    color: #0b0b0b;
+    background: none;
+    padding-left: 10px;
+    box-sizing: border-box;
 }
 
 .create_note_btn {
-	background-color: #28a745;
-	color: white;
-	padding: 10px 18px;
-	border: none;
-	border-radius: 6px;
-	cursor: pointer;
-	font-size: 15px;
-	margin: 15px 0;
+    background-color: #28a745;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    margin: 15px 0;
+    width: 20%;
+    min-width: 120px;
+    margin-left: 20px;
+    transition: background 0.3s ease;
+}
+
+.create_note_btn:hover {
+    background-color: #218838;
 }
 
 .notes_grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-	gap: 20px;
-	width: 100%;
-	max-width: 1200px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
 }
 
 .note_card {
-	position: relative;
-	background: white;
-	padding: 15px;
-	border-radius: 8px;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    min-width: 250px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.note_title {
+    flex: 1;
+    font-size: 18px;
+    font-weight: bold;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.note_content {
+    font-size: 14px;
+    line-height: 1.4;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    max-width: 100%;
 }
 
 .note_card:hover {
-	background: white !important;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
-	cursor: default !important;
-}
-
-.note_header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+    background: white !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+    cursor: default !important;
 }
 
 .no_notes {
-	color: #888;
-	font-size: 16px;
-	text-align: center;
-	width: 100%;
+    color: #888;
+    font-size: 16px;
+    text-align: center;
+    width: 100%;
 }
 
 .modal_overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5);
-	display: flex;
-	justify-content: center;
-	align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
 .modal_content {
-	position: relative;
-	background: white;
-	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-	width: 450px;
-	display: flex;
-	flex-direction: column;
+    position: relative;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 450px;
+    display: flex;
+    flex-direction: column;
 }
 
 .modalTitle {
-	text-align: center;
-	font-size: 20px;
-	font-weight: bold;
-	margin-bottom: 10px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 .label {
-	font-weight: bold;
-	margin-top: 10px;
+    font-weight: bold;
+    margin-top: 10px;
 }
 
 .titleInput,
 .textArea {
-	width: 100%;
-	padding: 8px;
-	margin-top: 5px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
 }
 
 .saveBtn {
-	background-color: #007bff;
-	color: white;
-	padding: 10px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	font-size: 16px;
-	margin-top: 15px;
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+    transition: background 0.3s ease;
+}
+
+.saveBtn:hover {
+    background-color: #0056b3;
 }
 
 .closeBtn {
-	position: absolute;
-	top: 10px;
-	right: 15px;
-	border-radius: 50%;
-	background: none;
-	border: none;
-	font-size: 24px;
-	cursor: pointer;
-	color: #555;
-	width: 30px;
-	height: 30px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #555;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .dropdown_container {
-	position: relative;
-	display: inline-block;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
 }
 
 .dropdown_button {
-	background: none !important;
-	border: none;
-	font-size: 20px;
-	cursor: pointer;
-	padding: 5px;
-	color: black;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+    color: black;
+    outline: none; /* Prevent focus outline */
+}
+
+.dropdown_button:hover,
+.dropdown_button:focus,
+.dropdown_button:active {
+    background: none !important;
+    color: black !important;
+    box-shadow: none !important;
 }
 
 .dropdown_menu {
-	position: absolute;
-	top: 35px;
-	right: 0;
-	background: white;
-	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15);
-	width: 120px;
-	z-index: 100;
-	display: flex;
-	flex-direction: column;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15);
+    width: 120px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    transition: opacity 0.2s ease;
 }
 
 .dropdown_menu button {
-	width: 100%;
-	padding: 10px;
-	border: none;
-	background: none;
-	text-align: left;
-	cursor: pointer;
-	font-size: 14px;
-	color: black;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+    color: black;
+}
+
+.dropdown_menu button:hover {
+    background: #f0f0f0;
+}
+
+@media screen and (max-width: 1024px) {
+    .create_note_btn {
+        width: 30%;
+    }
+
+    .notes_grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .create_note_btn {
+        width: 40%;
+    }
+
+    .notes_grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .note_card {
+        margin-left: 5px;
+        padding: 10px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .create_note_btn {
+        width: 80%;
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .notes_grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .note_card {
+        margin-left: 0;
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .modal_content {
+        width: 90%;
+    }
 }

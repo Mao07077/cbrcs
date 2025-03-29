@@ -11,6 +11,7 @@ const Notes = () => {
 	const [notes, setNotes] = useState([]);
 	const [showDropdown, setShowDropdown] = useState(null);
 	const [editingIndex, setEditingIndex] = useState(null);
+
 	const handleSave = () => {
 		if (!title.trim() || !content.trim()) return;
 
@@ -26,11 +27,13 @@ const Notes = () => {
 		setTitle('');
 		setContent('');
 		setShowNoteModal(false);
+		setShowDropdown(null);
 	};
 
 	const handleDelete = (index) => {
 		const updatedNotes = notes.filter((_, i) => i !== index);
 		setNotes(updatedNotes);
+		setShowDropdown(null);
 	};
 
 	const handleEdit = (index) => {
@@ -38,13 +41,14 @@ const Notes = () => {
 		setContent(notes[index].content);
 		setEditingIndex(index);
 		setShowNoteModal(true);
+		setShowDropdown(null);
 	};
 
 	return (
 		<div className={styles.page_container}>
-			<Header isStudyHabits={true}></Header>
+			<Header isStudyHabits={true} />
 			<div className={styles.container_wrapper}>
-				<Study_Habits_Sidebar></Study_Habits_Sidebar>
+				<Study_Habits_Sidebar />
 				<div className={styles.content_wrapper}>
 					<header className={styles.border}>
 						<h2>My Notes</h2>
@@ -61,7 +65,7 @@ const Notes = () => {
 							notes.map((note, index) => (
 								<div key={index} className={styles.note_card}>
 									<div className={styles.note_header}>
-										<h3>{note.title}</h3>
+										<h3 className={styles.note_title}>{note.title}</h3>
 										<div className={styles.dropdown_container}>
 											<button
 												className={styles.dropdown_button}
@@ -83,7 +87,7 @@ const Notes = () => {
 											)}
 										</div>
 									</div>
-									<p>{note.content}</p>
+									<p className={styles.note_content}>{note.content}</p>
 								</div>
 							))
 						) : (
@@ -125,7 +129,7 @@ const Notes = () => {
 					)}
 				</div>
 			</div>
-			<Footer></Footer>
+			<Footer />
 		</div>
 	);
 };
