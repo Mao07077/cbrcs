@@ -51,20 +51,15 @@
 		text-align: center;
 		gap: 5px;
 	}
-	.footer > ul > li {
-		font-size: 0.6rem;
-	}
-	
-	.footer > ul > li > a {
-		font-size: 0.6rem;
-		color: rgb(255, 255, 252);
-	}
-
-	.footer {
-		
-		margin-top: 400px;
-	}
-	.Logo_Wrapper {
-		display: none;
-		}
+    .Logo_Wrapper{
+        display: none;
+        }
+        .footer > ul > li {
+            font-size: 0.6rem;
+        }
+        
+        .footer > ul > li > a {
+            font-size: 0.6rem;
+            color: rgb(255, 255, 252);
+        }
 }

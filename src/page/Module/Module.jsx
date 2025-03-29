@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Styles from './module.module.css';
-import Icon from '../../icon/actual.png';
-import NameIcon from '../../icon/name.png';
-import ModuleIcon from '../../icon/module.png';
-import DashboardIcon from '../../icon/dashboard.png';
-import RequestIcon from '../../icon/request.png';
-import HelpIcon from '../../icon/help.png';
 import Header from '../../Components/composables/Header';
 import Student_Sidebar from '../../Components/Student_Sidebar';
-import Footer from '../../Components/composables/Footer';
+import Footer from '../../Components/composables/FooterM';
 const ModuleDashboard = () => {
 	const handleNavigation = (route) => {
 		console.log(`Navigating to: ${route}`);

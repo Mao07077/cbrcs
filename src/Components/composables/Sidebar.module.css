@@ -3,10 +3,13 @@
 	width: auto;
 	height: auto;
 	border-right: solid 1px rgb(187, 182, 182);
+	top: 10;
+
 }
 
 .ul {
 	list-style: none;
+	position: sticky;
 }
 .ul > h3 {
 	margin: 10px;

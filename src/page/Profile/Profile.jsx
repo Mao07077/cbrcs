@@ -2,13 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Styles from './profile.module.css';
 import nameIcon from '../../icon/name.png';
-import Icon from '../../icon/actual.png';
-import NameIcon from '../../icon/name.png';
-import ModuleIcon from '../../icon/module.png';
-import DashboardIcon from '../../icon/dashboard.png';
-import RequestIcon from '../../icon/request.png';
-import HelpIcon from '../../icon/help.png';
-
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -21,7 +14,7 @@ import {
 import { Bar } from 'react-chartjs-2';
 import Header from '../../Components/composables/Header';
 import Student_Sidebar from '../../Components/Student_Sidebar';
-import Footer from '../../Components/composables/Footer';
+import Footer from '../../Components/composables/FooterP';
 
 ChartJS.register(
 	CategoryScale,

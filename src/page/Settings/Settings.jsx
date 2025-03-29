@@ -7,7 +7,7 @@ import DashboardIcon from '../../icon/dashboard.png';
 import RequestIcon from '../../icon/request.png';
 import HelpIcon from '../../icon/help.png';
 import Header from '../../Components/composables/Header';
-import Footer from '../../Components/composables/Footer';
+import Footer from '../../Components/composables/FooterS';
 import Student_Sidebar from '../../Components/Student_Sidebar';
 
 const Settings = () => {
