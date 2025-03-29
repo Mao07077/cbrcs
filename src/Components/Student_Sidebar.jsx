@@ -1,4 +1,4 @@
-import { SquarePen, UserIcon, Book, Upload, IdCard } from 'lucide-react';
+import { SquarePen, UserIcon, Book, HomeIcon, IdCard } from 'lucide-react';
 import Sidebar from './composables/Sidebar';
 
 const routes = [
@@ -15,7 +15,7 @@ const routes = [
 	{
 		routeName: 'Dashboard',
 		routePath: '/dashboard',
-		routeIcon: <Upload></Upload>,
+		routeIcon: <HomeIcon></HomeIcon>,
 	},
 	{
 		routeName: 'Study Habits',
