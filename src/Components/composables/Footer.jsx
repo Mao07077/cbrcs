@@ -19,8 +19,10 @@ export default function Footer() {
 	return (
 		<footer className={Styles.footer}>
 			{/* insert logo here */}
+			<div className={Styles.Logo_Wrapper}>
+				<img src={Icon} alt="logo" />
+			</div>
 			<ul>
-				<h2>Contact Us </h2>
 				<li>Phone No#: {footerInfo.phoneNo} </li>
 				<li>Address: {footerInfo.address} </li>
 				{/* socials */}
@@ -37,11 +39,6 @@ export default function Footer() {
 					</a>
 				</li>
 			</ul>
-
-			<div className={Styles.Logo_Wrapper}>
-				<img src={Icon} alt="logo" />
-				<p>© 2024 Dr. Carl Balita Review Center. All Rights Reserved.</p>
-			</div>
 		</footer>
 	);
 }

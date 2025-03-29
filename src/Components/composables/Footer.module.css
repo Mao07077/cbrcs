@@ -1,24 +1,27 @@
 .footer {
 	background-color: #002f87;
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 	align-items: center;
+	flex-direction: column;
 	padding: 10px;
 }
 
 .footer > ul {
 	list-style: none;
 	color: rgb(255, 255, 252);
-}
-.footer > ul > h2 {
-	color: rgb(247, 216, 46);
+	display: flex;
+	gap: 20px;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .footer > ul > li {
-	font-size: 1rem;
+	font-size: 0.8rem;
 }
 
 .footer > ul > li > a {
+	font-size: 0.8rem;
 	color: rgb(255, 255, 252);
 }
 

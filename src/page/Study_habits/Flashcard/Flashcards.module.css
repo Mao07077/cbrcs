@@ -1,172 +1,170 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    width: 90vw;
-    height: 100vh;
-    background: linear-gradient(to right, #f8f9fa, #e9ecef);
-    padding: 30px;
-    box-sizing: border-box;
-    margin-left: 150px; /* Moves elements slightly to the right */
+	width: 100svw;
+	height: 100svh;
+	min-height: 100svh;
+	background: linear-gradient(to right, #f8f9fa, #e9ecef);
+}
+
+.content_wrapper {
+	width: 100%;
+	height: 100%;
 }
 
 /* Title styling */
 /* Title styling */
 .title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #050505;
-    margin-bottom: 1.5rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-align: left; /* Align text to the left */
-    width: 100%;
-    margin-left: 0; /* Aligns it to the left */
-    padding-left: 20px; /* Adds spacing from the left edge */
-    margin-top: 50px;
-    border-bottom: 1px solid #0c0c0c;
-    padding-bottom: 10px;
+	font-size: 2.5rem;
+	font-weight: bold;
+	color: #050505;
+	margin-bottom: 1.5rem;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	text-align: left; /* Align text to the left */
+	width: 100%;
+	margin-left: 0; /* Aligns it to the left */
+	padding-left: 20px; /* Adds spacing from the left edge */
+	margin-top: 50px;
+	border-bottom: 1px solid #0c0c0c;
+	padding-bottom: 10px;
 }
-
-
 
 /* Subject info */
 .subject {
-    font-size: 1.2rem;
-    color: #0b0b0b;
-    margin-bottom: 20px;
+	font-size: 1.2rem;
+	color: #0b0b0b;
+	margin-bottom: 20px;
 }
 
 /* Flashcard container */
 .cardContainer {
-    display: flex;
-    justify-content: center;
-    gap: 20px; /* Space between cards */
-    width: 100%;
-    max-width: 900px;
-    flex-wrap: wrap; /* Ensures cards don’t overlap */
-    position: relative;
-    margin-bottom: 30px;
-    margin-left: 200px
+	display: flex;
+	justify-content: center;
+	gap: 20px; /* Space between cards */
+	width: 100%;
+	max-width: 900px;
+	flex-wrap: wrap; /* Ensures cards don’t overlap */
+	position: relative;
+	margin-bottom: 30px;
+	margin-left: 200px;
 }
 
 /* Flashcard styling */
 .card {
-    width: 280px;
-    height: 350px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-size: 1.2rem;
-    font-weight: 600;
-    padding: 20px;
-    transition: transform 0.5s ease-in-out;
-    transform-style: preserve-3d;
-    position: relative;
-    perspective: 1000px;
+	width: 280px;
+	height: 350px;
+	background: white;
+	border-radius: 12px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	font-size: 1.2rem;
+	font-weight: 600;
+	padding: 20px;
+	transition: transform 0.5s ease-in-out;
+	transform-style: preserve-3d;
+	position: relative;
+	perspective: 1000px;
 }
 
 /* Inner wrapper to allow flipping */
 .inner {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.5s ease-in-out;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	transform-style: preserve-3d;
+	transition: transform 0.5s ease-in-out;
 }
 
 /* Flip effect */
 .card.flipped .inner {
-    transform: rotateY(180deg);
+	transform: rotateY(180deg);
 }
 
 /* Front and back faces */
-.front, .back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.front,
+.back {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	backface-visibility: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding: 20px;
+	border-radius: 12px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Front card style */
 .front {
-    background: #fff;
-    color: #333;
+	background: #fff;
+	color: #333;
 }
 
 /* Back card style */
 .back {
-    background: #007bff;
-    color: white;
-    transform: rotateY(180deg);
+	background: #007bff;
+	color: white;
+	transform: rotateY(180deg);
 }
 
 /* Navigation Buttons */
 .navContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 900px;
-    margin: 20px auto 0;
-    position: relative;
-    gap: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	max-width: 900px;
+	margin: 20px auto 0;
+	position: relative;
+	gap: 20px;
 }
 
 /* Styling for Next and Prev buttons */
 .navButton {
-    background: none;
-    background-color: rgb(124, 125, 125);
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.3s ease-in-out;
+	background: none;
+	background-color: rgb(124, 125, 125);
+	border-radius: 50%;
+	border: none;
+	cursor: pointer;
+	width: 80px;
+	height: 80px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: opacity 0.3s ease-in-out;
 }
 
 .navButton:hover {
-    opacity: 0.7;
+	opacity: 0.7;
 }
 
 /* Ensure SVG icons are visible */
 .icon {
-    width: 100px;
-    height: 100px;
-    fill: black;
+	width: 100px;
+	height: 100px;
+	fill: black;
 }
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
-    .cardContainer {
-        flex-direction: column;
-        align-items: center;
-    }
+	.cardContainer {
+		flex-direction: column;
+		align-items: center;
+	}
 
-    .card {
-        width: 90%;
-        max-width: 280px;
-        height: auto;
-    }
+	.card {
+		width: 90%;
+		max-width: 280px;
+		height: auto;
+	}
 
-    .navButton {
-        width: 35px;
-        height: 35px;
-    }
+	.navButton {
+		width: 35px;
+		height: 35px;
+	}
 }
