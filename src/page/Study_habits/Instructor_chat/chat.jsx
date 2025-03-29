@@ -46,7 +46,6 @@ const Chat = () => {
 							<div className={styles.instructorAvatar}></div>
 							<div className={styles.instructorInfo}>
 								<strong>{instructor.name}</strong>
-								<p className={styles.previewText}>Click to chat</p>
 								<p
 									className={
 										instructor.active

@@ -1,6 +1,6 @@
 .chatContainer {
 	width: 100svw;
-	height: 100svh;
+	height: 80vh;
 }
 
 .content_Wrapper {
@@ -23,13 +23,14 @@
 }
 
 .instructorItem {
-	display: flex;
-	align-items: center;
-	padding: 12px;
-	border-radius: 6px;
-	cursor: pointer;
-	transition: background 0.2s;
-	border-bottom: 1px solid rgb(11, 11, 11);
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-bottom: 1px solid rgb(11, 11, 11);
+    gap: 10px; /* Ensures spacing between avatar and text */
 }
 
 .instructorItem:hover {
@@ -37,18 +38,20 @@
 }
 
 .instructorAvatar {
-	width: 40px;
-	height: 40px;
-	background: #ccc;
-	border-radius: 50%;
-	margin-right: 10px;
+    width: 40px;
+    height: 40px;
+    background: #ccc;
+    border-radius: 50%;
+    flex-shrink: 0; /* Prevents avatar from shrinking */
 }
 
 .instructorInfo {
-	display: flex;
-	flex-direction: column;
-	color: rgb(7, 7, 7);
+    display: flex;
+    flex-direction: column;
+    color: rgb(7, 7, 7);
+    flex-grow: 1; /* Allows text to take up remaining space */
 }
+
 
 /* Status Indicators */
 .activeStatus,
@@ -74,10 +77,7 @@
 	background-color: gray;
 }
 
-.previewText {
-	font-size: 12px;
-	color: gray;
-}
+
 
 /* Chat Section */
 .chatSection {
@@ -101,18 +101,19 @@
 
 /* Messages */
 .messages {
-	flex: 1;
-	padding: 15px;
-	overflow-y: auto;
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .userMessage {
-	display: flex;
-	justify-content: flex-end;
+    display: flex;
+    justify-content: flex-end;
 }
+
 
 .instructorMessage {
 	display: flex;
@@ -120,17 +121,24 @@
 }
 
 .messageBubble {
-	padding: 10px;
-	border-radius: 12px;
-	max-width: 70%;
+    padding: 12px 15px;
+    border-radius: 12px;
+    max-width: 75%;
+    word-wrap: break-word;
+    font-size: 16px; /* Increased readability */
+    line-height: 1.4;
 }
 
 .userMessage .messageBubble {
-	background-color: #d1e7ff;
+    background-color: #d1e7ff;
+    color: #000;
+    text-align: left;
 }
 
 .instructorMessage .messageBubble {
-	background-color: #f1f1f1;
+    background-color: #f1f1f1;
+    color: #000;
+    text-align: left;
 }
 
 /* Input Section */
@@ -168,4 +176,55 @@
 	justify-content: center;
 	height: 100%;
 	color: gray;
+}
+@media (max-width: 768px) {
+    .instructorItem {
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .instructorAvatar {
+        width: 35px;
+        height: 35px;
+    }
+
+    .instructorInfo strong {
+        font-size: 14px; /* Adjust text size for small screens */
+    }
+
+    .previewText {
+        font-size: 12px;
+    }
+
+    .activeStatus,
+    .inactiveStatus {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .instructorItem {
+        flex-direction: row;
+        align-items: center;
+        padding: 8px;
+        gap: 6px;
+    }
+
+    .instructorAvatar {
+        width: 30px;
+        height: 30px;
+    }
+
+    .instructorInfo strong {
+        font-size: 12px;
+    }
+
+    .previewText {
+        font-size: 10px;
+    }
+
+    .activeStatus,
+    .inactiveStatus {
+        font-size: 10px;
+    }
 }
