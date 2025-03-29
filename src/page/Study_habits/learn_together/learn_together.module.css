@@ -23,6 +23,7 @@
 	justify-content: center;
 	padding: 20px;
 	margin-top: 10px;
+	background-color: #140f41;
 }
 
 /* Main Video Section */
@@ -160,12 +161,11 @@
 
 /* Invite Button */
 .inviteButton {
-	background-color: #007bff;
-	color: white;
-	border: none;
-	padding: 5px 10px;
-	border-radius: 5px;
-	cursor: pointer;
+	min-width: 60px; /* Ensures text fits */
+	padding: 6px 10px; /* More padding */
+	font-size: 14px;
+	text-align: center;
+	white-space: nowrap; /* Prevents text wrapping */
 }
 
 .inviteButton:hover {
@@ -176,4 +176,106 @@
 .noParticipants {
 	font-style: italic;
 	color: gray;
+}
+@media (max-width: 1024px) {
+	.mainContent {
+		padding: 10px;
+	}
+
+	.videoSection {
+		width: 80%;
+		max-width: 700px;
+		height: 300px;
+	}
+
+	.controls button {
+		width: 40px;
+		height: 40px;
+	}
+
+	.controls button img {
+		width: 16px;
+		height: 16px;
+	}
+
+	.chatBox {
+		min-height: 120px; /* Ensures chat box remains readable */
+	}
+}
+
+@media (max-width: 768px) {
+	.mainContent {
+		padding: 5px;
+	}
+
+	.videoSection {
+		width: 90%;
+		max-width: 500px;
+		height: 250px;
+	}
+
+	.controls {
+		gap: 5px;
+	}
+
+	.controls button {
+		width: 35px;
+		height: 35px;
+	}
+
+	.controls button img {
+		width: 14px;
+		height: 14px;
+	}
+
+	.chatBox {
+		min-height: 100px;
+		max-height: 150px;
+		overflow-y: auto; /* Prevents overflow issues */
+	}
+}
+@media (max-width: 600px) {
+	.inviteButton {
+		font-size: 12px; /* Slightly smaller text */
+		padding: 5px 8px;
+	}
+	.actionButton {
+        font-size: 12px;
+        padding: 5px 10px;
+        min-width: 50px;
+        max-width: 70px;
+    }
+}
+@media (max-width: 480px) {
+	.videoSection {
+		width: 95%;
+		max-width: 350px;
+		height: 200px;
+	}
+	.controls {
+		gap: 3px;
+	}
+
+	.controls button {
+		width: 30px;
+		height: 30px;
+	}
+
+	.controls button img {
+		width: 12px;
+		height: 12px;
+	}
+
+	.chatBox {
+		min-height: 90px;
+		max-height: 120px;
+		padding: 10px;
+		
+	}
+	.actionButton {
+        font-size: 12px;
+        padding: 5px 10px;
+        min-width: 80px;
+        max-width: 90px;
+    }
 }
