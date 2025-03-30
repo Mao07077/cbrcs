@@ -21,7 +21,7 @@ body {
 	display: flex;
 	justify-content: flex-start;
 	padding: 15px;
-	border-bottom: 4px solid #333;
+	border-bottom: 1px solid #333;
 }
 
 .Content {

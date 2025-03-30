@@ -1,24 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Styles from './Accounts.module.css';
 import { useNavigate } from 'react-router-dom';
-import AdminHeader from '../../Components/Admin_Header';
-import Dashboard from '../../icon/dashboard.png';
-import Icon from '../../icon/actual.png';
-import Account from '../../icon/name.png';
-import Report from '../../icon/Reports.png';
-import AdminPost from '../../icon/Upload.png';
-import Request from '../../icon/request.png';
 import Admin_Sidebar from '../../Components/Admin_Sidebar';
 import Footer from '../../Components/composables/Footer';
 import Header from '../../Components/composables/Header';
-const SidebarItem = ({ icon, text, onClick }) => (
-	<li>
-		<button className="sidebar-item" onClick={onClick}>
-			<img src={icon} alt={text} className="sidebar-icon" />
-			<span>{text}</span>
-		</button>
-	</li>
-);
 
 function Accounts() {
 	const [searchQuery, setSearchQuery] = useState('');

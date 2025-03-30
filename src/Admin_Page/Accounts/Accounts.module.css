@@ -129,7 +129,7 @@ body {
 	font-weight: bold;
 	display: flex;
 	justify-content: flex-start;
-	border-bottom: 2px solid #030914;
+	border-bottom:  solid 1px rgb(187, 182, 182);
 	margin-bottom: 20px;
 }
 
@@ -150,23 +150,23 @@ body {
 /* Search Input */
 .Role_Container {
 	display: flex;
-	align-items: center; /* Aligns label with dropdown */
-	gap: 10px; /* Adjust space between label and dropdown */
+	align-items: center;
+	gap: 10px; 
 	margin-top: 10px;
-	height: 30px !important; /* Adjust height as needed */
+	height: 30px !important; 
 }
 .Role_Container h2 {
 	margin: 0;
 	font-size: 16px;
 	font-weight: bold;
 	display: flex;
-	align-items: center; /* Ensures text aligns with dropdown */
-	margin-top: 5px; /* Adjust this value as needed */
+	align-items: center; 
+	margin-top: 5px; 
 }
 .Search_Container {
 	display: flex;
-	align-items: center; /* Aligns h2 and input vertically */
-	gap: 10px; /* Adjust space between label and input */
+	align-items: center; 
+	gap: 10px;
 }
 
 .Search_Container h2 {
@@ -175,12 +175,12 @@ body {
 	font-size: 16px;
 	font-weight: bold;
 	display: flex;
-	align-items: center; /* Ensures text aligns with input */
-	margin-top: 10px; /* Adjust this value as needed */
+	align-items: center; 
+	margin-top: 10px; 
 }
 
 .Search_Input {
-	height: 30px; /* Adjust height as needed */
+	height: 30px; 
 	padding: 8px 10px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
@@ -214,11 +214,11 @@ body {
 
 /* Create Button */
 .Create_Button {
-	padding: 10px 15px;
 	background-color: #007bff;
 	color: white;
 	border: none;
 	border-radius: 5px;
+	width: 200px;
 	height: 40px;
 	cursor: pointer;
 	font-size: 16px;
@@ -226,10 +226,7 @@ body {
 	margin-top: 10px;
 }
 
-.Create_Button:hover {
-	background-color: #0056b3;
-	transform: scale(1.05);
-}
+
 
 /* Table Styles */
 .Table {
@@ -318,8 +315,8 @@ body {
 	.Search_Container {
 		display: flex;
 		justify-content: center;
-		align-items: center; /* Aligns h2 and input vertically */
-		gap: 5px; /* Adjust space between label and input */
+		align-items: center; 
+		gap: 5px; 
 	}
 	.Filter_Section {
 		display: flex;
