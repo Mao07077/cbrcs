@@ -7,45 +7,51 @@ import Footer from '../../Components/composables/Footer';
 import Header from '../../Components/composables/Header';
 
 const AdminPost = () => {
-	// State to manage the intro text and uploaded images
+	// State for images and text
 	const [introText, setIntroText] = useState({
 		header: 'Welcome to Dr. Carl Balita Review Center Student Portal',
 		subHeader: 'Where the dream and the dreamer become ONE!',
 	});
+	const [introImage, setIntroImage] = useState(null); // State for intro image
 	const [news, setNews] = useState('');
-	const [images, setImages] = useState([]); // Store uploaded images
+	const [loginImage, setLoginImage] = useState(null);
+	const [signupImage, setSignupImage] = useState(null);
+	const [newsImage, setNewsImage] = useState(null);
+	const [courseImages, setCourseImages] = useState([null, null, null]);
+	const [newsStyle, setNewsStyle] = useState({
+		fontSize: '14px', // Adjusted font size for alignment
+		fontWeight: 'normal',
+		fontStyle: 'normal',
+		color: '#333',
+	});
 
-	// Handle editing intro text
-	const handleEditIntro = () => {
-		const newHeader = prompt('Enter new header text:', introText.header);
-		const newSubHeader = prompt(
-			'Enter new sub-header text:',
-			introText.subHeader
-		);
-		if (newHeader && newSubHeader) {
-			const newIntroText = { header: newHeader, subHeader: newSubHeader };
-			setIntroText(newIntroText);
-			localStorage.setItem('introText', JSON.stringify(newIntroText)); // Save to localStorage
+	// Handlers for image uploads
+	const handleSingleImageUpload = (e, setImage) => {
+		const file = e.target.files[0];
+		if (file) {
+			const reader = new FileReader();
+			reader.onload = () => setImage(reader.result);
+			reader.readAsDataURL(file);
 		}
 	};
 
-	// Handle image uploads
-	const handleImageUpload = (e) => {
-		const files = e.target.files;
-		const fileArray = Array.from(files).map((file) =>
-			URL.createObjectURL(file)
-		);
-		setImages((prevImages) => {
-			const updatedImages = [...prevImages, ...fileArray];
-			localStorage.setItem('uploadedImages', JSON.stringify(updatedImages)); // Save to localStorage
-			return updatedImages;
-		});
+	const handleCourseImageUpload = (e, index) => {
+		const file = e.target.files[0];
+		if (file) {
+			const reader = new FileReader();
+			reader.onload = () => {
+				setCourseImages((prev) => {
+					const updated = [...prev];
+					updated[index] = reader.result;
+					return updated;
+				});
+			};
+			reader.readAsDataURL(file);
+		}
 	};
 
-	// Handle adding news
-	const handleNewsChange = (e) => {
-		setNews(e.target.value);
-		localStorage.setItem('news', e.target.value); // Save to localStorage
+	const handleStyleChange = (key, value) => {
+		setNewsStyle((prev) => ({ ...prev, [key]: value }));
 	};
 
 	return (
@@ -58,88 +64,162 @@ const AdminPost = () => {
 				<Admin_Sidebar></Admin_Sidebar>
 				{/* Content */}
 				<div className={Styles.Content}>
+					{/* Intro Section */}
 					<div className={Styles.Text_Container}>
 						<h1>{introText.header}</h1>
 						<p>{introText.subHeader}</p>
-						<div className={Styles.Buttons}>
-							<button
-								type="button"
-								className="login"
-								onClick={() => (window.location.href = 'login')}
-							>
-								Log-in
-							</button>
-							<button
-								type="button"
-								className="signup"
-								onClick={() => (window.location.href = 'signup')}
-							>
-								Sign-Up
-							</button>
+						{/* Intro Image */}
+						<div className={Styles.Editable_Image_Input}>
+							<label htmlFor="introImageUpload">Upload Intro Image:</label>
+							<input
+								type="file"
+								id="introImageUpload"
+								onChange={(e) => handleSingleImageUpload(e, setIntroImage)}
+							/>
+							{introImage && (
+								<div className={Styles.Image_Previews}>
+									<img src={introImage} alt="Intro Preview" />
+								</div>
+							)}
 						</div>
-						<button onClick={handleEditIntro}>Edit Intro</button>
-					</div>
-
-					<div className={Styles.Placeholder_Box}>
-						{images.length > 0 && (
-							<div className={Styles.Image_Previews}>
-								{images.map((image, index) => (
-									<img
-										key={index}
-										src={image}
-										alt={`Uploaded Preview ${index + 1}`}
-									/>
-								))}
-							</div>
-						)}
-						<input
-							type="file"
-							multiple
-							onChange={handleImageUpload}
-							accept="image/*"
-						/>
-					</div>
-
-					<div className={Styles.News_Container}>
-						<textarea
-							value={news}
-							onChange={handleNewsChange}
-							placeholder="Write news or announcements here..."
-						/>
-						<button onClick={() => alert('News added: ' + news)}>
-							Add News
+						<button
+							className={Styles.EditIntroButton}
+							onClick={() => alert('Edit Intro functionality here')}
+						>
+							Edit Intro
 						</button>
 					</div>
 
+					{/* Login Image */}
+					<div className={Styles.Editable_Image_Input}>
+						<label htmlFor="loginImageUpload">Upload Login Image:</label>
+						<input
+							type="file"
+							id="loginImageUpload"
+							onChange={(e) => handleSingleImageUpload(e, setLoginImage)}
+						/>
+						{loginImage && (
+							<div className={Styles.Image_Previews}>
+								<img src={loginImage} alt="Login Preview" />
+							</div>
+						)}
+					</div>
+
+					{/* Signup Image */}
+					<div className={Styles.Editable_Image_Input}>
+						<label htmlFor="signupImageUpload">Upload Signup Image:</label>
+						<input
+							type="file"
+							id="signupImageUpload"
+							onChange={(e) => handleSingleImageUpload(e, setSignupImage)}
+						/>
+						{signupImage && (
+							<div className={Styles.Image_Previews}>
+								<img src={signupImage} alt="Signup Preview" />
+							</div>
+						)}
+					</div>
+
+					{/* News Section */}
+					<div className={Styles.News_Container}>
+						<div className={Styles.Editable_Image_Input}>
+							<label htmlFor="newsImageUpload">Upload News Image:</label>
+							<input
+								type="file"
+								id="newsImageUpload"
+								onChange={(e) => handleSingleImageUpload(e, setNewsImage)}
+							/>
+							{newsImage && (
+								<div className={Styles.Image_Previews}>
+									<img src={newsImage} alt="News Preview" />
+								</div>
+							)}
+						</div>
+						<textarea
+							style={newsStyle}
+							value={news}
+							onChange={(e) => setNews(e.target.value)}
+							placeholder="Write news or announcements here..."
+						/>
+						<div className={Styles.FontControls}>
+							<label>
+								Font Size:
+								<input
+									type="number"
+									value={parseInt(newsStyle.fontSize)}
+									onChange={(e) =>
+										handleStyleChange('fontSize', `${e.target.value}px`)
+									}
+								/>
+							</label>
+							<label>
+								Font Weight:
+								<select
+									value={newsStyle.fontWeight}
+									onChange={(e) => handleStyleChange('fontWeight', e.target.value)}
+								>
+									<option value="normal">Normal</option>
+									<option value="bold">Bold</option>
+								</select>
+							</label>
+							<label>
+								Font Style:
+								<select
+									value={newsStyle.fontStyle}
+									onChange={(e) => handleStyleChange('fontStyle', e.target.value)}
+								>
+									<option value="normal">Normal</option>
+									<option value="italic">Italic</option>
+								</select>
+							</label>
+							<label>
+								Color:
+								<input
+									type="color"
+									value={newsStyle.color}
+									onChange={(e) => handleStyleChange('color', e.target.value)}
+								/>
+							</label>
+						</div>
+						<button onClick={() => alert('News added: ' + news)}>Add News</button>
+					</div>
+
+					{/* Featured Courses */}
 					<div className={Styles.Featured_Courses}>
 						<div className={Styles.Featured_Text}>
 							<h2>Featured Courses</h2>
 							<p>Browse through our top performing courses</p>
-							<button>View All Courses</button>
 						</div>
-
 						<div className={Styles.Course_Grid}>
-							{/* Example Course Cards */}
-							<div className={Styles.Course_Card}>
-								<div className="placeholder"></div>
-								<div className="course-label">Top Rated</div>
-								<div className="course-title">Course Image 1</div>
-							</div>
-							<div className={Styles.Course_Card}>
-								<div className="placeholder"></div>
-								<div className="course-label">Recommended</div>
-								<div className="course-title">Course Image 2</div>
-							</div>
-							<div className={Styles.Course_Card}>
-								<div className="placeholder"></div>
-								<div className="course-label">New</div>
-								<div className="course-title">Course Image 3</div>
-							</div>
+							{courseImages.map((image, index) => (
+								<div key={index} className={Styles.Course_Card}>
+									<div className={Styles.Editable_Image_Input}>
+										<label htmlFor={`courseImageUpload${index}`}>
+											Upload Course {index + 1} Image:
+										</label>
+										<input
+											type="file"
+											id={`courseImageUpload${index}`}
+											onChange={(e) => handleCourseImageUpload(e, index)}
+										/>
+										{image && (
+											<div className={Styles.Image_Previews}>
+												<img src={image} alt={`Course ${index + 1} Preview`} />
+											</div>
+										)}
+									</div>
+									<input
+										type="text"
+										className={Styles.Editable_Text}
+										placeholder={`Course ${index + 1} Title`}
+									/>
+								</div>
+							))}
 						</div>
 					</div>
 				</div>
 			</div>
-			{/* footer */}
+			{/* Footer */}
 			<Footer></Footer>
 		</div>
 	);

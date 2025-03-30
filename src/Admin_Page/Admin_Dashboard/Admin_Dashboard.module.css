@@ -137,6 +137,23 @@ body {
 	border-bottom: 1px solid #333;
 }
 
+.Redirect_Button {
+	background-color: #002f87;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 1em;
+	text-align: center;
+	margin-top: 15px; /* Add spacing below the border */
+	align-self: flex-start; /* Align to the left */
+	width: 20%;
+}
+.Redirect_Button:hover {
+	background-color: #001a5e;
+}
+
 @media (max-width: 1000px) {
 	.List_Students {
 		display: flex;

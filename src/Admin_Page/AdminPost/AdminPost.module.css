@@ -104,12 +104,12 @@ body {
 .Buttons button {
 	background-color: #003366;
 	color: white;
-	width: 50%;
-	padding: 10px 20px;
+	width: 30%; /* Further reduced button width */
+	padding: 10px 15px;
 	border: none;
 	cursor: pointer;
 	border-radius: 5px;
-	font-size: 16px;
+	font-size: 14px; /* Consistent font size */
 	font-weight: bold;
 	transition: all 0.3s ease;
 }
@@ -208,22 +208,91 @@ textarea {
 	padding: 10px;
 	border-radius: 5px;
 	border: 1px solid #ccc;
-	font-size: 16px;
+	font-size: 14px; /* Consistent font size */
 	color: #333;
 	resize: none;
 }
 
 button {
-	padding: 10px 20px;
+	padding: 8px 12px; /* Reduced padding */
 	background-color: #003366;
 	color: white;
 	border: none;
 	border-radius: 5px;
-	font-size: 16px;
+	font-size: 14px; /* Consistent font size */
 	cursor: pointer;
 	transition: all 0.3s ease;
+	width: 100%;
 }
 
 button:hover {
 	opacity: 0.8;
+}
+
+.EditIntroButton {
+	width: fit-content; /* Adjust width to fit the content */
+	padding: 8px 12px; /* Reduced padding */
+	font-size: 14px; /* Consistent font size */
+	margin: 0 auto; /* Center-align the button */
+	display: block; /* Ensure it behaves as a block element */
+	text-align: center; /* Center text inside the button */
+}
+
+.Editable_Text {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 16px;
+	color: #333;
+	margin-bottom: 10px;
+}
+
+.Editable_Image_Input {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 10px;
+	margin-bottom: 20px;
+}
+
+.Editable_Image_Input label {
+	font-size: 14px;
+	color: #555;
+}
+
+.Editable_Image_Input input[type="file"] {
+	padding: 5px;
+	font-size: 14px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.FontControls {
+	display: flex; /* Use flexbox for horizontal alignment */
+	gap: 20px; /* Add spacing between controls */
+	margin-top: 10px;
+	align-items: center; /* Align items vertically */
+	justify-content: flex-start; /* Align controls to the left */
+}
+
+.FontControls label {
+	display: flex;
+	flex-direction: column;
+	font-size: 14px;
+	color: #555;
+	text-align: left; /* Align text to the left */
+	width: auto; /* Ensure labels don't stretch unnecessarily */
+}
+
+.FontControls input[type="number"],
+.FontControls select,
+.FontControls input[type="color"] {
+	padding: 8px; /* Add consistent padding */
+	font-size: 14px; /* Consistent font size */
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	height: 36px; /* Ensure consistent height for all controls */
+	box-sizing: border-box; /* Include padding and border in height */
 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Styles from './Admin_Dashboard.module.css';
 import Admin_Sidebar from '../../Components/Admin_Sidebar';
 import Footer from '../../Components/composables/Footer';
@@ -12,6 +13,12 @@ const AdminDashboard = () => {
 		totalStudents: 0,
 		engagementRate: 0,
 	});
+
+	const navigate = useNavigate();
+
+	const redirectToAdminPost = () => {
+		navigate('/Adminpost')// Replace '/admin-post' with the actual route for the admin post page
+	};
 
 	// Simulating an API call for stats
 	useEffect(() => {
@@ -59,6 +66,10 @@ const AdminDashboard = () => {
 					<div className={Styles.Greeting_Dashboard}>
 						<h1>Admin Dashboard</h1>
 					</div>
+					{/* Place the button directly below the border */}
+					<button className={Styles.Redirect_Button} onClick={redirectToAdminPost}>
+						Go to Admin Post
+					</button>
 					<div className={Styles.Statistics_Container}>
 						<div className={Styles.Stat_Card}>
 							<h1>Total Number of Students</h1>
