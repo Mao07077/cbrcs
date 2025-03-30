@@ -3,7 +3,6 @@ import Styles from "./Landing.module.css";
 import Icon from '../../icon/actual.png';
 import image from '../../icon/carlbalita.jpg';
 
-
 const Landing = () => {
     const [introText, setIntroText] = useState({ header: "", subHeader: "" });
     const [images, setImages] = useState([]);
@@ -44,7 +43,7 @@ const Landing = () => {
                             <div className={Styles.Buttons}>
                                 <button
                                     type="button"
-                                    className="login"
+                                    className={Styles.LoginBtn}
                                     onClick={() => (window.location.href = "login")}
                                 >
                                     Log-in
@@ -77,7 +76,20 @@ const Landing = () => {
                     {/* News Section */}
                     <div className={Styles.News_Container}>
                         <h2>Latest News</h2>
-                        <p>{news || "No news available at the moment."}</p>
+                        <div className={Styles.News_Card} style={{ display: "flex", alignItems: "flex-start" }}>
+                            {/* News Image Placeholder */}
+                            <div className={Styles.News_Image} style={{ border: "1px dashed #ccc", height: "150px", width: "200px", marginRight: "15px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                {images.length > 0 ? (
+                                    <img src={images[0]} alt="News" style={{ maxWidth: "100%", maxHeight: "100%" }} />
+                                ) : (
+                                    <p style={{ color: "#888", textAlign: "center" }}>Image Placeholder</p> // Placeholder text
+                                )}
+                            </div>
+                            <div>
+                                <h3>Announcement</h3>
+                                <p>{news || "CBRC is proud to announce the launch of its new online learning platform, designed to make education accessible to everyone!"}</p>
+                            </div>
+                        </div>
                     </div>
 
                    
@@ -86,24 +98,23 @@ const Landing = () => {
                     <div className="featured-courses">
                         <div className="featured-text">
                             <h2>Featured Courses</h2>
-                            <p>Browse through our top performing courses</p>
                         </div>
-
+                        <p className={Styles.Featured_Description}>Browse through our top performing courses</p>
                         <div className={Styles.Course_Grid}>
-                            <div className="course-card">
-                                <div className="placeholder"></div>
-                                <div className="course-label">Top Rated</div>
-                                <div className="course-title">Course Image 1</div>
+                            <div className={`${Styles.Course_Card} ${Styles.TopRated}`}>
+                                <div className={Styles.Placeholder}></div>
+                                <div className={Styles.Course_Label}>Top Rated</div>
+                                <div className={Styles.Course_Title}>Course Image 1</div>
                             </div>
-                            <div className="course-card">
-                                <div className="placeholder"></div>
-                                <div className="course-label">Recommended</div>
-                                <div className="course-title">Course Image 2</div>
+                            <div className={`${Styles.Course_Card} ${Styles.Recommended}`}>
+                                <div className={Styles.Placeholder}></div>
+                                <div className={Styles.Course_Label}>Recommended</div>
+                                <div className={Styles.Course_Title}>Course Image 2</div>
                             </div>
-                            <div className="course-card">
-                                <div className="placeholder"></div>
-                                <div className="course-label">New</div>
-                                <div className="course-title">Course Image 3</div>
+                            <div className={`${Styles.Course_Card} ${Styles.New}`}>
+                                <div className={Styles.Placeholder}></div>
+                                <div className={Styles.Course_Label}>New</div>
+                                <div className={Styles.Course_Title}>Course Image 3</div>
                             </div>
                         </div>
                     </div>
