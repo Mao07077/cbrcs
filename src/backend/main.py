@@ -25,6 +25,7 @@ from bson import ObjectId
 from bson.errors import InvalidId
 from typing import Any
 import ollama
+import certifi  # Import certifi to enable SSL
 
 # Load environment variables
 load_dotenv()
@@ -59,9 +60,9 @@ app.add_middleware(
     allow_headers=["*"],  # or specify headers
 )
 
-# MongoDB setup
+# MongoDB setup with SSL enabled
 try:
-    client = MongoClient(MONGO_URI)
+    client = MongoClient(MONGO_URI, tls=True, tlsCAFile=certifi.where())  # Enable SSL
     client.admin.command('ping')  # Test the connection
     logging.info("MongoDB connection successful")
 except Exception as e:
@@ -76,7 +77,6 @@ scores_collection = db["scores"]
 users_collection = db[COLLECTION_NAME]
 request_collection = db["requests"]
 messages_collection = db["messages"]  # Added 'messages' collection
-
 
 # Serve static files for images and videos
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
