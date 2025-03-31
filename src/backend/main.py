@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, File, UploadFile,Query, Form
+from fastapi import FastAPI, HTTPException, File, UploadFile, Query, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr
@@ -17,36 +17,38 @@ from pptx import Presentation
 from PyPDF2 import PdfReader
 from email.mime.text import MIMEText
 import shutil
-from typing import List,Dict
+from typing import List, Dict
 from fastapi.staticfiles import StaticFiles
 import logging
 from typing import Optional
 from bson import ObjectId
-from bson.errors import InvalidId 
+from bson.errors import InvalidId
 from typing import Any
 import ollama
 
-
-
- # Import InvalidId to handle ObjectId errors
-
 # Load environment variables
 load_dotenv()
+
+# Fetch MongoDB URI, Database Name, Collection Name, and Email credentials from environment variables
 MONGO_URI = os.getenv("MONGO_URI")
 DATABASE_NAME = os.getenv("DATABASE_NAME")
 COLLECTION_NAME = os.getenv("COLLECTION_NAME")
 EMAIL_HOST = os.getenv("EMAIL_HOST")
-EMAIL_PORT = int(os.getenv("EMAIL_PORT"))
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))  # Default to 587 if not provided
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-COLLECTION_NAME = "userinfo"
+
+# Check if essential environment variables are loaded
+if not MONGO_URI or not DATABASE_NAME or not COLLECTION_NAME:
+    logging.error("Missing necessary MongoDB environment variables: MONGO_URI, DATABASE_NAME, or COLLECTION_NAME.")
+if not EMAIL_HOST or not EMAIL_PORT or not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
+    logging.error("Missing necessary email environment variables: EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, or EMAIL_HOST_PASSWORD.")
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
 app = FastAPI()
 router = APIRouter()
-
 
 # CORS configuration
 app.add_middleware(
@@ -60,18 +62,20 @@ app.add_middleware(
 # MongoDB setup
 try:
     client = MongoClient(MONGO_URI)
-    client.admin.command('ping')
+    client.admin.command('ping')  # Test the connection
     logging.info("MongoDB connection successful")
 except Exception as e:
     logging.error(f"Failed to connect to MongoDB: {e}")
 
+# Set up database and collections
 db = client[DATABASE_NAME]
-modules_collection = db["modules"]  # Use 'modules' collection specifically
-post_test_collection = db.get_collection("post_tests")  # Define 'posttests' collection
-collection = db[COLLECTION_NAME]  # Define the collection variable
+modules_collection = db["modules"]
+post_test_collection = db.get_collection("post_tests")
+collection = db[COLLECTION_NAME]
 scores_collection = db["scores"]
 users_collection = db[COLLECTION_NAME]
 request_collection = db["requests"]
+messages_collection = db["messages"]  # Added 'messages' collection
 
 
 # Serve static files for images and videos
