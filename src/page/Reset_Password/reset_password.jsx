@@ -3,6 +3,7 @@ import axios from 'axios';
 import MainHeader from '../../Components/MainHeader';
 import Styles from './Reset_password.module.css';
 
+// Set API URL dynamically based on the environment
 const API_URL = process.env.REACT_APP_API_URL || 
     (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
 
