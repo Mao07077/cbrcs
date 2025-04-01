@@ -4,13 +4,7 @@ import './login.css';
 import Icon from '../../icon/actual.png';
 import cbrcimage from '../../icon/carlbalita.jpg';
 
-
-
-
-
-
-
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
 
 function Login() {
     const [idNumber, setIdNumber] = useState('');
@@ -23,21 +17,27 @@ function Login() {
         setError('');
         setIsLoading(true);
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/login', { idNumber, password });
+            const response = await axios.post(`${API_URL}/api/login`, { idNumber, password });
             if (response.data.success) {
-                // Save the user's program, ID number, and role to localStorage
-                localStorage.setItem('userIdNumber', idNumber);
-                if (response.data.program) {
-                    localStorage.setItem('userProgram', response.data.program);
-                } else {
-                    console.warn('Program not available for this user.');
-                }
+                localStorage.setItem('userIdNumber', response.data.id_number);
                 localStorage.setItem('userRole', response.data.role);
+                localStorage.setItem('userProgram', response.data.program || 'N/A');
+                localStorage.setItem('firstname', response.data.firstname || 'Unknown');
+                localStorage.setItem('lastname', response.data.lastname || 'Unknown');
+                localStorage.setItem('hoursActivity', response.data.hoursActivity || '0');
+                localStorage.setItem('surveyCompleted', response.data.surveyCompleted || 'false');
 
-                // Redirect based on the role of the account
+                if (response.data.token) {
+                    localStorage.setItem('token', response.data.token);
+                } else {
+                    console.warn('No token received from backend');
+                }
+
                 const role = response.data.role;
+                const surveyTaken = response.data.surveyCompleted;
+
                 if (role === 'student') {
-                    window.location.href = '/module';
+                    window.location.href = surveyTaken ? '/module' : '/survey';
                 } else if (role === 'admin') {
                     window.location.href = '/admin_dashboard';
                 } else if (role === 'instructor') {
@@ -57,21 +57,19 @@ function Login() {
     };
 
     return (
-        <div>
-            {/* Header */}
+        <div className="login-container">
             <header className="header">
                 <div className="header-content">
                     <div className="header-logo">
-                        <img src={Icon} alt="actual" />
+                        <img src={Icon} alt="CBRC Logo" />
                     </div>
                 </div>
             </header>
 
-            {/* Main Content */}
             <main className="login-page">
                 <div className="login-box">
                     <div className="login-logo">
-                        <img src={Icon} alt="actual" />
+                        <img src={Icon} alt="CBRC Logo" />
                     </div>
 
                     {error && <p className="error-message">{error}</p>}
@@ -97,13 +95,12 @@ function Login() {
                         </div>
                     </form>
                 </div>
+
                 <div className="cbrc">
-                    <img src={cbrcimage} alt="carlbalita" />
+                    <img src={cbrcimage} alt="Carl Balita" />
                 </div>
             </main>
         </div>
-
-
     );
 }
 
