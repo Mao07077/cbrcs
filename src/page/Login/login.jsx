@@ -68,37 +68,39 @@ function Login() {
             </header>
 
             <main className="login-page">
-                <div className="login-box">
-                    <div className="login-logo">
-                        <img src={Icon} alt="CBRC Logo" />
+                <div className="login-content">
+                    <div className="login-box">
+                        <div className="login-logo">
+                            <img src={Icon} alt="CBRC Logo" />
+                        </div>
+
+                        {error && <p className="error-message">{error}</p>}
+                        <form onSubmit={handleSubmit} noValidate>
+                            <input
+                                type="number"
+                                placeholder="ID Number"
+                                value={idNumber}
+                                onChange={(e) => setIdNumber(e.target.value)}
+                                required />
+                            <input
+                                type="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required />
+                            <button type="submit" disabled={isLoading}>
+                                {isLoading ? 'Signing in...' : 'Sign In'}
+                            </button>
+                            <div className="links">
+                                <a href="/forgot_password">Forgot Password?</a>
+                                <a href="/signup">Sign Up</a>
+                            </div>
+                        </form>
                     </div>
 
-                    {error && <p className="error-message">{error}</p>}
-                    <form onSubmit={handleSubmit} noValidate>
-                        <input
-                            type="number"
-                            placeholder="ID Number"
-                            value={idNumber}
-                            onChange={(e) => setIdNumber(e.target.value)}
-                            required />
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required />
-                        <button type="submit" disabled={isLoading}>
-                            {isLoading ? 'Signing in...' : 'Sign In'}
-                        </button>
-                        <div className="links">
-                            <a href="/forgot_password">Forgot Password?</a>
-                            <a href="/signup">Sign Up</a>
-                        </div>
-                    </form>
-                </div>
-
-                <div className="cbrc">
-                    <img src={cbrcimage} alt="Carl Balita" />
+                    <div className="cbrc">
+                        <img src={cbrcimage} alt="Carl Balita" />
+                    </div>
                 </div>
             </main>
         </div>

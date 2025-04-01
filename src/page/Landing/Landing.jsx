@@ -76,18 +76,45 @@ const Landing = () => {
                     {/* News Section */}
                     <div className={Styles.News_Container}>
                         <h2>Latest News</h2>
-                        <div className={Styles.News_Card} style={{ display: "flex", alignItems: "flex-start" }}>
+                        <div
+                            className={Styles.News_Card}
+                            style={{
+                                display: "flex",
+                                flexDirection: "column", // Default to column for smaller screens
+                                alignItems: "flex-start",
+                            }}
+                        >
                             {/* News Image Placeholder */}
-                            <div className={Styles.News_Image} style={{ border: "1px dashed #ccc", height: "150px", width: "200px", marginRight: "15px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <div
+                                className={Styles.News_Image}
+                                style={{
+                                    border: "1px dashed #ccc",
+                                    height: "150px",
+                                    width: "200px",
+                                    marginBottom: "15px", // Add margin for spacing
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
                                 {images.length > 0 ? (
-                                    <img src={images[0]} alt="News" style={{ maxWidth: "100%", maxHeight: "100%" }} />
+                                    <img
+                                        src={images[0]}
+                                        alt="News"
+                                        style={{ maxWidth: "100%", maxHeight: "100%" }}
+                                    />
                                 ) : (
-                                    <p style={{ color: "#888", textAlign: "center" }}>Image Placeholder</p> // Placeholder text
+                                    <p style={{ color: "#888", textAlign: "center" }}>
+                                        Image Placeholder
+                                    </p>
                                 )}
                             </div>
                             <div>
                                 <h3>Announcement</h3>
-                                <p>{news || "CBRC is proud to announce the launch of its new online learning platform, designed to make education accessible to everyone!"}</p>
+                                <p>
+                                    {news ||
+                                        "CBRC is proud to announce the launch of its new online learning platform, designed to make education accessible to everyone!"}
+                                </p>
                             </div>
                         </div>
                     </div>

@@ -100,9 +100,20 @@ Header {
     text-align: left; /* Align text to the left for a formal layout */
     margin: 20px auto; /* Center the card with spacing */
     display: flex;
-    flex-direction: row; /* Default layout for larger screens */
+    flex-direction: column; /* Default to column */
     align-items: flex-start;
     gap: 15px;
+}
+
+@media (min-width: 768px) {
+    .News_Card {
+        flex-direction: row; /* Switch to row for larger screens */
+    }
+
+    .News_Image {
+        margin-right: 15px; /* Add spacing for larger screens */
+        margin-bottom: 0; /* Remove bottom margin */
+    }
 }
 
 .News_Image {

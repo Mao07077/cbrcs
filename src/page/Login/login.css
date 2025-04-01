@@ -1,23 +1,36 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 0 20px; /* Add horizontal padding for smaller screens */
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: #f0f0f0   ;
-
+    height: 100vh; /* Full viewport height */
+    background-color: #f0f0f0;
+    box-sizing: border-box; /* Ensure padding is included in height calculations */
 }
 
 .login-page {
-    width: 700px;
-    height: 400px;
-    background-color: #0038c8;
-    border-radius: 20px;
     display: flex;
+    flex-direction: column;
+    align-items: center; /* Center vertically */
+    justify-content: center;
+    flex-grow: 1; /* Ensure it takes up available space */
+    padding: 20px;
+    width: 100%;
+    max-width: 900px;
+    margin: auto; /* Center vertically and horizontally */
+    height: auto; /* Allow dynamic height */
+}
+
+.login-content {
+    display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    width: 80%;
+    background-color: #0038c8;
+    border-radius: 20px;
     padding: 20px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     margin-top: 200px;
@@ -25,17 +38,15 @@ body {
 
 .header-logo img {
     height: 50px;
-    
 }
 
 .login-box {
+    width: 60%;
+    text-align: center;
     font-size: 24px; /* Match the font size used in Sign In */
     font-weight: bold; /* If Sign In uses bold */
     margin-left: 0; /* Remove or adjust margin for better alignment */
-    text-align: center;
 }
-
-
 
 .login-box form input {
     width: 100%;
@@ -75,7 +86,6 @@ body {
     margin: 2; /* Remove any unwanted margin */
 }
 
-
 .image-placeholder {
     width: 45%;
     height: 250px;
@@ -93,32 +103,68 @@ body {
     display: flex;
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
-    margin-bottom: 15px; 
+    margin-bottom: 15px;
     margin-left: 5px; /* Adjust this to move left or right */
     width: 100%; /* Ensure full width for proper alignment */
 }
 
 .cbrc {
+    width: 35%;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 70%; /* Or set an appropriate width */
-    height:10px; /* Set a fixed height for better control */
-    background-color: transparent; /* Change to white or transparent */
-    border-radius: 10px; /* Optional: soften the container edges */
-    margin-left: 30px;
 }
 
 .cbrc img {
-    width: 200%; /* Increase width proportionally */
-    height: auto; /* Maintain aspect ratio */
-    object-fit: contain; /* Ensures the image is fully visible without cropping */
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
     padding: 10px;
 }
-  .error-message {
+
+.large-screen-only {
+    display: block; /* Default display for large screens */
+}
+
+@media (max-width: 768px) {
+    .login-page {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center; /* Center align content */
+        padding: 15px; /* Adjust padding for smaller screens */
+        height: auto; /* Adjust height for smaller screens */
+        width: 100%; /* Limit width for smaller screens */
+    }
+
+    .login-content {
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+    }
+
+    .login-box {
+        width: 100%;
+        margin-bottom: 20px;
+        max-width: 400px; /* Limit the width */
+    }
+
+    .login-box form input, .login-box form button {
+        font-size: 14px; /* Adjust font size for smaller screens */
+    }
+
+    .links {
+        gap: 10px; /* Reduce spacing between links */
+    }
+
+    .cbrc {
+        display: none; /* Hide the image container on smaller screens */
+    }
+}
+
+.error-message {
     color: red;
     font-size: 18px;
     margin-top: 5px;
     text-align: center;
     font-family: arial;
-  }
+}
