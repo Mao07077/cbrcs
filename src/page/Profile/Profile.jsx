@@ -144,8 +144,8 @@ const Profile = () => {
 						<h2>Account Profile</h2>
 					</div>
 
-					{/* Profile Icon with Upload */}
-					<div className={Styles.Pair}>
+					{/* Profile Icon and Info Card */}
+					<div className={Styles.Info}>
 						<div className={Styles.IconContainer}>
 							<img src={profileImage} alt="Profile Icon" />
 							<input
