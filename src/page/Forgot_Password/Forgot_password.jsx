@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import './forgot_password.css';
 import Icon from '../../icon/actual.png';
 import cbrcimage from '../../icon/carlbalita.jpg';
-
-// Set API URL dynamically based on the environment
-const API_URL = process.env.REACT_APP_API_URL || 
-    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
 
 const ForgotPassword = () => {
     const [idNumber, setIdNumber] = useState('');
@@ -16,7 +12,7 @@ const ForgotPassword = () => {
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
     const [codeSent, setCodeSent] = useState(false);
-    const navigate = useNavigate(); // Initialize navigate
+    const navigate = useNavigate();
 
     const handleSendCode = async (e) => {
         e.preventDefault();
@@ -24,7 +20,7 @@ const ForgotPassword = () => {
         setMessage('');
 
         try {
-            const response = await axios.post(`${API_URL}/api/forgot_password`, {
+            const response = await axios.post('http://127.0.0.1:8000/api/forgot_password', {
                 id_number: idNumber,
                 email: email,
             });
@@ -47,7 +43,7 @@ const ForgotPassword = () => {
         setMessage('');
 
         try {
-            const response = await axios.post(`${API_URL}/api/confirm_reset_code`, {
+            const response = await axios.post('http://127.0.0.1:8000/api/confirm_reset_code', {
                 id_number: idNumber,
                 email: email,
                 reset_code: resetCode,
@@ -55,7 +51,7 @@ const ForgotPassword = () => {
 
             if (response.data.success) {
                 setMessage('Reset code confirmed. You can now reset your password.');
-                navigate('/reset_password'); // Navigate to reset password page
+                navigate('/reset_password');
             } else {
                 setError(response.data.message);
             }
@@ -66,7 +62,7 @@ const ForgotPassword = () => {
     };
 
     return (
-        <div>
+        <div className="forgot-password-page">
             <header className="header">
                 <div className="header-content">
                     <div className="header-logo">
@@ -75,8 +71,9 @@ const ForgotPassword = () => {
                 </div>
             </header>
             <main className="forget-page">
-                <div className="forget-container">
-                    <div className="forget-box">
+                <div className="forget-container responsive-container">
+                    {/* Left side: Form section */}
+                    <div className="forget-box responsive-box">
                         <div className="forgot-logo">
                             <img src={Icon} alt="actual" />
                         </div>
@@ -119,7 +116,8 @@ const ForgotPassword = () => {
                         )}
                     </div>
 
-                    <div className="carl">
+                    {/* Right side: CBRC image */}
+                    <div className="carl responsive-image">
                         <img src={cbrcimage} alt="carlbalita" />
                     </div>
                 </div>
