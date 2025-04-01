@@ -51,6 +51,9 @@ logging.basicConfig(level=logging.INFO)
 app = FastAPI()
 router = APIRouter()
 
+origins = [
+    "https:olep.vercel.app",  
+]
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
