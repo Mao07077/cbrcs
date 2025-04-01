@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Styles from './AdminPost.module.css';
 
 import Admin_Sidebar from '../../Components/Admin_Sidebar';
-import Footer from '../../Components/composables/Footer';
+import Footer from '../../Components/composables/FooterAdmin';
 import Header from '../../Components/composables/Header';
 
 const AdminPost = () => {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Styles from './Accounts.module.css';
 import { useNavigate } from 'react-router-dom';
 import Admin_Sidebar from '../../Components/Admin_Sidebar';
-import Footer from '../../Components/composables/Footer';
+import Footer from '../../Components/composables/FooterAdmin';
 import Header from '../../Components/composables/Header';
 
 const API_URL = process.env.REACT_APP_API_URL || 

@@ -3,7 +3,7 @@ import Styles from './Report.module.css';
 
 import Header from '../../Components/composables/Header';
 import Admin_Sidebar from '../../Components/Admin_Sidebar';
-import Footer from '../../Components/composables/Footer';
+import Footer from '../../Components/composables/FooterAdmin';
 
 const Reports = () => {
 	const [reports, setReports] = useState([

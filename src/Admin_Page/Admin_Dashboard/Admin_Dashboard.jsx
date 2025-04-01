@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Styles from './Admin_Dashboard.module.css';
 import Admin_Sidebar from '../../Components/Admin_Sidebar';
-import Footer from '../../Components/composables/Footer';
+import Footer from '../../Components/composables/FooterAdmin';
 import Header from '../../Components/composables/Header';
 
 const AdminDashboard = () => {
