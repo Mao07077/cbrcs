@@ -5,6 +5,9 @@ import './forgot_password.css';
 import Icon from '../../icon/actual.png';
 import cbrcimage from '../../icon/carlbalita.jpg';
 
+const API_URL = process.env.REACT_APP_API_URL || 
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
+
 const ForgotPassword = () => {
     const [idNumber, setIdNumber] = useState('');
     const [email, setEmail] = useState('');
@@ -20,7 +23,7 @@ const ForgotPassword = () => {
         setMessage('');
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/forgot_password', {
+            const response = await axios.post(`${API_URL}/api/forgot_password`, {
                 id_number: idNumber,
                 email: email,
             });
@@ -43,7 +46,7 @@ const ForgotPassword = () => {
         setMessage('');
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/confirm_reset_code', {
+            const response = await axios.post(`${API_URL}/api/confirm_reset_code`, {
                 id_number: idNumber,
                 email: email,
                 reset_code: resetCode,
@@ -72,7 +75,6 @@ const ForgotPassword = () => {
             </header>
             <main className="forget-page">
                 <div className="forget-container responsive-container">
-                    {/* Left side: Form section */}
                     <div className="forget-box responsive-box">
                         <div className="forgot-logo">
                             <img src={Icon} alt="actual" />
@@ -116,7 +118,6 @@ const ForgotPassword = () => {
                         )}
                     </div>
 
-                    {/* Right side: CBRC image */}
                     <div className="carl responsive-image">
                         <img src={cbrcimage} alt="carlbalita" />
                     </div>
