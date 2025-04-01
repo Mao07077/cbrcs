@@ -45,6 +45,18 @@ if not MONGO_URI or not DATABASE_NAME or not COLLECTION_NAME:
 if not EMAIL_HOST or not EMAIL_PORT or not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
     logging.error("Missing necessary email environment variables: EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, or EMAIL_HOST_PASSWORD.")
 
+habit_to_page = {
+    "Study with Friends": "learn-together",
+    "Asking for Help": "instructor-chat",
+    "Test Yourself Periodically": "modules",
+    "Creating a Study Schedule": "scheduler",
+    "Setting Study Goals": "notes",
+    "Organizing Notes": "notes",
+    "Teach What You've Learned": "learn-together",
+    "Use of Flashcards": "flashcard",
+    "Using Aromatherapy, Plants, or Music": "music"
+}
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
@@ -218,6 +230,12 @@ class PostTestResponse(BaseModel):
     title: str
     questions: List[QuestionWithAnswers]  # Update to use the new model
 
+class SurveyData(BaseModel):
+    id_number: str
+    categoryScores: Dict[str, int]
+    top3Habits: List[str]
+    surveyCompleted: bool
+
 # Helper functions
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
@@ -296,12 +314,24 @@ async def signup(data: SignupData):
 
 @app.post("/api/login")
 async def login(data: LoginData):
- 
     user = collection.find_one({"id_number": data.idNumber})
     if user and verify_password(data.password, user["password"]):
-        # Retrieve user's role for frontend redirection
+        # Retrieve user's role and survey status
         role = user.get("role", "unknown").lower()
-        return JSONResponse({"success": True, "message": "Login successful!", "role": role})
+        survey_completed = user.get("surveyCompleted", False)  # Default to False if not set
+
+        # Include all user details in response
+        return JSONResponse({
+            "success": True,
+            "message": "Login successful!",
+            "role": role,
+            "surveyCompleted": survey_completed,
+            "firstname": user.get("firstname", ""),
+            "lastname": user.get("lastname", ""),
+            "id_number": user.get("id_number", ""),
+            "program": user.get("program", ""),
+            "hoursActivity": user.get("hoursActivity", 0)
+        })
     else:
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
@@ -898,3 +928,68 @@ async def extract_text(file: UploadFile = File(...)):
   else:
     return {"error": "Unsupported file type"}
   return {"extracted_text": text}
+
+@app.post("/submit-survey")
+async def submit_survey(survey_data: SurveyData):
+    # Check if user exists
+    user = collection.find_one({"id_number": survey_data.id_number})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Get top 3 habits and map to pages
+    recommended_pages = []
+    added_pages = set()
+
+    # Add pages from top3Habits, avoiding duplicates
+    for habit in survey_data.top3Habits:
+        page = habit_to_page.get(habit)
+        if page and page not in added_pages:
+            recommended_pages.append(page)
+            added_pages.add(page)
+
+    # Add extra pages if needed to reach 3 unique pages
+    for habit, page in habit_to_page.items():
+        if page not in added_pages:
+            recommended_pages.append(page)
+            added_pages.add(page)
+        if len(recommended_pages) == 3:
+            break
+
+    # Update the user's survey data
+    result = collection.update_one(
+        {"id_number": survey_data.id_number},
+        {"$set": {
+            "categoryScores": survey_data.categoryScores,
+            "top3Habits": survey_data.top3Habits,
+            "recommendedPages": recommended_pages,
+            "surveyCompleted": survey_data.surveyCompleted
+        }}
+    )
+
+    # Check if the update worked
+    if result.modified_count == 0:
+        raise HTTPException(status_code=500, detail="Failed to update survey data")
+
+    return {
+        "success": True,
+        "message": "Survey submitted successfully!",
+        "recommendedPages": recommended_pages
+    }
+
+@app.get("/students/{id_number}/recommended-pages", response_model=Dict[str, List[str]])
+async def get_recommended_pages(id_number: str):
+    user = collection.find_one({"id_number": id_number})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Get the top 3 habits from the user's data
+    top3_habits = user.get("top3Habits", [])
+
+    # Map habits to corresponding pages, avoiding duplicates
+    recommended_pages = []
+    for habit in top3_habits:
+        page = habit_to_page.get(habit)
+        if page and page not in recommended_pages:
+            recommended_pages.append(page)
+
+    return {"recommendedPages": recommended_pages}
