@@ -5,8 +5,9 @@ import './forgot_password.css';
 import Icon from '../../icon/actual.png';
 import cbrcimage from '../../icon/carlbalita.jpg';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000'; // Use environment variable
 
-    const ForgotPassword = () => {
+const ForgotPassword = () => {
     const [idNumber, setIdNumber] = useState('');
     const [email, setEmail] = useState('');
     const [resetCode, setResetCode] = useState('');
@@ -21,7 +22,7 @@ import cbrcimage from '../../icon/carlbalita.jpg';
         setMessage('');
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/forgot_password', {
+            const response = await axios.post(`${API_URL}/api/forgot_password`, {
                 id_number: idNumber,
                 email: email,
             });
@@ -44,7 +45,7 @@ import cbrcimage from '../../icon/carlbalita.jpg';
         setMessage('');
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/confirm_reset_code', {
+            const response = await axios.post(`${API_URL}/api/confirm_reset_code`, {
                 id_number: idNumber,
                 email: email,
                 reset_code: resetCode,
@@ -64,66 +65,63 @@ import cbrcimage from '../../icon/carlbalita.jpg';
 
     return (
         <div>
-           <header className="header">
-                           <div className="header-content">
-                               <div className="header-logo">
-                                   <img src={Icon} alt="actual" />
-                               </div>
-                           </div>
-                       </header>
-                       <main className="forget-page">
-    <div className="forget-container">
-        {/* Left side: Form section */}
-        <div className="forget-box">
-            <div className="forgot-logo">
-                <img src={Icon} alt="actual" />
-            </div>
-            <h2>Forgot Password</h2>
-            {error && <p className="error">{error}</p>}
-            {message && <p className="message">{message}</p>}
+            <header className="header">
+                <div className="header-content">
+                    <div className="header-logo">
+                        <img src={Icon} alt="actual" />
+                    </div>
+                </div>
+            </header>
+            <main className="forget-page">
+                <div className="forget-container">
+                    <div className="forget-box">
+                        <div className="forgot-logo">
+                            <img src={Icon} alt="actual" />
+                        </div>
+                        <h2>Forgot Password</h2>
+                        {error && <p className="error">{error}</p>}
+                        {message && <p className="message">{message}</p>}
 
-            <form onSubmit={handleSendCode}>
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <input
-                    type="number"
-                    name="id_number"
-                    placeholder="ID Number"
-                    value={idNumber}
-                    onChange={(e) => setIdNumber(e.target.value)}
-                    required
-                />
-                <button type="submit" className="send-code-btn">Send Code</button>
-            </form>
+                        <form onSubmit={handleSendCode}>
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                            <input
+                                type="number"
+                                name="id_number"
+                                placeholder="ID Number"
+                                value={idNumber}
+                                onChange={(e) => setIdNumber(e.target.value)}
+                                required
+                            />
+                            <button type="submit" className="send-code-btn">Send Code</button>
+                        </form>
 
-            {codeSent && (
-                <form onSubmit={handleConfirmCode}>
-                    <input
-                        type="text"
-                        name="reset_code"
-                        placeholder="Enter Code"
-                        value={resetCode}
-                        onChange={(e) => setResetCode(e.target.value)}
-                        required
-                    />
-                    <button type="submit" className="confirm-btn">Confirm</button>
-                </form>
-            )}
-        </div>
+                        {codeSent && (
+                            <form onSubmit={handleConfirmCode}>
+                                <input
+                                    type="text"
+                                    name="reset_code"
+                                    placeholder="Enter Code"
+                                    value={resetCode}
+                                    onChange={(e) => setResetCode(e.target.value)}
+                                    required
+                                />
+                                <button type="submit" className="confirm-btn">Confirm</button>
+                            </form>
+                        )}
+                    </div>
 
-        {/* Right side: CBRC image */}
-        <div className="carl">
-            <img src={cbrcimage} alt="carlbalita" />
-        </div>
-    </div>
-</main>
-
+                    <div className="carl">
+                        <img src={cbrcimage} alt="carlbalita" />
+                    </div>
+                </div>
+            </main>
         </div>
     );
 };
