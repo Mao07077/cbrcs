@@ -67,6 +67,25 @@ body {
 	border-bottom: 2px solid #333;
 }
 
+@media (max-width: 768px) {
+	.TopSection {
+		flex-direction: column; /* Stack items vertically */
+		align-items: center; /* Center align items */
+		gap: 20px; /* Add spacing between stacked items */
+		padding: 20px; /* Add padding for better spacing */
+	}
+
+	.IconContainer {
+		margin-bottom: 15px; /* Add spacing below the profile image */
+	}
+
+	.InfoCard {
+		width: 90%; /* Reduce width for better fit on smaller screens */
+		text-align: center; /* Center align text */
+		margin-top: 0; /* Ensure it stacks directly below the icon */
+	}
+}
+
 /* Title styling */
 .topSection h2 {
 	font-size: 1.8rem;
