@@ -45,15 +45,14 @@
 }
 @media (max-width: 800px) {
 	.footer > ul {
-		flex-direction: row;
+		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		text-align: center;
 		gap: 5px;
 	}
-    .Logo_Wrapper{
-        display: none;
-        }
+    
+        
         .footer > ul > li {
             font-size: 0.6rem;
         }

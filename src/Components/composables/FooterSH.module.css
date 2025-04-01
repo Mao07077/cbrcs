@@ -64,7 +64,21 @@
 		
 		margin-top: 400px;
 	}
-	.Logo_Wrapper {
-		display: none;
-		}
+	
+}
+@media (max-width: 420px) {
+	.footer > ul {
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		gap: 5px;
+	}
+	
+	.footer {
+		
+		margin-top: 900px;
+	}
+	
+		
 }

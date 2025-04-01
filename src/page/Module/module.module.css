@@ -109,7 +109,7 @@ body {
 	font-size: 18px;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 590px) {
 	.Menu ul {
 		display: flex;
 		flex-direction: row;
@@ -138,13 +138,33 @@ body {
 		font-size: 12px;
 	}
 	.ModuleDashboard {
+		margin-left: -30px;
 		padding: 20px;
 		margin-top: 10px;
 		width: 100%;
 		display: flex;
 		justify-content: center;
 	}
+	.Module_Container{
+		width: 100%;
+	}
 	.Module_Container h1 {
 		text-align: center;
+	}
+	.ModuleCard {
+		width: 100%;
+		font-size: 14px;
+	}
+	.ModuleImage{
+		width: 100%;
+	}
+	.ProceedBtn {
+		background-color: #002ead;
+		color: white;
+		padding: 12px 24px;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		font-size: 14px;
 	}
 }

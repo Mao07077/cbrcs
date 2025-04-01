@@ -237,9 +237,8 @@ canvas {
 }
 @media (max-width: 1000px) {
 	.Content h1 {
-		font-size: 50px;
+		font-size: 20px;
 		font-weight: bold;
-		margin-bottom: 20px;
 	}
 	.PerformanceOverview,
 	h2 {
