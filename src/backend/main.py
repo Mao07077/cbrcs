@@ -279,6 +279,10 @@ def extract_text_from_pdf(file):
   for page in reader.pages:
     text += page.extract_text()
   return text
+@app.get("/")
+def root():
+    return {"message": "FastAPI Backend is Running!"}
+
 @app.post("/api/signup")
 async def signup(data: SignupData):
     hashed_password = hash_password(data.password)
