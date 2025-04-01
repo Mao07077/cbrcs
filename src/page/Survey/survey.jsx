@@ -12,6 +12,10 @@ const Survey = () => {
   const idNumber = localStorage.getItem("userIdNumber");
   const navigate = useNavigate(); // For redirection
 
+  // Set the API_URL based on the environment
+  const API_URL = process.env.REACT_APP_API_URL || 
+  (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
+
   useEffect(() => {
     if (!idNumber) {
       setErrorMessage("User not logged in");
@@ -77,7 +81,7 @@ const Survey = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8000/submit-survey", {
+      const response = await fetch(`${API_URL}/submit-survey`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

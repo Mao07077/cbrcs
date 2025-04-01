@@ -16,6 +16,11 @@ const CreateModule = ({ onClose }) => {
   const handleFileUpload = (e) => setFile(e.target.files[0]);
   const handlePictureUpload = (e) => setPicture(e.target.files[0]);
 
+  // Dynamically set the API_URL based on the environment
+  const API_URL = process.env.REACT_APP_API_URL || 
+  (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -42,7 +47,7 @@ const CreateModule = ({ onClose }) => {
     console.log("FormData entries:", [...formData.entries()]); // Debugging: Log form data
 
     try {
-      const response = await axios.post('http://localhost:8000/api/create_module', formData, {
+      const response = await axios.post(`${API_URL}/api/create_module`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 

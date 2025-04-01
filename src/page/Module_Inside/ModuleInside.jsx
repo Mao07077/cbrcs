@@ -1,21 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import "./module_inside.css";
-import Header from "../../Components/Header";
+import React, { useEffect, useState } from "react"; 
+import { useParams, useNavigate } from "react-router-dom"; 
+import "./module_inside.css"; 
+import Header from "../../Components/Header"; 
 import Instructor_Header from "../../Components/Instructor_Header";
 
 const ModuleInside = () => {
-  const [module, setModule] = useState(null);
-  const [error, setError] = useState(null);
-  const [timeSpent, setTimeSpent] = useState(0);
-  const [isInstructor, setIsInstructor] = useState(false);
-  const { id } = useParams();
+  const [module, setModule] = useState(null); 
+  const [error, setError] = useState(null); 
+  const [timeSpent, setTimeSpent] = useState(0); 
+  const [isInstructor, setIsInstructor] = useState(false); 
+  const { id } = useParams(); 
   const navigate = useNavigate();
+
+  // Dynamically switch between local and production environment
+  const API_URL = process.env.REACT_APP_API_URL || 
+  (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
 
   useEffect(() => {
     const fetchModuleData = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/modules/${id}`);
+        const response = await fetch(`${API_URL}/api/modules/${id}`);
         if (!response.ok) {
           throw new Error(`Failed to fetch module: ${response.status}`);
         }
@@ -75,7 +79,7 @@ const ModuleInside = () => {
             <section className="module-resource">
               <div 
                 className="fileelement fixed-file" 
-                onClick={() => window.open(`http://localhost:8000/${module.document_url}`, "_blank")}
+                onClick={() => window.open(`${API_URL}/${module.document_url}`, "_blank")}
               >
                 <div className="document-preview">
                   <div className="document-icon"></div>

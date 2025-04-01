@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Styles from './StudentTable.module.css';
-
 import axios from 'axios';
 import DashboardModal from '../../page/Dashboard/DashboradModal';
 
 import Header from '../../Components/composables/Header';
 import Instructor_Sidebar from '../../Components/Instructor_Sidebar';
 import Footer from '../../Components/composables/Footer';
+
+// Set the API_URL based on the environment
+const API_URL = process.env.REACT_APP_API_URL || 
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
 
 function StudentTable() {
 	const [searchQuery, setSearchQuery] = useState('');
@@ -22,8 +25,9 @@ function StudentTable() {
 	};
 
 	useEffect(() => {
+		// Use the dynamic API_URL in the request
 		axios
-			.get('http://localhost:8000/students')
+			.get(`${API_URL}/students`)
 			.then((response) => {
 				const mappedStudents = response.data.map((student) => ({
 					studentNo: student.studentNo,
@@ -56,6 +60,7 @@ function StudentTable() {
 		setIsModalOpen(false);
 		setSelectedStudent(null);
 	};
+
 	const SidebarItem = ({ icon, text, onClick }) => (
 		<li>
 			<button className="sidebar-item" onClick={onClick}>
@@ -106,12 +111,12 @@ function StudentTable() {
 											<td>{student.name}</td>
 											<td>{student.program}</td>
 											<td>
-												<buttons
+												<button
 													className="view-dashboard-btn"
 													onClick={() => handleViewDashboard(student)}
 												>
 													View Dashboard
-												</buttons>
+												</button>
 											</td>
 										</tr>
 									))

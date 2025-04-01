@@ -4,6 +4,7 @@ import Styles from './module.module.css';
 import Header from '../../Components/composables/Header';
 import Student_Sidebar from '../../Components/Student_Sidebar';
 import Footer from '../../Components/composables/FooterM';
+
 const ModuleDashboard = () => {
 	const handleNavigation = (route) => {
 		console.log(`Navigating to: ${route}`);
@@ -15,6 +16,11 @@ const ModuleDashboard = () => {
 	const [userProgram, setUserProgram] = useState(null);
 	const navigate = useNavigate();
 
+	// Dynamically set API_URL based on the environment
+	const API_URL = process.env.REACT_APP_API_URL || 
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
+
+
 	useEffect(() => {
 		const fetchUserProfile = async () => {
 			try {
@@ -24,9 +30,7 @@ const ModuleDashboard = () => {
 					return;
 				}
 
-				const response = await fetch(
-					`http://localhost:8000/api/profile/${idNumber}`
-				);
+				const response = await fetch(`${API_URL}/api/profile/${idNumber}`);
 				if (!response.ok) {
 					throw new Error('Failed to fetch user profile');
 				}
@@ -46,10 +50,8 @@ const ModuleDashboard = () => {
 
 		const apiUrl =
 			userProgram === 'All Programs'
-				? 'http://localhost:8000/api/modules'
-				: `http://localhost:8000/api/modules?program=${encodeURIComponent(
-						userProgram
-				  )}`;
+				? `${API_URL}/api/modules`
+				: `${API_URL}/api/modules?program=${encodeURIComponent(userProgram)}`;
 
 		fetch(apiUrl)
 			.then((response) => {
@@ -85,7 +87,7 @@ const ModuleDashboard = () => {
 											<h3>{module.title}</h3>
 											<div className={Styles.ModuleImage}>
 												<img
-													src={`http://localhost:8000/${module.image_url}`}
+													src={`${API_URL}/${module.image_url}`}
 													alt="Module"
 												/>
 											</div>

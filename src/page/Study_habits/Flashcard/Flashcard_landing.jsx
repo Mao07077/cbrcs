@@ -11,6 +11,11 @@ const FlashcardsLandingPage = () => {
 	const [userProgram, setUserProgram] = useState(null);
 	const navigate = useNavigate();
 
+	// Dynamically set the API_URL based on the environment
+	const API_URL = process.env.REACT_APP_API_URL || 
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
+
+
 	// ✅ Fetch User Profile
 	useEffect(() => {
 		const fetchUserProfile = async () => {
@@ -22,7 +27,7 @@ const FlashcardsLandingPage = () => {
 				}
 
 				const response = await fetch(
-					`http://localhost:8000/api/profile/${idNumber}`
+					`${API_URL}/api/profile/${idNumber}`
 				);
 				if (!response.ok) throw new Error('Failed to fetch user profile');
 
@@ -43,10 +48,8 @@ const FlashcardsLandingPage = () => {
 
 		const apiUrl =
 			userProgram === 'All Programs'
-				? 'http://localhost:8000/api/modules'
-				: `http://localhost:8000/api/modules?program=${encodeURIComponent(
-						userProgram
-				  )}`;
+				? `${API_URL}/api/modules`
+				: `${API_URL}/api/modules?program=${encodeURIComponent(userProgram)}`;
 
 		console.log('Fetching modules from:', apiUrl);
 
@@ -61,7 +64,7 @@ const FlashcardsLandingPage = () => {
 				setModules(data);
 			})
 			.catch((error) => setError(error.message));
-	}, [userProgram]);
+	}, [userProgram, API_URL]);
 
 	// ✅ Handle Click to Open Flashcards
 	const handleOpenFlashcards = (moduleId) => {
@@ -87,7 +90,7 @@ const FlashcardsLandingPage = () => {
 								<div className={Styles.module_card} key={module._id}>
 									<h3>{module.title}</h3>
 									<img
-										src={`http://localhost:8000/${module.image_url}`}
+										src={`${API_URL}/${module.image_url}`}
 										alt="Module"
 										className={Styles.module_image}
 									/>

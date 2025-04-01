@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Styles from './Settings.module.css';
-import Icon from '../../icon/actual.png';
-import NameIcon from '../../icon/name.png';
-import ModuleIcon from '../../icon/module.png';
-import DashboardIcon from '../../icon/dashboard.png';
-import RequestIcon from '../../icon/request.png';
-import HelpIcon from '../../icon/help.png';
 import Header from '../../Components/composables/Header';
 import Footer from '../../Components/composables/FooterS';
 import Student_Sidebar from '../../Components/Student_Sidebar';
@@ -13,9 +7,9 @@ import Student_Sidebar from '../../Components/Student_Sidebar';
 const Settings = () => {
 	const handleNavigation = (route) => {
 		console.log(`Navigating to: ${route}`);
-
 		window.location.href = `/${route}`;
 	};
+
 	const [formData, setFormData] = useState({
 		firstname: '',
 		middlename: '',
@@ -30,13 +24,16 @@ const Settings = () => {
 	const [loading, setLoading] = useState(true);
 	const [requestSent, setRequestSent] = useState(false);
 
+	// Get the base API URL from environment variable
+
+	const apiUrl = process.env.REACT_APP_API_URL || 
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
+
 	useEffect(() => {
 		const fetchUserData = async () => {
 			const idNumber = localStorage.getItem('userIdNumber'); // Get user ID from localStorage
 			try {
-				const response = await fetch(
-					`http://localhost:8000/user/settings/${idNumber}`
-				);
+				const response = await fetch(`${apiUrl}/user/settings/${idNumber}`);
 				const result = await response.json();
 				if (result.success) {
 					setFormData({
@@ -61,7 +58,7 @@ const Settings = () => {
 			}
 		};
 		fetchUserData();
-	}, []);
+	}, [apiUrl]);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -79,16 +76,13 @@ const Settings = () => {
 		if (confirmed) {
 			const idNumber = localStorage.getItem('userIdNumber');
 			try {
-				const response = await fetch(
-					`http://localhost:8000/user/settings/request/${idNumber}`,
-					{
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify(formData), // Send the entire formData as the body
-					}
-				);
+				const response = await fetch(`${apiUrl}/user/settings/request/${idNumber}`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(formData), // Send the entire formData as the body
+				});
 				const result = await response.json();
 				if (result.success) {
 					setRequestSent(true);
@@ -106,7 +100,7 @@ const Settings = () => {
 
 	return (
 		<div className={Styles.MainContainer}>
-			<Header></Header>
+			<Header />
 			<div className={Styles.Content_Wrapper}>
 				<Student_Sidebar />
 				<div className={Styles.Content}>

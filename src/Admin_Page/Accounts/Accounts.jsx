@@ -5,6 +5,9 @@ import Admin_Sidebar from '../../Components/Admin_Sidebar';
 import Footer from '../../Components/composables/Footer';
 import Header from '../../Components/composables/Header';
 
+const API_URL = process.env.REACT_APP_API_URL || 
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
+
 function Accounts() {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [roleFilter, setRoleFilter] = useState('');
@@ -15,7 +18,7 @@ function Accounts() {
 	useEffect(() => {
 		const fetchAccounts = async () => {
 			try {
-				const response = await fetch('http://localhost:8000/api/accounts'); // FastAPI endpoint
+				const response = await fetch(`${API_URL}/api/accounts`);
 				if (!response.ok) {
 					throw new Error('Failed to fetch accounts');
 				}
@@ -44,7 +47,7 @@ function Accounts() {
 		const accountToDelete = accounts[index];
 		try {
 			const response = await fetch(
-				`http://localhost:8000/api/accounts/${accountToDelete.id}`,
+				`${API_URL}/api/accounts/${accountToDelete.id}`,
 				{ method: 'DELETE' }
 			);
 			if (!response.ok) {
@@ -143,16 +146,15 @@ function Accounts() {
 								))
 							) : (
 								<tr>
-									<div colSpan="5" className={Styles.No_Accounts}>
-										<p> No accounts found. </p>
-									</div>
+									<td colSpan="5" className={Styles.No_Accounts}>
+										<p>No accounts found.</p>
+									</td>
 								</tr>
 							)}
 						</tbody>
 					</table>
 				</div>
 			</div>
-
 			<Footer></Footer>
 		</div>
 	);

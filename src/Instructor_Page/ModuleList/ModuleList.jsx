@@ -10,6 +10,10 @@ import Header from '../../Components/composables/Header';
 import Instructor_Sidebar from '../../Components/Instructor_Sidebar';
 import Footer from '../../Components/composables/Footer';
 
+// Set the API_URL based on the environment
+const API_URL = process.env.REACT_APP_API_URL || 
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
+
 const ModuleList = () => {
 	const [modules, setModules] = useState([]);
 	const [error, setError] = useState(null);
@@ -17,7 +21,7 @@ const ModuleList = () => {
 	const userIdNumber = localStorage.getItem('userIdNumber') || 'All IDs';
 
 	useEffect(() => {
-		fetch('http://localhost:8000/api/modules')
+		fetch(`${API_URL}/api/modules`)
 			.then((response) => {
 				if (!response.ok) {
 					throw new Error(`HTTP error! Status: ${response.status}`);

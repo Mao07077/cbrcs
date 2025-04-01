@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Pie } from 'react-chartjs-2';
-import './posttest.css';
-import logoIcon from '../../icon/logo.png';
-import { useParams } from 'react-router-dom';
-import {
-    Chart as ChartJS,
-    ArcElement,
-    Tooltip,
-    Legend
-} from 'chart.js';
+import React, { useState, useEffect } from 'react'; 
+import { Pie } from 'react-chartjs-2'; 
+import './posttest.css'; 
+import logoIcon from '../../icon/logo.png'; 
+import { useParams } from 'react-router-dom'; 
+import { 
+    Chart as ChartJS, 
+    ArcElement, 
+    Tooltip, 
+    Legend 
+} from 'chart.js'; 
 import axios from 'axios'; // Import axios for making API calls
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -27,10 +27,14 @@ const PostTest = () => {
     const [timeTaken, setTimeTaken] = useState(0); // Time taken to complete the test
     const [loading, setLoading] = useState(false); // Loading state for paraphrasing
 
+    // Dynamically switch between local and production environment
+    const API_URL = process.env.REACT_APP_API_URL || 
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
+
     useEffect(() => {
         const fetchPostTestData = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/api/post-test/${moduleId}`);
+                const response = await fetch(`${API_URL}/api/post-test/${moduleId}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch post-test data');
                 }
@@ -65,7 +69,7 @@ const PostTest = () => {
         setLoading(true); // Set loading to true
         const paraphrasedQuestions = await Promise.all(questions.map(async (question) => {
             const inputResponse = createPrompt(question.question, question.correctAnswer, question.wrongAnswers);
-            const generatedResponse = await axios.post('http://localhost:8000/api/paraphrase', { input: inputResponse });
+            const generatedResponse = await axios.post(`${API_URL}/api/paraphrase`, { input: inputResponse });
             return {
                 ...question,
                 question: generatedResponse.data.paraphrased // Assuming the response contains the paraphrased question
@@ -74,7 +78,7 @@ const PostTest = () => {
         setPostTest(prev => ({ ...prev, questions: paraphrasedQuestions }));
         setLoading(false); // Set loading to false after paraphrasing
     };
-    
+
     const createPrompt = (inputText, correctAnswer, wrongAnswers) => {
         return (
             `Given question: '${inputText}'\n` +
@@ -121,7 +125,7 @@ const PostTest = () => {
         let correctCount = 0;
         let incorrectCount = 0;
 
-        postTest.questions.forEach ((question, index) => {
+        postTest.questions.forEach((question, index) => {
             if (answers[index] === correctAnswers[index]) {
                 correctCount++;
             } else {
@@ -144,7 +148,7 @@ const PostTest = () => {
         };
 
         try {
-            const response = await fetch(`http://localhost:8000/api/post-test/submit/${moduleId}`, {
+            const response = await fetch(`${API_URL}/api/post-test/submit/${moduleId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

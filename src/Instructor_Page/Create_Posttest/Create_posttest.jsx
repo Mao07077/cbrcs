@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import './create_posttest.css';
@@ -14,6 +14,11 @@ const CreatePostTest = () => {
     const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
     const [isConfirmationOpen, setIsConfirmationOpen] = useState(false); // Confirmation modal visibility state
     const navigate = useNavigate();
+
+    // Dynamically set API_URL based on the environment
+    const API_URL = process.env.REACT_APP_API_URL || 
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
+
 
     const handleQuestionChange = (index, value) => {
         const newQuestions = [...questions];
@@ -72,7 +77,7 @@ const CreatePostTest = () => {
 
         try {
             const response = await axios.post(
-                `http://localhost:8000/createposttest/${id}`, // Corrected URL
+                `${API_URL}/createposttest/${id}`, // Use the dynamic API_URL
                 postData
             );
             console.log('Response:', response.data);
@@ -145,9 +150,6 @@ const CreatePostTest = () => {
                 Next Question
             </button>
             <button onClick={handleConfirmSubmit}>Submit Post-Test</button>
-
-             
- 
 
             {isModalOpen && (
                 <div className="modal">

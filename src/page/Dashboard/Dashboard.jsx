@@ -27,6 +27,7 @@ ChartJS.register(
 
 /*************  ✨ Codeium Command ⭐  *************/
 /******  335b7055-3ba1-4e3d-b991-34d0c9eb239d  *******/
+
 const SidebarItem = ({ icon, text, onClick }) => (
 	<li>
 		<button className="sidebar-item" onClick={onClick}>
@@ -39,18 +40,20 @@ const SidebarItem = ({ icon, text, onClick }) => (
 const Dashboard = ({ isModal = false }) => {
 	const handleNavigation = (route) => {
 		console.log(`Navigating to: ${route}`);
-
 		window.location.href = `/${route}`;
 	};
-	const [idNumber, setIdNumber] = useState(
-		localStorage.getItem('userIdNumber') || ''
-	);
+
+	const [idNumber, setIdNumber] = useState(localStorage.getItem('userIdNumber') || '');
 	const [progress, setProgress] = useState(60);
 	const [error, setError] = useState(null);
 	const [barChartData, setBarChartData] = useState({
 		labels: [],
 		datasets: [],
 	});
+
+	// Dynamically set API_URL based on the environment
+	const API_URL = process.env.REACT_APP_API_URL || 
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
 
 	useEffect(() => {
 		if (!idNumber) {
@@ -60,9 +63,7 @@ const Dashboard = ({ isModal = false }) => {
 
 		const fetchDashboardData = async () => {
 			try {
-				const response = await axios.get(
-					`http://localhost:8000/api/dashboard/${idNumber}`
-				);
+				const response = await axios.get(`${API_URL}/api/dashboard/${idNumber}`);
 				const { post_tests } = response.data;
 
 				if (post_tests) {
