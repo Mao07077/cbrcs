@@ -119,7 +119,9 @@ const Dashboard = ({ isModal = false }) => {
 			<div className={Styles.Content_Wrapper}>
 				<Student_Sidebar></Student_Sidebar>
 				<div className={Styles.Content}>
-					<h1 className={Styles.Title}>Dashboard</h1>
+					<div className={Styles.Title}>
+											<h2>Dashboard</h2>
+										</div>
 					<section className={Styles.PerformanceOverview}>
 						<h2>Performance Overview</h2>
 						<p>Track your progress </p>

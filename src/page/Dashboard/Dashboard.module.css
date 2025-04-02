@@ -7,18 +7,20 @@ body {
 	box-sizing: border-box;
 }
 .MainContainer {
-	width: 100svw;
-	height: 100vh;
-	min-height: auto;
+	display: flex;
+	flex-direction: column;
+	height: auto;
+	width: 100vw;
 }
-.Content_Wrapper {
-	height: 100%;
-	width: 100%;
+
+.Content_Wrapper{
+	flex:1;
 	display: flex;
 }
 .Header {
 	grid-area: Header;
 	background-color: #002f87;
+	display: flex;
 }
 .Greeting_Dashboard {
 	display: flex;
@@ -33,30 +35,30 @@ body {
 	text-align: center;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: flex-start;
 	font-size: 25px;
 	font-style: initial;
-	margin-top: 400px;
+	margin: 10px 10px;
 	margin-left: 10px;
 	font-size: 1.2em;
 }
 
 /* Title */
 .Title {
-	font-size: 30px;
-	font-weight: bold;
-	text-align: left;
-	margin-bottom: 20px;
-	border-bottom: 1px solid #121212;
-	padding: 10px;
-	margin-top: 120px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 20px; /* space below header/sidebar */
+	margin-bottom: 50px;
+	padding-bottom: 20px;
+	border-bottom: 2px solid
 }
 
 /* Performance Overview */
 .PerformanceOverview {
 	text-align: center;
 	width: 100%;
-	max-width: 600px;
+	max-width: 500px;
 	margin: 0 auto 30px auto; /* Centers the container horizontally */
 	margin-top: 20px;
 }
@@ -127,6 +129,7 @@ body {
 	width: 100%;
 	max-width: 800px;
 	margin-bottom: 30px;
+	margin-right: 50px;
 	margin-left: 0; /* Ensure it aligns to the left */
 	padding: 0 15px; /* Optional: Adds spacing */
 }
@@ -205,6 +208,7 @@ body {
 	width: 100%;
 	max-width: 800px;
 	margin-bottom: 30px;
+	margin-right: 50px;
 	margin-left: 0; /* Ensure it aligns to the left */
 	padding: 0 15px; /* Optional: Adds spacing */
 }
@@ -216,7 +220,6 @@ body {
 	padding: 10px 0;
 	border-bottom: 1px solid #121212;
 	border-top: 1px solid #121212;
-	margin-left: 20px;
 	width: 85vw; /* Full screen width */
 	position: relative; /* Ensures it spans properly */
 	left: 50%;
@@ -236,37 +239,87 @@ canvas {
 	align-items: center;
 }
 @media (max-width: 1000px) {
+	.Title {
+		flex-direction: column; /* Stack items vertically */
+		align-items: flex-start; /* Center align items */
+		gap: 20px;
+	}
 	.Content h1 {
 		font-size: 20px;
 		font-weight: bold;
 	}
-	.PerformanceOverview,
-	h2 {
-		font-size: 25px;
-		font-weight: bold;
+	.PerformanceOverview{
+		margin-top: -10px;
 	}
+	.PerformanceOverview h2{
+		font-size: 12px;
+		margin-right: 50px;
+	}
+	.PerformanceOverview p{
+		font-size: 12px;
+		margin-right: 50px;
+	}
+	.ProgressContainer{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 100px;
+		height: 100px;
+		margin: auto;
+	}
+	canvas {
+		width: 70% !important;
+		height: auto !important;
+		margin-right: 60px;
+		
+	}
+	
+	
 	.StrengthCard,
 	.WeaknessCard {
 		font-size: 13px;
-	}
-
-	.HabitCard {
 		background: #f3f4f6;
-		padding: 10px 20px;
+		padding: 15px 25px;
 		border-radius: 10px;
 		box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 		font-weight: bold;
-		font-size: 13px;
 		text-align: center;
-		width: 150px;
-		height: 100px;
-		margin-top: 30px;
 		flex: 1;
-		min-width: 120px;
+		margin: 5px;
+		width: 20px;
 		border: 0.5px solid #121212;
 	}
+
+	
 	.StudyHabitsContainer,
 	h3 {
 		font-size: 16px;
+	}
+	
+	.HabitsWrapper{
+		display: flex;
+		flex-direction: row;
+		align-content: center;
+		margin-left: 10px;
+	}
+	.StrengthWeaknessContainer{
+		margin-bottom: 30px;
+		margin-right: 80px;
+		height: 150px;
+		gap: 1px;
+		width: 300px;
+		display: flex;
+		flex-direction: row;
+		align-content: center;
+	}
+	.StudyHabitsSection {
+		margin-right: 120px;
+	}
+	.ProgressChartSection h3 {
+		margin-right: 120px;
+	}
+
+	.Section {
+		margin-top: -50px;
 	}
 }
