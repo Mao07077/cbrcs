@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import styles from './MusicPlayer.module.css';
 import Header from '../../../Components/composables/Header';
 import Footer from '../../../Components/composables/Footer';
-import Study_Habits_Sidebar from '../../../Components/Study_Habits_Sidebar';
 
 const genres = {
 	Pop: [
@@ -84,7 +83,6 @@ const MusicPlayer = () => {
 		<div className={styles.page_container}>
 			<Header isStudyHabits={true}></Header>
 			<div className={styles.container_wrapper}>
-				<Study_Habits_Sidebar></Study_Habits_Sidebar>
 				<div className={styles.music_wrapper}>
 					<div className={styles.music_player_container}>
 						<h2 className={styles.header}>Music Player</h2>

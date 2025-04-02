@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import styles from './Chat.module.css';
 import Header from '../../../Components/composables/Header';
 import Footer from '../../../Components/composables/Footer';
-import Study_Habits_Sidebar from '../../../Components/Study_Habits_Sidebar';
 
 const Chat = () => {
     const [users, setUsers] = useState([]);
@@ -88,7 +87,6 @@ const Chat = () => {
         <div className={styles.chatContainer}>
             <Header isStudyHabits={true} />
             <div className={styles.content_Wrapper}>
-                <Study_Habits_Sidebar />
                 <div className={styles.sidebar}>
                     <h3>Messages</h3>
                     {users.length > 0 ? (

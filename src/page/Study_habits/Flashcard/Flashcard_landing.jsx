@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Styles from './Flashcardlanding_style.module.css'; // ✅ Ensure this file exists and is properly named
 import Header from '../../../Components/composables/Header'; // ✅ Ensure this path is correct
-import Study_Habits_Sidebar from '../../../Components/Study_Habits_Sidebar';
 import Footer from '../../../Components/composables/Footer';
 
 const FlashcardsLandingPage = () => {
@@ -75,9 +74,10 @@ const FlashcardsLandingPage = () => {
 		<div className={Styles.page_container}>
 			<Header isStudyHabits={true}></Header>
 			<div className={Styles.content_wrapper}>
-				<Study_Habits_Sidebar></Study_Habits_Sidebar>
 				<div className={Styles.module_container}>
-					<h1 className={Styles.module_title}>Flashcards Modules</h1>
+				<div className={Styles.module_title}>
+						<h2>Flash Cards Module</h2>
+					</div>
 					<p className={Styles.module_description}>
 						Select a module to review its flashcards.
 					</p>

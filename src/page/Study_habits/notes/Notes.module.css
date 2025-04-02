@@ -16,6 +16,7 @@
 }
 
 .border {
+    margin-left: 20px;
     font-size: 24px;
     font-weight: bold;
     text-align: left;
@@ -39,7 +40,7 @@
     margin: 15px 0;
     width: 20%;
     min-width: 120px;
-    margin-left: 20px;
+    margin-left: 40px;
     transition: background 0.3s ease;
 }
 
@@ -93,6 +94,7 @@
 }
 
 .no_notes {
+    margin-left: 50px;
     color: #888;
     font-size: 16px;
     text-align: center;
@@ -257,11 +259,17 @@
     }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 780px) {
     .create_note_btn {
+        justify-items: center;
+        margin-left: 60px;
         width: 80%;
         font-size: 14px;
         padding: 8px;
+    }
+    .no_notes{
+        display: flex;
+        justify-content: center;
     }
 
     .notes_grid {

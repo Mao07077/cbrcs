@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import styles from './Notes.module.css';
 import Header from '../../../Components/composables/Header';
-import Study_Habits_Sidebar from '../../../Components/Study_Habits_Sidebar';
 import Footer from '../../../Components/composables/Footer';
 
 const Notes = () => {
@@ -48,11 +47,10 @@ const Notes = () => {
 		<div className={styles.page_container}>
 			<Header isStudyHabits={true} />
 			<div className={styles.container_wrapper}>
-				<Study_Habits_Sidebar />
 				<div className={styles.content_wrapper}>
-					<header className={styles.border}>
-						<h2>My Notes</h2>
-					</header>
+					<div className={styles.border}>
+						<h2> My Notes </h2>
+					</div>
 					<button
 						className={styles.create_note_btn}
 						onClick={() => setShowNoteModal(true)}

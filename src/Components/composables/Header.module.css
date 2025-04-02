@@ -47,3 +47,8 @@
 	align-items: center;
 	gap: 5px;
 }
+@media (max-width: 900px) {
+	.SH_Wrapper p {
+		display: none;
+	}
+}

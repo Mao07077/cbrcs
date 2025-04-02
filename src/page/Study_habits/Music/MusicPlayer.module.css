@@ -170,3 +170,23 @@
 	color: #333;
 	letter-spacing: 0.5px;
 }
+@media (max-width: 1000px) {
+	.container_wrapper {
+		margin-top: 30px;
+		margin-left:70px;
+		display: flex;
+		justify-content: center;
+		width: 80%;
+		height: 100%;
+	}
+}
+@media (max-width: 600px) {
+	.container_wrapper {
+		margin-top: 30px;
+		margin-left:50px;
+		display: flex;
+		justify-content: center;
+		width: 80%;
+		height: 100%;
+	}
+}

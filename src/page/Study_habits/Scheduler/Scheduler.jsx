@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import styles from './Scheduler.module.css';
 import Header from '../../../Components/composables/Header';
 import Footer from '../../../Components/composables/Footer';
-import Study_Habits_Sidebar from '../../../Components/Study_Habits_Sidebar';
 
 const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
@@ -61,7 +60,6 @@ const ScheduleTable = () => {
 		<div className={styles.container}>
 			<Header isStudyHabits={true}></Header>
 			<div className={styles.content_wrapper}>
-				<Study_Habits_Sidebar></Study_Habits_Sidebar>
 
 				<div className={styles.content_wrapper_sched}>
 					{reminder && (
