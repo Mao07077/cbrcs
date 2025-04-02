@@ -23,6 +23,9 @@
 	justify-content: center;
 	padding: 20px;
 	margin-top: 10px;
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-bottom: 20px;
 	background-color: #140f41;
 }
 
@@ -97,12 +100,12 @@
 	padding: 20px;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	
 }
 
 /* Chat Section */
 .chatSection {
-	margin-top: 20px;
+	margin-top: 50px;
 }
 
 /* Chat Box */
@@ -200,6 +203,10 @@
 
 	.chatBox {
 		min-height: 120px; /* Ensures chat box remains readable */
+	}
+	.content_wrapper_video {
+		display: flex;
+		flex-direction: column;
 	}
 }
 

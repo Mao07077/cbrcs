@@ -8,7 +8,6 @@ import SharescreenIcon from '../../../icon/Sharescreen.png';
 import OffcamIcon from '../../../icon/Offcam.png';
 import OpencamIcon from '../../../icon/Opencam.png';
 import MicIcon from '../../../icon/Mic.png'; // Properly imported the new Mic icon
-import Study_Habits_Sidebar from '../../../Components/Study_Habits_Sidebar';
 import Footer from '../../../Components/composables/Footer';
 import Header from '../../../Components/composables/Header';
 
@@ -147,7 +146,7 @@ const WebRTCComponent = () => {
 		<div className={styles.container}>
 			<Header isStudyHabits={true}></Header>
 			<div className={styles.content_wrapper}>
-				<Study_Habits_Sidebar></Study_Habits_Sidebar>
+				
 
 				<div className={styles.content_wrapper_video}>
 					<div className={styles.mainContent}>
