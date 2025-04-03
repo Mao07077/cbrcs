@@ -79,13 +79,14 @@ const DailyActivityBarChart = ({ dailyData }) => {
 const Profile = () => {
 	const handleNavigation = (route) => {
 		console.log(`Navigating to: ${route}`);
-
 		window.location.href = `/${route}`;
 	};
+
 	const [profile, setProfile] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState('');
 	const [profileImage, setProfileImage] = useState(nameIcon);
+	const [top3Habits, setTop3Habits] = useState([]); // State for top 3 habits
 
 	const [dailyData, setDailyData] = useState([
 		{ day: 'Monday', hours: 2 },
@@ -98,7 +99,7 @@ const Profile = () => {
 	]);
 
 	useEffect(() => {
-		const fetchProfile = async () => {
+		const fetchProfileAndHabits = async () => {
 			try {
 				const idNumber = localStorage.getItem('userIdNumber');
 				if (!idNumber) {
@@ -107,13 +108,21 @@ const Profile = () => {
 					return;
 				}
 
-				const response = await fetch(`${API_URL}/api/profile/${idNumber}`);
-				if (!response.ok) {
+				// Fetch user profile data
+				const profileResponse = await fetch(`${API_URL}/api/profile/${idNumber}`);
+				if (!profileResponse.ok) {
 					throw new Error('Failed to fetch profile');
 				}
+				const profileData = await profileResponse.json();
+				setProfile(profileData);
 
-				const data = await response.json();
-				setProfile(data);
+				// Fetch top 3 study habits
+				const habitsResponse = await fetch(`${API_URL}/students/${idNumber}/recommended-pages`);
+				if (!habitsResponse.ok) {
+					throw new Error('Failed to fetch habits');
+				}
+				const habitsData = await habitsResponse.json();
+				setTop3Habits(habitsData.recommendedPages); // Assuming response has 'recommendedPages' key
 			} catch (err) {
 				setError(err.message);
 			} finally {
@@ -121,7 +130,7 @@ const Profile = () => {
 			}
 		};
 
-		fetchProfile();
+		fetchProfileAndHabits();
 	}, []);
 
 	const handleImageChange = (event) => {
@@ -181,33 +190,25 @@ const Profile = () => {
 						</div>
 					</div>
 
+					{/* Display Dynamic Top 3 Study Habits */}
 					<div className={Styles.HabitsWrapper}>
 						<h3 className={Styles.StudyTitle}>Your Top 3 Study Habits</h3>
-						<div
-							className={Styles.HabitCard}
-							onClick={() => handleNavigation('learn_together')}
-						>
-							<h4 className={Styles.HabitTitle}>Learn Together</h4>
-							<p className={Styles.HabitDescription}>Group Call</p>
-						</div>
-						<div
-							className={Styles.HabitCard}
-							onClick={() => handleNavigation('scheduler')}
-						>
-							<h4 className={Styles.HabitTitle}>Scheduler</h4>
-							<p className={Styles.HabitDescription}>
-								Create your own schedule
-							</p>
-						</div>
-						<div
-							className={Styles.HabitCard}
-							onClick={() => handleNavigation('chat')}
-						>
-							<h4 className={Styles.HabitTitle}>Instructor Chat</h4>
-							<p className={Styles.HabitDescription}>
-								Seek guidance from teachers
-							</p>
-						</div>
+						{top3Habits.length > 0 ? (
+							top3Habits.map((habit, index) => (
+								<div
+									key={index}
+									className={Styles.HabitCard}
+									onClick={() => handleNavigation(habit)}
+								>
+									<h4 className={Styles.HabitTitle}>{habit}</h4>
+									<p className={Styles.HabitDescription}>
+										Description for {habit}
+									</p>
+								</div>
+							))
+						) : (
+							<p>No habits found</p>
+						)}
 					</div>
 
 					{/* Daily Activity Bar Chart */}

@@ -25,9 +25,6 @@ ChartJS.register(
 	Legend
 );
 
-/*************  ✨ Codeium Command ⭐  *************/
-/******  335b7055-3ba1-4e3d-b991-34d0c9eb239d  *******/
-
 const SidebarItem = ({ icon, text, onClick }) => (
 	<li>
 		<button className="sidebar-item" onClick={onClick}>
@@ -50,6 +47,7 @@ const Dashboard = ({ isModal = false }) => {
 		labels: [],
 		datasets: [],
 	});
+	const [top3Habits, setTop3Habits] = useState([]);
 
 	// Dynamically set API_URL based on the environment
 	const API_URL = process.env.REACT_APP_API_URL || 
@@ -63,6 +61,7 @@ const Dashboard = ({ isModal = false }) => {
 
 		const fetchDashboardData = async () => {
 			try {
+				// Fetching post-test data
 				const response = await axios.get(`${API_URL}/api/dashboard/${idNumber}`);
 				const { post_tests } = response.data;
 
@@ -90,6 +89,10 @@ const Dashboard = ({ isModal = false }) => {
 						],
 					});
 				}
+
+				// Fetching recommended study habits
+				const habitsResponse = await axios.get(`${API_URL}/students/${idNumber}/recommended-pages`);
+				setTop3Habits(habitsResponse.data.recommendedPages || []);
 			} catch (error) {
 				setError('Failed to fetch dashboard data');
 				console.error(error);
@@ -120,8 +123,8 @@ const Dashboard = ({ isModal = false }) => {
 				<Student_Sidebar></Student_Sidebar>
 				<div className={Styles.Content}>
 					<div className={Styles.Title}>
-											<h2>Dashboard</h2>
-										</div>
+						<h2>Dashboard</h2>
+					</div>
 					<section className={Styles.PerformanceOverview}>
 						<h2>Performance Overview</h2>
 						<p>Track your progress </p>
@@ -175,31 +178,20 @@ const Dashboard = ({ isModal = false }) => {
 						<section className={Styles.StudyHabitsSection}>
 							<h3>Top 3 Study Habits:</h3>
 							<div className={Styles.HabitsWrapper}>
-								<div
-									className={Styles.HabitCard}
-									onClick={() => handleNavigation('learn_together')}
-								>
-									<h4 className={Styles.HabitTitle}>Learn Together</h4>
-									<p className={Styles.HabitDescription}>Group Call</p>
-								</div>
-								<div
-									className={Styles.HabitCard}
-									onClick={() => handleNavigation('scheduler')}
-								>
-									<h4 className={Styles.HabitTitle}>Scheduler</h4>
-									<p className={Styles.HabitDescription}>
-										Create your own schedule
-									</p>
-								</div>
-								<div
-									className={Styles.HabitCard}
-									onClick={() => handleNavigation('chat')}
-								>
-									<h4 className={Styles.HabitTitle}>Instructor Chat</h4>
-									<p className={Styles.HabitDescription}>
-										Seek guidance from teachers
-									</p>
-								</div>
+								{top3Habits.length > 0 ? (
+									top3Habits.map((habit, index) => (
+										<div
+											key={index}
+											className={Styles.HabitCard}
+											onClick={() => handleNavigation(habit)} // Navigate based on the habit
+										>
+											<h4 className={Styles.HabitTitle}>{habit}</h4>
+											<p className={Styles.HabitDescription}>Description for {habit}</p>
+										</div>
+									))
+								) : (
+									<p>No recommended study habits found.</p>
+								)}
 							</div>
 						</section>
 						<section className={Styles.ProgressChartSection}>

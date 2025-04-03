@@ -26,7 +26,9 @@ from bson.errors import InvalidId
 from typing import Any
 import ollama
 import certifi  # Import certifi to enable SSL
-
+from fastapi import APIRouter
+from typing import List
+from pydantic import BaseModel
 # Load environment variables
 load_dotenv()
 
@@ -235,6 +237,16 @@ class SurveyData(BaseModel):
     categoryScores: Dict[str, int]
     top3Habits: List[str]
     surveyCompleted: bool
+class Message(BaseModel):
+    sender: str
+    receiver: str
+    text: str
+
+class Instructor(BaseModel):
+    id_number: str
+    firstname: str
+    lastname: str
+    email: str
 
 # Helper functions
 def hash_password(password: str) -> str:
@@ -993,3 +1005,49 @@ async def get_recommended_pages(id_number: str):
             recommended_pages.append(page)
 
     return {"recommendedPages": recommended_pages}
+
+
+@app.get("/messages/{user_name}/{selected_user}", response_model=List[Message])
+def get_messages(user_name: str, selected_user: str):
+    user_name = user_name.lower()
+    selected_user = selected_user.lower()
+
+    messages = list(messages_collection.find(
+        {"$or": [
+            {"receiver": user_name, "sender": selected_user},
+            {"receiver": selected_user, "sender": user_name}
+        ]}, 
+        {"_id": 0}
+    ))
+    return messages
+
+@app.post("/send-message")
+async def send_message(message: Message):
+    message_dict = message.model_dump()
+    message_dict["sender"] = message_dict["sender"].lower()
+    message_dict["receiver"] = message_dict["receiver"].lower()
+    messages_collection.insert_one(message_dict)
+    return {"success": True, "message": "Message sent successfully!"}
+
+@app.get("/instructor-chats/{instructor_name}")
+async def get_instructor_chats(instructor_name: str):
+    print(f"🔍 Fetching chats for instructor: {instructor_name}")
+
+    messages = list(messages_collection.find({"receiver": instructor_name}, {"_id": 0}))
+    print(f"📜 Raw MongoDB Messages: {messages}")
+
+    if not messages:
+        return {"student_ids": [], "messages": []}
+
+    student_names = {msg.get("sender") for msg in messages if "sender" in msg}
+    print(f"👥 Extracted student names: {student_names}")
+
+    return {"student_ids": list(student_names), "messages": messages}
+
+@app.get("/instructors", response_model=List[Instructor])
+def get_instructors():
+    instructors = list(users_collection.find(
+        {"role": "Instructor"},
+        {"_id": 0, "id_number": 1, "firstname": 1, "lastname": 1, "email": 1}
+    ))
+    return instructors 

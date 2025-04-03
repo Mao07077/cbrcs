@@ -1,85 +1,81 @@
-import { useState, useEffect } from 'react'; 
+import { useState, useEffect } from 'react';
 import styles from './Chat.module.css';
 import Header from '../../../Components/composables/Header';
 import Footer from '../../../Components/composables/Footer';
+
 
 const Chat = () => {
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState('');
+    const [userRole, setUserRole] = useState('');
 
-    // Get user details from localStorage
-    const userRole = localStorage.getItem('userRole');
     const firstname = localStorage.getItem('firstname') || '';
     const lastname = localStorage.getItem('lastname') || '';
-    const userFullName = `${firstname} ${lastname}`.trim();
-    const userId = localStorage.getItem("userIdNumber"); // ✅ Get user ID
+    const userFullName = `${firstname} ${lastname}`.trim().toLowerCase();
+    const userId = localStorage.getItem("userIdNumber");
 
-    // Dynamically set the API_URL based on the environment
     const API_URL = process.env.REACT_APP_API_URL || 
-    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
-
+        (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
 
     useEffect(() => {
-        const endpoint = userRole === 'Instructor' 
-            ? `${API_URL}/instructor-chats/${userId}` // ✅ Only get students who messaged
+        const storedRole = localStorage.getItem('userRole') || '';
+        setUserRole(storedRole);
+    }, []);
+
+    useEffect(() => {
+        if (!userFullName || !userRole) return;
+
+        const endpoint = userRole.toLowerCase() === 'instructor'
+            ? `${API_URL}/instructor-chats/${encodeURIComponent(userFullName)}`
             : `${API_URL}/instructors`;
 
         fetch(endpoint)
             .then(response => response.json())
             .then(data => {
-                console.log("Fetched Users:", data);
-                setUsers(Array.isArray(data) ? data : []);
+                if (userRole.toLowerCase() === 'instructor') {
+                    setUsers(data.student_ids.map(name => {
+                        const [firstname, ...lastnameParts] = name.split(' ');
+                        return { firstname, lastname: lastnameParts.join(' ') || '' };
+                    }));
+                } else {
+                    setUsers(Array.isArray(data) ? data : []);
+                }
             })
-            .catch(error => {
-                console.error('Error fetching users:', error);
-                setUsers([]);
-            });
-    }, [userRole, userId, API_URL]);
+            .catch(() => setUsers([]));
+    }, [userRole, userFullName, API_URL]);
 
     const selectUser = (user) => {
-        if (!user || !user.firstname || !user.lastname) {
-            console.error("Error: Selected user is missing firstname or lastname.");
-            return;
-        }
-
-        const selectedUserFullName = `${user.firstname} ${user.lastname}`.trim();
-        console.log("Selected User Full Name:", selectedUserFullName);
+        if (!user || !user.firstname) return;
 
         setSelectedUser(user);
+        const receiverFullName = `${user.firstname} ${user.lastname}`.trim().toLowerCase();
 
-        fetch(`${API_URL}/messages/${encodeURIComponent(selectedUserFullName)}`)
+        fetch(`${API_URL}/messages/${encodeURIComponent(userFullName)}/${encodeURIComponent(receiverFullName)}`)
             .then(response => response.json())
-            .then(data => {
-                console.log("Fetched Messages:", data);
-                setMessages(Array.isArray(data) ? data : []);
-            })
-            .catch(error => {
-                console.error('Error fetching messages:', error);
-                setMessages([]);
-            });
+            .then(data => setMessages(Array.isArray(data) ? data : []))
+            .catch(() => setMessages([]));
     };
 
     const sendMessage = () => {
         if (message.trim() && selectedUser) {
-            const receiverFullName = `${selectedUser.firstname} ${selectedUser.lastname}`.trim();
-            const newMessage = {
-                sender: userFullName,
-                receiver: receiverFullName,
-                text: message
-            };
+            const receiverFullName = `${selectedUser.firstname} ${selectedUser.lastname}`.trim().toLowerCase();
+            const newMessage = { sender: userFullName, receiver: receiverFullName, text: message };
 
             fetch(`${API_URL}/send-message`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newMessage),
             })
-                .then(() => {
-                    setMessages([...messages, newMessage]);
-                    setMessage('');
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        setMessages(prevMessages => [...prevMessages, newMessage]);
+                        setMessage('');
+                    }
                 })
-                .catch(error => console.error('Error sending message:', error));
+                .catch(console.error);
         }
     };
 
@@ -110,7 +106,6 @@ const Chat = () => {
                         <p>No users available.</p>
                     )}
                 </div>
-
                 <div className={styles.chatSection}>
                     {selectedUser ? (
                         <>
@@ -118,26 +113,15 @@ const Chat = () => {
                                 <div className={styles.instructorAvatar}></div>
                                 <h3>{selectedUser.firstname} {selectedUser.lastname}</h3>
                             </div>
-
                             <div className={styles.messages}>
                                 {messages.map((msg, index) => (
-                                    <div
-                                        key={index}
-                                        className={msg.sender === userFullName ? styles.userMessage : styles.instructorMessage}
-                                    >
+                                    <div key={index} className={msg.sender === userFullName ? styles.userMessage : styles.instructorMessage}>
                                         <div className={styles.messageBubble}>{msg.text}</div>
                                     </div>
                                 ))}
                             </div>
-
                             <div className={styles.inputContainer}>
-                                <input
-                                    type="text"
-                                    value={message}
-                                    onChange={(e) => setMessage(e.target.value)}
-                                    className={styles.input}
-                                    placeholder="Type your message here..."
-                                />
+                                <input type="text" value={message} onChange={(e) => setMessage(e.target.value)} className={styles.input} placeholder="Type your message here..." />
                                 <button onClick={sendMessage} className={styles.sendButton}>➤</button>
                             </div>
                         </>
