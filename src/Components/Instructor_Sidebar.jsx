@@ -8,8 +8,8 @@ const routes = [
 		routeIcon: <UserIcon></UserIcon>,
 	},
 	{
-		routeName: 'Message',
-		routePath: '/Message',
+		routeName: 'Chat',
+		routePath: '/Chat',
 		routeIcon: <MessageCircle></MessageCircle>,
 	},
 	{

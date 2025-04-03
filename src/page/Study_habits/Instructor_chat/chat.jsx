@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import styles from './Chat.module.css';
 import Header from '../../../Components/composables/Header';
 import Footer from '../../../Components/composables/Footer';
-
+import Instructor_Sidebar from '../../../Components/Instructor_Sidebar'; // Import Instructor Sidebar
 
 const Chat = () => {
     const [users, setUsers] = useState([]);
@@ -81,8 +81,13 @@ const Chat = () => {
 
     return (
         <div className={styles.chatContainer}>
-            <Header isStudyHabits={true} />
+            {/* Hide "Back to Study Habits" for instructors */}
+            <Header isStudyHabits={userRole.toLowerCase() !== 'instructor'} />
+
             <div className={styles.content_Wrapper}>
+                {/* Show Instructor Sidebar only if user is an instructor */}
+                {userRole.toLowerCase() === 'instructor' && <Instructor_Sidebar />}
+                
                 <div className={styles.sidebar}>
                     <h3>Messages</h3>
                     {users.length > 0 ? (
@@ -106,6 +111,7 @@ const Chat = () => {
                         <p>No users available.</p>
                     )}
                 </div>
+                
                 <div className={styles.chatSection}>
                     {selectedUser ? (
                         <>
@@ -130,6 +136,7 @@ const Chat = () => {
                     )}
                 </div>
             </div>
+
             <Footer />
         </div>
     );
