@@ -287,6 +287,7 @@ def create_prompt(input_text: str) -> str:
 def get_wrong_answers(correct_answer: str) -> List[str]:
      
     try:
+        prompt = create_prompt(correct_answer)  # Define the prompt using the correct_answer
         response = ollama.generate(model='llama3.2', prompt=prompt)
         wrong_answers = response.response.strip().split("\n")
         return wrong_answers[:3]  # Ensure only three wrong answers are returned

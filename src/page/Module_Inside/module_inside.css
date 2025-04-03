@@ -1,13 +1,12 @@
-/* Updated CSS for ModuleInside */
-
 .container {
-  width: calc(300% - 80px); /* Adjust width to take full screen minus sidebar width */
-  margin-left: 0; /* Move container to the left near the sidebar */
+width: 80%;  
+margin-left: -150px; /* Move container to the left near the sidebar */
   padding: 20px; /* Adjust padding as needed */
   background: #f5f5f5; /* Light gray background similar to Google Classroom */
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(93, 79, 79, 0.1);
   min-height: 90vh;
+  margin-top: 100px;
   position: absolute; /* Ensure the container is positioned absolutely */
   left: 400px; /* Align the container to the left near the sidebar */
 }
@@ -37,7 +36,7 @@
 }
 
 .fileelement {
-  width: 60%;
+  width: 40%;
   max-width: 1200px;
   padding: 25px;
   border: 1px solid #ddd;
@@ -87,7 +86,7 @@
 }
 
 .test-section {
-  width: 50%;
+  width: 30%;
   height: 170px;
   display: flex;
   justify-content: center;
@@ -127,3 +126,108 @@
 .proceed-btn:hover {
   background: #185abc; /* Darker blue on hover */
 }
+
+/* Responsive styles for smaller screens */
+@media (max-width: 1024px) {
+  .container {
+    width: 80%;
+    padding: 15px;
+    margin-left:-300px; 
+  }
+
+  .test-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .test-container {
+    width: 90%;
+    max-width: 500px; /* Limit max width for better responsiveness */
+    padding: 20px;
+    text-align: center;
+    margin: 0 auto; /* Center the test container */
+  }
+
+  .test-container p {
+    font-size: 16px;
+    line-height: 1.4;
+    word-wrap: break-word;
+  }
+
+  .proceed-btn {
+    width: 100%;
+    max-width: 200px;
+    font-size: 14px;
+    padding: 12px 20px;
+    margin: 10px auto; /* Ensure it stays centered */
+    display: block;
+  }
+
+  .fileelement {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .test-container {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .test-container p {
+    font-size: 14px;
+  }
+
+  .proceed-btn {
+    width: 100%;
+    max-width: 220px;
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+}
+@media (max-width: 480px) {
+  .container {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .test-container {
+    width: 95%;
+    max-width: 100%;
+    padding: 15px;
+  }
+
+  .test-container p {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .proceed-btn {
+    width: 100%;
+    max-width: 100%;
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+
+  .module-header h1 {
+    font-size: 24px; /* Reduce header size for mobile */
+  }
+
+  .document-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .fileelement {
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center;
+    text-align: center;
+  }
+
+  .document-info h3 {
+    font-size: 18px; /* Adjust text size */
+  }
+}
+
