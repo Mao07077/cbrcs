@@ -117,7 +117,16 @@ body {
 	border: 2px solid #060606;
 }
 
-
+.Pair {
+	display: flex;
+	justify-content: center; /* Center items */
+	align-items: center;
+	padding-bottom: 15px;
+	gap: 40px; /* Reduce gap */
+	width: 50%; /* Restrict width */
+	margin: 0 auto; /* Center the entire pair */
+	margin-left: 300px;
+}
 
 .editButton {
 	margin-top: 10px;
@@ -143,8 +152,9 @@ body {
        ------------- */
 .Info {
 	display: flex;
+	flex-direction: column; /* Stack icon and info card vertically */
 	align-items: center; /* Center align items */
-	gap: 5px; /* Add spacing between icon and info card */
+	gap: 10px; /* Add spacing between icon and info card */
 	padding-top: 20px;
 	padding-bottom: 20px;
 }
@@ -288,7 +298,7 @@ body {
 	border-radius: 5px;
 }
 
-@media (max-width: 1296px) {
+@media (max-width: 1000px) {
 	.Menu {
 		border-top: 2px solid #333;
 		border-right: 0px;
@@ -317,9 +327,8 @@ body {
 		font-size: 10px;
 	}
 
-	.Info {
+	.Pair {
 		display: flex;
-		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		padding-bottom: 15px;
