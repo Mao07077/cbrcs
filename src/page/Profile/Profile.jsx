@@ -42,13 +42,10 @@ const DailyActivityBarChart = ({ dailyData }) => {
 			},
 		],
 	};
-	const navigate = useNavigate();
-	const handleNavigation = (route) => {
-		navigate(`/${route}`);
-	};
 
 	const options = {
 		responsive: true,
+		maintainAspectRatio: false, // Allow the chart to resize dynamically
 		scales: {
 			y: {
 				beginAtZero: true,
@@ -71,7 +68,12 @@ const DailyActivityBarChart = ({ dailyData }) => {
 		},
 	};
 
-	return <Bar data={data} options={options} />;
+	return (
+		<div style={{ width: '100%', height: '300px', maxWidth: '600px', margin: '0 auto' }}>
+			{/* Adjust height and center the chart */}
+			<Bar data={data} options={options} />
+		</div>
+	);
 };
 
 const Profile = () => {

@@ -202,6 +202,7 @@ body {
 	gap: 20px; /* Space between cards */
 	width: 100%;
 }
+
 .StudyTitle {
 	display: flex;
 	justify-content: center;
@@ -211,22 +212,6 @@ body {
 	border-top: 1px solid black;
 	border-bottom: 1px solid black;
 	padding: 10px;
-}
-
-.StudyHabitsTitle {
-	font-size: 18px;
-	font-weight: bold;
-	margin-bottom: 10px;
-}
-
-.StudyHabitsGrid {
-	display: flex;
-	flex-direction: row; /* Ensures horizontal layout */
-	justify-content: center; /* Centers content */
-	flex-wrap: wrap; /* Prevents overflow */
-	gap: 20px; /* Spacing between habit cards */
-	width: 100%;
-	align-items: stretch; /* Ensures equal height */
 }
 
 .HabitCard {
@@ -249,6 +234,7 @@ body {
 	color: black;
 	margin: 0; /* Ensures no extra margins */
 	transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+	padding-bottom: 20px;
 }
 
 .HabitCard:hover {
@@ -278,24 +264,30 @@ body {
      Chart Section
      ------------- */
 .chartSection {
+	padding-top: 20px;
 	text-align: center;
 	margin-bottom: 60px;
 	width: 100%;
 }
-.chartSection h3 {
-	border-top: 1px solid #333;
-	border-bottom: 1px solid #333;
-	font-size: 1.5rem;
-	margin-bottom: 20px;
-	margin-top: 50px;
-	padding: 10px;
-}
+
 .chartSection img {
 	max-width: 600px;
 	width: 60%;
 	height: auto;
 	border: 1px solid #ddd;
 	border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+	.chartSection {
+		padding: 20px 10px; /* Add padding for better spacing */
+	}
+
+	.chartSection img {
+		width: 100%; /* Make the chart take full width on smaller screens */
+		max-width: 100%; /* Prevent overflow */
+		height: 350px; /* Increase height for better visibility */
+	}
 }
 
 @media (max-width: 1000px) {
