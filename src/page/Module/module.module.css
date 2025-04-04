@@ -99,7 +99,7 @@ body {
 	margin: 15px auto;
 }
 
-.ProceedBtn {
+.ModuleProceedBtn {
 	background-color: #002ead;
 	color: white;
 	padding: 12px 24px;
@@ -107,6 +107,12 @@ body {
 	border-radius: 5px;
 	cursor: pointer;
 	font-size: 18px;
+	margin-left: 100px;
+	text-align: center; /* Center the text */
+	display: flex; /* Ensure proper alignment */
+	align-items: center; /* Vertically center the text */
+	justify-content: center; /* Horizontally center the text */
+	margin: 0 auto; /* Center the button itself */
 }
 
 @media (max-width: 590px) {
@@ -158,13 +164,19 @@ body {
 	.ModuleImage{
 		width: 100%;
 	}
-	.ProceedBtn {
+	.ModuleProceedBtn {
 		background-color: #002ead;
 		color: white;
-		padding: 12px 24px;
+		padding: 16px 0; /* Adjust padding for vertical stretch */
 		border: none;
 		border-radius: 5px;
 		cursor: pointer;
 		font-size: 14px;
+		text-align: center; /* Center the text */
+		display: flex; /* Ensure proper alignment */
+		align-items: center; /* Vertically center the text */
+		justify-content: center; /* Horizontally center the text */
+		margin: 0 auto; /* Center the button itself */
+		width: 100%; /* Stretch button horizontally */
 	}
 }

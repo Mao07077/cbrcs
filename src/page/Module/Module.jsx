@@ -92,7 +92,7 @@ const ModuleDashboard = () => {
 												/>
 											</div>
 											<button
-												className={Styles.ProceedBtn}
+												className={Styles.ModuleProceedBtn}
 												onClick={() => handleProceedClick(module._id)}
 											>
 												Proceed
