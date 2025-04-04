@@ -88,7 +88,7 @@ function Login() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required />
-                            <button type="submit" disabled={isLoading}>
+                            <button type="submit" className="login-button" disabled={isLoading}>
                                 {isLoading ? 'Signing in...' : 'Sign In'}
                             </button>
                             <div className="links">

@@ -100,7 +100,7 @@ const ForgotPassword = () => {
                                 onChange={(e) => setIdNumber(e.target.value)}
                                 required
                             />
-                            <button type="submit" className="send-code-btn">Send Code</button>
+                            <button type="submit" className="forgot-password-send-code-btn">Send Code</button>
                         </form>
 
                         {codeSent && (
@@ -113,7 +113,7 @@ const ForgotPassword = () => {
                                     onChange={(e) => setResetCode(e.target.value)}
                                     required
                                 />
-                                <button type="submit" className="confirm-btn">Confirm</button>
+                                <button type="submit" className="forgot-password-confirm-btn">Confirm</button>
                             </form>
                         )}
                     </div>
