@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './forgot_password.css';
 import Icon from '../../icon/actual.png';
-import cbrcimage from '../../icon/carlbalita.jpg';
 
 const API_URL = process.env.REACT_APP_API_URL || 
     (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
@@ -116,10 +115,6 @@ const ForgotPassword = () => {
                                 <button type="submit" className="forgot-password-confirm-btn">Confirm</button>
                             </form>
                         )}
-                    </div>
-
-                    <div className="carl responsive-image">
-                        <img src={cbrcimage} alt="carlbalita" />
                     </div>
                 </div>
             </main>
