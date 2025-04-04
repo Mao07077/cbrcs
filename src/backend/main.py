@@ -29,6 +29,8 @@ import certifi  # Import certifi to enable SSL
 from fastapi import APIRouter
 from typing import List
 from pydantic import BaseModel
+from apscheduler.schedulers.background import BackgroundScheduler
+from fastapi import BackgroundTasks
 # Load environment variables
 load_dotenv()
 
@@ -65,6 +67,7 @@ logging.basicConfig(level=logging.INFO)
 app = FastAPI()
 router = APIRouter()
 
+
 origins = [
     "https:olep.vercel.app",  
 ]
@@ -94,7 +97,8 @@ scores_collection = db["scores"]
 users_collection = db[COLLECTION_NAME]
 request_collection = db["requests"]
 messages_collection = db["messages"]  # Added 'messages' collection
-
+schedule_collection = db["schedules"]
+notes_collection = db["notes"]
 # Serve static files for images and videos
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
@@ -248,6 +252,29 @@ class Instructor(BaseModel):
     lastname: str
     email: str
 
+# Pydantic model for schedule
+class ScheduleEntry(BaseModel):
+    id_number: str
+    schedule: List[List[str]]
+    times: List[str]
+
+class NoteModel(BaseModel):
+    title: str
+    content: str
+
+class SaveNoteRequest(BaseModel):
+    id_number: str
+    note: NoteModel
+
+class UpdateNoteRequest(BaseModel):
+    id_number: str
+    index: int
+    note: NoteModel
+
+class DeleteNoteRequest(BaseModel):
+    id_number: str
+    index: int
+
 # Helper functions
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
@@ -287,7 +314,6 @@ def create_prompt(input_text: str) -> str:
 def get_wrong_answers(correct_answer: str) -> List[str]:
      
     try:
-        prompt = create_prompt(correct_answer)  # Define the prompt using the correct_answer
         response = ollama.generate(model='llama3.2', prompt=prompt)
         wrong_answers = response.response.strip().split("\n")
         return wrong_answers[:3]  # Ensure only three wrong answers are returned
@@ -310,6 +336,59 @@ def extract_text_from_pdf(file):
   for page in reader.pages:
     text += page.extract_text()
   return text
+
+def check_schedule_and_notify():
+    current_time = datetime.now().strftime('%I:%M %p')  # Get current time in 12-hour format
+    current_day = datetime.now().strftime('%a').upper()  # Get current day in 3-letter abbreviation
+
+    # Query for all schedules in the collection
+    schedules = schedule_collection.find()
+
+    for schedule in schedules:
+        user_id = schedule["id_number"]
+        times = schedule["times"]
+        schedule_data = schedule["schedule"]
+
+        # Loop through each time and day to check if it matches the current time and day
+        for i, time in enumerate(times):
+            if time == current_time:  # If times match
+                for j, day in enumerate(schedule_data[i]):
+                    if day and day != '0' and daysOfWeek[j] == current_day:
+                        # Send email or notification
+                        send_reminder_email(user_id, day, current_time, current_day)
+
+# Function to send the reminder email
+def send_reminder_email(user_id, task, current_time, current_day):
+    # Fetch user email from the database
+    user = users_collection.find_one({"id_number": user_id})
+    if not user:
+        return
+
+    user_email = user["email"]
+    subject = f"Reminder: Task '{task}' at {current_time} on {current_day}"
+    body = f"Dear {user['firstname']} {user['lastname']},\n\nThis is a reminder for your task '{task}' scheduled for {current_time} on {current_day}.\n\nBest regards,\nYour Study Schedule App"
+
+    # Set up the email content
+    message = MIMEText(body)
+    message['From'] = EMAIL_HOST_USER
+    message['To'] = user_email
+    message['Subject'] = subject
+
+    # Send email using SMTP
+    try:
+        with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT) as server:
+            server.starttls()
+            server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
+            server.sendmail(EMAIL_HOST_USER, user_email, message.as_string())
+        logging.info(f"Reminder sent to {user_email}")
+    except Exception as e:
+        logging.error(f"Error sending email: {e}")
+
+# Set up the background scheduler
+scheduler = BackgroundScheduler()
+scheduler.add_job(check_schedule_and_notify, 'interval', minutes=1)  # Run every minute
+scheduler.start()
+
 @app.get("/")
 def root():
     return {"message": "FastAPI Backend is Running!"}
@@ -1052,3 +1131,102 @@ def get_instructors():
         {"_id": 0, "id_number": 1, "firstname": 1, "lastname": 1, "email": 1}
     ))
     return instructors 
+
+@app.post("/save_schedule")
+def save_schedule(data: ScheduleEntry):
+    existing = schedule_collection.find_one({"id_number": data.id_number})
+    if existing:
+        schedule_collection.update_one(
+            {"id_number": data.id_number},
+            {"$set": {"schedule": data.schedule, "times": data.times}}
+        )
+    else:
+        schedule_collection.insert_one(data.dict())
+    return {"success": True, "message": "Schedule saved successfully"}
+
+# Get schedule
+@app.get("/get_schedule/{id_number}")
+def get_schedule(id_number: str):
+    schedule = schedule_collection.find_one({"id_number": id_number})
+    if not schedule:
+        raise HTTPException(status_code=404, detail="No schedule found.")
+    return {
+        "schedule": schedule["schedule"],
+        "times": schedule["times"]
+    }
+@app.get("/get_notes/{id_number}")
+async def get_notes(id_number: str):
+    user = notes_collection.find_one({"id_number": id_number})
+    if user:
+        return {"notes": user.get("notes", [])}
+    return {"notes": []}
+
+@app.post("/save_note")
+async def save_note(req: SaveNoteRequest):
+    data = req.dict()
+    id_number = data["id_number"]
+    note = data["note"]
+
+    user = notes_collection.find_one({"id_number": id_number})
+    if user:
+        notes_collection.update_one(
+            {"id_number": id_number},
+            {"$push": {"notes": note}}
+        )
+    else:
+        notes_collection.insert_one({
+            "id_number": id_number,
+            "notes": [note]
+        })
+    return {"success": True}
+
+@app.post("/update_note")
+async def update_note(req: UpdateNoteRequest):
+    id_number = req.id_number
+    index = req.index
+    note = req.note
+
+    user = notes_collection.find_one({"id_number": id_number})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    notes = user.get("notes", [])
+    if index < 0 or index >= len(notes):
+        raise HTTPException(status_code=400, detail="Invalid note index")
+
+    notes[index] = note
+    notes_collection.update_one(
+        {"id_number": id_number},
+        {"$set": {"notes": notes}}
+    )
+    return {"success": True}
+
+@app.post("/delete_note")
+async def delete_note(req: DeleteNoteRequest):
+    id_number = req.id_number
+    index = req.index
+
+    user = notes_collection.find_one({"id_number": id_number})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    notes = user.get("notes", [])
+    if index < 0 or index >= len(notes):
+        raise HTTPException(status_code=400, detail="Invalid note index")
+
+    notes.pop(index)
+    notes_collection.update_one(
+        {"id_number": id_number},
+        {"$set": {"notes": notes}}
+    )
+    return {"success": True}
+
+@app.on_event("startup")
+async def startup_event():
+    # Check if the scheduler is already running
+    if not scheduler.running:
+        logging.info("FastAPI app has started. Scheduler will now check schedules every minute.")
+        scheduler.start()
+    else:
+        logging.info("Scheduler is already running.")
+
