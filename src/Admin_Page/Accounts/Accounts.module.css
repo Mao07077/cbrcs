@@ -302,6 +302,15 @@ body {
 }
 
 @media (max-width: 1000px) {
+	.Greeting_Accountlist {
+		padding: 15px;
+		font-size: 0.7em;
+		font-weight: bold;
+		display: flex;
+		justify-content: flex-start;
+		border-bottom:  solid 1px rgb(187, 182, 182);
+		margin-bottom: 20px;
+	}
 	.Search_Input {
 		display: flex;
 		justify-content: center;
@@ -319,16 +328,67 @@ body {
 		align-items: center; 
 		gap: 5px; 
 	}
+	.Search_Container h2{
+		font-size: 0.7em;
+	}
+	.Create_Button {
+		background-color: #007bff;
+		color: white;
+		border: none;
+		border-radius: 5px;
+		width: 200px;
+		height: 35px;
+		cursor: pointer;
+		font-size: 0.7em;
+		font-weight: bold;
+		transition: all 0.3s ease-in-out;
+		margin-top: 10px;
+	}
+	
 	.Filter_Section {
 		display: flex;
-		flex-wrap: wrap;
+		justify-content: space-between;
 		gap: 10px;
 		align-items: center;
-		justify-content: center;
+		justify-content: flex-start;
 		width: 100%;
 		margin-bottom: 20px;
+		margin-top: -10px;
 		padding: 10px;
 		border-bottom: 1px solid #ccc;
 		font-family: Arial, Helvetica, sans-serif;
+	}
+	.Role_Container h2 {
+		font-size: 0.7em;
+	}
+	.Role_Dropdown {
+		width: 150px;
+		padding: 8px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		background-color: #fff;
+		font-size: 0.7em;
+		font-weight: bold;
+		cursor: pointer;
+		outline: none;
+		transition: all 0.3s ease-in-out;
+	}
+	.Table {
+		width: 100%;
+		border-collapse: collapse;
+		margin-top: 20px;
+		font-size: 0.5em;
+		border-radius: 5px;
+		overflow: hidden;
+	}
+	.Delete_Button {
+		background: #dc3545;
+		color: #fff;
+		padding: 10px 10px; /* Increased padding */
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		transition: all 0.3s ease-in-out;
+		font-size: 0.7em; /* Increased font size */
 	}
 }

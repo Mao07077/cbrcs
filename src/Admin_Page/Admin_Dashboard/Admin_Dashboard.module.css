@@ -140,7 +140,7 @@ body {
 .Redirect_Button {
 	background-color: #002f87;
 	color: white;
-	padding: 10px 20px;
+	padding: 5px 20px;
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
@@ -149,6 +149,7 @@ body {
 	margin-top: 15px; /* Add spacing below the border */
 	align-self: flex-start; /* Align to the left */
 	width: 300%;
+	height: 50px;
 }
 .Redirect_Button:hover {
 	background-color: #001a5e;
@@ -243,9 +244,9 @@ body {
 	.Redirect_Button {
 		background-color: #002f87;
 		color: white;
-		padding: 10px 20px;
+		padding: 5px 15px;
 		border: none;
-		border-radius: 5px;
+		border-radius: 50px;
 		cursor: pointer;
 		font-size: 0.5em;
 		margin-top: 15px; /* Add spacing below the border */
