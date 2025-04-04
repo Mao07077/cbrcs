@@ -137,7 +137,7 @@ function Accounts() {
 										<td>
 											<button
 												onClick={() => handleDelete(index)}
-												className="delete-button"
+												className={Styles.Delete_Button}
 											>
 												Delete
 											</button>
