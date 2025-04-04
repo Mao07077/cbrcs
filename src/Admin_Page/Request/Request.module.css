@@ -228,3 +228,21 @@ button {
 .CloseButton:hover {
 	background-color: #5a6268;
 }
+
+@media (max-width: 1000px) {
+	.Table th {
+		background: #002f87;
+		color: white;
+		font-size: 0.5em;
+		text-transform: uppercase;
+	}
+	.No_Requests {
+		text-align: center;
+		padding: 20px;
+		font-size: 0.5em;
+		color: #666;
+	}
+	.Greeting_Dashboard h1{
+		font-size: 1em;
+	}
+}
