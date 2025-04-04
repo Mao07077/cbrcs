@@ -57,95 +57,92 @@ const Landing = () => {
 </div>
                        
                     
-{/* Newly added image below the news section */}
+{/* News Section */}
+<div className={Styles.News_Container}>
+    <h2>Latest News</h2>
+    <div
+        className={Styles.News_Card}
+        style={{
+            display: "flex",
+            flexDirection: "column", // Default to column for smaller screens
+            alignItems: "flex-start",
+        }}
+    >
+        {/* News Image Placeholder */}
+        <div
+            className={Styles.News_Image}
+            style={{
+                border: "1px dashed #ccc",
+                height: "150px",
+                width: "200px",
+                marginBottom: "15px", // Add margin for spacing
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+            }}
+        >
+            {images.length > 0 ? (
+                <img
+                    src={images[0]}
+                    alt="News"
+                    style={{ maxWidth: "100%", maxHeight: "100%" }}
+                />
+            ) : (
+                <p style={{ color: "#888", textAlign: "center" }}>
+                    Image Placeholder
+                </p>
+            )}
+        </div>
+        <div>
+            <h3>Announcement</h3>
+            <p>
+                {news ||
+                    "CBRC is proud to announce the launch of its new online learning platform, designed to make education accessible to everyone!"}
+            </p>
+        </div>
+    </div>
+</div>
+
+{/* CBRC Background Section */}
 <div className={Styles.Cbrc_Description}>
-                        <div className={Styles.Cbrc_Background}>
-                            <h2>Dr. Carl Balita Review Center</h2>
-                            <p>
-                                CBRC, popularly known as the Dr. Carl E. Balita Review Center, stands as the biggest, most awarded, 
-                                and the only ISO 9001-2015 certified business of its kind. An off-shoot of the “review experience” of its founder 
-                                Dr. Carl E. Balita, who started in the review industry in 1993, CBRC was founded in 2004 with just a chair and a table to boot. 
-                                Since then, it has grown remarkably, boasting 125 branches in major cities nationwide, and has produced hundreds of topnotchers 
-                                and thousands of board passers. This reputation underscores the importance of continually innovating and enhancing preparation 
-                                methods to maintain its leadership in the industry.
-                            </p>
-                        </div>
-                    </div>
+    <div className={Styles.Cbrc_Background}>
+        <h2>Dr. Carl Balita Review Center</h2>
+        <p>
+            CBRC, popularly known as the Dr. Carl E. Balita Review Center, stands as the biggest, most awarded, 
+            and the only ISO 9001-2015 certified business of its kind. An off-shoot of the “review experience” of its founder 
+            Dr. Carl E. Balita, who started in the review industry in 1993, CBRC was founded in 2004 with just a chair and a table to boot. 
+            Since then, it has grown remarkably, boasting 125 branches in major cities nationwide, and has produced hundreds of topnotchers 
+            and thousands of board passers. This reputation underscores the importance of continually innovating and enhancing preparation 
+            methods to maintain its leadership in the industry.
+        </p>
+    </div>
+</div>
 
+{/* Featured Courses Section */}
+<div className="featured-courses">
+    <div className="featured-text">
+        <h2>Featured Courses</h2>
+    </div>
+    <p className={Styles.Featured_Description}>Browse through our top performing courses</p>
+    <div className={Styles.Course_Grid}>
+        <div className={`${Styles.Course_Card} ${Styles.TopRated}`}>
+            <div className={Styles.Placeholder}></div>
+            <div className={Styles.Course_Label}>Top Rated</div>
+            <div className={Styles.Course_Title}>Course Image 1</div>
+        </div>
+        <div className={`${Styles.Course_Card} ${Styles.Recommended}`}>
+            <div className={Styles.Placeholder}></div>
+            <div className={Styles.Course_Label}>Recommended</div>
+            <div className={Styles.Course_Title}>Course Image 2</div>
+        </div>
+        <div className={`${Styles.Course_Card} ${Styles.New}`}>
+            <div className={Styles.Placeholder}></div>
+            <div className={Styles.Course_Label}>New</div>
+            <div className={Styles.Course_Title}>Course Image 3</div>
+        </div>
+    </div>
+</div>
 
-                    {/* News Section */}
-                    <div className={Styles.News_Container}>
-                        <h2>Latest News</h2>
-                        <div
-                            className={Styles.News_Card}
-                            style={{
-                                display: "flex",
-                                flexDirection: "column", // Default to column for smaller screens
-                                alignItems: "flex-start",
-                            }}
-                        >
-                            {/* News Image Placeholder */}
-                            <div
-                                className={Styles.News_Image}
-                                style={{
-                                    border: "1px dashed #ccc",
-                                    height: "150px",
-                                    width: "200px",
-                                    marginBottom: "15px", // Add margin for spacing
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                {images.length > 0 ? (
-                                    <img
-                                        src={images[0]}
-                                        alt="News"
-                                        style={{ maxWidth: "100%", maxHeight: "100%" }}
-                                    />
-                                ) : (
-                                    <p style={{ color: "#888", textAlign: "center" }}>
-                                        Image Placeholder
-                                    </p>
-                                )}
-                            </div>
-                            <div>
-                                <h3>Announcement</h3>
-                                <p>
-                                    {news ||
-                                        "CBRC is proud to announce the launch of its new online learning platform, designed to make education accessible to everyone!"}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                   
-
-                    {/* Featured Courses Section */}
-                    <div className="featured-courses">
-                        <div className="featured-text">
-                            <h2>Featured Courses</h2>
-                        </div>
-                        <p className={Styles.Featured_Description}>Browse through our top performing courses</p>
-                        <div className={Styles.Course_Grid}>
-                            <div className={`${Styles.Course_Card} ${Styles.TopRated}`}>
-                                <div className={Styles.Placeholder}></div>
-                                <div className={Styles.Course_Label}>Top Rated</div>
-                                <div className={Styles.Course_Title}>Course Image 1</div>
-                            </div>
-                            <div className={`${Styles.Course_Card} ${Styles.Recommended}`}>
-                                <div className={Styles.Placeholder}></div>
-                                <div className={Styles.Course_Label}>Recommended</div>
-                                <div className={Styles.Course_Title}>Course Image 2</div>
-                            </div>
-                            <div className={`${Styles.Course_Card} ${Styles.New}`}>
-                                <div className={Styles.Placeholder}></div>
-                                <div className={Styles.Course_Label}>New</div>
-                                <div className={Styles.Course_Title}>Course Image 3</div>
-                            </div>
-                        </div>
-                    </div>
-        
             {/* Footer as an image */}
     <div className={Styles.Footer}>
         <img src={Icon} alt="actual" />

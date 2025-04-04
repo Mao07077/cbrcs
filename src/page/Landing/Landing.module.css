@@ -36,6 +36,7 @@ Header {
     grid-template-columns: 0.1fr 1fr;
     height: auto;
     width: 100vw;
+    background-color: #f0f8ff; /* Light blue background for the entire page */
 }
 .Landing_Page > div.Content {
     display: flex;
@@ -87,6 +88,17 @@ Header {
     align-items: center;
     gap: 20px;
     margin-top: 50px;
+    background-color: #f0f8ff; /* Light blue background for better contrast */
+    padding: 30px; /* Add padding for spacing */
+    border-radius: 10px; /* Rounded corners for a modern look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.News_Container h2 {
+    font-size: 28px; /* Slightly larger font size */
+    font-weight: bold;
+    color: #003366; /* Dark blue for the heading */
+    margin-bottom: 20px; /* Add spacing below the heading */
 }
 
 .News_Card {
@@ -162,12 +174,16 @@ Header {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: add shadow */
 }
 
-
+.featured-text h2{
+  Margin-top: 50px;
+    
+}
 .featured-courses {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 100px; /* Increased top margin to 100px */
+    padding-top: 20px;
+    margin-top: 50px; /* Adjusted top margin for better spacing */
     gap: 10px; /* Add spacing between the heading and description */
 }
 
@@ -189,9 +205,6 @@ Header {
     gap: 15px; /* Spacing between course cards */
     margin: 0 auto; /* Center the grid within its container */
     padding: 15px;
-    background-color: #f4f4f4;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 1200px; /* Limit the width of the grid */
 }
 
@@ -377,7 +390,7 @@ Header {
     justify-content: center;
     align-items: center;
     z-index: 2; /* Keeps it above other elements */
-    
+    margin-bottom: 50px; /* Add spacing below this section */
 }
 
 .Cbrc_Background {
