@@ -179,6 +179,7 @@ body {
 
 @media (max-width: 1000px) {
 	.Greeting_Dashboard h1{
+		width: 70%;
 		font-size: 1.5em;
 	}
 	.ReportTableContainer {
@@ -190,7 +191,7 @@ body {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 10px;
-		width: 100%;
+		width: 90%;
 		margin-bottom: 20px;
 		margin-top: -10px;
 		padding: 10px;
