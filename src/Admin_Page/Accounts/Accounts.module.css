@@ -302,14 +302,9 @@ body {
 }
 
 @media (max-width: 1000px) {
-	.Greeting_Accountlist {
-		padding: 15px;
-		font-size: 0.7em;
-		font-weight: bold;
-		display: flex;
-		justify-content: flex-start;
-		border-bottom:  solid 1px rgb(187, 182, 182);
-		margin-bottom: 20px;
+	.Greeting_Accountlist h1{
+		font-size: 1em;
+		
 	}
 	.Search_Input {
 		display: flex;
