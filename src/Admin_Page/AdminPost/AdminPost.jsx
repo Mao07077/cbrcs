@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 
 import Styles from './AdminPost.module.css';
-
+import QuillStyles from './QuillStyles.module.css'; // Import the new CSS file
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Import Quill's default styles
 import Admin_Sidebar from '../../Components/Admin_Sidebar';
 import Footer from '../../Components/composables/FooterAdmin';
 import Header from '../../Components/composables/Header';
@@ -13,10 +15,10 @@ const AdminPost = () => {
 		subHeader: 'Where the dream and the dreamer become ONE!',
 	});
 	const [introImage, setIntroImage] = useState(null); // State for intro image
-	const [news, setNews] = useState('');
+	const [newsContent, setNewsContent] = useState(''); // State for the news content
 	const [loginImage, setLoginImage] = useState(null);
 	const [signupImage, setSignupImage] = useState(null);
-	const [newsImage, setNewsImage] = useState(null);
+	const [newsImage, setNewsImage] = useState(null); // State for the news image
 	const [courseImages, setCourseImages] = useState([null, null, null]);
 	const [newsStyle, setNewsStyle] = useState({
 		fontSize: '14px', // Adjusted font size for alignment
@@ -54,6 +56,12 @@ const AdminPost = () => {
 		setNewsStyle((prev) => ({ ...prev, [key]: value }));
 	};
 
+	// Handle news submission
+	const handleNewsSubmit = () => {
+		alert(`News Content: ${newsContent}`);
+		// Add logic to save the news content and image
+	};
+
 	return (
 		<div className={Styles.Maincontainer}>
 			{/* Header */}
@@ -83,7 +91,7 @@ const AdminPost = () => {
 							)}
 						</div>
 						<button
-							className={Styles.EditIntroButton}
+							className={Styles.EditIntroSubmitButton} // Unique class for Edit Intro button
 							onClick={() => alert('Edit Intro functionality here')}
 						>
 							Edit Intro
@@ -122,6 +130,7 @@ const AdminPost = () => {
 
 					{/* News Section */}
 					<div className={Styles.News_Container}>
+						<h2>Post News</h2>
 						<div className={Styles.Editable_Image_Input}>
 							<label htmlFor="newsImageUpload">Upload News Image:</label>
 							<input
@@ -135,53 +144,39 @@ const AdminPost = () => {
 								</div>
 							)}
 						</div>
-						<textarea
-							style={newsStyle}
-							value={news}
-							onChange={(e) => setNews(e.target.value)}
-							placeholder="Write news or announcements here..."
-						/>
-						<div className={Styles.FontControls}>
-							<label>
-								Font Size:
-								<input
-									type="number"
-									value={parseInt(newsStyle.fontSize)}
-									onChange={(e) =>
-										handleStyleChange('fontSize', `${e.target.value}px`)
-									}
-								/>
-							</label>
-							<label>
-								Font Weight:
-								<select
-									value={newsStyle.fontWeight}
-									onChange={(e) => handleStyleChange('fontWeight', e.target.value)}
-								>
-									<option value="normal">Normal</option>
-									<option value="bold">Bold</option>
-								</select>
-							</label>
-							<label>
-								Font Style:
-								<select
-									value={newsStyle.fontStyle}
-									onChange={(e) => handleStyleChange('fontStyle', e.target.value)}
-								>
-									<option value="normal">Normal</option>
-									<option value="italic">Italic</option>
-								</select>
-							</label>
-							<label>
-								Color:
-								<input
-									type="color"
-									value={newsStyle.color}
-									onChange={(e) => handleStyleChange('color', e.target.value)}
-								/>
-							</label>
+						<div className={QuillStyles.qlContainer}>
+							<ReactQuill
+								value={newsContent}
+								onChange={setNewsContent}
+								placeholder="Write your news or announcements here..."
+								modules={{
+									toolbar: [
+										[{ header: [1, 2, false] }],
+										['bold', 'italic', 'underline', 'strike'],
+										[{ list: 'ordered' }, { list: 'bullet' }],
+										['link', 'image'],
+										['clean'],
+									],
+								}}
+								formats={[
+									'header',
+									'bold',
+									'italic',
+									'underline',
+									'strike',
+									'list',
+									'bullet',
+									'link',
+									'image',
+								]}
+							/>
 						</div>
-						<button onClick={() => alert('News added: ' + news)}>Add News</button>
+						<button
+							className={Styles.NewsSubmitButton} // Unique class for Post News button
+							onClick={handleNewsSubmit}
+						>
+							Post News
+						</button>
 					</div>
 
 					{/* Featured Courses */}

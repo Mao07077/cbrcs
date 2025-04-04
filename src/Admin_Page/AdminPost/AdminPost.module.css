@@ -16,28 +16,22 @@ body {
 	flex: 1;
 	display: flex;
 }
-
 .Greeting_Dashboard {
 	display: flex;
 	justify-content: flex-start;
 	padding: 15px;
 	border-bottom: 4px solid #333;
 }
-
 .Content {
-	padding: 10px;
+	padding: 5px;
 	text-align: center;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
-	font-size: 25px;
-	font-style: initial;
-	margin: 10px 10px;
-	margin-left: 10px;
-	font-size: 1.2em;
+	font-size: 1em;
+	margin: 5px;
 	width: 100%;
 }
-
 .intro-container {
 	display: flex;
 	flex-direction: row;
@@ -48,12 +42,10 @@ body {
 	gap: 50px;
 	padding: 50px;
 }
-
 .intro-container div {
 	width: 40%;
 	min-width: 400px;
 }
-
 .Placeholder_Box {
 	margin-left: 10px;
 	width: 100%;
@@ -64,180 +56,228 @@ body {
 	justify-content: center;
 	gap: 10px;
 }
-
 .Image_Previews {
 	width: 100%;
-	height: 100%;
-	max-height: 900px;
-	max-width: 900px;
+	height: auto;
+	max-height: 200px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	overflow: hidden;
-	margin-bottom: 10px;
-	margin-left: 100px;
-	border-radius: 10px;
+	border-radius: 8px;
+	border: 1px solid #ccc;
 }
-
 .Image_Previews img {
 	width: 100%;
-	height: 100%;
-	object-fit: fill;
+	height: auto;
+	object-fit: cover;
 }
-
 .Text_Container {
 	display: flex;
 	flex-direction: column;
-	gap: 20px;
+	gap: 10px;
 }
-
 .Buttons {
 	display: flex;
 	flex-direction: row;
 	gap: 20px;
 }
-
 .Buttons button:hover {
 	opacity: 0.8;
 }
-
 .Buttons button {
 	background-color: #003366;
 	color: white;
-	width: 30%; /* Further reduced button width */
+	width: 30%;
 	padding: 10px 15px;
 	border: none;
 	cursor: pointer;
 	border-radius: 5px;
-	font-size: 14px; /* Consistent font size */
+	font-size: 14px;
 	font-weight: bold;
 	transition: all 0.3s ease;
 }
-
 .login {
 	background-color: white;
 	border: 1px solid #003366;
 	color: #003366;
 	margin-right: 10px;
 }
-
 .signup {
 	background-color: #003366;
 	color: white;
 	margin-left: 10px;
 }
-
 .Featured_Courses {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-top: 50px;
+	margin-top: 30px;
 }
-
 .Course_Grid {
 	display: flex;
 	flex-direction: row;
-	gap: 20px;
-	margin-top: 20px;
+	gap: 10px;
+	margin-top: 10px;
 	justify-content: center;
 	align-items: center;
-	margin-bottom: 80px;
+	margin-bottom: 40px;
 	margin-left: auto;
 	margin-right: auto;
 }
-
 .Course_Card {
 	background-color: white;
-	padding: 20px;
+	padding: 10px;
 	border: 1px solid #ddd;
 	text-align: center;
-	width: 300px;
+	width: 250px;
 }
-
 .Featured_Text {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	width: 80%;
-	margin-bottom: 80px;
+	width: 90%;
+	margin-bottom: 40px;
 }
-
 .Featured_Text h2 {
 	margin-top: 0;
 	margin-bottom: 10px;
-	font-size: 24px;
+	font-size: 20px;
 	font-weight: bold;
 	color: #003366;
 }
-
 .Featured_Text p {
 	margin: 0;
-	font-size: 16px;
+	font-size: 14px;
 	color: #555;
 	line-height: 1.5;
 	margin-bottom: 20px;
 }
-
 .course-card:hover {
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 .course-label {
 	background-color: #003366;
 	color: white;
 	padding: 5px;
 	border-radius: 5px;
 }
-
 .course-title {
 	font-weight: bold;
 }
-
-/* News Section */
 .News_Container {
-	margin-top: 30px;
-	width: 80%;
+	margin-top: 20px;
+	width: 90%;
+	max-width: 800px;
 	margin-left: auto;
 	margin-right: auto;
+	padding: 15px;
+	background-color: #f9f9f9;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
 }
-
+.News_Container h2 {
+	font-size: 18px;
+	color: #003366;
+	text-align: left;
+	margin-bottom: 10px;
+	border-bottom: 2px solid #003366;
+	padding-bottom: 5px;
+}
+.News_Container .ql-container {
+	height: 120px;
+	font-size: 12px;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	background: #fafafa;
+}
+.News_Container .ql-editor {
+	background-color: #fff;
+	border-radius: 6px;
+	padding: 10px;
+	overflow-y: auto;
+}
+.NewsButton {
+	padding: 8px 14px;
+	font-size: 14px;
+	background-color: #003366;
+	color: white;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	align-self: flex-end;
+	margin-top: 10px;
+}
+.NewsButton:hover {
+	opacity: 0.9;
+}
+.NewsSubmitButton {
+    padding: 8px 14px;
+    font-size: 14px;
+    background-color: #003366;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-end;
+    margin-top: 10px;
+}
+.NewsSubmitButton:hover {
+    opacity: 0.9;
+}
+@media (max-width: 768px) {
+    .News_Container .ql-container {
+        height: 150px;
+    }
+}
 textarea {
 	width: 100%;
-	height: 120px;
+	height: 100px;
 	padding: 10px;
 	border-radius: 5px;
 	border: 1px solid #ccc;
-	font-size: 14px; /* Consistent font size */
+	font-size: 12px;
 	color: #333;
 	resize: none;
 }
-
 button {
-	padding: 8px 12px; /* Reduced padding */
+	padding: 3px 6px;
+	font-size: 10px;
+	width: auto;
+	max-width: 120px;
+	height: 30px;
 	background-color: #003366;
 	color: white;
 	border: none;
 	border-radius: 5px;
-	font-size: 14px; /* Consistent font size */
 	cursor: pointer;
 	transition: all 0.3s ease;
-	width: 100%;
 }
-
 button:hover {
 	opacity: 0.8;
 }
-
-.EditIntroButton {
-	width: fit-content; /* Adjust width to fit the content */
-	padding: 8px 12px; /* Reduced padding */
-	font-size: 14px; /* Consistent font size */
-	margin: 0 auto; /* Center-align the button */
-	display: block; /* Ensure it behaves as a block element */
-	text-align: center; /* Center text inside the button */
+@media (max-width: 768px) {
+    button {
+        font-size: 8px;
+        padding: 2px 4px;
+        max-width: 120px;
+    }
 }
-
+.EditIntroButton {
+	width: fit-content;
+	padding: 8px 12px;
+	font-size: 14px;
+	margin: 0 auto;
+	display: block;
+	text-align: center;
+}
 .Editable_Text {
 	width: 100%;
 	padding: 10px;
@@ -247,7 +287,6 @@ button:hover {
 	color: #333;
 	margin-bottom: 10px;
 }
-
 .Editable_Image_Input {
 	display: flex;
 	flex-direction: column;
@@ -255,12 +294,10 @@ button:hover {
 	gap: 10px;
 	margin-bottom: 20px;
 }
-
 .Editable_Image_Input label {
 	font-size: 14px;
 	color: #555;
 }
-
 .Editable_Image_Input input[type="file"] {
 	padding: 5px;
 	font-size: 14px;
@@ -268,31 +305,45 @@ button:hover {
 	border-radius: 5px;
 	cursor: pointer;
 }
-
-.FontControls {
-	display: flex; /* Use flexbox for horizontal alignment */
-	gap: 20px; /* Add spacing between controls */
-	margin-top: 10px;
-	align-items: center; /* Align items vertically */
-	justify-content: flex-start; /* Align controls to the left */
-}
-
-.FontControls label {
-	display: flex;
-	flex-direction: column;
+.EditIntroSubmitButton {
+	width: fit-content;
+	padding: 8px 12px;
 	font-size: 14px;
-	color: #555;
-	text-align: left; /* Align text to the left */
-	width: auto; /* Ensure labels don't stretch unnecessarily */
-}
-
-.FontControls input[type="number"],
-.FontControls select,
-.FontControls input[type="color"] {
-	padding: 8px; /* Add consistent padding */
-	font-size: 14px; /* Consistent font size */
-	border: 1px solid #ccc;
+	margin: 0 auto;
+	display: block;
+	text-align: center;
+	background-color: #003366;
+	color: white;
+	border: none;
 	border-radius: 5px;
-	height: 36px; /* Ensure consistent height for all controls */
-	box-sizing: border-box; /* Include padding and border in height */
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+.EditIntroSubmitButton:hover {
+	opacity: 0.9;
+}
+.CourseCardButton {
+	padding: 8px 12px;
+	font-size: 14px;
+	background-color: #003366;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+.CourseCardButton:hover {
+	opacity: 0.9;
+}
+@media (max-width: 768px) {
+    .Content {
+        font-size: 0.9em;
+    }
+    .Course_Card {
+        width: 200px;
+    }
+    button {
+        font-size: 8px;
+        padding: 2px 4px;
+    }
 }
