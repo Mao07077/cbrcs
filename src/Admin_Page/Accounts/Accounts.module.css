@@ -285,17 +285,18 @@ body {
 }
 
 /* Delete Button */
-.delete-button {
+.Delete_Button {
 	background: #dc3545;
 	color: #fff;
-	padding: 8px 12px;
+	padding: 10px 16px; /* Increased padding */
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
 	transition: all 0.3s ease-in-out;
+	font-size: 14px; /* Increased font size */
 }
 
-.delete-button:hover {
+.Delete_Button:hover {
 	background: #b02a37;
 	transform: scale(1.05);
 }
