@@ -108,7 +108,7 @@ body {
 
 /* Adjust Table Container */
 .ReportTableContainer {
-	padding: 0 15px;
+	margin-left: -10px;
 	height: 800px;
 }
 
@@ -179,7 +179,7 @@ body {
 
 @media (max-width: 1000px) {
 	.Greeting_Dashboard h1{
-		font-size: 1em;
+		font-size: 1.5em;
 	}
 	.ReportTableContainer {
 		padding-right: 100px;
