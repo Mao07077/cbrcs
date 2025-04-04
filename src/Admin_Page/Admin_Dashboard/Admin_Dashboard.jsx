@@ -67,8 +67,8 @@ const AdminDashboard = () => {
 						<h1>Admin Dashboard</h1>
 					</div>
 					{/* Place the button directly below the border */}
-					<button className={Styles.Redirect_Button_AdminPost} onClick={redirectToAdminPost}>
-						Go to Admin Post
+					<button className={Styles.Redirect_Button} onClick={redirectToAdminPost}>
+						 Admin Post
 					</button>
 					<div className={Styles.Statistics_Container}>
 						<div className={Styles.Stat_Card}>

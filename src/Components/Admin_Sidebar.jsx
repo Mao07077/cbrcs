@@ -13,11 +13,6 @@ const routes = [
 		routeIcon: <UserIcon></UserIcon>,
 	},
 	{
-		routeName: 'Uploads',
-		routePath: '/Adminpost',
-		routeIcon: <Upload></Upload>,
-	},
-	{
 		routeName: 'Report',
 		routePath: '/Report',
 		routeIcon: <Flag></Flag>,
