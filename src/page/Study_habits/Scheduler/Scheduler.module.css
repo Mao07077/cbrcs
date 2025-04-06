@@ -32,6 +32,7 @@
 
 .scheduleTable {
 	display: grid;
+	margin-top: 20px;
 	grid-template-columns: 100px repeat(7, 1fr); /* Time column + 7 days */
 	grid-auto-rows: 1fr;
 	width: 100%;
