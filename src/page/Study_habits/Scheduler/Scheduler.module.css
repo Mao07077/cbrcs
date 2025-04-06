@@ -1,65 +1,319 @@
 .container {
-	width: 100svw;
-	height: 100svh;
+	width: 100vw;
+	height: 100vh;
+	background: #f9f9f9;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between; /* Ensure content and footer are spaced properly */
+	padding: 0;
 }
+
 .content_wrapper {
-	margin-top: 10px;
-	margin-left: 10px;
+	margin: 0;
 	display: flex;
 	width: 100%;
-	height: 100%;
+	flex: 1; /* Allow the content to take up available space */
+	background: white;
+	border-radius: 0;
+	box-shadow: none;
+	padding: 0;
+	flex-direction: column;
 }
+
 .content_wrapper_sched {
 	display: flex;
+	flex-direction: column;
 	width: 100%;
 	height: 100%;
+	padding-bottom: 150px; /* Prevent footer overlap */
+	overflow-y: auto;
 }
-.schedule-table {
+
+.scheduleTable {
+	display: grid;
+	grid-template-columns: 100px repeat(7, 1fr); /* Time column + 7 days */
+	grid-auto-rows: 1fr;
+	width: 100%;
+	height: 100%;
 	border-collapse: collapse;
-	width: 100%;
-	max-width: 800px;
-	background: #04519e;
-	border-radius: 8px;
-	overflow: hidden;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-.scheduleTable{
-	margin-left: 25px;
-	max-width: 98%;
+	background: #ffffff;
 }
 
-th,
-td {
-	border: 1px solid #cccccc;
-	padding: 10px;
-	text-align: center;
-}
-
-th {
-	background: #0e39a6;
+.scheduleTable .timeColumn {
+	background: #f1f1f1;
 	font-weight: bold;
-	color: white;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-right: 1px solid #e0e0e0;
 }
 
-input {
-	width: 100%;
-	border: none;
+.scheduleTable .timeColumn input {
+	width: 90%; /* Adjust width to ensure full visibility */
+	padding: 5px; /* Add padding for better readability */
+	font-size: 14px; /* Ensure text is legible */
 	text-align: center;
+	border: 1px solid #cccccc;
+	border-radius: 5px;
+	background: #ffffff;
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.scheduleTable .timeColumn input:focus {
+	outline: none;
+	border-color: #4a90e2; /* Highlight border on focus */
+	box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
+
+.scheduleTable .dayHeader {
+	background: #4a90e2;
+	color: white;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-bottom: 1px solid #e0e0e0;
+}
+
+.scheduleTable .cell {
+	border: 1px solid #e0e0e0;
+	background: #f9f9f9;
+	position: relative;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.scheduleTable .cell:hover {
+	background: #e3f2fd;
+}
+
+.scheduleTable .event {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	right: 5px;
+	padding: 5px;
+	background: #4caf50;
+	color: white;
+	border-radius: 5px;
+	font-size: 12px;
+	text-align: center;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.scheduleTable .event.urgent {
+	background: #e53935;
+}
+
+.addTaskWrapper {
+	margin-top: auto; /* Push the task input and buttons to the bottom of the content wrapper */
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end; /* Align buttons to the bottom of the wrapper */
+	gap: 15px; /* Add spacing between the add button and save button */
+	padding-bottom: 20px; /* Ensure space above the footer */
+	position: relative; /* Ensure proper positioning above the footer */
+	z-index: 1; /* Ensure it appears above the footer */
+}
+
+.addButton {
+	background-color: #28a745; /* Vibrant green */
+	color: white;
+	border: none;
+	padding: 15px;
+	border-radius: 50%;
+	cursor: pointer;
+	font-size: 20px;
+	font-weight: bold;
+	transition: background-color 0.3s ease, transform 0.2s ease;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 50px;
+	height: 50px;
+	position: relative; /* Position relative to the wrapper */
+}
+
+.addButton:hover {
+	background-color: #218838;
+	transform: scale(1.1);
+	box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.taskInput {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	align-items: center;
+	justify-content: center;
+	margin-top: 15px;
+}
+
+.taskInput select,
+.taskInput input[type="text"] {
+	padding: 10px;
+	border: 1px solid #cccccc;
+	border-radius: 8px;
+	font-size: 14px;
+	min-width: 150px;
+}
+
+.taskInput input[type="color"] {
+	width: 35px;
+	height: 35px;
+	border: none;
+	cursor: pointer;
+}
+
+.saveButton {
+	background-color: #007bff;
+	color: white;
+	border: none;
+	padding: 15px 30px;
+	border-radius: 50px;
+	cursor: pointer;
+	font-size: 16px;
+	font-weight: bold;
+	text-transform: uppercase;
+	transition: background-color 0.3s ease, transform 0.2s ease;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	width: 200px; /* Ensure consistent width */
+	position: relative; /* Position relative to the wrapper */
+	display: flex; /* Use flexbox for centering */
+	align-items: center; /* Vertically center the text */
+	justify-content: center; /* Horizontally center the text */
+}
+
+.saveButton:hover {
+	background-color: #0056b3;
+	transform: scale(1.05);
+	box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.reminderPopup {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	background-color: #ff9800;
+	color: white;
+	padding: 15px 25px;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	font-size: 14px;
+	font-weight: bold;
+	animation: fadeIn 0.5s ease-in-out;
+}
+.addTaskWrapper {
+	margin-top: auto;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 15px;
+	padding-bottom: 20px;
+	position: relative;
+	z-index: 1;
+}
+
+/* Add and Save buttons wrapped in a single row layout */
+.buttonBar {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 20px;
+}
+
+.addButton {
+	background-color: #28a745;
+	color: white;
+	border: none;
+	padding: 15px;
+	border-radius: 50%;
+	cursor: pointer;
+	font-size: 20px;
+	font-weight: bold;
+	transition: background-color 0.3s ease, transform 0.2s ease;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 50px;
+	height: 50px;
+	margin-top: 20px;
+}
+
+.addButton:hover {
+	background-color: #218838;
+	transform: scale(1.1);
+	box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.saveButton {
+	background-color: #007bff;
+	color: white;
+	border: none;
+	padding: 15px 30px;
+	border-radius: 50px;
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: bold;
+	width: 100px;
+	margin-top: 30px;
+	position: relative;
+	overflow: hidden; /* Prevent duplicate or hidden text from showing */
+	display: flex; /* Use flexbox for centering */
+	align-items: center; /* Vertically center the text */
+	justify-content: center; /* Horizontally center the text */
+}
+
+.saveButton:hover {
+	background-color: #0056b3;
+	transform: scale(1.05);
+	box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 @media (max-width: 900px) {
-	.scheduleTable{
-		flex:1;
-		margin-left: 15px;
-		max-width: 95%;
+	.scheduleTable {
+		grid-template-columns: 80px repeat(7, 1fr);
 	}
-	
-	th{
+
+	.scheduleTable .timeColumn {
+		font-size: 12px;
+	}
+
+	.scheduleTable .dayHeader {
+		font-size: 12px;
+	}
+
+	.scheduleTable .event {
 		font-size: 10px;
 	}
-	.scheduleTable input{
-		font-size: 8px;
-	}
-	
 
+	.addButton,
+	.saveButton {
+		font-size: 14px;
+		padding: 10px 20px;
+	}
 }
