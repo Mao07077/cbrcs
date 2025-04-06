@@ -32,15 +32,18 @@
 .create_note_btn {
     background-color: #28a745;
     color: white;
-    padding: 10px 18px;
+    padding: 12px 20px; /* Increased padding for better spacing */
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 15px;
-    margin: 15px 0;
-    width: 20%;
-    min-width: 120px;
-    margin-left: 40px;
+    height: 30px;
+    font-size: 14px; /* Slightly increased font size */
+    margin: 15px auto; /* Centered the button horizontally */
+    display: left ; /* Ensures proper centering */
+    margin-left: 50px;
+    width: fit-content; /* Adjusts width to fit the content */
+    min-width: 140px;
+    white-space: nowrap; /* Prevents text wrapping */
     transition: background 0.3s ease;
 }
 
@@ -67,6 +70,7 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: normal;
+    border-left: 5px solid transparent; /* Default border color */
 }
 
 .note_title {
@@ -231,6 +235,29 @@
 
 .dropdown_menu button:hover {
     background: #f0f0f0;
+}
+
+.colorPicker {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.colorOption {
+    width: 30px;
+    height: 30px;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: border 0.3s ease;
+}
+
+.colorOption:hover {
+    border: 2px solid #000;
+}
+
+.selected {
+    border: 2px solid #000;
 }
 
 @media screen and (max-width: 1024px) {
