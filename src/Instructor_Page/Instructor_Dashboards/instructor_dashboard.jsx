@@ -78,14 +78,7 @@ const InstructorDashboard = () => {
 
 					<div className={Styles.Create_Module}>
 						<div className={Styles.AnnouncementBox}>
-							<div className={Styles.AnnouncementInput}>
-								<input
-									type="text"
-									placeholder="Post announcement here"
-									className={Styles.InputField}
-								/>
-							</div>
-							<hr className={Styles.Divider} />
+							
 							<div className={Styles.AnnouncementActions}>
 								<input
 									type="file"
@@ -102,7 +95,7 @@ const InstructorDashboard = () => {
 								{selectedFile && (
 									<span className={Styles.FileName}>{selectedFile.name}</span>
 								)}
-								<button className={Styles.PostButton}>Post</button>
+								
 							</div>
 						</div>
 					</div>

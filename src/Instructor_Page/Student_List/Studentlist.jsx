@@ -82,6 +82,7 @@ function StudentTable() {
 					</div>
 
 					<h2>Search:</h2>
+				<div className={Styles.Input}>
 					<input
 						type="text"
 						placeholder="Student No. or Name"
@@ -89,6 +90,7 @@ function StudentTable() {
 						onChange={(e) => setSearchQuery(e.target.value)}
 						className={Styles.Search_Input}
 					/>
+					</div>
 					{isLoading ? (
 						<p>Loading students...</p>
 					) : (

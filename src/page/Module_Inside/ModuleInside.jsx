@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react"; 
 import { useParams, useNavigate } from "react-router-dom"; 
 import "./module_inside.css"; 
-import Header from "../../Components/Header"; 
-import Instructor_Header from "../../Components/Instructor_Header";
-
+import Header from '../../Components/composables/Header';
 const ModuleInside = () => {
   const [module, setModule] = useState(null); 
   const [error, setError] = useState(null); 
@@ -60,11 +58,14 @@ const ModuleInside = () => {
 
   return (
     <div>
-      <header className="header">
-        {isInstructor ? <Instructor_Header /> : <Header />}
-      </header>
       
-      <div className="container wider-container">  
+       <Header></Header>
+        <div className="header-logout">
+        <button onClick={() => handleNavigation('login')}>Logout</button>
+      </div>  
+
+      
+      <div className="container">  
         <main className="module-content">
           
           <section className="module-header">
@@ -94,7 +95,7 @@ const ModuleInside = () => {
           <div className="separator"></div> {/* Add separator line */}
 
           <section className="test-section">
-            <div className="test-container wider-test-container">
+            <div className="test-container">
               <h3>Ready To Take The Test?</h3>
               <p>Instructions Here</p>
               <button 

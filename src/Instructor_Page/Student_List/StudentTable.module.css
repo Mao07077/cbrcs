@@ -31,7 +31,7 @@ body {
 }
 
 .Content {
-	padding: 10px;
+	padding: 5px;
 	text-align: center;
 	display: flex;
 	flex-direction: column;
@@ -39,7 +39,6 @@ body {
 	font-size: 25px;
 	font-style: initial;
 	margin: 10px 10px;
-	margin-left: 10px;
 	font-size: 1.2em;
 	width: 100%;
 }
@@ -58,7 +57,7 @@ body {
 	border: 1px solid #ccc;
 	background: #eef2f7;
 	color: #333;
-	font-size: 1.3em;
+	font-size: 1em;
 }
 
 .Table td {
@@ -129,12 +128,23 @@ body {
 	background-color: #3e3e3c;
 }
 @media (max-width: 1000px) {
+	.Greeting_Studentlist {
+		display: flex;
+		justify-content: flex-start;
+		padding: 15px;
+		border-bottom: 0.5px solid #333;
+	}
+	.Greeting_Studentlist h1 {
+		font-size: 1.3em;
+		color: #333;
+		margin-bottom: 0px;
+	}
 	.Table {
-		width: 100%;
+		width: 80%;
 		border-collapse: collapse;
 		text-align: center;
 		margin-top: 20px;
-		font-size: 0.9em;
+		font-size: 0.6em;
 	}
 
 	.Table th {
@@ -143,7 +153,7 @@ body {
 		border: 1px solid #ccc;
 		background: #eef2f7;
 		color: #333;
-		font-size: 0.9em;
+		font-size: 0.5em;
 	}
 	Buttons {
 		display: flex;
@@ -161,10 +171,42 @@ body {
 	}
 	.Content {
 		border-left: 0px;
-		border-bottom: 2px solid #333;
+		padding: 5px;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		font-style: initial;
+		margin: 10px 10px;
+		font-size: 1.2em;
+		width: 80%;
+	}
+	.Input{
+		
+		width: 50%;
+
+	}
+	.Content_Wrapper {
+		
+		display: flex;
+	}
+	.Table td {
+		font-size: 0.9em;
 	}
 }
+
 @media (max-width: 600px) {
+	.Greeting_Studentlist {
+		display: flex;
+		justify-content: flex-start;
+		padding: 15px;
+		border-bottom: 1px solid #333;
+	}
+	.Greeting_Studentlist h1 {
+		font-size: 1em;
+		color: #333;
+		margin-bottom: 0px;
+	}
 	.Menu ul {
 		display: flex;
 		flex-direction: row;
@@ -187,14 +229,263 @@ body {
 	.Menu span {
 		font-size: 10px;
 	}
-	.Maincontainer {
-		display: grid;
-		grid-template-areas:
-			'Header Header'
-			'Content Content'
-			'Menu Menu';
+	.Input{
+		width: 50%;
 	}
-}
+	.input{
+		width: 500px;}
+	
+		.Table {
+			width: 70%;
+			border-collapse: collapse;
+			text-align: center;
+			margin-top: 20px;
+			font-size: 0.6em;
+		}
+	
+		.Table th {
+			font-family: Arial, Helvetica, sans-serif;
+			padding: 10px;
+			border: 1px solid #ccc;
+			background: #eef2f7;
+			color: #333;
+			font-size: 0.9em;
+		}
+		Buttons {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			padding: 6px;
+			background-color: #032a6e;
+			color: white;
+			border: none;
+			border-radius: 10px;
+			font-size: 12px;
+			font-family: Arial, Helvetica, sans-serif;
+			cursor: pointer;
+			transition: background-color 0.3s;
+		}
+		.Content {
+			padding: 10px;
+			text-align: center;
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			font-size: 25px;
+			font-style: initial;
+			margin: 10px 10px;
+			margin-left: 1px;
+			font-size: 1.2em;
+			width: 70%;
+		}
+		
+		.Input{
+			
+			width: 50%;
+	
+		}
+		.Content_Wrapper {
+			display: flex;
+		}
+		.Table td {
+			font-size: 0.9em;
+		}
+	}
+	@media (max-width: 375px) {
+		.Greeting_Studentlist {
+			display: flex;
+			justify-content: flex-start;
+			padding: 15px;
+			border-bottom: 0.5px solid #333;
+		}
+		.Greeting_Studentlist h1 {
+			font-size: 1em;
+			color: #333;
+			margin-bottom: 0px;
+		}
+		.Maincontainer {
+			display: flex;
+			flex-direction: column;
+			height: 100svh;
+			width: 100vw;
+		}
+		.Menu ul {
+			display: flex;
+			flex-direction: row;
+			height: 5px;
+			justify-content: center;
+			gap: 5%;
+		}
+		.Menu ul li {
+			display: flex;
+			flex-direction: row;
+			height: 5px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+		.Menu img {
+			margin: 0 auto;
+			width: 20px;
+			height: 20px;
+		}
+		.Menu span {
+			font-size: 10px;
+		}
+		.Input{
+			width: 50%;
+		}
+		.input{
+			width: 500px;}
+		
+			.Table {
+				width: 70%;
+				border-collapse: collapse;
+				text-align: center;
+				margin-top: 20px;
+				font-size: 0.6em;
+			}
+		
+			.Table th {
+				font-family: Arial, Helvetica, sans-serif;
+				padding: 5px;
+				border: 1px solid #ccc;
+				background: #eef2f7;
+				color: #333;
+				font-size: 0.9em;
+			}
+			Buttons {
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+				padding: 6px;
+				background-color: #032a6e;
+				color: white;
+				border: none;
+				border-radius: 10px;
+				font-size: 12px;
+				font-family: Arial, Helvetica, sans-serif;
+				cursor: pointer;
+				transition: background-color 0.3s;
+			}
+			.Content {
+				padding: 5px;
+				text-align: center;
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-start;
+				font-style: initial;
+				margin: 10px 10px;
+				font-size: 1.2em;
+				width: 100%;
+			}
+			.Input{
+				
+				width: 50%;
+		
+			}
+			.Content_Wrapper {
+				flex: 1 ;
+				display: flex;
+			}
+			.Table td {
+				font-size: 0.9em;
+			}
+		}
+		@media (max-width: 320px) {
+			.Greeting_Studentlist {
+				display: flex;
+				justify-content: flex-start;
+				padding: 15px;
+				border-bottom: 0.5px solid #333;
+			}
+			.Greeting_Studentlist h1 {
+				font-size: 1em;
+				color: #333;
+				margin-bottom: 0px;
+			}
+			.Menu ul {
+				display: flex;
+				flex-direction: row;
+				height: 5px;
+				justify-content: center;
+				gap: 5%;
+			}
+			.Menu ul li {
+				display: flex;
+				flex-direction: row;
+				height: 5px;
+				margin-top: 10px;
+				margin-bottom: 10px;
+			}
+			.Menu img {
+				margin: 0 auto;
+				width: 20px;
+				height: 20px;
+			}
+			.Menu span {
+				font-size: 10px;
+			}
+			.Input{
+				width: 50%;
+			}
+			.input{
+				width: 500px;}
+			
+				.Table {
+					width: 70%;
+					border-collapse: collapse;
+					text-align: center;
+					margin-top: 20px;
+					font-size: 0.6em;
+				}
+			
+				.Table th {
+					font-family: Arial, Helvetica, sans-serif;
+					padding: 3px;
+					border: 1px solid #ccc;
+					background: #eef2f7;
+					color: #333;
+					font-size: 0.6em;
+				}
+				.Table td {
+					font-size: 0.9em;
+				}
+				Buttons {
+					display: flex;
+					flex-direction: column;
+					width: 100%;
+					padding: 6px;
+					background-color: #032a6e;
+					color: white;
+					border: none;
+					border-radius: 10px;
+					font-size: 12px;
+					font-family: Arial, Helvetica, sans-serif;
+					cursor: pointer;
+					transition: background-color 0.3s;
+				}
+				.Content {
+					border-left: 0px;
+					padding: 5px;
+					text-align: center;
+					display: flex;
+					flex-direction: column;
+					justify-content: flex-start;
+					font-style: initial;
+					margin: 10px 10px;
+					font-size: 1.2em;
+					width: 80%;
+				}
+				.Input{
+					
+					width: 50%;
+			
+				}
+				.Content_Wrapper {
+					flex: 1;
+					display: flex;
+				}
+			}
 .Search_Container {
 	display: flex;
 	align-items: center;
@@ -207,10 +498,13 @@ body {
 }
 
 .Search_Input {
-	width: 200px; /* Adjust width */
-	max-width: 100%;
+	width: 100px; /* Adjust width */
 	padding: 6px;
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	box-sizing: border-box;
+}
+
+.Input{
+	width: 20%;
 }
