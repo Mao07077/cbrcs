@@ -17,7 +17,6 @@ body {
 	flex: 1;
 	display: flex;
 }
-
 .Header {
 	grid-area: Header;
 	background-color: #002f87;
@@ -29,7 +28,6 @@ body {
 	padding: 15px;
 	border-bottom: 4px solid #333;
 }
-
 .Content {
 	width: 100%;
 	padding: 10px;
@@ -44,7 +42,6 @@ body {
 	font-size: 1.2em;
 }
 .profilePage {
-	/* Centers the content and provides spacing around */
 	max-width: 1200px;
 	width: 100%;
 	margin: 0 auto;
@@ -53,40 +50,30 @@ body {
 	color: #333;
 	background-color: #f5f4fc;
 }
-
-/* -------------
-     Top Section
-     ------------- */
 .TopSection {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-top: 20px; /* space below header/sidebar */
+	margin-top: 20px;
 	margin-bottom: 50px;
 	padding-bottom: 20px;
 	border-bottom: 2px solid #333;
 }
-
 @media (max-width: 768px) {
 	.TopSection {
-		flex-direction: column; /* Stack items vertically */
-		align-items: center; /* Center align items */
-		gap: 20px; /* Add spacing between stacked items */
+		flex-direction: column;
+		align-items: center;
+		gap: 20px;
 	}
-
 	.IconContainer, .InfoCard {
-		width: 100%; /* Ensure full width for smaller screens */
-		text-align: center; /* Center content */
+		width: 100%;
+		text-align: center;
 	}
 }
-
-/* Title styling */
 .topSection h2 {
 	font-size: 1.8rem;
 	margin-top: 20px;
 }
-
-/* Date info on the right */
 .DateInfo {
 	text-align: right;
 	font-size: 0.9rem;
@@ -97,37 +84,30 @@ body {
 	padding: 8px;
 	margin: 0;
 }
-
-/* -------------
-       Profile Icon
-       ------------- */
 .IconContainer {
 	display: flex;
 	flex-direction: column;
 	padding-bottom: 10px;
 	align-items: center;
-	margin-bottom: 0; /* Remove extra spacing */
+	margin-bottom: 0;
 }
-
 .IconContainer img {
-	width: 140px; /* Ensuring uniform size */
+	width: 140px;
 	height: 140px;
 	border-radius: 50%;
 	object-fit: cover;
 	border: 2px solid #060606;
 }
-
 .Pair {
 	display: flex;
-	justify-content: center; /* Center items */
+	justify-content: center;
 	align-items: center;
 	padding-bottom: 15px;
-	gap: 40px; /* Reduce gap */
-	width: 50%; /* Restrict width */
-	margin: 0 auto; /* Center the entire pair */
+	gap: 40px;
+	width: 50%;
+	margin: 0 auto;
 	margin-left: 300px;
 }
-
 .editButton {
 	margin-top: 10px;
 	padding: 6px 12px;
@@ -141,24 +121,18 @@ body {
 	width: 110px;
 	margin-left: 0px;
 }
-
 .editButton:hover {
 	background-color: #0056b3;
 	transform: scale(1.05);
 }
-
-/* -------------
-       Personal Info Card
-       ------------- */
 .Info {
 	display: flex;
-	flex-direction: column; /* Stack icon and info card vertically */
-	align-items: center; /* Center align items */
-	gap: 10px; /* Add spacing between icon and info card */
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
 	padding-top: 20px;
 	padding-bottom: 20px;
 }
-
 .InfoCard {
 	align-items: flex-start;
 	background-color: #fff;
@@ -167,42 +141,35 @@ body {
 	min-height: 250px;
 	border-radius: 8px;
 	padding: 20px 30px;
-	margin-bottom: 20px; /* Add spacing at the bottom */
+	margin-bottom: 20px;
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
-	width: 50%; /* Default width */
-	text-align: center; /* Center align text */
-	margin: 0 auto; /* Center the info card */
+	width: 50%;
+	text-align: center;
+	margin: 0 auto;
 }
-
 @media (max-width: 768px) {
 	.InfoCard {
-		width: 90%; /* Increase width for smaller screens */
-		padding: 15px 20px; /* Adjust padding for better fit */
+		width: 90%;
+		padding: 15px 20px;
 	}
 }
-
 .InfoCard label {
 	margin-top: 8px;
 	font-size: 1.3rem;
 	font-weight: 500;
 	color: #333;
 }
-
-/* -------------
-     Study Habits
-     ------------- */
 .HabitsWrapper {
 	display: flex;
-	flex-direction: row; /* Aligns items horizontally */
-	justify-content: center; /* Centers them */
-	flex-wrap: wrap; /* Allows wrapping if space is limited */
-	gap: 20px; /* Space between cards */
+	flex-direction: row;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 20px;
 	width: 100%;
 }
-
 .StudyTitle {
 	display: flex;
 	justify-content: center;
@@ -213,10 +180,9 @@ body {
 	border-bottom: 1px solid black;
 	padding: 10px;
 }
-
 .HabitCard {
-	flex: 1 1 220px; /* Allows flexibility */
-	max-width: 220px; /* Prevents stretching */
+	flex: 1 1 220px;
+	max-width: 220px;
 	text-align: center;
 	background-color: #f8f9fa;
 	border: 1px solid #000;
@@ -226,23 +192,21 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center; /* Centers content */
+	justify-content: center;
 	font-size: 14px;
 	white-space: normal;
 	overflow-wrap: break-word;
 	text-decoration: none;
 	color: black;
-	margin: 0; /* Ensures no extra margins */
+	margin: 0;
 	transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 	padding-bottom: 20px;
 }
-
 .HabitCard:hover {
 	transform: scale(1.05);
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 	background-color: #e3f2fd;
 }
-
 .HabitTitle {
 	font-size: clamp(14px, 1.5vw, 18px);
 	font-weight: bold;
@@ -253,43 +217,48 @@ body {
 	white-space: normal;
 	color: rgb(17, 16, 17);
 }
-
 .HabitDescription {
 	font-size: 14px;
 	color: #555;
 	margin-top: 5px;
 }
-
-/* -------------
-     Chart Section
-     ------------- */
 .chartSection {
 	padding-top: 20px;
 	text-align: center;
-	margin-bottom: 60px;
+	margin: 0 auto;
 	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
-
 .chartSection img {
 	max-width: 600px;
 	width: 60%;
 	height: auto;
-	border: 1px solid #ddd;
-	border-radius: 5px;
+	margin: 0 auto;
 }
-
 @media (max-width: 768px) {
 	.chartSection {
-		padding: 20px 10px; /* Add padding for better spacing */
+		padding: 50px 10px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		margin: 0 auto;
+		box-sizing: border-box;
 	}
-
 	.chartSection img {
-		width: 100%; /* Make the chart take full width on smaller screens */
-		max-width: 100%; /* Prevent overflow */
-		height: 350px; /* Increase height for better visibility */
+		width: 85%;
+		max-width: 100%;
+		height: auto;
+		display: block;
+		box-sizing: border-box;
+		margin-left: 50px;
+		align-items: center;
 	}
 }
-
 @media (max-width: 1000px) {
 	.Menu {
 		border-top: 2px solid #333;
@@ -318,7 +287,6 @@ body {
 	.Menu span {
 		font-size: 10px;
 	}
-
 	.Pair {
 		display: flex;
 		justify-content: center;

@@ -73,6 +73,9 @@
 	cursor: pointer;
 	font-size: 18px;
 	font-weight: bold;
+	display: flex; /* Ensure proper alignment */
+	justify-content: center; /* Center text horizontally */
+	align-items: center; /* Center text vertically */
 	transition: background 0.3s ease, transform 0.2s ease;
 }
 
@@ -154,6 +157,9 @@
 	cursor: pointer;
 	font-size: 20px;
 	font-weight: bold;
+	display: flex; /* Ensure proper alignment */
+	justify-content: center; /* Center text horizontally */
+	align-items: center; /* Center text vertically */
 	transition: background 0.3s ease, transform 0.2s ease;
 }
 
@@ -167,7 +173,7 @@
 	margin-top: 15px;
 	font-size: 22px;
 	font-weight: bold;
-	color: #333;
+	color: #fefafa;
 	letter-spacing: 0.5px;
 }
 @media (max-width: 1000px) {
