@@ -191,33 +191,6 @@ const questions = [
                     "Reduced stress and anxiety",
                     "I haven’t noticed any benefits"
                 ]
-            },
-            {
-                question: "What tool do you use to organize your study schedule?",
-                choices: [
-                    "Planner or calendar",
-                    "Study apps or online tools",
-                    "To-do lists or sticky notes",
-                    "I don’t use any tool"
-                ]
-            },
-            {
-                question: "What do you do if you fall behind on your study schedule?",
-                choices: [
-                    "I catch up by studying more hours",
-                    "I adjust my schedule to cover missed topics",
-                    "I ignore the schedule and study randomly",
-                    "I don’t have a study schedule"
-                ]
-            },
-            {
-                question: "How do you prioritize subjects or topics in your schedule?",
-                choices: [
-                    "Based on upcoming exams or deadlines",
-                    "Based on my interest in the subject",
-                    "Based on the difficulty level of topics",
-                    "I don’t prioritize subjects"
-                ]
             }
         ]
     },
@@ -258,6 +231,16 @@ const questions = [
                     "Estimating time based on study progress",
                     "I don’t track my study time",
                     "I study until I feel tired"
+                ]
+            },
+            {
+                question: "What strategy helps you manage your time most effectively?",
+                choices: [
+                    "Prioritizing tasks based on deadlines",
+                    "Breaking tasks into smaller steps",
+                    "Using a planner or calendar",
+                    "Setting reminders for study sessions",
+                    "I don’t use any specific strategy"
                 ]
             }
         ]
@@ -400,6 +383,16 @@ const questions = [
                     "By answering questions and providing feedback",
                     "I haven’t taught others"
                 ]
+            },
+            {
+                question: "What challenges do you face when teaching others?",
+                choices: [
+                    "Difficulty in simplifying complex topics",
+                    "Lack of confidence in my knowledge",
+                    "Managing time to teach and study",
+                    "Finding someone to teach",
+                    "I don’t face any challenges"
+                ]
             }
         ]
     },
@@ -472,6 +465,24 @@ const questions = [
                     "Lo-fi or ambient sounds",
                     "Pop or upbeat music",
                     "I don’t listen to music while studying."
+                ]
+            },
+            {
+                question: "Do you think plants improve your focus while studying?",
+                choices: [
+                    "Yes, they help me concentrate better.",
+                    "Sometimes, but not always.",
+                    "No, I don’t notice any difference.",
+                    "I haven’t tried studying with plants around."
+                ]
+            },
+            {
+                question: "What is your favorite scent for creating a study-friendly environment?",
+                choices: [
+                    "Lavender or calming scents",
+                    "Citrus or energizing scents",
+                    "Mint or refreshing scents",
+                    "I don’t use scents while studying."
                 ]
             },
             {
