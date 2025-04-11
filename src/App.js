@@ -69,7 +69,8 @@ function App() {
             <Route path="/ModuleList" element={<ModuleList/>}/>
             <Route path="/Report" element={<Report/>}/>
             <Route path="/StudyHabits_landingpage" element={<StudyHabits_landingpage/>}/>
-            <Route path="/Flashcard" element={<Flashcard/>}/>
+            <Route path="/Flashcards" element={<Flashcard/>}/>
+            <Route path="/Flashcards/:moduleId" element={<Flashcard />} />
             <Route path="/Flashcard_landing" element={<Flashcard_landing/>}/>
             <Route path="/Survey" element={<Survey/>}/>
             <Route path="/Scheduler" element={<Scheduler />} />

@@ -99,6 +99,7 @@ request_collection = db["requests"]
 messages_collection = db["messages"]  # Added 'messages' collection
 schedule_collection = db["schedules"]
 notes_collection = db["notes"]
+Flashcards_collection = db["flashcards"]
 # Serve static files for images and videos
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
@@ -275,6 +276,15 @@ class DeleteNoteRequest(BaseModel):
     id_number: str
     index: int
 
+class Flashcard(BaseModel):
+    module_id: str
+    content: str
+    unique: str
+
+    class Config:
+        json_encoders = {
+            ObjectId: lambda v: str(v)
+        }
 # Helper functions
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
@@ -1230,3 +1240,29 @@ async def startup_event():
     else:
         logging.info("Scheduler is already running.")
 
+@app.post("/api/generate-flashcards/{module_id}")
+async def generate_flashcards(module_id: str):
+    # Check if flashcards for this module already exist
+    existing_flashcards = list(Flashcards_collection.find({"module_id": module_id}))
+
+    if existing_flashcards:
+        # Convert ObjectId to string
+        return {"success": True, "flashcards": [{**flashcard, "_id": str(flashcard["_id"])} for flashcard in existing_flashcards]}
+
+    try:
+        # Generate new flashcards
+        new_flashcards_data = [
+            Flashcard(module_id=module_id, content=f"Flashcard content {i}", unique=f"flashcard-{i}")
+            for i in range(1, 6)
+        ]
+
+        # Store the generated flashcards in the database
+        for flashcard in new_flashcards_data:
+            result = Flashcards_collection.insert_one(flashcard.dict())
+            flashcard.id = str(result.inserted_id)
+
+        return {"success": True, "flashcards": new_flashcards_data}
+
+    except Exception as e:
+        logging.error(f"Error generating flashcards: {e}")
+        raise HTTPException(status_code=500, detail="Error generating flashcards")
