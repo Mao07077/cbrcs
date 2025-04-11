@@ -12,7 +12,7 @@
 }
 /* Sidebar */
 .sidebar {
-	width: 35%;
+	width: 30%;
 	background: #f7f7f99d;
 	padding: 15px;
 	border-right: 1px solid #ddd;
@@ -83,7 +83,7 @@
 
 /* Chat Section */
 .chatSection {
-	width: 65%;
+	width: 67%;
 	display: flex;
 	flex-direction: column;
 }
