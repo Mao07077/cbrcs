@@ -22,7 +22,7 @@ const top10StudyHabits = [
   {
     title: 'Modules',
     description: 'Regular self-assessment.',
-    path: '/module',
+    path: '/modulesh',
   },
   {
     title: 'Scheduler',

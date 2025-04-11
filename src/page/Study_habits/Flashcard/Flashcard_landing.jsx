@@ -75,7 +75,7 @@ const FlashcardsLandingPage = () => {
 	};
     return (
         <div className={Styles.page_container}>
-            <Header />
+            <Header isStudyHabits={true}></Header>
             <div className={Styles.content_wrapper}>
                 <div className={Styles.module_container}>
                     <h2>Flashcards Module</h2>

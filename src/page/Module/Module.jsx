@@ -70,7 +70,7 @@ const ModuleDashboard = () => {
 
 	return (
 		<div className={Styles.MainContainer}>
-			<Header></Header>
+			<Header isStudyHabits={true}></Header>
 			<div className={Styles.Content_Wrapper}>
 				<Student_Sidebar></Student_Sidebar>
 

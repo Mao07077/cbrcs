@@ -4,6 +4,7 @@ import ForgotPassword from './page/Forgot_Password/Forgot_password';
 import Dashboard from './page/Dashboard/Dashboard'
 import Header from './Components/Header'; 
 import HelpPage from './page/Help/help';
+import ModuleSH from './page/Module/ModuleSH';
 import Module from './page/Module/Module';
 import Profile from './page/Profile/Profile';
 import Settings from './page/Settings/Settings';
@@ -49,6 +50,7 @@ function App() {
           <Route path="instructor_Header"element={<InstructorHeader/>}/>
           <Route path="/Help" element={<HelpPage />} />
           <Route path="/module" element={<Module />} />
+          <Route path="/modulesh" element={<ModuleSH />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/module/:id" element={<ModuleInside />} />

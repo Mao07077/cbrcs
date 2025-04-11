@@ -12,7 +12,7 @@ const Flashcards = () => {
 
     const cardsPerPage = 3;
     const totalSets = Math.ceil(flashcards.length / cardsPerPage);
-
+    
     const handleNextSet = () => {
         setFlippedCards({});
         setCurrentSet((prev) => Math.min(prev + 1, totalSets - 1));
