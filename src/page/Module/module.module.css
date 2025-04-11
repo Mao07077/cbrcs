@@ -179,4 +179,26 @@ body {
 		margin: 0 auto; /* Center the button itself */
 		width: 100%; /* Stretch button horizontally */
 	}
+
+	.ModuleCard {
+		width: 90%; /* Reduce card width for better fit */
+		padding: 15px; /* Reduce padding */
+		font-size: 14px; /* Adjust font size for compact layout */
+		margin: 10px auto; /* Center the card with spacing */
+		height: auto; /* Allow height to adjust dynamically */
+		min-height: 150px; /* Set a minimum height for consistency */
+	}
+
+	.ModuleImage {
+		width: 100px; /* Reduce image width */
+		height: 80px; /* Reduce image height */
+		margin: 10px auto; /* Add spacing around the image */
+	}
+
+	.ModuleProceedBtn {
+		padding: 10px 20px; /* Adjust padding for smaller button */
+		font-size: 14px; /* Reduce font size */
+		width: auto; /* Ensure button width adjusts to content */
+		margin-top: 10px; /* Add spacing above the button */
+	}
 }
