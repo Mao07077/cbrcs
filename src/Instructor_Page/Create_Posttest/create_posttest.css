@@ -1,5 +1,3 @@
-/* CreatePostTest.css */
-
 .create-posttest {
     display: flex;
     flex-direction: column;
@@ -66,33 +64,33 @@
 
 .create-posttest .button-container {
     display: flex;
-    flex-direction: row; /* Align buttons horizontally */
-    justify-content: center; /* Center the buttons */
-    gap: 10px; /* Add spacing between buttons */
-    margin-top: 20px; /* Add margin above the button container */
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
 }
 
 .add-submit-container {
     display: flex;
-    flex-direction: row; /* Align Add and Submit buttons horizontally */
-    justify-content: center; /* Center the buttons */
-    gap: 10px; /* Add spacing between the buttons */
-    margin-top: 20px; /* Add margin above the container */
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
 }
 
 .add-question-button,
 .submit-button {
-    flex: 1; /* Ensure both buttons have equal width */
+    flex: 1;
 }
 
 .create-posttest button {
-    padding: 6px 12px; /* Further reduced padding */
-    font-size: 12px; /* Reduced font size */
+    padding: 6px 12px;
+    font-size: 12px;
     font-weight: bold;
     color: #fff;
-    background-color: #87ceeb; /* Light blue color */
+    background-color: #87ceeb;
     border: none;
-    border-radius: 4px; /* Slightly smaller border radius */
+    border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     flex: 1;
@@ -102,15 +100,15 @@
 }
 
 .create-posttest button:hover {
-    background-color: #5bb8e6; /* Darker light blue on hover */
+    background-color: #5bb8e6;
 }
 
 .create-posttest button:active {
-    background-color: #4aa3d8; /* Even darker light blue on active */
+    background-color: #4aa3d8;
 }
 
 .add-question-button {
-    background-color: #2196f3 !important; /* Blue */
+    background-color: #2196f3 !important;
     color: #fff !important;
     font-size: 12px !important;
     font-weight: bold !important;
@@ -123,35 +121,35 @@
 }
 
 .add-question-button:hover {
-    background-color: #1976d2 !important; /* Darker blue on hover */
+    background-color: #1976d2 !important;
 }
 
 .add-question-button:active {
-    background-color: #1565c0 !important; /* Even darker blue on active */
+    background-color: #1565c0 !important;
 }
 
 .remove-question-button {
-    background-color: #f44336 !important; /* Force red color */
+    background-color: #f44336 !important;
     color: #fff;
     font-size: 12px;
     padding: 6px 12px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 20px; /* Increased margin above the remove button for spacing */
+    margin-top: 20px;
     transition: background-color 0.3s ease;
 }
 
 .remove-question-button:hover {
-    background-color: #d32f2f !important; /* Force darker red on hover */
+    background-color: #d32f2f !important;
 }
 
 .remove-question-button:active {
-    background-color: #b71c1c !important; /* Force even darker red on active */
+    background-color: #b71c1c !important;
 }
 
 .submit-button {
-    background-color: #4caf50 !important; /* Green */
+    background-color: #4caf50 !important;
     color: #fff !important;
     font-size: 12px !important;
     font-weight: bold !important;
@@ -161,15 +159,15 @@
     cursor: pointer !important;
     margin-top: 15px !important;
     transition: background-color 0.3s ease !important;
-    white-space: nowrap !important; /* Prevent text wrapping */
+    white-space: nowrap !important;
 }
 
 .submit-button:hover {
-    background-color: #388e3c !important; /* Darker green on hover */
+    background-color: #388e3c !important;
 }
 
 .submit-button:active {
-    background-color: #2e7d32 !important; /* Even darker green on active */
+    background-color: #2e7d32 !important;
 }
 
 .posttest-title {
@@ -217,7 +215,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-top: 10px;
-    margin-bottom: 20px; /* Add space below the dropdown */
+    margin-bottom: 20px;
 }
 
 .instructions {
@@ -247,7 +245,6 @@
     margin-bottom: 10px;
 }
 
-/* Responsive Design for Smaller Screens */
 @media (max-width: 768px) {
     .create-posttest {
         padding: 20px;
@@ -265,53 +262,53 @@
     }
 
     .add-submit-container {
-        flex-direction: column; /* Stack buttons vertically */
-        align-items: center; /* Center the buttons */
-        gap: 15px; /* Add spacing between buttons */
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
     }
 
     .add-question-button,
     .submit-button,
     .remove-question-button {
-        width: 100%; /* Full width for buttons */
-        padding: 14px 20px; /* Increase padding for better touch targets */
-        font-size: 14px; /* Slightly larger font size for readability */
-        border-radius: 8px; /* Increase border radius for a smoother look */
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
-        text-align: center; /* Center-align text */
+        width: 100%;
+        padding: 14px 20px;
+        font-size: 14px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
     }
 
     .create-posttest h1 {
-        font-size: 22px; /* Shrink title text */
+        font-size: 22px;
     }
 
     .instructions {
-        font-size: 14px; /* Shrink instruction text */
+        font-size: 14px;
     }
 
     .question-card {
-        font-size: 14px; /* Shrink question text */
+        font-size: 14px;
     }
 
     .create-posttest input[type="text"],
     .correct-answer-select {
-        font-size: 12px; /* Shrink input and dropdown text */
+        font-size: 12px;
     }
 
     .add-question-button,
     .submit-button,
     .remove-question-button {
-        font-size: 12px; /* Shrink button text */
+        font-size: 12px;
     }
 }
 
 @media (max-width: 480px) {
     .create-posttest h1 {
-        font-size: 18px; /* Further shrink title text */
+        font-size: 18px;
     }
 
     .instructions {
-        font-size: 12px; /* Further shrink instruction text */
+        font-size: 12px;
         padding: 15px;
     }
 
@@ -321,31 +318,22 @@
 
     .create-posttest input[type="text"],
     .correct-answer-select {
-        font-size: 10px; /* Further shrink input and dropdown text */
-        padding: 8px; /* Adjust padding for compactness */
+        font-size: 10px;
+        padding: 8px;
     }
 
     .add-submit-container {
-        gap: 10px; /* Reduce spacing between buttons for smaller screens */
+        gap: 10px;
     }
 
     .add-question-button,
     .submit-button,
     .remove-question-button {
-        font-size: 12px; /* Shrink button text */
-        padding: 12px 18px; /* Adjust padding for compactness */
-        border-radius: 10px; /* Further increase border radius for a rounded look */
-        box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15); /* Enhance shadow for better visibility */
-        width: 100%; /* Ensure buttons are full width */
-        text-align: center; /* Center-align text */
-    }
-
-    .add-question-button,
-    .submit-button,
-    .remove-question-button {
-        font-size: 10px; /* Further shrink button text */
-        padding: 10px 16px; /* Adjust padding for compactness */
-        border-radius: 8px; /* Further increase border radius for a rounded look */
-        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15); /* Enhance shadow for better visibility */
+        font-size: 10px;
+        padding: 10px 16px;
+        border-radius: 8px;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+        width: 100%;
+        text-align: center;
     }
 }
