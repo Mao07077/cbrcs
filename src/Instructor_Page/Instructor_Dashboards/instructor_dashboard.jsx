@@ -5,6 +5,7 @@ import Modal from 'react-modal';
 import Header from '../../Components/composables/Header';
 import Instructor_Sidebar from '../../Components/Instructor_Sidebar';
 import Footer from '../../Components/composables/Footer';
+import CreateModule from '../Create_module/Create_module'; // Import CreateModule
 
 const InstructorDashboard = () => {
 	const handleNavigation = (route) => {
@@ -21,6 +22,7 @@ const InstructorDashboard = () => {
 	});
 
 	const [selectedFile, setSelectedFile] = useState(null);
+	const [isCreateModuleOpen, setIsCreateModuleOpen] = useState(false);
 
 	useEffect(() => {
 		const fetchStats = async () => {
@@ -78,24 +80,19 @@ const InstructorDashboard = () => {
 
 					<div className={Styles.Create_Module}>
 						<div className={Styles.AnnouncementBox}>
-							
 							<div className={Styles.AnnouncementActions}>
-								<input
-									type="file"
-									id="fileInput"
-									style={{ display: 'none' }}
-									onChange={(e) => setSelectedFile(e.target.files[0])}
-								/>
 								<button
-									className={Styles.AttachFile}
-									onClick={() => document.getElementById('fileInput').click()}
+									className={Styles.CreateModuleButton}
+									onClick={() => setIsCreateModuleOpen(true)}
 								>
-									+ Attach file
+									 Create Module
 								</button>
-								{selectedFile && (
-									<span className={Styles.FileName}>{selectedFile.name}</span>
-								)}
-								
+								<button
+									className={Styles.CreateModuleButton}
+									onClick={() => handleNavigation('CreatePostTest')}
+								>
+									Create Posttest
+								</button>
 							</div>
 						</div>
 					</div>
@@ -139,6 +136,16 @@ const InstructorDashboard = () => {
 			</div>
 
 			<Footer></Footer>
+
+			{/* Modal for Create Module */}
+			<Modal
+				isOpen={isCreateModuleOpen}
+				onRequestClose={() => setIsCreateModuleOpen(false)}
+				className={Styles.CreateModuleModal}
+				overlayClassName={Styles.ModalOverlay}
+			>
+				<CreateModule onClose={() => setIsCreateModuleOpen(false)} />
+			</Modal>
 		</div>
 	);
 };

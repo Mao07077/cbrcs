@@ -1,16 +1,19 @@
 * {
 	margin: 0;
 	padding: 0;
+	
 }
 .body {
 	font-family: Arial, Helvetica, sans-serif;
 	box-sizing: border-box;
+
 }
 .MainContainer {
 	display: flex;
 	flex-direction: column;
 	height: 100svh;
 	width: 100svw;
+
 }
 .Content_Wrapper {
 	flex: 1;
@@ -25,10 +28,26 @@
 	margin-bottom: 50px;
 	gap: 100px;
 }
-.Create_Module {
-	margin-top: 0;
-	display: flex;
-	justify-content: center;
+
+
+.CreateModuleButton {
+	background-color: #007bff;
+	color: white;
+	padding: 10px 20px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+	align-items: center;
+	white-space: nowrap; /* Ensure text stays on one line */
+}
+
+.CreateModuleButton:hover {
+	background-color: darkblue;
+}
+
+.CreateModuleButton:active {
+	background-color: navy;
+	transform: scale(1);
 }
 .Sidebar_Item {
 	display: flex;
@@ -67,48 +86,6 @@
 	height: auto;
 	grid-area: Content;
 }
-.AnnouncementBox {
-	align-items: center;
-	background: #f6f7f9;
-	border-radius: 12px;
-	padding: 15px;
-	width: 10%;
-	max-width: 500px;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	white-space: normal;
-}
-
-.AnnouncementActions {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.AttachFile {
-	background: none;
-	border: none;
-	font-size: 14px;
-	color: #6b6f73;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	gap: 5px;
-}
-
-.FileInput {
-	display: none;
-}
-
-.AttachFile {
-	cursor: pointer;
-}
-
-.AttachFile:hover {
-	text-decoration: underline;
-}
-
 .Content {
 	width: 100%;
 
@@ -251,7 +228,6 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background: white;
 	padding: 20px;
 	border-radius: 8px;
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -426,7 +402,7 @@
 	.Modal {
 		left: 50%;
 		transform: translate(-50%, -50%);
-		background: white;
+		/* background: white; */ /* Removed background color */
 		padding: 20px;
 		border-radius: 8px;
 		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -460,4 +436,11 @@
 	justify-content: center;
 	font-size: 30px;
 	margin-bottom: 30px;
+}
+
+.AnnouncementActions {
+	display: flex;
+	gap: 10px; /* Add gap between buttons */
+	justify-content: center; /* Center-align buttons horizontally */
+	align-items: center; /* Center-align buttons vertically */
 }

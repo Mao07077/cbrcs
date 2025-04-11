@@ -15,7 +15,13 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-
+.create-module label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a237e;
+}
 
 .create-module h1 {
   font-size: 28px;

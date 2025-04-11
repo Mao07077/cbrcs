@@ -88,13 +88,17 @@ const CreateModule = ({ onClose }) => {
           placeholder="Description"
           required
         />
+        <label htmlFor="fileUpload">Upload PDF/Document:</label>
         <input
+          id="fileUpload"
           type="file"
           onChange={handleFileUpload}
           accept=".pdf,.ppt,.pptx,.doc,.docx"
           required
         />
+        <label htmlFor="pictureUpload">Upload Image:</label>
         <input
+          id="pictureUpload"
           type="file"
           onChange={handlePictureUpload}
           accept="image/*"
@@ -115,7 +119,7 @@ const CreateModule = ({ onClose }) => {
           <option value="UPCAT">UPCAT</option>
         </select>
 
-        <button type="submit">Create Module</button>
+        <button type="submit">Submit </button>
       </form>
     </div>
   );
