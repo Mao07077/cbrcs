@@ -2,7 +2,7 @@
 	width: 100svw;
 	height: 100svh;
 	min-height: 100svh;
-	background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    background-color: #f0f8ff; /* Light blue background for the entire page */
 }
 
 .content_wrapper {
@@ -39,19 +39,19 @@
 .cardContainer {
 	display: flex;
 	justify-content: center;
-	gap: 20px; /* Space between cards */
+	align-items: center;
 	width: 100%;
-	max-width: 900px;
-	flex-wrap: wrap; /* Ensures cards don’t overlap */
+	height: 300px; /* Adjust height for balanced layout */
 	position: relative;
-	margin-bottom: 30px;
-	margin-left: 200px;
+	overflow: hidden; /* Hide overflowing cards */
+	margin: 0 auto; /* Center the container */
 }
 
 /* Flashcard styling */
 .card {
-	width: 280px;
-	height: 350px;
+	width: 100%;
+	max-width: 250px; /* Limit the card width for balance */
+	height: 100%;
 	background: white;
 	border-radius: 12px;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -63,14 +63,30 @@
 	font-size: 1.2rem;
 	font-weight: 600;
 	padding: 20px;
-	transition: transform 0.5s ease-in-out;
-	transform-style: preserve-3d;
-	position: relative;
-	perspective: 1000px;
+	transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+	position: absolute; /* Position cards on top of each other */
+	top: 0;
+	left: 0;
+	opacity: 0; /* Hide inactive cards */
+	transform: translateX(100%); /* Move inactive cards off-screen */
+	transform-style: preserve-3d; /* Enable 3D transform for flipping */
+}
+
+.card.active {
+	opacity: 1; /* Show the active card */
+	transform: translateX(0); /* Center the active card */
+}
+
+.card.prev {
+	transform: translateX(-100%); /* Move the previous card off-screen to the left */
+}
+
+.card.next {
+	transform: translateX(100%); /* Move the next card off-screen to the right */
 }
 
 /* Inner wrapper to allow flipping */
-.inner {
+.card .inner {
 	width: 100%;
 	height: 100%;
 	position: relative;
@@ -80,7 +96,7 @@
 
 /* Flip effect */
 .card.flipped .inner {
-	transform: rotateY(180deg);
+	transform: rotateY(180deg); /* Flip the card */
 }
 
 /* Front and back faces */
@@ -109,38 +125,37 @@
 .back {
 	background: #007bff;
 	color: white;
-	transform: rotateY(180deg);
+	transform: rotateY(180deg); /* Back face is flipped */
 }
 
 /* Navigation Buttons */
 .navContainer {
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-	max-width: 900px;
+	max-width: 250px; /* Match the card width */
 	margin: 20px auto 0;
-	position: relative;
-	gap: 20px;
 }
 
 /* Styling for Next and Prev buttons */
 .navButton {
-	background: none;
-	background-color: rgb(124, 125, 125);
-	border-radius: 50%;
+	background: #0056b3;
+	color: white;
 	border: none;
+	border-radius: 8px;
 	cursor: pointer;
-	width: 80px;
-	height: 80px;
+	width: 40px;
+	height: 40px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	transition: opacity 0.3s ease-in-out;
+	font-size: 16px;
+	transition: background 0.3s ease-in-out;
 }
 
 .navButton:hover {
-	opacity: 0.7;
+	background: #003d82;
 }
 
 /* Ensure SVG icons are visible */

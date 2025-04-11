@@ -78,7 +78,7 @@ const FlashcardsLandingPage = () => {
             <Header />
             <div className={Styles.content_wrapper}>
                 <div className={Styles.module_container}>
-                    <h2>Flash Cards Module</h2>
+                    <h2>Flashcards Module</h2>
                     {error && <p className={Styles.error_message}>{`Error: ${error}`}</p>}
                     <p>Select a module to review its flashcards.</p>
                     <div className={Styles.module_grid}>
@@ -86,8 +86,17 @@ const FlashcardsLandingPage = () => {
                             modules.map((module) => (
                                 <div className={Styles.module_card} key={module._id}>
                                     <h3>{module.title}</h3>
-                                    <img src={`${API_URL}${module.image_url}`} alt="Module" className={Styles.module_image} />
-                                    <button onClick={() => handleOpenFlashcards(module._id)}>Open Flashcards</button>
+                                    <img
+                                        src={`${API_URL}${module.image_url}`}
+                                        alt="Module"
+                                        className={Styles.module_image}
+                                    />
+                                    <button
+                                        className={Styles.flashcard_btn}
+                                        onClick={() => handleOpenFlashcards(module._id)}
+                                    >
+                                        Proceed
+                                    </button>
                                 </div>
                             ))
                         ) : (
