@@ -5,75 +5,347 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .create-posttest h1 {
-    font-size: 24px;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+    font-family: 'Arial', sans-serif;
+}
+
+.create-posttest h1 {
+    font-size: 28px;
     font-weight: bold;
     color: #333;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.create-posttest input[type="text"] {
+    width: 100%;
     margin-bottom: 20px;
-  }
-  
-  .create-posttest input[type="text"] {
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.create-posttest input[type="text"]::placeholder {
+    color: #bbb;
+}
+
+.question {
+    margin-bottom: 25px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.question input[type="text"] {
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: calc(100% - 20px);
+}
+
+.question select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.create-posttest .button-container {
+    display: flex;
+    flex-direction: row; /* Align buttons horizontally */
+    justify-content: center; /* Center the buttons */
+    gap: 10px; /* Add spacing between buttons */
+    margin-top: 20px; /* Add margin above the button container */
+}
+
+.add-submit-container {
+    display: flex;
+    flex-direction: row; /* Align Add and Submit buttons horizontally */
+    justify-content: center; /* Center the buttons */
+    gap: 10px; /* Add spacing between the buttons */
+    margin-top: 20px; /* Add margin above the container */
+}
+
+.add-question-button,
+.submit-button {
+    flex: 1; /* Ensure both buttons have equal width */
+}
+
+.create-posttest button {
+    padding: 6px 12px; /* Further reduced padding */
+    font-size: 12px; /* Reduced font size */
+    font-weight: bold;
+    color: #fff;
+    background-color: #87ceeb; /* Light blue color */
+    border: none;
+    border-radius: 4px; /* Slightly smaller border radius */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex: 1;
+    width: 40%;
+    height: 50%;
+    margin: 0 5px;
+}
+
+.create-posttest button:hover {
+    background-color: #5bb8e6; /* Darker light blue on hover */
+}
+
+.create-posttest button:active {
+    background-color: #4aa3d8; /* Even darker light blue on active */
+}
+
+.add-question-button {
+    background-color: #2196f3 !important; /* Blue */
+    color: #fff !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    padding: 6px 12px !important;
+    border: none !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    margin-top: 15px !important;
+    transition: background-color 0.3s ease !important;
+}
+
+.add-question-button:hover {
+    background-color: #1976d2 !important; /* Darker blue on hover */
+}
+
+.add-question-button:active {
+    background-color: #1565c0 !important; /* Even darker blue on active */
+}
+
+.remove-question-button {
+    background-color: #f44336 !important; /* Force red color */
+    color: #fff;
+    font-size: 12px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px; /* Increased margin above the remove button for spacing */
+    transition: background-color 0.3s ease;
+}
+
+.remove-question-button:hover {
+    background-color: #d32f2f !important; /* Force darker red on hover */
+}
+
+.remove-question-button:active {
+    background-color: #b71c1c !important; /* Force even darker red on active */
+}
+
+.submit-button {
+    background-color: #4caf50 !important; /* Green */
+    color: #fff !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    padding: 8px 16px !important;
+    border: none !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    margin-top: 15px !important;
+    transition: background-color 0.3s ease !important;
+    white-space: nowrap !important; /* Prevent text wrapping */
+}
+
+.submit-button:hover {
+    background-color: #388e3c !important; /* Darker green on hover */
+}
+
+.submit-button:active {
+    background-color: #2e7d32 !important; /* Even darker green on active */
+}
+
+.posttest-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    width: 100%;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.question-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.question-input {
     width: 100%;
     margin-bottom: 15px;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
-  }
-  
-  .create-posttest input[type="text"]::placeholder {
-    color: #aaa;
-  }
-  
-  .question {
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    width: 100%;
-  }
-  
-  .question input[type="text"] {
+}
+
+.option-input {
+    width: calc(100% - 20px);
     margin-bottom: 10px;
-  }
-  
-  .create-posttest button {
-    width: 100%;
-    padding: 12px;
-    font-size: 18px;
-    font-weight: bold;
-    color: #fff;
-    background-color: #4caf50;
-    border: none;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+}
+
+.correct-answer-select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     margin-top: 10px;
-  }
-  
-  .create-posttest button:hover {
-    background-color: #45a049;
-  }
-  
-  .create-posttest button:active {
-    background-color: #3e8e41;
-  }
-  
-  /* Style for Add Another Question button */
-  .create-posttest button:nth-of-type(1) {
-    background-color: #2196f3;
-  }
-  
-  .create-posttest button:nth-of-type(1):hover {
-    background-color: #1e88e5;
-  }
-  
+    margin-bottom: 20px; /* Add space below the dropdown */
+}
+
+.instructions {
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #e3f2fd;
+    border: 1px solid #90caf9;
+    border-radius: 8px;
+    color: #0d47a1;
+    font-size: 16px;
+    line-height: 1.6;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.instructions h2 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.instructions ol {
+    padding-left: 25px;
+}
+
+.instructions li {
+    margin-bottom: 10px;
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+    .create-posttest {
+        padding: 20px;
+        width: 100%;
+    }
+
+    .question-card {
+        padding: 15px;
+    }
+
+    .create-posttest input[type="text"],
+    .correct-answer-select {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .add-submit-container {
+        flex-direction: column; /* Stack buttons vertically */
+        align-items: center; /* Center the buttons */
+        gap: 15px; /* Add spacing between buttons */
+    }
+
+    .add-question-button,
+    .submit-button,
+    .remove-question-button {
+        width: 100%; /* Full width for buttons */
+        padding: 14px 20px; /* Increase padding for better touch targets */
+        font-size: 14px; /* Slightly larger font size for readability */
+        border-radius: 8px; /* Increase border radius for a smoother look */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
+        text-align: center; /* Center-align text */
+    }
+
+    .create-posttest h1 {
+        font-size: 22px; /* Shrink title text */
+    }
+
+    .instructions {
+        font-size: 14px; /* Shrink instruction text */
+    }
+
+    .question-card {
+        font-size: 14px; /* Shrink question text */
+    }
+
+    .create-posttest input[type="text"],
+    .correct-answer-select {
+        font-size: 12px; /* Shrink input and dropdown text */
+    }
+
+    .add-question-button,
+    .submit-button,
+    .remove-question-button {
+        font-size: 12px; /* Shrink button text */
+    }
+}
+
+@media (max-width: 480px) {
+    .create-posttest h1 {
+        font-size: 18px; /* Further shrink title text */
+    }
+
+    .instructions {
+        font-size: 12px; /* Further shrink instruction text */
+        padding: 15px;
+    }
+
+    .question-card {
+        margin-bottom: 15px;
+    }
+
+    .create-posttest input[type="text"],
+    .correct-answer-select {
+        font-size: 10px; /* Further shrink input and dropdown text */
+        padding: 8px; /* Adjust padding for compactness */
+    }
+
+    .add-submit-container {
+        gap: 10px; /* Reduce spacing between buttons for smaller screens */
+    }
+
+    .add-question-button,
+    .submit-button,
+    .remove-question-button {
+        font-size: 12px; /* Shrink button text */
+        padding: 12px 18px; /* Adjust padding for compactness */
+        border-radius: 10px; /* Further increase border radius for a rounded look */
+        box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15); /* Enhance shadow for better visibility */
+        width: 100%; /* Ensure buttons are full width */
+        text-align: center; /* Center-align text */
+    }
+
+    .add-question-button,
+    .submit-button,
+    .remove-question-button {
+        font-size: 10px; /* Further shrink button text */
+        padding: 10px 16px; /* Adjust padding for compactness */
+        border-radius: 8px; /* Further increase border radius for a rounded look */
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15); /* Enhance shadow for better visibility */
+    }
+}
