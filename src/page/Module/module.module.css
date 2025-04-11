@@ -163,6 +163,7 @@ body {
 	}
 	.ModuleImage{
 		width: 100%;
+		display: none; /* Hide the image in mobile view */
 	}
 	.ModuleProceedBtn {
 		background-color: #002ead;
@@ -193,6 +194,7 @@ body {
 		width: 100px; /* Reduce image width */
 		height: 80px; /* Reduce image height */
 		margin: 10px auto; /* Add spacing around the image */
+		display: none; /* Hide the image in mobile view */
 	}
 
 	.ModuleProceedBtn {
@@ -200,5 +202,10 @@ body {
 		font-size: 14px; /* Reduce font size */
 		width: auto; /* Ensure button width adjusts to content */
 		margin-top: 10px; /* Add spacing above the button */
+	}
+
+	.ModuleCard h1 {
+		font-size: 12px; /* Reduce font size for long titles */
+		word-wrap: break-word; /* Wrap long titles */
 	}
 }
