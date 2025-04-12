@@ -57,14 +57,8 @@ const ModuleInside = () => {
   const seconds = timeSpent % 60;
 
   return (
-    <div>
-      
-       <Header></Header>
-        <div className="header-logout">
-        <button onClick={() => handleNavigation('login')}>Logout</button>
-      </div>  
-
-      
+    <div className="Main">  
+     <Header></Header>
       <div className="container">  
         <main className="module-content">
           
@@ -109,6 +103,7 @@ const ModuleInside = () => {
 
         </main>
       </div>
+    
     </div>
   );
 };

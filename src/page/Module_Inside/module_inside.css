@@ -1,13 +1,24 @@
-.container {
- width: 1000px;  
+.container { 
+  display: flex;
+  justify-content: center;
+  margin-left: 220px;
+  width: 1000px;  
   padding: 20px; /* Adjust padding as needed */
-  background: #f5f5f5; /* Light gray background similar to Google Classroom */
+  background: #f1f3f4; /* Light gray background similar to Google Classroom */
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(93, 79, 79, 0.1);
   min-height: 90vh;
-  margin-top: 100px;
+  margin-top: 10px;
 }
-
+.Main {
+	
+	flex-direction: column;
+	height: auto;
+	width: 100vw;
+}
+.module-content{
+  width: 100%;
+}
 .module-container{
   width: 100%;
   padding:100px;
