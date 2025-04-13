@@ -1,63 +1,80 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom'; // Import useLocation to access location state
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import styles from './Flashcards.module.css';
 import Header from '../../../Components/composables/Header';
 import Footer from '../../../Components/composables/Footer';
 
 const Flashcards = () => {
-    const location = useLocation(); // Use useLocation hook here
-    const flashcards = location.state?.flashcards || []; // Use optional chaining to avoid undefined error
-    const [currentSet, setCurrentSet] = useState(0);
-    const [flippedCards, setFlippedCards] = useState({});
+    const location = useLocation();
+    const [flashcards, setFlashcards] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [flipped, setFlipped] = useState(false);
 
-    const cardsPerPage = 3;
-    const totalSets = Math.ceil(flashcards.length / cardsPerPage);
-    
-    const handleNextSet = () => {
-        setFlippedCards({});
-        setCurrentSet((prev) => Math.min(prev + 1, totalSets - 1));
+    // Fetch flashcards from API - replace with your actual endpoint
+    useEffect(() => {
+        const fetchFlashcards = async () => {
+            try {
+                const response = await fetch(`YOUR_FASTAPI_ENDPOINT/flashcards/${MODULE_ID}`);
+                const data = await response.json();
+                if (data.success) {
+                    setFlashcards(data.flashcards);
+                } else {
+                    console.error("Failed to fetch flashcards:", data.message);
+                }
+            } catch (error) {
+                console.error("Error fetching flashcards:", error);
+            }
+        };
+
+        if (!location.state?.flashcards) {
+            fetchFlashcards();
+        } else {
+            setFlashcards(location.state.flashcards);
+        }
+    }, [location.state]);
+
+    const handleNext = () => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % flashcards.length);
+        setFlipped(false); // Reset flip on next card
     };
 
-    const handlePrevSet = () => {
-        setFlippedCards({});
-        setCurrentSet((prev) => Math.max(prev - 1, 0));
+    const handlePrevious = () => {
+        setCurrentIndex((prevIndex) => (prevIndex - 1 + flashcards.length) % flashcards.length);
+        setFlipped(false); // Reset flip on previous card
     };
 
-    const handleFlip = (index) => {
-        setFlippedCards((prev) => ({
-            ...prev,
-            [index]: !prev[index],
-        }));
+    const handleFlip = () => {
+        setFlipped((prev) => !prev);
     };
 
-    const startIndex = currentSet * cardsPerPage;
-    const displayedCards = flashcards.slice(startIndex, startIndex + cardsPerPage);
+    if (flashcards.length === 0) return <p>Loading...</p>;
 
     return (
         <div className={styles.container}>
             <Header />
-            <h2 className={styles.title}>FLASHCARDS</h2>
+            <h2 className={styles.title}>FLASHCARD</h2>
             <div className={styles.cardContainer}>
-                {displayedCards.map((flashcard, index) => (
-                    <div
-                        key={flashcard.unique}
-                        className={`${styles.card} ${flippedCards[index] ? styles.flipped : ''}`}
-                        onClick={() => handleFlip(index)}
-                    >
-                        <div className={styles.inner}>
-                            <div className={`${styles.front} ${flippedCards[index] ? styles.hidden : ''}`}>
-                                <p>{flashcard.content}</p>
-                            </div>
-                            <div className={`${styles.back} ${flippedCards[index] ? styles.visible : styles.hidden}`}>
-                                <p>{flashcard.answer}</p> {/* Assuming your flashcard model has an answer field */}
-                            </div>
+                <div
+                    className={`${styles.card} ${flipped ? styles.flipped : ''}`}
+                    onClick={handleFlip}
+                >
+                    <div className={styles.inner}>
+                        <div className={styles.front}>
+                            <p>{flashcards[currentIndex].content}</p>
+                        </div>
+                        <div className={styles.back}>
+                            <p>{flashcards[currentIndex].answer}</p>
                         </div>
                     </div>
-                ))}
+                </div>
             </div>
             <div className={styles.navContainer}>
-                {currentSet > 0 && <button className={styles.navButton} onClick={handlePrevSet}>Previous</button>}
-                {currentSet < totalSets - 1 && <button className={styles.navButton} onClick={handleNextSet}>Next</button>}
+                <button className={styles.navButton} onClick={handlePrevious}>
+                    
+                </button>
+                <button className={styles.navButton} onClick={handleNext}>
+                    
+                </button>
             </div>
             <Footer />
         </div>

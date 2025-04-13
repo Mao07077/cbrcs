@@ -49,6 +49,7 @@ if not MONGO_URI or not DATABASE_NAME or not COLLECTION_NAME:
 if not EMAIL_HOST or not EMAIL_PORT or not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
     logging.error("Missing necessary email environment variables: EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, or EMAIL_HOST_PASSWORD.")
 
+
 habit_to_page = {
     "Study with Friends": "learn-together",
     "Asking for Help": "instructor-chat",
@@ -279,12 +280,8 @@ class DeleteNoteRequest(BaseModel):
 class Flashcard(BaseModel):
     module_id: str
     content: str
+    answer: str
     unique: str
-
-    class Config:
-        json_encoders = {
-            ObjectId: lambda v: str(v)
-        }
 # Helper functions
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
@@ -1245,24 +1242,51 @@ async def generate_flashcards(module_id: str):
     # Check if flashcards for this module already exist
     existing_flashcards = list(Flashcards_collection.find({"module_id": module_id}))
 
+    # If flashcards already exist, return them
     if existing_flashcards:
-        # Convert ObjectId to string
-        return {"success": True, "flashcards": [{**flashcard, "_id": str(flashcard["_id"])} for flashcard in existing_flashcards]}
+        return {
+            "success": True,
+            "flashcards": [{**flashcard, "_id": str(flashcard["_id"])} for flashcard in existing_flashcards]
+        }
 
     try:
         # Generate new flashcards
         new_flashcards_data = [
-            Flashcard(module_id=module_id, content=f"Flashcard content {i}", unique=f"flashcard-{i}")
-            for i in range(1, 6)
+            Flashcard(
+                module_id=module_id,  # Use the provided module_id
+                content=f"Flashcard content {i}",  # Placeholder content. You may enhance this logic.
+                answer=f"Correct answer for flashcard {i}",  # Placeholder. Adjust as needed.
+                unique=f"flashcard-{i}"  # Unique identifier
+            )
+            for i in range(1, 6)  # Adjust the number if you need more/less
         ]
 
         # Store the generated flashcards in the database
         for flashcard in new_flashcards_data:
-            result = Flashcards_collection.insert_one(flashcard.dict())
-            flashcard.id = str(result.inserted_id)
+            result = Flashcards_collection.insert_one(flashcard.dict())  # Ensure saving is correct
 
-        return {"success": True, "flashcards": new_flashcards_data}
-
+        return {
+            "success": True,
+            "flashcards": new_flashcards_data
+        }
     except Exception as e:
         logging.error(f"Error generating flashcards: {e}")
         raise HTTPException(status_code=500, detail="Error generating flashcards")
+    
+@app.get("/api/flashcards/{module_id}")
+async def get_flashcards(module_id: str):
+    """
+    Fetch flashcards for a specific module_id.
+    """
+    try:
+        flashcards = list(Flashcards_collection.find({"module_id": module_id}))
+        if not flashcards:
+            raise HTTPException(status_code=404, detail="No flashcards found for this module.")
+
+        return {
+            "success": True,
+            "flashcards": [{**flashcard, "_id": str(flashcard["_id"])} for flashcard in flashcards]
+        }
+    except Exception as e:
+        logging.error(f"Error fetching flashcards: {e}")
+        raise HTTPException(status_code=500, detail="Error fetching flashcards")

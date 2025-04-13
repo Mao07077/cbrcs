@@ -67,7 +67,6 @@
 	position: absolute; /* Position cards on top of each other */
 	top: 0;
 	left: 0;
-	opacity: 0; /* Hide inactive cards */
 	transform: translateX(100%); /* Move inactive cards off-screen */
 	transform-style: preserve-3d; /* Enable 3D transform for flipping */
 }

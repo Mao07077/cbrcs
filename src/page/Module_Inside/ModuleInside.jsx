@@ -2,16 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom"; 
 import "./module_inside.css"; 
 import Header from '../../Components/composables/Header';
+
 const ModuleInside = () => {
   const [module, setModule] = useState(null); 
   const [error, setError] = useState(null); 
   const [timeSpent, setTimeSpent] = useState(0); 
   const [isInstructor, setIsInstructor] = useState(false); 
+  const [showPDF, setShowPDF] = useState(false);
+  
   const { id } = useParams(); 
   const navigate = useNavigate();
 
   const API_URL = process.env.REACT_APP_API_URL || 
-  (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
 
   useEffect(() => {
     const fetchModuleData = async () => {
@@ -58,7 +61,7 @@ const ModuleInside = () => {
 
   return (
     <div className="Main">  
-     <Header></Header>
+      <Header />
       <div className="container">  
         <main className="module-content">
           
@@ -73,7 +76,7 @@ const ModuleInside = () => {
             <section className="module-resource">
               <div 
                 className="fileelement fixed-file" 
-                onClick={() => window.open(`${API_URL}/${module.document_url}`, "_blank")}
+                onClick={() => setShowPDF(true)}
               >
                 <div className="document-preview">
                   <div className="document-icon"></div>
@@ -86,7 +89,7 @@ const ModuleInside = () => {
             </section>
           )}
 
-          <div className="separator"></div> {/* Add separator line */}
+          <div className="separator"></div>
 
           <section className="test-section">
             <div className="test-container">
@@ -103,7 +106,22 @@ const ModuleInside = () => {
 
         </main>
       </div>
-    
+
+      {/* PDF Modal */}
+      {showPDF && (
+        <div className="pdf-modal-overlay" onClick={() => setShowPDF(false)}>
+          <div className="pdf-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="close-btn" onClick={() => setShowPDF(false)}>×</button>
+            <iframe 
+              src={`${API_URL}/${module.document_url}`} 
+              title="PDF Viewer"
+              width="100%" 
+              height="100%" 
+              frameBorder="0"
+            ></iframe>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
