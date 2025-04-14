@@ -140,7 +140,10 @@
 /* Responsive styles for smaller screens */
 @media (max-width: 1024px) {
   .container {
-    width: 100%;
+    width: 85%; /* Reduce width further */
+    padding: 10px; /* Reduce padding */
+    margin-left: 0; /* Remove fixed margin for smaller screens */
+    width: 90%; /* Adjust width to fit smaller screens */
     padding: 15px;
   }
 
@@ -151,6 +154,8 @@
   }
 
   .test-container {
+    width: 85%; /* Reduce width */
+    padding: 15px; /* Reduce padding */
     width: 90%;
     max-width: 500px; /* Limit max width for better responsiveness */
     padding: 20px;
@@ -165,6 +170,8 @@
   }
 
   .proceed-btn {
+    max-width: 180px; /* Reduce button width */
+    padding: 10px 15px; /* Reduce padding */
     width: 100%;
     max-width: 200px;
     font-size: 14px;
@@ -176,10 +183,17 @@
   .fileelement {
     width: 90%;
   }
+
+  .module-container {
+    padding: 40px; /* Reduce padding */
+    padding: 50px; /* Reduce padding for better fit */
+  }
 }
 
 @media (max-width: 768px) {
   .test-container {
+    width: 90%; /* Adjust width */
+    padding: 10px; /* Reduce padding */
     width: 95%;
     padding: 15px;
   }
@@ -189,19 +203,40 @@
   }
 
   .proceed-btn {
+    max-width: 160px; /* Reduce button width */
+    padding: 8px 12px; /* Reduce padding */
     width: 100%;
     max-width: 220px;
     font-size: 14px;
     padding: 10px 15px;
   }
+
+  .container {
+    width: 90%; /* Further reduce width */
+    padding: 8px; /* Reduce padding */
+    width: 95%; /* Further adjust width for smaller devices */
+    padding: 10px;
+  }
+
+  .module-container {
+    padding: 20px; /* Further reduce padding */
+    padding: 30px; /* Further reduce padding */
+  }
 }
 @media (max-width: 480px) {
   .container {
+    width: 100%; /* Full width */
+    padding: 5px; /* Minimal padding */
     width: 100%;
+    padding: 10px;
+    flex-direction: column; /* Stack content vertically */
+    width: 100%; /* Full width for mobile */
     padding: 10px;
   }
 
   .test-container {
+    width: 100%; /* Full width */
+    padding: 8px; /* Minimal padding */
     width: 95%;
     max-width: 100%;
     padding: 15px;
@@ -213,6 +248,9 @@
   }
 
   .proceed-btn {
+    max-width: 140px; /* Smaller button */
+    padding: 6px 10px; /* Minimal padding */
+    font-size: 12px; /* Smaller font size */
     width: 100%;
     max-width: 100%;
     font-size: 14px;
@@ -220,16 +258,23 @@
   }
 
   .module-header h1 {
+    font-size: 18px; /* Smaller header size */
     font-size: 24px; /* Reduce header size for mobile */
+    font-size: 20px; /* Reduce header size for mobile */
   }
 
   .document-icon {
+    width: 30px; /* Smaller icon */
+    height: 30px;
+    font-size: 14px; /* Smaller font size */
     width: 40px;
     height: 40px;
     font-size: 18px;
   }
 
   .fileelement {
+    width: 100%; /* Full width */
+    padding: 10px; /* Minimal padding */
     flex-direction: column; /* Stack elements vertically */
     align-items: center;
     text-align: center;
@@ -237,6 +282,11 @@
 
   .document-info h3 {
     font-size: 18px; /* Adjust text size */
+  }
+
+  .module-container {
+    padding: 10px; /* Minimal padding */
+    padding: 20px; /* Minimal padding for very small screens */
   }
 }
 
