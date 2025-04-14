@@ -172,7 +172,15 @@ const PostTest = () => {
     };
 
     const handleNextPage = () => {
-        // Allow proceeding to the next page without answering all questions
+        const startIndex = (currentPage - 1) * questionsPerPage;
+        const endIndex = startIndex + questionsPerPage;
+        const unansweredQuestions = postTest.questions.slice(startIndex, endIndex).filter((_, index) => !answers[startIndex + index]);
+
+        if (unansweredQuestions.length > 0) {
+            setValidationError('Please answer all questions on this page before proceeding.');
+            return;
+        }
+
         setCurrentPage(currentPage + 1);
         setValidationError(null);
     };
