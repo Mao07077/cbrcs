@@ -116,26 +116,21 @@ const PostTest = () => {
     const handleSubmit = async (e) => {
         if (e) e.preventDefault();
 
-        const unansweredQuestions = postTest.questions.filter((_, index) => !answers[index]);
-        if (unansweredQuestions.length > 0) {
-            setValidationError('Please answer all questions before submitting.');
-            return;
-        }
-
+        // Remove validation for unanswered questions
         let correctCount = 0;
         let incorrectCount = 0;
 
         postTest.questions.forEach((question, index) => {
             if (answers[index] === correctAnswers[index]) {
                 correctCount++;
-            } else {
+            } else if (answers[index]) {
                 incorrectCount++;
             }
         });
 
         const userId = localStorage.getItem('userIdNumber'); // Retrieve user ID
         if (!userId) {
-            alert('User  ID not found. Please log in again.');
+            alert('User ID not found. Please log in again.');
             return;
         }
 
@@ -177,15 +172,7 @@ const PostTest = () => {
     };
 
     const handleNextPage = () => {
-        const startIndex = (currentPage - 1) * questionsPerPage;
-        const endIndex = startIndex + questionsPerPage;
-        const unansweredQuestions = postTest.questions.slice(startIndex, endIndex).filter((_, index) => !answers[startIndex + index]);
-
-        if (unansweredQuestions.length > 0) {
-            setValidationError('Please answer all questions on this page before proceeding.');
-            return;
-        }
-
+        // Allow proceeding to the next page without answering all questions
         setCurrentPage(currentPage + 1);
         setValidationError(null);
     };
@@ -227,7 +214,7 @@ const PostTest = () => {
         return <div>Loading post-test...</div>;
     }
 
-    const questionsPerPage = 1; // Set to 1 to show one question per page
+    const questionsPerPage = 5; // Show 5 questions per page
     const totalPages = Math.ceil((postTest.questions?.length || 0) / questionsPerPage);
 
     const formatTime = (seconds) => {

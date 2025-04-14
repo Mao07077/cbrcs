@@ -6,129 +6,141 @@
     align-items: center;
     justify-content: left;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Adjust header content to fit properly */
-  .header-content {
+}
+
+.header-content {
     display: flex;
-    width: 100%;  
-    max-width: 1200px;  
-  }
-  /* Image styling */
-  .header-logo img {
-    height: 50px;   
-    width: auto;     
-    max-width: 180px; 
-  }
+    width: 100%;
+    max-width: 1200px;
+}
 
+.header-logo img {
+    height: 50px;
+    width: auto;
+    max-width: 180px;
+}
 
-
-/* Container styling */
+/* Center the container, make it slightly wider, and keep it responsive */
 .posttest-container {
     font-family: 'Arial', sans-serif;
-    max-width: 1000px;
-    margin-right: 500px;
-    margin-top: 100px;
-    width: 300%;
-    padding: 30px;
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    
+    max-width: 800px; 
+    margin: 100px auto;
+    padding: 20px;
+    background: #f9f9f9; 
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center; 
 }
-.validation-error {
-    color: red;
-}
-.chart-container {
-    width: 100%;
-    height: 300px; /* Adjust as needed */
+
+/* Make the container responsive for smaller screens */
+@media (max-width: 768px) {
+    .posttest-container {
+        max-width: 95%; 
+        margin: 50px auto; 
+        padding: 15px; 
+        margin-top: 70px;
+    }
 }
 
 /* Title Styling */
 .posttest-title {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
-    margin-bottom: 15px;
-    color: #202124; /* Neutral dark text color */
-    text-align: left; /* Align text to the left */
+    margin-bottom: 20px;
+    color: #333333; 
 }
 
 /* Description Styling */
 .posttest-description {
-    font-size: 14px;
-    color: #5f6368; /* Subtle gray text for descriptions */
-    margin-bottom: 20px;
-    border-bottom: 2px solid #ddd; /* Add a light gray line below */
-    padding-bottom: 10px;
+    font-size: 16px;
+    color: #555555; 
+    margin-bottom: 30px;
 }
 
 /* Question Section Styling */
 .question-section {
-    margin-bottom: 20px;
-    text-align: left; /* Align questions and options to the left */
-    padding-bottom: 20px; /* Add some space between sections */
+    margin-bottom: 30px;
+    text-align: left;
 }
 
 /* Question Item Styling */
 .question-item {
-    margin-bottom: 20px; /* Add more space between question items */
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #ffffff; 
+    border: 1px solid #ddd; 
+    border-radius: 8px;
 }
 
-/* Question Text Styling */
+/* Adjust question text and options for mobile */
 .question-text {
     font-size: 16px;
     font-weight: 500;
     color: #202124;
-    margin-bottom: 12px; /* Increase space below the question text */
+    margin-bottom: 10px;
 }
 
 /* Choice Label Styling */
 .choice-label {
-    display: flex;
-    align-items: center;
-    margin-bottom: 12px; /* Add more space between each choice option */
-    font-size: 14px;
+    display: block; 
+    margin-bottom: 10px;
+    font-size: 14px; 
     color: #3c4043;
 }
 
 .choice-label input[type="radio"] {
-    margin-right: 15px; /* Adjust the space between the radio button and text */
-    accent-color: #4285f4; /* Google blue for the radio button */
+    margin-right: 10px;
+    accent-color: #4285f4; 
+}
+
+/* Adjust button group for responsiveness */
+.button-group {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between; 
+    flex-direction: column; 
+    gap: 10px; 
+}
+
+@media (min-width: 769px) {
+    .button-group {
+        flex-direction: row; 
+    }
 }
 
 /* Button Styling */
-.button-group {
-    text-align: right; /* Align button to the right */
-    margin-top: 30px;
-   
-}
-
-.next-button {
+.button-group button {
     background-color: #4285f4; 
-    margin-right: 100px;
-    width: 90px;
-    height: 50px;
     color: #fff;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     padding: 10px 20px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.next-button:hover {
-    background-color: #357ae8; /* Darker blue on hover */
+.button-group button:hover {
+    background-color: #357ae8; 
     box-shadow: 0 2px 6px rgba(53, 122, 232, 0.4);
 }
+
+/* Timer Styling */
+.timer {
+    font-size: 16px;
+    color: #d93025; 
+    margin-bottom: 20px;
+    text-align: center; 
+}
+
+/* Submission Container */
 .submission-container {
-    font-family: 'Arial', sans-serif;
     background-color: #ffffff;
     border-radius: 10px;
-    padding: 30px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 700px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
     margin: 30px auto;
     text-align: center;
 }
@@ -139,34 +151,18 @@
     color: #333333;
     font-weight: bold;
     margin-bottom: 20px;
-    text-transform: uppercase;
 }
 
-/* Submission Answers List */
-.submission-answers {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    text-align: left;
+/* Chart Container */
+.chart-container {
+    width: 100%;
+    height: 250px; 
+    margin-top: 20px;
 }
 
-/* Individual Answer Item */
-.answer-item {
-    font-size: 18px;
-    color: #555555;
-    margin: 10px 0;
-    border-bottom: 1px solid #eaeaea;
-    padding-bottom: 8px;
-}
-
-/* Question Label Styling */
-.question-label {
-    font-weight: bold;
-    color: #333333;
-}
-
-/* Answer Text Styling */
-.answer-text {
-    color: #007bff; /* Highlight the answers with a primary color */
-    font-style: italic;
+/* Validation Error Styling */
+.validation-error {
+    color: #d93025; 
+    font-size: 14px;
+    margin-top: 10px;
 }
