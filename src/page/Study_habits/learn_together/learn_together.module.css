@@ -3,19 +3,82 @@
 	width: 100svw;
 	height: 100svh;
 	min-height: 100svh;
-}
-.content_wrapper {
+  }
+  
+  /* Content Wrapper */
+  .content_wrapper {
 	display: flex;
 	width: 100%;
 	height: 100%;
-}
-.content_wrapper_video {
+  }
+  
+  /* Content Wrapper for Video Section */
+  .content_wrapper_video {
 	display: flex;
 	width: 100%;
 	height: 100%;
-}
-/* Main Content */
-.mainContent {
+  }
+  
+  /* Call Options Screen */
+  .callOptions {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	background-color: #140f41; /* Matches mainContent background */
+	color: white;
+	text-align: center;
+	padding: 20px;
+	gap: 20px;
+  }
+  
+  /* Join Input Container */
+  .joinInputContainer {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 10px;
+	justify-content: center;
+  }
+  
+  /* Call ID Input */
+  .callIdInput {
+	padding: 10px;
+	border: 1px solid #d1d1d1; /* Matches videoSection border */
+	border-radius: 5px;
+	font-size: 16px;
+	background: white;
+	color: black;
+	width: 200px;
+	max-width: 100%;
+  }
+  
+  .callIdInput:focus {
+	outline: none;
+	border-color: #007bff; /* Matches chatInput focus */
+  }
+  
+  /* Action Button */
+  .actionButton {
+	padding: 10px 20px;
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 16px;
+	transition: 0.3s;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Matches control buttons */
+  }
+  
+  .actionButton:hover {
+	background-color: #0056b3;
+  }
+  
+  /* Main Content */
+  .mainContent {
 	flex: 4;
 	display: flex;
 	flex-direction: column;
@@ -27,10 +90,10 @@
 	margin-right: 20px;
 	margin-bottom: 20px;
 	background-color: #140f41;
-}
-
-/* Main Video Section */
-.videoSection {
+  }
+  
+  /* Main Video Section */
+  .videoSection {
 	width: 90%;
 	max-width: 900px;
 	height: 400px;
@@ -41,25 +104,75 @@
 	align-items: center;
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 	border: 2px solid #d1d1d1;
-}
-
-.mainVideo {
+	padding: 10px;
+  }
+  
+  /* Video Container for Local and Remote Videos */
+  .videoContainer {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 10px;
+	width: 100%;
+	height: 100%;
+	align-items: center;
+	justify-items: center;
+  }
+  
+  /* Video Wrapper */
+  .videoWrapper {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	max-height: 200px;
+	background-color: #000;
+	border-radius: 8px;
+	overflow: hidden;
+  }
+  
+  /* Speaking Indicator */
+  .videoWrapper.speaking {
+	box-shadow: 0 0 10px 3px #00ff00; /* Green glow for speaking */
+  }
+  
+  /* Local and Remote Video Styles */
+  .localVideo,
+  .remoteVideo {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-}
-
-/* Controls */
-.controls {
+  }
+  
+  .localVideo {
+	border: 2px solid #00ff00; /* Green border to distinguish local video */
+  }
+  
+  .remoteVideo {
+	border: 2px solid #ff0000; /* Red border to distinguish remote video */
+  }
+  
+  /* Participant Name Overlay */
+  .participantName {
+	position: absolute;
+	bottom: 5px;
+	left: 5px;
+	background: rgba(0, 0, 0, 0.5);
+	color: white;
+	padding: 2px 5px;
+	border-radius: 3px;
+	font-size: 12px;
+  }
+  
+  /* Controls */
+  .controls {
 	margin-top: 15px;
 	display: flex;
 	gap: 10px;
 	flex-wrap: wrap;
 	justify-content: center;
-}
-
-/* Buttons */
-.controls button {
+  }
+  
+  /* Buttons */
+  .controls button {
 	width: 45px; /* Reduced size */
 	height: 45px; /* Reduced size */
 	background-color: #fff;
@@ -71,58 +184,74 @@
 	cursor: pointer;
 	transition: 0.3s;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-/* Button Images (Icons) */
-.controls button img {
+  }
+  
+  /* Button Images (Icons) */
+  .controls button img {
 	width: 20px; /* Reduced size */
 	height: 20px; /* Reduced size */
 	object-fit: contain;
-}
-
-/* Button Hover Effect */
-.controls button:hover {
+  }
+  
+  /* Button Hover Effect */
+  .controls button:hover {
 	background-color: #f0f0f0;
-}
-
-/* End Call Button */
-.end-call-btn {
+  }
+  
+  /* End Call Button */
+  .endButton {
 	background-color: #ff4d4d;
-}
-
-.end-call-btn:hover {
+  }
+  
+  .endButton:hover {
 	background-color: #cc0000;
-}
-/* Sidebar */
-.sidebar {
+  }
+  
+  /* Leave Meeting Button */
+  .leaveButton {
+	background-color: #ff4d4d;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 14px;
+	transition: 0.3s;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .leaveButton:hover {
+	background-color: #cc0000;
+  }
+  
+  /* Sidebar */
+  .sidebar {
 	flex: 1.5;
 	background: #e0e0e0;
 	padding: 20px;
 	display: flex;
 	flex-direction: column;
-	
-}
-
-/* Chat Section */
-.chatSection {
+  }
+  
+  /* Chat Section */
+  .chatSection {
 	margin-top: 50px;
-}
-
-/* Chat Box */
-.chatBox {
+  }
+  
+  /* Chat Box */
+  .chatBox {
 	background: white;
 	padding: 15px;
 	border-radius: 5px;
 	min-height: 150px;
+	max-height: 200px;
+	overflow-y: auto;
 	color: black;
-	display: flex;
-	align-items: center;
-	justify-content: center;
 	border: 1px solid #d1d1d1;
-}
-
-/* Chat Input */
-.chatInput {
+  }
+  
+  /* Chat Input */
+  .chatInput {
 	width: 100%;
 	height: 40px;
 	margin-top: 10px;
@@ -132,157 +261,270 @@
 	background: white;
 	color: black;
 	resize: none;
-}
-
-.chatInput:focus {
+  }
+  
+  .chatInput:focus {
 	outline: none;
 	border-color: #007bff;
-}
-
-/* Logo */
-.logo {
+  }
+  
+  /* Logo */
+  .logo {
 	width: 120px;
 	height: 50px;
-}
-
-/* Participants */
-.participantList {
+  }
+  
+  /* Participants */
+  .participantList {
 	list-style: none;
 	padding: 0;
 	margin: 10px 0;
-}
-
-.participantItem {
-	display: flex;
+  }
+  
+  .participantItem {
+	display: fixed;
 	justify-content: space-between;
 	align-items: center;
 	padding: 8px;
 	background: #f0f0f0;
 	border-radius: 5px;
 	margin-bottom: 5px;
-}
-
-/* Invite Button */
-.inviteButton {
+  }
+  
+  /* Invite Button */
+  .inviteButton {
 	min-width: 60px; /* Ensures text fits */
 	padding: 6px 10px; /* More padding */
 	font-size: 14px;
 	text-align: center;
 	white-space: nowrap; /* Prevents text wrapping */
-}
-
-.inviteButton:hover {
+  }
+  
+  .inviteButton:hover {
 	background-color: #0056b3;
-}
-
-/* No Participants */
-.noParticipants {
+  }
+  
+  /* No Participants */
+  .noParticipants {
 	font-style: italic;
 	color: gray;
-}
-@media (max-width: 1024px) {
+  }
+  
+  /* Error Message */
+  .error {
+	color: #ff4d4d;
+	font-size: 14px;
+	margin: 10px 0;
+	text-align: center;
+  }
+  
+  /* Call ID Display */
+  .callIdDisplay {
+	color: white;
+	font-size: 14px;
+	margin: 10px 0;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1024px) {
 	.mainContent {
-		padding: 10px;
+	  padding: 10px;
 	}
-
+  
 	.videoSection {
-		width: 80%;
-		max-width: 700px;
-		height: 300px;
+	  width: 80%;
+	  max-width: 700px;
+	  height: 300px;
 	}
-
+  
+	.videoContainer {
+	  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	  gap: 8px;
+	}
+  
+	.videoWrapper {
+	  max-height: 150px;
+	}
+  
 	.controls button {
-		width: 40px;
-		height: 40px;
+	  width: 40px;
+	  height: 40px;
 	}
-
+  
 	.controls button img {
-		width: 16px;
-		height: 16px;
+	  width: 16px;
+	  height: 16px;
 	}
-
+  
 	.chatBox {
-		min-height: 120px; /* Ensures chat box remains readable */
+	  min-height: 120px; /* Ensures chat box remains readable */
 	}
+  
 	.content_wrapper_video {
-		display: flex;
-		flex-direction: column;
+	  display: flex;
+	  flex-direction: column;
 	}
-}
-
-@media (max-width: 768px) {
+  
+	.callOptions {
+	  padding: 15px;
+	  gap: 15px;
+	}
+  
+	.callIdInput {
+	  width: 180px;
+	}
+  }
+  
+  @media (max-width: 768px) {
 	.mainContent {
-		padding: 5px;
+	  padding: 5px;
 	}
-
+  
 	.videoSection {
-		width: 90%;
-		max-width: 500px;
-		height: 250px;
+	  width: 90%;
+	  max-width: 500px;
+	  height: 350px;
 	}
-
+  
+	.videoContainer {
+	  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+	  gap: 5px;
+	}
+  
+	.videoWrapper {
+	  max-height: 120px;
+	}
+  
 	.controls {
-		gap: 5px;
+	  gap: 5px;
 	}
-
+  
 	.controls button {
-		width: 35px;
-		height: 35px;
+	  width: 35px;
+	  height: 35px;
 	}
-
+  
 	.controls button img {
-		width: 14px;
-		height: 14px;
+	  width: 14px;
+	  height: 14px;
 	}
-
+  
+	.leaveButton {
+	  padding: 8px 15px;
+	  font-size: 12px;
+	}
+  
 	.chatBox {
-		min-height: 100px;
-		max-height: 150px;
-		overflow-y: auto; /* Prevents overflow issues */
+	  min-height: 100px;
+	  max-height: 150px;
+	  overflow-y: auto; /* Prevents overflow issues */
 	}
-}
-@media (max-width: 600px) {
+  
+	.callOptions {
+	  padding: 10px;
+	}
+  
+	.callIdInput {
+	  width: 160px;
+	  font-size: 14px;
+	}
+  
+	.actionButton {
+	  padding: 8px 15px;
+	  font-size: 14px;
+	}
+  }
+  
+  @media (max-width: 600px) {
 	.inviteButton {
-		font-size: 12px; /* Slightly smaller text */
-		padding: 5px 8px;
+	  font-size: 12px; /* Slightly smaller text */
+	  padding: 5px 8px;
 	}
+  
 	.actionButton {
-        font-size: 12px;
-        padding: 5px 10px;
-        min-width: 50px;
-        max-width: 70px;
-    }
-}
-@media (max-width: 480px) {
+	  font-size: 12px;
+	  padding: 8px 15px;
+	}
+  
+	.callOptions {
+	  gap: 10px;
+	}
+  
+	.callIdInput {
+	  width: 140px;
+	}
+  
 	.videoSection {
-		width: 95%;
-		max-width: 350px;
-		height: 200px;
+	  height: 300px; /* Increase height to accommodate stacked videos */
 	}
+  
+	.videoWrapper {
+	  max-height: 100px;
+	}
+  }
+  
+  @media (max-width: 480px) {
+	.videoSection {
+	  width: 95%;
+	  max-width: 350px;
+	  height: 250px;
+	}
+  
+	.videoContainer {
+	  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+	  gap: 3px;
+	}
+  
+	.videoWrapper {
+	  max-height: 80px;
+	}
+  
+	.participantName {
+	  font-size: 10px;
+	}
+  
 	.controls {
-		gap: 3px;
+	  gap: 3px;
 	}
-
+  
 	.controls button {
-		width: 30px;
-		height: 30px;
+	  width: 30px;
+	  height: 30px;
 	}
-
+  
 	.controls button img {
-		width: 12px;
-		height: 12px;
+	  width: 12px;
+	  height: 12px;
 	}
-
+  
+	.leaveButton {
+	  padding: 6px 12px;
+	  font-size: 10px;
+	}
+  
 	.chatBox {
-		min-height: 90px;
-		max-height: 120px;
-		padding: 10px;
-		
+	  min-height: 90px;
+	  max-height: 120px;
+	  padding: 10px;
 	}
+  
+	.callOptions {
+	  padding: 5px;
+	}
+  
+	.callIdInput {
+	  width: 120px;
+	  font-size: 12px;
+	}
+  
 	.actionButton {
-        font-size: 12px;
-        padding: 5px 10px;
-        min-width: 80px;
-        max-width: 90px;
-    }
-}
+	  padding: 6px 12px;
+	  font-size: 12px;
+	}
+  
+	.joinInputContainer {
+	  flex-direction: column;
+	  align-items: center;
+	  gap: 8px;
+	}
+  }
