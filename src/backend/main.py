@@ -1,7 +1,8 @@
-from fastapi import FastAPI, HTTPException, File, UploadFile, Query, Form, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, File, UploadFile, Query, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from fastapi import APIRouter
@@ -10,6 +11,7 @@ import bcrypt
 import os
 import random
 import smtplib
+from fastapi import FastAPI, UploadFile, File
 from io import BytesIO
 from pptx import Presentation
 from PyPDF2 import PdfReader
@@ -21,29 +23,35 @@ import logging
 from typing import Optional
 from bson import ObjectId
 from bson.errors import InvalidId
+from typing import Any
 import ollama
-import certifi
+import certifi  # Import certifi to enable SSL
+from fastapi import APIRouter
+from typing import List
+from pydantic import BaseModel
 from apscheduler.schedulers.background import BackgroundScheduler
-import json
-import uuid
-
+from fastapi import BackgroundTasks
+import json  # Import json if not already imported
+from fastapi import WebSocket, WebSocketDisconnect 
+import uuid # Make sure WebSocket and WebSocketDisconnect are imported
 # Load environment variables
 load_dotenv()
 
-# Environment variables
+# Fetch MongoDB URI, Database Name, Collection Name, and Email credentials from environment variables
 MONGO_URI = os.getenv("MONGO_URI")
 DATABASE_NAME = os.getenv("DATABASE_NAME")
 COLLECTION_NAME = os.getenv("COLLECTION_NAME")
 EMAIL_HOST = os.getenv("EMAIL_HOST")
-EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))  # Default to 587 if not provided
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
-# Validate environment variables
-if not all([MONGO_URI, DATABASE_NAME, COLLECTION_NAME]):
-    logging.error("Missing MongoDB environment variables.")
-if not all([EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD]):
-    logging.error("Missing email environment variables.")
+# Check if essential environment variables are loaded
+if not MONGO_URI or not DATABASE_NAME or not COLLECTION_NAME:
+    logging.error("Missing necessary MongoDB environment variables: MONGO_URI, DATABASE_NAME, or COLLECTION_NAME.")
+if not EMAIL_HOST or not EMAIL_PORT or not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
+    logging.error("Missing necessary email environment variables: EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, or EMAIL_HOST_PASSWORD.")
+
 
 habit_to_page = {
     "Study with Friends": "learn-together",
@@ -63,41 +71,44 @@ logging.basicConfig(level=logging.INFO)
 app = FastAPI()
 router = APIRouter()
 
+
+origins = [
+    "https:olep.vercel.app",  
+]
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://olep.vercel.app"],
+    allow_origins=["*"],  # or specify specific origins
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # or specify methods like ["GET", "POST"]
+    allow_headers=["*"],  # or specify headers
 )
 
-# MongoDB setup
+# MongoDB setup with SSL enabled
 try:
-    client = MongoClient(MONGO_URI, tls=True, tlsCAFile=certifi.where())
-    client.admin.command('ping')
+    client = MongoClient(MONGO_URI, tls=True, tlsCAFile=certifi.where())  # Enable SSL
+    client.admin.command('ping')  # Test the connection
     logging.info("MongoDB connection successful")
 except Exception as e:
     logging.error(f"Failed to connect to MongoDB: {e}")
 
-# Database and collections
+# Set up database and collections
 db = client[DATABASE_NAME]
 modules_collection = db["modules"]
-post_test_collection = db["post_tests"]
+post_test_collection = db.get_collection("post_tests")
 collection = db[COLLECTION_NAME]
 scores_collection = db["scores"]
 users_collection = db[COLLECTION_NAME]
 request_collection = db["requests"]
-messages_collection = db["messages"]
+messages_collection = db["messages"]  # Added 'messages' collection
 schedule_collection = db["schedules"]
 notes_collection = db["notes"]
-flashcards_collection = db["flashcards"]
+Flashcards_collection = db["flashcards"]
 calls_collection = db["calls"]
-
-# Static files
+# Serve static files for images and videos
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
-# Models
+# Models for requests
 class SignupData(BaseModel):
     firstname: str
     middlename: str = None
@@ -112,15 +123,16 @@ class SignupData(BaseModel):
     role: str
 
 class FormatResponse(BaseModel):
-    ReviseQuestion: str
-    correctAnswer: str
-    wrongAnswerFirst: str
-    wrongAnswerSecond: str
-    wrongAnswerThird: str
-
+  ReviseQuestion: str
+  correctAnswer: str
+  wrongAnswerFirst: str
+  wrongAnswerSecond: str
+  wrongAnswerThird: str
+  
 class LoginData(BaseModel):
     idNumber: str
     password: str
+
 
 class ForgotPasswordData(BaseModel):
     id_number: str
@@ -160,7 +172,7 @@ class PostTestResponse(BaseModel):
 
 class PostTestSubmission(BaseModel):
     answers: Dict[str, str]
-    user_id: str
+    user_id: str 
 
 class PostTestData(BaseModel):
     question_id: str
@@ -174,47 +186,44 @@ class ScoreData(BaseModel):
     incorrect: int
     total_questions: int
     user_answers: Dict[str, str]
-
 class UserSettings(BaseModel):
-    firstname: Optional[str] = None
-    middlename: Optional[str] = None
-    lastname: Optional[str] = None
-    suffix: Optional[str] = None
-    birthdate: Optional[str] = None
-    email: Optional[str] = None
-    program: Optional[str] = None
-    username: Optional[str] = None
-    password: Optional[str] = None
-
+  firstname: Optional[str] = None
+  middlename: Optional[str] = None
+  lastname: Optional[str] = None
+  suffix: Optional[str] = None
+  birthdate: Optional[str] = None
+  email: Optional[str] = None
+  program: Optional[str] = None
+  username: Optional[str] = None
+  password: Optional[str] = None
 class Module(BaseModel):
     id: str
     title: str
     image_url: str
-    instructor_id: str
-    file: str
-
+    instructor_id: str    
+    file : str
 class Account(BaseModel):
     id: str
     profile: str
     accountNo: str
     name: str
     role: str
-
 class AccountResponse(BaseModel):
     id: str
     profile: str
     accountNo: str
     name: str
-    role: str
+    role: str  
 
 class AccountResponses(BaseModel):
     id: str
     profile: str
+     
     studentNo: str
     name: str
-    role: str
+    role: str  
     program: str
-
+     
 class ParaphraseRequest(BaseModel):
     input: str
 
@@ -225,20 +234,19 @@ class QuestionWithAnswers(BaseModel):
     question: str
     options: List[str]
     correctAnswer: str
-    wrongAnswers: List[str]
+    wrongAnswers: List[str]  # Add wrong answers
 
 class PostTestResponse(BaseModel):
     post_test_id: str
     module_id: str
     title: str
-    questions: List[QuestionWithAnswers]
+    questions: List[QuestionWithAnswers]  # Update to use the new model
 
 class SurveyData(BaseModel):
     id_number: str
     categoryScores: Dict[str, int]
     top3Habits: List[str]
     surveyCompleted: bool
-
 class Message(BaseModel):
     sender: str
     receiver: str
@@ -250,6 +258,7 @@ class Instructor(BaseModel):
     lastname: str
     email: str
 
+# Pydantic model for schedule
 class ScheduleEntry(BaseModel):
     id_number: str
     schedule: List[List[str]]
@@ -277,7 +286,6 @@ class Flashcard(BaseModel):
     content: str
     answer: str
     unique: str
-
 # Helper functions
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
@@ -291,6 +299,7 @@ def send_email(to_email: str, subject: str, body: str):
         msg['Subject'] = subject
         msg['From'] = EMAIL_HOST_USER
         msg['To'] = to_email
+
         with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT) as server:
             server.starttls()
             server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
@@ -300,68 +309,83 @@ def send_email(to_email: str, subject: str, body: str):
         logging.error(f"Failed to send email to {to_email}: {e}")
 
 def get_current_user(id_number: str):
+    """Simulates user authentication by ID."""
     user = users_collection.find_one({"id_number": id_number})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
-
 def create_prompt(input_text: str) -> str:
     return (
         f"You are a helpful assistant. Please paraphrase the following question REMOVE THE INTRODUCTION THATS SAYING ITS PARAPHRASE I KNOW IT IS,    REMOVE THE NUMBERING REMOVE THE NOTE I DONT NEED THAT:, DONT SAY THE WORD IN THE CORRECT ANSWER IN THE QUESTIONS\n"
         f"{input_text}\n"
         f"Keep the meaning intact and maintain proper grammar."
+ 
     )
 
 def get_wrong_answers(correct_answer: str) -> List[str]:
+     
     try:
-        response = ollama.generate(model='llama3.2', prompt=create_prompt(correct_answer))
-        wrong_answers = response['response'].strip().split("\n")
-        return wrong_answers[:3]
+        response = ollama.generate(model='llama3.2', prompt=prompt)
+        wrong_answers = response.response.strip().split("\n")
+        return wrong_answers[:3]  # Ensure only three wrong answers are returned
     except Exception as e:
         logging.error(f"Failed to generate wrong answers: {e}")
-        return ["Option A", "Option B", "Option C"]
-
+        return ["Option A", "Option B", "Option C"]  # Default wrong answers
+# User management endpoints
 def extract_text_from_ppt(file):
-    presentation = Presentation(file)
-    text = ''
-    for slide in presentation.slides:
-        for shape in slide.shapes:
-            if hasattr(shape, "text"):
-                text += shape.text
-    return text
+  presentation = Presentation(file)
+  text = ''
+  for slide in presentation.slides:
+    for shape in slide.shapes:
+      if hasattr(shape, "text"):
+        text += shape.text
+  return text
 
 def extract_text_from_pdf(file):
-    reader = PdfReader(file)
-    text = ''
-    for page in reader.pages:
-        text += page.extract_text()
-    return text
+  reader = PdfReader(file)
+  text = ''
+  for page in reader.pages:
+    text += page.extract_text()
+  return text
 
 def check_schedule_and_notify():
-    current_time = datetime.now().strftime('%I:%M %p')
-    current_day = datetime.now().strftime('%a').upper()
+    current_time = datetime.now().strftime('%I:%M %p')  # Get current time in 12-hour format
+    current_day = datetime.now().strftime('%a').upper()  # Get current day in 3-letter abbreviation
+
+    # Query for all schedules in the collection
     schedules = schedule_collection.find()
+
     for schedule in schedules:
         user_id = schedule["id_number"]
         times = schedule["times"]
         schedule_data = schedule["schedule"]
+
+        # Loop through each time and day to check if it matches the current time and day
         for i, time in enumerate(times):
-            if time == current_time:
+            if time == current_time:  # If times match
                 for j, day in enumerate(schedule_data[i]):
                     if day and day != '0' and daysOfWeek[j] == current_day:
+                        # Send email or notification
                         send_reminder_email(user_id, day, current_time, current_day)
 
+# Function to send the reminder email
 def send_reminder_email(user_id, task, current_time, current_day):
+    # Fetch user email from the database
     user = users_collection.find_one({"id_number": user_id})
     if not user:
         return
+
     user_email = user["email"]
     subject = f"Reminder: Task '{task}' at {current_time} on {current_day}"
     body = f"Dear {user['firstname']} {user['lastname']},\n\nThis is a reminder for your task '{task}' scheduled for {current_time} on {current_day}.\n\nBest regards,\nYour Study Schedule App"
+
+    # Set up the email content
     message = MIMEText(body)
     message['From'] = EMAIL_HOST_USER
     message['To'] = user_email
     message['Subject'] = subject
+
+    # Send email using SMTP
     try:
         with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT) as server:
             server.starttls()
@@ -371,11 +395,10 @@ def send_reminder_email(user_id, task, current_time, current_day):
     except Exception as e:
         logging.error(f"Error sending email: {e}")
 
+# Set up the background scheduler
 scheduler = BackgroundScheduler()
-scheduler.add_job(check_schedule_and_notify, 'interval', minutes=1)
+scheduler.add_job(check_schedule_and_notify, 'interval', minutes=1)  # Run every minute
 scheduler.start()
-
-daysOfWeek = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
 
 # WebSocket endpoint for video calls
 @app.websocket("/ws/{identifier}")
@@ -511,7 +534,6 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
         students.pop(student_id, None)
         await broadcast_students()
 
-# Endpoints
 @app.get("/")
 def root():
     return {"message": "FastAPI Backend is Running!"}
@@ -531,8 +553,11 @@ async def signup(data: SignupData):
 async def login(data: LoginData):
     user = collection.find_one({"id_number": data.idNumber})
     if user and verify_password(data.password, user["password"]):
+        # Retrieve user's role and survey status
         role = user.get("role", "unknown").lower()
-        survey_completed = user.get("surveyCompleted", False)
+        survey_completed = user.get("surveyCompleted", False)  # Default to False if not set
+
+        # Include all user details in response
         return JSONResponse({
             "success": True,
             "message": "Login successful!",
@@ -598,6 +623,7 @@ async def get_profile(id_number: str):
         logging.error("User not found")
         raise HTTPException(status_code=404, detail="User not found")
 
+# Module creation endpoint
 @app.post("/api/create_module")
 async def create_module(
     title: str = Form(...),
@@ -605,10 +631,14 @@ async def create_module(
     description: str = Form(...),
     program: str = Form(...),
     id_number: str = Form(...),
-    document: UploadFile = File(...),
+    document: UploadFile = File(...),  # Change from video to document
     picture: UploadFile = File(...),
 ):
+    """
+    Create a new module with associated document and image uploads.
+    """
     try:
+        # Save files to the "uploads" directory
         document_path = f"uploads/{document.filename}"
         picture_path = f"uploads/{picture.filename}"
         os.makedirs("uploads", exist_ok=True)
@@ -617,22 +647,24 @@ async def create_module(
         with open(picture_path, "wb") as picture_file:
             shutil.copyfileobj(picture.file, picture_file)
         
+        # Prepare module data
         module_data = {
             "title": title,
             "topic": topic,
             "description": description,
             "program": program,
             "id_number": id_number,
-            "document_url": document_path,
+            "document_url": document_path,  # Change from video_url to document_url
             "image_url": picture_path,
         }
 
+        # Insert module into the database
         result = modules_collection.insert_one(module_data)
         if result.inserted_id:
             return {
                 "success": True,
                 "message": "Module created successfully!",
-                "module_id": str(result.inserted_id)
+                "module_id": str(result.inserted_id)  # Return the string version of the ObjectId
             }
         else:
             raise HTTPException(status_code=500, detail="Failed to create module")
@@ -642,14 +674,19 @@ async def create_module(
 
 @app.get("/api/modules")
 async def get_modules(id_number: str = Query(None), program: str = Query(None)):
-    query = {}
-    if id_number:
-        query["id_number"] = id_number
-    if program:
-        query["program"] = program
+  """
+  Fetch all modules with optional filters.
+  """
+  query = {}
+  if id_number:
+    query["id_number"] = id_number
+  if program:
+    query["program"] = program
 
-    modules = modules_collection.find(query)
-    return [{"_id": str(module["_id"]), "title": module["title"], "image_url": module["image_url"], "id_number": module["id_number"], "program": module["program"]} for module in modules]
+  modules = modules_collection.find(query)
+  return [{"_id": str(module["_id"]), "title": module["title"], "image_url": module["image_url"], "id_number": module["id_number"], "program": module["program"]} for module in modules]
+
+
 
 @app.get("/api/modules/{module_id}")
 async def get_module(module_id: str):
@@ -661,27 +698,30 @@ async def get_module(module_id: str):
         if not module:
             raise HTTPException(status_code=404, detail="Module not found")
 
-        module["_id"] = str(module["_id"])
+        module["_id"] = str(module["_id"])  # Convert ObjectId to string for JSON
         return {
             "title": module["title"],
             "topic": module["topic"],
             "description": module["description"],
             "program": module["program"],
-            "image_url": module["image_url"],
-            "document_url": module["document_url"],
+            "image_url": module["image_url"],  # Ensure frontend can access this path
+            "document_url": module["document_url"],  # PDF file
             "id_number": module["id_number"],
         }
     except Exception as e:
         print(f"Error fetching module: {e}")
         raise HTTPException(status_code=500, detail=f"Error fetching module: {e}")
 
+
 @app.post("/api/post-tests")
 async def create_post_test(post_test: PostTestRequest):
     try:
+        # Ensure the module exists by checking its ID
         module = modules_collection.find_one({"_id": ObjectId(post_test.module_id)})
         if not module:
             raise HTTPException(status_code=404, detail="Module not found.")
         
+        # Prepare post-test data
         post_test_data = post_test.dict()
         post_test_collection.insert_one(post_test_data)
         
@@ -693,28 +733,39 @@ async def create_post_test(post_test: PostTestRequest):
         logging.error(f"Error creating post-test: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
+
 @app.delete("/api/modules/{module_id}")
 async def delete_module(module_id: str):
+    """
+    Delete a specific module by its ID.
+    """
     logging.info(f"Attempting to delete module with ID: {module_id}")
     try:
         if not ObjectId.is_valid(module_id):
             logging.error(f"Invalid module ID format: {module_id}")
             raise HTTPException(status_code=400, detail="Invalid module ID format.")
 
+        # Delete the module and related post-tests
         delete_result = modules_collection.delete_one({"_id": ObjectId(module_id)})
         if delete_result.deleted_count == 0:
             raise HTTPException(status_code=404, detail="Module not found.")
         
+        # Delete associated post-tests
         post_test_collection.delete_many({"module_id": module_id})
         return {"success": True, "message": "Module and associated post-tests deleted successfully!"}
     except Exception as e:
         logging.error(f"Error deleting module with ID {module_id}: {e}")
         raise HTTPException(status_code=500, detail="Failed to delete module.")
 
+
+# Utility route to check database status
 @app.get("/api/status")
 async def health_check():
+    """
+    Health check endpoint to verify API and database connection.
+    """
     try:
-        client.admin.command('ping')
+        client.admin.command('ping')  # Verifies MongoDB connection
         return {"success": True, "message": "API and database are operational."}
     except Exception as e:
         logging.error(f"Database connection issue: {e}")
@@ -722,10 +773,12 @@ async def health_check():
 
 @app.post("/createposttest/{module_id}")
 async def create_posttest(module_id: str, post_test_request: PostTestRequest):
+    # Check if the module exists
     module = modules_collection.find_one({"_id": ObjectId(module_id)})
     if not module:
         raise HTTPException(status_code=404, detail="Module not found.")
 
+    # Prepare post-test data
     post_test_data = {
         "module_id": module_id,
         "title": post_test_request.title,
@@ -739,14 +792,14 @@ async def create_posttest(module_id: str, post_test_request: PostTestRequest):
         ],
     }
 
+    # Insert post-test data into the database
     result = post_test_collection.insert_one(post_test_data)
 
     return {
         "success": True,
         "message": "Post-test created successfully!",
-        "post_test_id": str(result.inserted_id)
+        "post_test_id": str(result.inserted_id)  # Return the inserted post-test's ID
     }
-
 @app.get("/api/post-test/{module_id}", response_model=PostTestResponse)
 async def get_post_test(module_id: str):
     logging.info(f"Fetching post-test for module_id: {module_id}")
@@ -775,6 +828,7 @@ async def get_post_test(module_id: str):
         questions=questions_with_answers
     )
 
+# Submit Post-Test
 @router.post("/api/post-test/submit/{module_id}")
 async def submit_post_test(module_id: str, answers: PostTestSubmission):
     logging.info(f"Received submission for module_id: {module_id} with answers: {answers.answers}")
@@ -782,26 +836,31 @@ async def submit_post_test(module_id: str, answers: PostTestSubmission):
     if not module_id:
         raise HTTPException(status_code=400, detail="Module ID is required")
 
+    # Fetch the post-test associated with the module_id
     post_test = post_test_collection.find_one({"module_id": module_id})
     if not post_test:
         raise HTTPException(status_code=404, detail="Post-test not found for this module")
 
+    # Get the list of questions and the correct answers from the post-test
     correct_answers = {str(index): question["correctAnswer"] for index, question in enumerate(post_test["questions"])}
     logging.info(f"Correct answers: {correct_answers}")
 
+    # Initialize score counters
     correct_count = 0
     incorrect_count = 0
 
+    # Compare provided answers with correct answers
     for question, user_answer in answers.answers.items():
         correct_answer = correct_answers.get(question)
         logging.info(f"Comparing question: {question}, User answer: {user_answer}, Correct answer: {correct_answer}")
         
-        if correct_answer is not None:
+        if correct_answer is not None:  # Ensure correct_answer exists
             if user_answer == correct_answer:
                 correct_count += 1
             else:
                 incorrect_count += 1
 
+    # Prepare score data
     score_data = ScoreData(
         module_id=module_id,
         user_id=answers.user_id,
@@ -811,10 +870,13 @@ async def submit_post_test(module_id: str, answers: PostTestSubmission):
         user_answers=answers.answers
     )
 
+    # Log the score data before saving
     logging.info(f"Score data to be saved: {score_data.dict()}")
 
+    # Save the score to the database
     scores_collection.insert_one(score_data.dict())
 
+    # Return the score (correct and incorrect answers count)
     return {
         "success": True,
         "message": "Post-test submitted successfully!",
@@ -822,9 +884,11 @@ async def submit_post_test(module_id: str, answers: PostTestSubmission):
         "incorrect": incorrect_count,
         "total_questions": len(post_test["questions"])
     }
-
 @router.get("/api/post-test/results/{user_id}")
 async def get_post_test_results(user_id: str):
+    """
+    Fetch all post-test results for the given user_id.
+    """
     try:
         results = scores_collection.find({"user_id": user_id})
         results_list = [
@@ -842,15 +906,21 @@ async def get_post_test_results(user_id: str):
         logging.error(f"Error fetching post-test results for user {user_id}: {e}")
         raise HTTPException(status_code=500, detail="Error fetching post-test results")
 
+# Include the router
+app.include_router(router)
+
 @app.get("/api/dashboard/{id_number}")
 async def get_dashboard(id_number: str):
+    # Fetch user details
     user = collection.find_one({"id_number": id_number})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
+    # Fetch all modules the user is associated with
     modules = modules_collection.find({"program": user["program"]})
     modules_list = [{"_id": str(module["_id"]), "title": module["title"], "image_url": module["image_url"]} for module in modules]
 
+    # Fetch pretest and post-test scores for the user
     scores = scores_collection.find({"user_id": id_number})
     post_test_scores = []
     pretest_scores = []
@@ -859,14 +929,15 @@ async def get_dashboard(id_number: str):
         module_id = score["module_id"]
         module_title = next((module["title"] for module in modules if str(module["_id"]) == module_id), "Unknown Module")
         
+        # Fetch post-test title from post_tests collection
         post_test = post_test_collection.find_one({"module_id": module_id})
         post_test_title = post_test["title"] if post_test else "Unknown Post-Test"
 
         if score.get("test_type") == "pretest":
             pretest_scores.append({"subject": module_title, "score": score["correct"]})
-        else:
+        else:  # Assuming post-test by default
             post_test_scores.append({
-                "post_test_title": post_test_title,
+                "post_test_title": post_test_title,  # Add post-test title
                 "correct": score["correct"],
                 "incorrect": score["incorrect"],
                 "total_questions": score["total_questions"]
@@ -880,39 +951,43 @@ async def get_dashboard(id_number: str):
 
 @app.get("/user/settings/{id_number}")
 async def get_user_settings(id_number: str):
-    user = collection.find_one({"id_number": id_number})
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    
-    return {
-        "success": True,
-        "data": {
-            "firstname": user.get("firstname", ""),
-            "middlename": user.get("middlename", ""),
-            "lastname": user.get("lastname", ""),
-            "suffix": user.get("suffix", ""),
-            "birthdate": user.get("birthdate", ""),
-            "email": user.get("email", ""),
-            "program": user.get("program", ""),
-            "username": user.get("username", ""),
-        },
-    }
+  user = collection.find_one({"id_number": id_number})
+  if not user:
+    raise HTTPException(status_code=404, detail="User not found")
+  
+  return {
+    "success": True,
+    "data": {
+      "firstname": user.get("firstname", ""),
+      "middlename": user.get("middlename", ""),
+      "lastname": user.get("lastname", ""),
+      "suffix": user.get("suffix", ""),
+      "birthdate": user.get("birthdate", ""),
+      "email": user.get("email", ""),
+      "program": user.get("program", ""),
+      "username": user.get("username", ""),
+    },
+  }
 
 @app.post("/user/settings/request/{id_number}")
 async def request_user_settings_update(id_number: str, user_settings: UserSettings):
-    update_data = user_settings.dict(exclude_unset=True)
-    if "password" in update_data and update_data["password"]:
-        update_data["password"] = hash_password(update_data["password"])
-    else:
-        update_data.pop("password", None)
+    update_data = user_settings.dict(exclude_unset=True)  # Extract only the fields that have been updated
 
+    # If password is provided, hash it (you can add your hashing logic here)
+    if "password" in update_data and update_data["password"]:
+        update_data["password"] = hash_password(update_data["password"])  # Make sure to implement hash_password
+    else:
+        update_data.pop("password", None)  # Remove the password if it is not provided or is empty
+
+    # Create the request document
     request_data = {
         "id_number": id_number,
         "update_data": update_data,
-        "status": "pending",
-        "created_at": datetime.utcnow(),
+        "status": "pending",  # Mark as pending until admin processes it
+        "created_at": datetime.utcnow(),  # Add a timestamp of when the request was made
     }
 
+    # Insert the request into the 'requests' collection
     result = request_collection.insert_one(request_data)
     
     if result.inserted_id:
@@ -920,31 +995,46 @@ async def request_user_settings_update(id_number: str, user_settings: UserSettin
     else:
         raise HTTPException(status_code=500, detail="Error submitting the request")
     
+    return {
+        "success": True,
+        "message": "User settings update request sent successfully",
+        "changes": changes  # Return the changes made
+    }
 @app.get("/admin/requests")
 async def get_requests():
     requests = list(request_collection.find({}, {"_id": 1, "id_number": 1, "update_data": 1}))
     for request in requests:
-        request["_id"] = str(request["_id"])
-    return {"success": True, "data": requests}
+        request["_id"] = str(request["_id"])  # Convert ObjectId to string for frontend compatibility
+    return {"success": True, "data": requests} 
 
 @app.post("/admin/requests/accept/{request_id}")
 async def accept_request(request_id: str):
     try:
+        # Validate ObjectId
         if not ObjectId.is_valid(request_id):
             raise HTTPException(status_code=400, detail="Invalid request ID")
 
+        # Fetch the request details
         request = request_collection.find_one({"_id": ObjectId(request_id)})
         if not request:
             raise HTTPException(status_code=404, detail="Request not found")
 
+        # Extract the firstname and lastname from the 'update_data' field
         firstname = request.get("update_data", {}).get("firstname", "Unknown")
         lastname = request.get("update_data", {}).get("lastname", "Unknown")
+
+        # Combine firstname and lastname for full name
         full_name = f"{firstname} {lastname}".strip()
 
+        # Debugging: Log the full name
+        print(f"Full Name: {full_name}")
+
+        # Update user information based on the request
         id_number = request.get("id_number")
         update_data = {field: request["update_data"][field] for field in request["update_data"] if field not in ["_id", "id_number"]}
         users_collection.update_one({"id_number": id_number}, {"$set": update_data})
 
+        # Remove the request after applying changes
         request_collection.delete_one({"_id": ObjectId(request_id)})
 
         return {
@@ -955,12 +1045,14 @@ async def accept_request(request_id: str):
     except Exception as e:
         return {"success": False, "detail": str(e)}
 
+
 @app.delete("/admin/requests/decline/{request_id}")
 async def decline_request(request_id: str):
     request = request_collection.find_one({"_id": ObjectId(request_id)})
     if not request:
         return {"success": False, "detail": "Request not found"}
 
+    # Remove the request without applying changes
     request_collection.delete_one({"_id": ObjectId(request_id)})
     return {"success": True, "detail": "Request declined"}
 
@@ -969,6 +1061,7 @@ async def get_accounts(
     search_query: str = Query("", alias="searchQuery"),
     role_filter: str = Query("", alias="roleFilter"),
 ):
+    """Fetch accounts from the userinfo collection with optional search and filtering."""
     query = {}
     if search_query:
         query["$or"] = [
@@ -993,6 +1086,7 @@ async def get_accounts(
 
 @app.post("/api/accounts", response_model=AccountResponse)
 async def create_account(account: Account):
+    """Create a new account in the userinfo collection."""
     new_user = {
         "profile": account.profile,
         "id_number": account.accountNo,
@@ -1011,7 +1105,7 @@ async def get_accounts():
             account = {
                 "id": str(user["_id"]),
                 "profile": user.get("profile", ""),
-                "accountNo": user.get("id_number", ""),
+                "accountNo": user.get("id_number", ""),  # Assuming id_number is the account number
                 "name": f"{user.get('firstname', '')} {user.get('lastname', '')}",
                 "role": user.get("role", ""),
             }
@@ -1020,6 +1114,7 @@ async def get_accounts():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching accounts: {e}")
 
+# Route to delete an account
 @app.delete("/api/accounts/{account_id}")
 async def delete_account(account_id: str):
     try:
@@ -1029,9 +1124,10 @@ async def delete_account(account_id: str):
         return {"message": "Account deleted successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error deleting account: {e}")
-
+    
 @app.get("/students", response_model=List[AccountResponses])
 async def get_students():
+    """Fetch accounts with the role 'Student'."""
     try:
         students = list(users_collection.find({"role": {"$regex": "^student$", "$options": "i"}}))
         result = []
@@ -1048,43 +1144,47 @@ async def get_students():
     except Exception as e:
         logging.error(f"Error fetching students: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
-
+    
 @app.post("/api/paraphrase", response_model=ParaphraseResponse)
 async def paraphrase(request: ParaphraseRequest):
     try:
         prompt = create_prompt(request.input)
         response = ollama.generate(model='llama3.2', prompt=prompt)
-        return {"paraphrased": response['response'].strip()}
+        return {"paraphrased": response.response.strip()}
     except Exception as e:
         logging.error(f"Paraphrase error: {e}")
         raise HTTPException(status_code=500, detail="Failed to paraphrase input")
 
 @app.post("/extract-text/")
 async def extract_text(file: UploadFile = File(...)):
-    file_content = await file.read()
-    if file.filename.endswith('.pptx'):
-        text = extract_text_from_ppt(BytesIO(file_content))
-    elif file.filename.endswith('.pdf'):
-        text = extract_text_from_pdf(BytesIO(file_content))
-    else:
-        return {"error": "Unsupported file type"}
-    return {"extracted_text": text}
+  file_content = await file.read()
+  if file.filename.endswith('.pptx'):
+    text = extract_text_from_ppt(BytesIO(file_content))
+  elif file.filename.endswith('.pdf'):
+    text = extract_text_from_pdf(BytesIO(file_content))
+  else:
+    return {"error": "Unsupported file type"}
+  return {"extracted_text": text}
 
 @app.post("/submit-survey")
 async def submit_survey(survey_data: SurveyData):
+    # Check if user exists
     user = collection.find_one({"id_number": survey_data.id_number})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
+    # Get top 3 habits and map to pages
     recommended_pages = []
     added_pages = set()
 
+    # Add pages from top3Habits, avoiding duplicates
     for habit in survey_data.top3Habits:
         page = habit_to_page.get(habit)
         if page and page not in added_pages:
             recommended_pages.append(page)
             added_pages.add(page)
 
+    # Add extra pages if needed to reach 3 unique pages
     for habit, page in habit_to_page.items():
         if page not in added_pages:
             recommended_pages.append(page)
@@ -1092,6 +1192,7 @@ async def submit_survey(survey_data: SurveyData):
         if len(recommended_pages) == 3:
             break
 
+    # Update the user's survey data
     result = collection.update_one(
         {"id_number": survey_data.id_number},
         {"$set": {
@@ -1102,6 +1203,7 @@ async def submit_survey(survey_data: SurveyData):
         }}
     )
 
+    # Check if the update worked
     if result.modified_count == 0:
         raise HTTPException(status_code=500, detail="Failed to update survey data")
 
@@ -1117,7 +1219,10 @@ async def get_recommended_pages(id_number: str):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
+    # Get the top 3 habits from the user's data
     top3_habits = user.get("top3Habits", [])
+
+    # Map habits to corresponding pages, avoiding duplicates
     recommended_pages = []
     for habit in top3_habits:
         page = habit_to_page.get(habit)
@@ -1125,6 +1230,7 @@ async def get_recommended_pages(id_number: str):
             recommended_pages.append(page)
 
     return {"recommendedPages": recommended_pages}
+
 
 @app.get("/messages/{user_name}/{selected_user}", response_model=List[Message])
 def get_messages(user_name: str, selected_user: str):
@@ -1142,7 +1248,7 @@ def get_messages(user_name: str, selected_user: str):
 
 @app.post("/send-message")
 async def send_message(message: Message):
-    message_dict = message.dict()
+    message_dict = message.model_dump()
     message_dict["sender"] = message_dict["sender"].lower()
     message_dict["receiver"] = message_dict["receiver"].lower()
     messages_collection.insert_one(message_dict)
@@ -1150,11 +1256,17 @@ async def send_message(message: Message):
 
 @app.get("/instructor-chats/{instructor_name}")
 async def get_instructor_chats(instructor_name: str):
+    print(f"🔍 Fetching chats for instructor: {instructor_name}")
+
     messages = list(messages_collection.find({"receiver": instructor_name}, {"_id": 0}))
+    print(f"📜 Raw MongoDB Messages: {messages}")
+
     if not messages:
         return {"student_ids": [], "messages": []}
 
     student_names = {msg.get("sender") for msg in messages if "sender" in msg}
+    print(f"👥 Extracted student names: {student_names}")
+
     return {"student_ids": list(student_names), "messages": messages}
 
 @app.get("/instructors", response_model=List[Instructor])
@@ -1163,7 +1275,7 @@ def get_instructors():
         {"role": "Instructor"},
         {"_id": 0, "id_number": 1, "firstname": 1, "lastname": 1, "email": 1}
     ))
-    return instructors
+    return instructors 
 
 @app.post("/save_schedule")
 def save_schedule(data: ScheduleEntry):
@@ -1177,6 +1289,7 @@ def save_schedule(data: ScheduleEntry):
         schedule_collection.insert_one(data.dict())
     return {"success": True, "message": "Schedule saved successfully"}
 
+# Get schedule
 @app.get("/get_schedule/{id_number}")
 def get_schedule(id_number: str):
     schedule = schedule_collection.find_one({"id_number": id_number})
@@ -1186,7 +1299,6 @@ def get_schedule(id_number: str):
         "schedule": schedule["schedule"],
         "times": schedule["times"]
     }
-
 @app.get("/get_notes/{id_number}")
 async def get_notes(id_number: str):
     user = notes_collection.find_one({"id_number": id_number})
@@ -1254,10 +1366,21 @@ async def delete_note(req: DeleteNoteRequest):
     )
     return {"success": True}
 
+@app.on_event("startup")
+async def startup_event():
+    # Check if the scheduler is already running
+    if not scheduler.running:
+        logging.info("FastAPI app has started. Scheduler will now check schedules every minute.")
+        scheduler.start()
+    else:
+        logging.info("Scheduler is already running.")
+
 @app.post("/api/generate-flashcards/{module_id}")
 async def generate_flashcards(module_id: str):
-    existing_flashcards = list(flashcards_collection.find({"module_id": module_id}))
+    # Check if flashcards for this module already exist
+    existing_flashcards = list(Flashcards_collection.find({"module_id": module_id}))
 
+    # If flashcards already exist, return them
     if existing_flashcards:
         return {
             "success": True,
@@ -1265,31 +1388,36 @@ async def generate_flashcards(module_id: str):
         }
 
     try:
+        # Generate new flashcards
         new_flashcards_data = [
             Flashcard(
-                module_id=module_id,
-                content=f"Flashcard content {i}",
-                answer=f"Correct answer for flashcard {i}",
-                unique=f"flashcard-{i}"
+                module_id=module_id,  # Use the provided module_id
+                content=f"Flashcard content {i}",  # Placeholder content. You may enhance this logic.
+                answer=f"Correct answer for flashcard {i}",  # Placeholder. Adjust as needed.
+                unique=f"flashcard-{i}"  # Unique identifier
             )
-            for i in range(1, 6)
+            for i in range(1, 6)  # Adjust the number if you need more/less
         ]
 
+        # Store the generated flashcards in the database
         for flashcard in new_flashcards_data:
-            flashcards_collection.insert_one(flashcard.dict())
+            result = Flashcards_collection.insert_one(flashcard.dict())  # Ensure saving is correct
 
         return {
             "success": True,
-            "flashcards": [{**flashcard.dict(), "_id": str(ObjectId())} for flashcard in new_flashcards_data]
+            "flashcards": new_flashcards_data
         }
     except Exception as e:
         logging.error(f"Error generating flashcards: {e}")
         raise HTTPException(status_code=500, detail="Error generating flashcards")
-
+    
 @app.get("/api/flashcards/{module_id}")
 async def get_flashcards(module_id: str):
+    """
+    Fetch flashcards for a specific module_id.
+    """
     try:
-        flashcards = list(flashcards_collection.find({"module_id": module_id}))
+        flashcards = list(Flashcards_collection.find({"module_id": module_id}))
         if not flashcards:
             raise HTTPException(status_code=404, detail="No flashcards found for this module.")
 
@@ -1300,11 +1428,3 @@ async def get_flashcards(module_id: str):
     except Exception as e:
         logging.error(f"Error fetching flashcards: {e}")
         raise HTTPException(status_code=500, detail="Error fetching flashcards")
-
-@app.on_event("startup")
-async def startup_event():
-    if not scheduler.running:
-        logging.info("FastAPI app has started. Scheduler will now check schedules every minute.")
-        scheduler.start()
-    else:
-        logging.info("Scheduler is already running.")
