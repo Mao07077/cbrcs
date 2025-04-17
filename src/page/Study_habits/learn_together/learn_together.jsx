@@ -415,16 +415,16 @@ const WebRTCComponent = () => {
         <Header isStudyHabits={true}></Header>
         <div className={styles.content_wrapper}>
           <div className={styles.callOptions}>
-            <h2>Join or Create a Call</h2>
+            <h2 className={styles.callOptionsTitle}>Join or Create a Call</h2>
             {error && <p className={styles.error}>{error}</p>}
-            <button className={styles.actionButton} onClick={createCall}>
-              Create New Call
+            <button className={`${styles.actionButton} ${styles.createCallButton}`} onClick={createCall}>
+              Create Call
             </button>
             <button
-              className={styles.actionButton}
+              className={`${styles.actionButton} ${styles.joinCallButton}`}
               onClick={() => setShowJoinInput(true)}
             >
-              Join Existing Call
+              Join Call
             </button>
             {showJoinInput && (
               <div className={styles.joinInputContainer}>
@@ -435,7 +435,7 @@ const WebRTCComponent = () => {
                   placeholder="Enter Call ID"
                   className={styles.callIdInput}
                 />
-                <button className={styles.actionButton} onClick={joinCall}>
+                <button className={`${styles.actionButton} ${styles.joinButton}`} onClick={joinCall}>
                   Join
                 </button>
               </div>
@@ -527,9 +527,6 @@ const WebRTCComponent = () => {
                   src={isCameraOff ? OffcamIcon : OpencamIcon}
                   alt="Toggle Camera"
                 />
-              </button>
-              <button className={styles.leaveButton} onClick={leaveMeeting}>
-                Leave Meeting
               </button>
             </div>
           </div>
