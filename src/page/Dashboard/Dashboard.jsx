@@ -125,7 +125,7 @@ const Dashboard = ({ isModal = false }) => {
 					<div className={Styles.Title}>
 						<h2>Dashboard</h2>
 					</div>
-					<section className={Styles.PerformanceOverview}>
+					<div className={Styles.PerformanceOverview}>
 						<h2>Performance Overview</h2>
 						<p>Track your progress </p>
 						<div
@@ -169,7 +169,7 @@ const Dashboard = ({ isModal = false }) => {
 								]}
 							/>
 						</div>
-					</section>
+					</div>
 					<div className={Styles.Section}>
 						<div className={Styles.StrengthWeaknessContainer}>
 							<div className={Styles.StrengthCard}>Strength</div>

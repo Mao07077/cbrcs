@@ -1,4 +1,4 @@
-* {
+	* {
 	margin: 0;
 	padding: 0;
 }
@@ -56,11 +56,12 @@ body {
 
 /* Performance Overview */
 .PerformanceOverview {
-	text-align: center;
+	display: flex;
+	justify-content: center	;
+	flex-direction: column;
 	width: 100%;
-	max-width: 500px;
-	margin: 0 auto 30px auto; /* Centers the container horizontally */
 	margin-top: 20px;
+	margin-bottom: 40px;
 }
 .PerformanceOverview p {
 	text-align: center;
@@ -226,6 +227,7 @@ body {
 	transform: translateX(-50%); /* Centers the border */
 }
 
+
 /* Fix ChartJS Overflow */
 canvas {
 	max-width: 100% !important;
@@ -252,14 +254,12 @@ canvas {
 		font-weight: bold;
 	}
 	.PerformanceOverview {
-		text-align: center;
-		
-		margin-left: 30px;
+		display: flex;
+		justify-content: flex-start;
+		margin-right: 100px;
 		margin-top: 20px;
 	}
-	.PerformanceOverview{
-		margin-top: -10px;
-	}
+	
 	.PerformanceOverview h2{
 		font-size: 12px;
 		margin-right: 50px;
@@ -343,7 +343,17 @@ canvas {
 		transform: translateX(-50%); /* Centers the border */
 	}
 	.ProgressChartSection h3 {
-		margin-right: 120px;
+		font-size:10px;
+		font-weight: bold;
+		margin-bottom: 10px;
+		padding: 5px 0;
+		border-bottom: 1px solid #121212;
+		border-top: 1px solid #121212;
+		margin-left: 20px;
+		width: 85vw; /* Full screen width */
+		position: relative; /* Ensures it spans properly */
+		left: 50%;
+		transform: translateX(-50%);
 	}
 
 	.Section {
@@ -356,6 +366,7 @@ canvas {
 		align-items: flex-start; /* Center align items */
 		gap: 10px;
 	}
+	
 	.Content{
 		width: 80%;
 	}
@@ -366,23 +377,32 @@ canvas {
 	.ProgressChartSection {
 		text-align: center;
 		width: 100%;
-		max-width: 800px;
+		max-width: 500px;
 		margin-bottom: 30px;
-		margin-left: 0; /* Ensure it aligns to the left */
 		padding: 0 15px; /* Optional: Adds spacing */
+		margin-left: 10px;
 	}
 	.ProgressChartSection h3{
-		font-size: 10px;
-		padding-left: 85px;
+		font-size:10px;
+		font-weight: bold;
+		margin-bottom: 10px;
+		padding: 5px 0;
+		border-bottom: 1px solid #121212;
+		border-top: 1px solid #121212;
+		margin-left: 20px;
+		width: 85vw; /* Full screen width */
+		position: relative; /* Ensures it spans properly */
+		left: 50%;
+		transform: translateX(-50%);
 	}
 	
 	.PerformanceOverview {
 		display: flex;
-		justify-content: center;
+		justify-content: flex-start;
 		flex-direction: column;
 		text-align: center;
 		margin-top: 20px;
-		padding-left: 85px;
+		padding-left: 30px;
 	}
 	.PerformanceOverview h2{
 		font-size: 12px;
@@ -449,7 +469,7 @@ canvas {
 		max-width: 500px;
 		margin-bottom: 30px;
 		padding: 0 15px; /* Optional: Adds spacing */
-		margin-left: 60px;
+		margin-left: 10px;
 	}
 	.StudyHabitsSection h3 {
 		font-size:10px;
@@ -464,7 +484,16 @@ canvas {
 		transform: translateX(-50%); /* Centers the border */
 	}
 	.ProgressChartSection h3 {
-		margin-right: 120px;
+		font-size:10px;
+		font-weight: bold;
+		margin-bottom: 10px;
+		padding: 5px 0;
+		border-bottom: 1px solid #121212;
+		border-top: 1px solid #121212;
+		margin-left: 20px;
+		width: 70vw; /* Full screen width */
+		position: relative; /* Ensures it spans properly */
+		transform: translateX(-50%);
 	}
 
 	.Section {
@@ -485,14 +514,13 @@ canvas {
 		font-weight: bold;
 	}
 	.PerformanceOverview {
-		text-align: center;
-		
-		margin-left: 30px;
+		display: flex;
+		justify-content: flex-start;
+		flex-direction: column;		
 		margin-top: 20px;
+		padding-left: 30;
 	}
-	.PerformanceOverview{
-		margin-top: -10px;
-	}
+
 	.PerformanceOverview h2{
 		font-size: 12px;
 		margin-right: 50px;
@@ -575,10 +603,7 @@ canvas {
 		left: 50%;
 		transform: translateX(-50%); /* Centers the border */
 	}
-	.ProgressChartSection h3 {
-		margin-right: 120px;
-	}
-
+	
 	.Section {
 		margin-top: -50px;
 	}
@@ -596,22 +621,14 @@ canvas {
 		font-size: 20px;
 		font-weight: bold;
 	}
+	
 	.PerformanceOverview {
+		display: flex;
+		justify-content: flex-start;
+		flex-direction: column;
 		text-align: center;
-		
-		margin-left: 30px;
 		margin-top: 20px;
-	}
-	.PerformanceOverview{
-		margin-top: -10px;
-	}
-	.PerformanceOverview h2{
-		font-size: 12px;
-		margin-right: 50px;
-	}
-	.PerformanceOverview p{
-		font-size: 12px;
-		margin-right: 50px;
+		padding-left: 40px;
 	}
 	.ProgressContainer{
 		display: flex;
@@ -624,7 +641,6 @@ canvas {
 	canvas {
 		width: 70% !important;
 		height: auto !important;
-		margin-right: 60px;
 		
 	}
 	
@@ -645,10 +661,7 @@ canvas {
 	}
 
 	
-	.StudyHabitsContainer,
-	h3 {
-		font-size: 16px;
-	}
+	
 	
 	.HabitsWrapper{
 		display: flex;
@@ -687,9 +700,7 @@ canvas {
 		left: 50%;
 		transform: translateX(-50%); /* Centers the border */
 	}
-	.ProgressChartSection h3 {
-		margin-right: 120px;
-	}
+	
 
 	.Section {
 		margin-top: -50px;
