@@ -75,7 +75,6 @@ const ModuleDashboard = () => {
 				<Student_Sidebar></Student_Sidebar>
 
 				<div className={Styles.Content}>
-					<div className={Styles.ModuleDashboard}>
 						<div className={Styles.Module_Container}>
 							<h1>Modules</h1>
 							<div className={Styles.Module_Grid}>
@@ -103,7 +102,6 @@ const ModuleDashboard = () => {
 									<p>No modules available</p>
 								)}
 							</div>
-						</div>
 					</div>
 				</div>
 			</div>

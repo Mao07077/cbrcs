@@ -43,12 +43,6 @@ body {
 	margin-left: 10px;
 	font-size: 1.2em;
 }
-.ModuleDashboard {
-	padding: 20px;
-	width: 100%;
-	display: flex;
-	justify-content: center;
-}
 
 .Module_Container {
 	background: white;
@@ -116,6 +110,111 @@ body {
 }
 
 @media (max-width: 590px) {
+	.Menu ul {
+		display: flex;
+		flex-direction: row;
+		height: 5px;
+		justify-content: center;
+		padding-bottom: 50px;
+		margin-top: 10px;
+	}
+	.Menu ul li {
+		display: flex;
+		flex-direction: row;
+		height: 5px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	.Menu img {
+		margin: 0 auto;
+		width: 20px;
+		height: 20px;
+	}
+	.Menu span {
+		font-size: 10px;
+	}
+
+	.HabitCard {
+		font-size: 12px;
+	}
+	.ModuleDashboard {
+		
+		display: flex;
+		justify-content: center;
+	}
+	.Module_Container{
+		width: 100%;
+	}
+	.Module_Container h1 {
+		text-align: center;
+		font-size: 1em;
+	}
+	.ModuleCard {
+		width: 100%;
+		font-size: 14px;
+	}
+	.ModuleCard h3{
+		font-size: 0.7em;
+	}
+	.ModuleImage{
+		width: 100%;
+		display: none; /* Hide the image in mobile view */
+	}
+	.ModuleProceedBtn {
+		background-color: #002ead;
+		color: white;
+		padding: 16px 0; /* Adjust padding for vertical stretch */
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		font-size: 14px;
+		text-align: center; /* Center the text */
+		display: flex; /* Ensure proper alignment */
+		align-items: center; /* Vertically center the text */
+		justify-content: center; /* Horizontally center the text */
+		margin: 0 auto; /* Center the button itself */
+		width: 100%; /* Stretch button horizontally */
+	}
+
+	.ModuleCard {
+		width: 90%; /* Reduce card width for better fit */
+		padding: 15px; /* Reduce padding */
+		font-size: 14px; /* Adjust font size for compact layout */
+		margin: 10px auto; /* Center the card with spacing */
+		height: auto; /* Allow height to adjust dynamically */
+		min-height: 150px; /* Set a minimum height for consistency */
+	}
+
+	.ModuleImage {
+		width: 100px; /* Reduce image width */
+		height: 80px; /* Reduce image height */
+		margin: 10px auto; /* Add spacing around the image */
+		display: none; /* Hide the image in mobile view */
+	}
+
+	.ModuleProceedBtn {
+		padding: 10px 20px; /* Adjust padding for smaller button */
+		font-size: 14px; /* Reduce font size */
+		width: auto; /* Ensure button width adjusts to content */
+		margin-top: 10px; /* Add spacing above the button */
+	}
+
+	.ModuleCard h1 {
+		font-size: 12px; /* Reduce font size for long titles */
+		word-wrap: break-word; /* Wrap long titles */
+	}
+	.Content {
+		width: 100%;
+		padding: 10px;
+		align-items: center;
+		display: flex;
+		font-size: 25px;
+		font-style: initial;
+		margin: 10px 10px;
+		font-size: 1.2em;
+	}
+}
+@media (max-width: 1000px) {
 	.Menu ul {
 		display: flex;
 		flex-direction: row;
