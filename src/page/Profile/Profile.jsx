@@ -177,9 +177,7 @@ const Profile = () => {
 						</div>
 
 						<div className={Styles.InfoCard}>
-							<label>
-								Name: {profile?.firstname} {profile?.lastname}
-							</label>
+							<label>Name: {profile?.firstname} {profile?.lastname}</label>
 							<label>Age: {profile?.age || 'N/A'}</label>
 							<label>Id Number: {profile?.id_number}</label>
 							<label>Program: {profile?.program}</label>
@@ -214,7 +212,9 @@ const Profile = () => {
 					{/* Daily Activity Bar Chart */}
 					<div className={Styles.chartSection}>
 						<h3>Daily Activity</h3>
+						<div className={Styles.Data}>
 						<DailyActivityBarChart dailyData={dailyData} />
+						</div>
 					</div>
 				</div>
 			</div>
