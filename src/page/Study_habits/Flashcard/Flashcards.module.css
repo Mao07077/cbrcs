@@ -2,7 +2,11 @@
 	width: 100svw;
 	height: 100svh;
 	min-height: 100svh;
-    background-color: #f0f8ff; /* Light blue background for the entire page */
+	background-color: #f0f8ff; /* Ensure consistent light blue background */
+	display: flex;
+	flex-direction: column; /* Stack header, content, and footer vertically */
+	justify-content: space-between; /* Ensure header and footer stay in place */
+	padding: 20px; /* Restore original padding */
 }
 
 .content_wrapper {
@@ -10,7 +14,6 @@
 	height: 100%;
 }
 
-/* Title styling */
 /* Title styling */
 .title {
 	font-size: 2.5rem;
@@ -38,37 +41,33 @@
 /* Flashcard container */
 .cardContainer {
 	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	height: 300px; /* Adjust height for balanced layout */
-	position: relative;
-	overflow: hidden; /* Hide overflowing cards */
-	margin: 0 auto; /* Center the container */
+	justify-content: center; /* Center horizontally */
+	align-items: center; /* Center vertically */
+	width: auto; /* Adjust to fit the card */
+	height: auto; /* Adjust to fit the card */
+	background: none; /* Remove background color */
+	box-shadow: none; /* Remove shadow */
+	margin: 0; /* Remove margin */
+	padding: 0; /* Remove padding */
 }
 
 /* Flashcard styling */
 .card {
 	width: 100%;
-	max-width: 250px; /* Limit the card width for balance */
-	height: 100%;
-	background: white;
+	max-width: 600px; /* Increase card width */
+	height: 400px; /* Increase card height */
+	background: none;
 	border-radius: 12px;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 	cursor: pointer;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	text-align: center;
-	font-size: 1.2rem;
+	font-size: 1.5rem; /* Increase font size for better readability */
 	font-weight: 600;
 	padding: 20px;
 	transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-	position: absolute; /* Position cards on top of each other */
-	top: 0;
-	left: 0;
-	transform: translateX(100%); /* Move inactive cards off-screen */
-	transform-style: preserve-3d; /* Enable 3D transform for flipping */
+	position: relative; /* Ensure proper stacking */
 }
 
 .card.active {
@@ -127,34 +126,58 @@
 	transform: rotateY(180deg); /* Back face is flipped */
 }
 
+/* Flashcard footer */
+.cardFooter {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 1rem;
+    color: #333;
+    background-color: #001f3f; /* Dark blue background */
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+}
+
 /* Navigation Buttons */
 .navContainer {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-	max-width: 250px; /* Match the card width */
-	margin: 20px auto 0;
+	max-width: 400px; /* Match the updated card width */
+	margin-top: 15px; /* Reduce spacing between the card and navigation arrows */
+	background-color: #001f3f; /* Blue background for the navigation */
+	padding: 5px; /* Reduce padding to bring footer closer */
+	border-radius: 12px;
+	position: relative; /* Ensure proper positioning */
+	margin: 0 auto; /* Center the navigation container */
+}
+
+.cardCounter {
+    font-size: 1rem;
+    font-weight: bold;
+    color: white; /* White text for counter */
+    margin: 0 10px; /* Add spacing between counter and buttons */
 }
 
 /* Styling for Next and Prev buttons */
 .navButton {
-	background: #0056b3;
-	color: white;
+	background: white; /* White background for arrows */
+	color: #001f3f; /* Blue arrow color */
 	border: none;
-	border-radius: 8px;
+	border-radius: 50%; /* Circular buttons */
 	cursor: pointer;
 	width: 40px;
-	height: 40px;
+	height: 35px; /* Make the button slightly shorter */
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 16px;
+	font-size: 1.2rem; /* Adjust arrow size */
 	transition: background 0.3s ease-in-out;
 }
 
 .navButton:hover {
-	background: #003d82;
+	background: #f0f8ff; /* Light blue on hover */
 }
 
 /* Ensure SVG icons are visible */
@@ -162,6 +185,14 @@
 	width: 100px;
 	height: 100px;
 	fill: black;
+}
+
+/* Instructions styling */
+.instructions {
+    font-size: 1rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 /* Mobile Responsiveness */

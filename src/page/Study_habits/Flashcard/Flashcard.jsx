@@ -53,6 +53,9 @@ const Flashcards = () => {
         <div className={styles.container}>
             <Header />
             <h2 className={styles.title}>FLASHCARD</h2>
+            <p className={styles.instructions}>
+                Click on the card to flip it. Use the arrows below to navigate between cards.
+            </p>
             <div className={styles.cardContainer}>
                 <div
                     className={`${styles.card} ${flipped ? styles.flipped : ''}`}
@@ -70,10 +73,13 @@ const Flashcards = () => {
             </div>
             <div className={styles.navContainer}>
                 <button className={styles.navButton} onClick={handlePrevious}>
-                    
+                    &#8592; {/* Left arrow */}
                 </button>
+                <p className={styles.cardCounter}>
+                    {currentIndex + 1} / {flashcards.length}
+                </p>
                 <button className={styles.navButton} onClick={handleNext}>
-                    
+                    &#8594; {/* Right arrow */}
                 </button>
             </div>
             <Footer />
