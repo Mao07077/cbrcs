@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'; 
 import { Pie } from 'react-chartjs-2'; 
 import './posttest.css'; 
-import logoIcon from '../../icon/logo.png'; 
+import Header from '../../Components/composables/Header';
 import { useParams } from 'react-router-dom'; 
 import { 
     Chart as ChartJS, 
@@ -232,16 +232,10 @@ const PostTest = () => {
     };
 
     return (
+        <div className="Main">
+            <Header/>
         <div className="posttest-container">
-            <header className="header">
-                <div className="header-content">
-                    <div className="header-logo">
-                        <img src={logoIcon} alt="logo" />
-                    </div>
-                </div>
-            </header>
-
-            <h1 className="posttest-title">{postTest.title}</h1>
+                <h1 className="posttest-title">{postTest.title}</h1>
             <p className="posttest-description">{postTest.description}</p>
 
             {!submitted && (
@@ -315,6 +309,7 @@ const PostTest = () => {
                     </div>
                 </form>
             )}
+        </div>
         </div>
     );
 };
