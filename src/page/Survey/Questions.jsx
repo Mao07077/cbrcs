@@ -240,7 +240,7 @@ const questions = [
                     "Breaking tasks into smaller steps",
                     "Using a planner or calendar",
                     "Setting reminders for study sessions",
-                    "I don’t use any specific strategy"
+                    
                 ]
             }
         ]
@@ -263,7 +263,7 @@ const questions = [
                     "By the number of topics or chapters to cover",
                     "By the amount of time to spend on each subject",
                     "By the grades or scores I want to achieve",
-                    "I don’t have a specific method"
+                    
                 ]
             },
             {
@@ -391,7 +391,7 @@ const questions = [
                     "Lack of confidence in my knowledge",
                     "Managing time to teach and study",
                     "Finding someone to teach",
-                    "I don’t face any challenges"
+                   
                 ]
             }
         ]
