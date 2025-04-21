@@ -121,6 +121,11 @@ const Survey = () => {
         </div>
       </div>
       <div className="custom-survey-container">
+        <p className="custom-instructions">
+          <strong>
+            Please answer the following questions honestly to help us understand your study habits and preferences.
+          </strong>
+        </p>
         <div className="custom-survey-box">
           {questions[page].questions.map((q, index) => (
             <div key={index} className="custom-question-block">

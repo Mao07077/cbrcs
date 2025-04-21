@@ -30,6 +30,17 @@
     z-index: 1000;
 }
 
+.custom-instructions {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    padding: 10px 15px;
+    font-size: 16px; /* Reduced font size */
+    font-weight: bold;
+    z-index: 10;
+    border-bottom: 1px solid #ddd; /* Optional: Adds a subtle separator */
+    text-align: center;
+}
 
 .custom-survey-logo img {
     width: 150px;
@@ -121,4 +132,59 @@
 .custom-button:disabled {
     background-color: #b0bec5;
     cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .custom-survey-container {
+        max-width: 100%; /* Full width for smaller screens */
+        min-width: unset; /* Remove minimum width constraint */
+        padding: 20px; /* Adjust padding for smaller screens */
+    }
+
+    .custom-survey-box {
+        width: 100%; /* Full width for the survey box */
+        margin-top: 20px; /* Adjust margin for smaller screens */
+        min-height: unset; /* Remove minimum height constraint */
+        max-height: 80vh; /* Adjust height for smaller screens */
+    }
+
+    .custom-question-block {
+        font-size: 18px; /* Slightly smaller font size */
+    }
+
+    .custom-choice {
+        font-size: 14px; /* Smaller font size for choices */
+        margin: 10px 0; /* Adjust spacing */
+    }
+
+    .custom-choice input {
+        width: 18px; /* Adjust checkbox size */
+        height: 18px;
+    }
+
+    .custom-navigation-buttons {
+        flex-direction: column; /* Stack buttons vertically */
+        align-items: center; /* Center align buttons */
+        gap: 10px; /* Adjust spacing between buttons */
+    }
+
+    .custom-button {
+        width: 100%; /* Full width buttons */
+        font-size: 14px; /* Smaller font size */
+        padding: 10px; /* Adjust padding */
+    }
+
+    .custom-instructions {
+        font-size: 14px; /* Smaller font size for instructions */
+        padding: 8px; /* Adjust padding */
+    }
+
+    .custom-head-content {
+        font-size: 16px; /* Adjust font size for header */
+        padding: 8px 10px; /* Adjust padding */
+    }
+
+    .custom-survey-logo img {
+        width: 120px; /* Adjust logo size */
+    }
 }
