@@ -50,8 +50,10 @@ const Flashcards = () => {
     if (flashcards.length === 0) return <p>Loading...</p>;
 
     return (
+        <div className={styles.flashcardPage}>
+        <Header />
         <div className={styles.container}>
-            <Header />
+            
             <h2 className={styles.title}>FLASHCARD</h2>
             <p className={styles.instructions}>
                 Click on the card to flip it. Use the arrows below to navigate between cards.
@@ -82,7 +84,9 @@ const Flashcards = () => {
                     &#8594; {/* Right arrow */}
                 </button>
             </div>
-            <Footer />
+            
+        </div>
+        <Footer />
         </div>
     );
 };

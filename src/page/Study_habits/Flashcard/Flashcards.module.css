@@ -26,7 +26,7 @@
 	width: 100%;
 	margin-left: 0; /* Aligns it to the left */
 	padding-left: 20px; /* Adds spacing from the left edge */
-	margin-top: 50px;
+	margin-top: 30px; /* Adds spacing from the top */
 	border-bottom: 1px solid #0c0c0c;
 	padding-bottom: 10px;
 }
