@@ -195,12 +195,34 @@ body {
 	.settings-section {
 		flex-direction: column;
 	}
-	.Sec_Box {
-		width: 70%;
+	.Sec_Container {
+		align-items: center;
 	}
-}
-@media (max-width: 600px) {
+	
 	.Sec_Box {
-		width: 100%;
+	display: flex;
+	flex-direction: column;
+	border: 2px solid #ddd;
+	border-radius: 12px;
+	overflow: hidden;
+	width: 40vw;
+	height: auto;
+	background: #ffffff;
+	transition: transform 0.3s, box-shadow 0.3s;
+	padding: 30px;
+	margin-top: 10px;
+	}
+	.Row label {
+		flex: 1;
+		color: #555;
+		font-weight: bold;
+	}
+	
+	.Row input {
+		flex: 2;
+		padding: 10px;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		font-size: 14px;
 	}
 }
