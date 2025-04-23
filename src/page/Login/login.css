@@ -8,6 +8,7 @@ body {
     height: 100vh; /* Full viewport height */
     background-color: #f0f0f0;
     box-sizing: border-box; /* Ensure padding is included in height calculations */
+    color: #222; /* Explicit text color for body */
 }
 
 .login-page {
@@ -46,6 +47,7 @@ body {
     font-size: 24px; /* Match the font size used in Sign In */
     font-weight: bold; /* If Sign In uses bold */
     margin-left: 0; /* Remove or adjust margin for better alignment */
+    color: #222; /* Ensure text inside login-box is dark */
 }
 
 .login-box form input, .login-box form .login-button {
@@ -91,7 +93,7 @@ body {
 }
 
 .links a {
-    color: white; /* Ensure text is visible */
+    color: white !important; /* Ensure links are white */
     text-decoration: underline;
     font-size: 16px;
     padding: 0; /* Ensure no extra padding is added */
