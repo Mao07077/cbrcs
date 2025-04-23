@@ -9,12 +9,7 @@ body {
     align-items: center; /* Center the content horizontally */
 }
 
-header, footer {
-    background-color: #007bff;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-}
+
 
 main {
     display: flex;
@@ -22,12 +17,7 @@ main {
     overflow: hidden;
 }
 
-.sidebar {
-    width: 200px;
-    background-color: #f4f4f4;
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
+
 
 .content {
     flex: 1;
