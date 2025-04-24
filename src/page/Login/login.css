@@ -1,27 +1,27 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0 20px; /* Add horizontal padding for smaller screens */
+    padding: 0 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Full viewport height */
+    height: 100vh;
     background-color: #f0f0f0;
-    box-sizing: border-box; /* Ensure padding is included in height calculations */
-    color: #222; /* Explicit text color for body */
+    box-sizing: border-box;
+    color: #222;
 }
 
 .login-page {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center vertically */
+    align-items: center;
     justify-content: center;
-    flex-grow: 1; /* Ensure it takes up available space */
+    flex-grow: 1;
     padding: 20px;
     width: 100%;
     max-width: 900px;
-    margin: auto; /* Center vertically and horizontally */
-    height: auto; /* Allow dynamic height */
+    margin: auto;
+    height: auto;
 }
 
 .login-content {
@@ -44,17 +44,22 @@ body {
 .login-box {
     width: 60%;
     text-align: center;
-    font-size: 24px; /* Match the font size used in Sign In */
-    font-weight: bold; /* If Sign In uses bold */
-    margin-left: 0; /* Remove or adjust margin for better alignment */
-    color: #222; /* Ensure text inside login-box is dark */
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 0;
+    color: #222;
+}
+
+.login-box,
+.login-box * {
+    color: #222 !important;
 }
 
 .login-box form input, .login-box form .login-button {
-    width: 100%; /* Ensure consistent width for inputs and button */
-    max-width: 400px; /* Set a maximum width for responsiveness */
+    width: 100%;
+    max-width: 400px;
     padding: 10px;
-    box-sizing: border-box; /* Include padding in width calculation */
+    box-sizing: border-box;
 }
 
 .login-box form input {
@@ -78,7 +83,7 @@ body {
 
 }
 .login-button {
-    font-size: 14px; /* Adjusted font size for better readability */
+    font-size: 14px;
 }
 
 .login-box form .login-button:hover {
@@ -86,18 +91,18 @@ body {
 }
 
 .links {
-    margin-top: 10px; /* You can reduce this value for closer spacing */
+    margin-top: 10px;
     display: flex;
-    justify-content: center; /* Center the links horizontally */
-    gap: 50px; /* Adjust spacing between the two links */
+    justify-content: center;
+    gap: 50px;
 }
 
 .links a {
-    color: white !important; /* Ensure links are white */
+    color: white !important;
     text-decoration: underline;
     font-size: 16px;
-    padding: 0; /* Ensure no extra padding is added */
-    margin: 2; /* Remove any unwanted margin */
+    padding: 0;
+    margin: 2;
 }
 
 .image-placeholder {
@@ -115,11 +120,11 @@ body {
 
 .login-logo {
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+    justify-content: center;
+    align-items: center;
     margin-bottom: 15px;
-    margin-left: 5px; /* Adjust this to move left or right */
-    width: 100%; /* Ensure full width for proper alignment */
+    margin-left: 5px;
+    width: 100%;
 }
 
 .cbrc {
@@ -138,16 +143,16 @@ body {
 }
 
 .large-screen-only {
-    display: block; /* Default display for large screens */
+    display: block;
 }
 
 @media (max-width: 768px) {
     .login-page {
-        flex-direction: column; /* Stack elements vertically */
-        align-items: center; /* Center align content */
-        padding: 15px; /* Adjust padding for smaller screens */
-        height: auto; /* Adjust height for smaller screens */
-        width: 100%; /* Limit width for smaller screens */
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+        height: auto;
+        width: 100%;
     }
 
     .login-content {
@@ -159,23 +164,23 @@ body {
     .login-box {
         width: 100%;
         margin-bottom: 20px;
-        max-width: 400px; /* Limit the width */
+        max-width: 400px;
     }
 
     .login-box form input, .login-box form button {
-        font-size: 14px; /* Adjust font size for smaller screens */
+        font-size: 14px;
     }
 
     .login-box form input, .login-box form .login-button {
-        max-width: 100%; /* Allow full width on smaller screens */
+        max-width: 100%;
     }
 
     .links {
-        gap: 10px; /* Reduce spacing between links */
+        gap: 10px;
     }
 
     .cbrc {
-        display: none; /* Hide the image container on smaller screens */
+        display: none;
     }
 }
 
