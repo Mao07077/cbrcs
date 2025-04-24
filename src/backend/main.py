@@ -105,6 +105,8 @@ schedule_collection = db["schedules"]
 notes_collection = db["notes"]
 Flashcards_collection = db["flashcards"]
 calls_collection = db["calls"]
+posts_collection = db["posts"]  # New collection for posts
+
 # Serve static files for images and videos
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
@@ -287,6 +289,23 @@ class Flashcard(BaseModel):
     answer: str
     unique: str
 # Helper functions
+class IntroData(BaseModel):
+    header: str
+    subHeader: str
+    introImage: Optional[str] = None
+
+class NewsData(BaseModel):
+    content: str
+    newsImage: Optional[str] = None
+
+class CourseImageData(BaseModel):
+    images: List[Optional[str]]
+
+class PostData(BaseModel):
+    intro: Optional[IntroData] = None
+    news: Optional[NewsData] = None
+    courseImages: Optional[CourseImageData] = None
+
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
@@ -1428,3 +1447,85 @@ async def get_flashcards(module_id: str):
     except Exception as e:
         logging.error(f"Error fetching flashcards: {e}")
         raise HTTPException(status_code=500, detail="Error fetching flashcards")
+    
+@app.post("/api/save_post")
+async def save_post(
+    intro_header: Optional[str] = Form(None),
+    intro_subHeader: Optional[str] = Form(None),
+    intro_image: Optional[UploadFile] = File(None),
+    news_content: Optional[str] = Form(None),
+    news_image: Optional[UploadFile] = File(None),
+    course_image_1: Optional[UploadFile] = File(None),
+    course_image_2: Optional[UploadFile] = File(None),
+    course_image_3: Optional[UploadFile] = File(None)
+):
+    try:
+        post_data = {}
+        
+        # Handle intro data
+        if intro_header and intro_subHeader:
+            intro_data = {"header": intro_header, "subHeader": intro_subHeader}
+            if intro_image:
+                intro_image_path = f"uploads/{intro_image.filename}"
+                os.makedirs("uploads", exist_ok=True)
+                with open(intro_image_path, "wb") as f:
+                    shutil.copyfileobj(intro_image.file, f)
+                intro_data["introImage"] = intro_image_path
+            post_data["intro"] = intro_data
+        
+        # Handle news data
+        if news_content:
+            news_data = {"content": news_content}
+            if news_image:
+                news_image_path = f"uploads/{news_image.filename}"
+                os.makedirs("uploads", exist_ok=True)
+                with open(news_image_path, "wb") as f:
+                    shutil.copyfileobj(news_image.file, f)
+                news_data["newsImage"] = news_image_path
+            post_data["news"] = news_data
+        
+        # Handle course images
+        course_images = []
+        for img in [course_image_1, course_image_2, course_image_3]:
+            if img:
+                img_path = f"uploads/{img.filename}"
+                os.makedirs("uploads", exist_ok=True)
+                with open(img_path, "wb") as f:
+                    shutil.copyfileobj(img.file, f)
+                course_images.append(img_path)
+            else:
+                course_images.append(None)
+        post_data["courseImages"] = {"images": course_images}
+        
+        # Update or insert post data
+        existing_post = posts_collection.find_one()
+        if existing_post:
+            posts_collection.update_one({}, {"$set": post_data})
+        else:
+            posts_collection.insert_one(post_data)
+        
+        return {"success": True, "message": "Post saved successfully!"}
+    except Exception as e:
+        logging.error(f"Error saving post: {e}")
+        raise HTTPException(status_code=500, detail="Failed to save post")
+
+@app.get("/api/get_post")
+async def get_post():
+    try:
+        post = posts_collection.find_one()
+        if not post:
+            return {
+                "success": True,
+                "data": {
+                    "intro": {"header": "", "subHeader": "", "introImage": None},
+                    "news": {"content": "", "newsImage": None},
+                    "courseImages": {"images": [None, None, None]}
+                }
+            }
+        post["_id"] = str(post["_id"])
+        return {"success": True, "data": post}
+    except Exception as e:
+        logging.error(f"Error fetching post: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch post")
+
+# Existing endpoints (unchanged)
