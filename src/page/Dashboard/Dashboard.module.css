@@ -1,4 +1,4 @@
-	* {
+* {
 	margin: 0;
 	padding: 0;
 }
@@ -57,11 +57,19 @@ body {
 /* Performance Overview */
 .PerformanceOverview {
 	display: flex;
-	justify-content: center	;
+	justify-content: center;
 	flex-direction: column;
 	width: 100%;
 	margin-top: 20px;
 	margin-bottom: 40px;
+	align-items: center; /* Ensure children are centered horizontally */
+}
+.PerformanceOverview h2 {
+	font-size: 22px;
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 8px;
+	width: 100%; /* Ensure full width for centering */
 }
 .PerformanceOverview p {
 	text-align: center;
@@ -77,8 +85,8 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: 250px;
-	height: 250px;
+	width: 100px;
+	height: 100px;
 	margin: auto;
 }
 
@@ -403,21 +411,26 @@ canvas {
 		text-align: center;
 		margin-top: 20px;
 		padding-left: 30px;
+		align-items: center; /* Center children horizontally on mobile */
 	}
-	.PerformanceOverview h2{
-		font-size: 12px;
-		margin-left: 20px;
+	.PerformanceOverview h2 {
+		font-size: 18px;
+		margin-bottom: 6px;
+		text-align: center;
+		width: 100%;
 	}
-	.PerformanceOverview p{
-		font-size: 12px;
-		margin-left: 20px;
+	.PerformanceOverview p {
+		font-size: 15px;
+		margin-right: 0;
+		margin-left: 0;
+		margin-bottom: 16px;
 	}
 	.ProgressContainer{
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		width: 80px;
-		height: 80px;
+		width: 50px;
+		height: 50px;
 	}
 	canvas {
 		width: 70% !important;
@@ -519,22 +532,26 @@ canvas {
 		flex-direction: column;		
 		margin-top: 20px;
 		padding-left: 30;
+		align-items: center; /* Center children horizontally on mobile */
 	}
-
-	.PerformanceOverview h2{
-		font-size: 12px;
-		margin-right: 50px;
+	.PerformanceOverview h2 {
+		font-size: 16px;
+		margin-bottom: 5px;
+		text-align: center;
+		width: 100%;
 	}
-	.PerformanceOverview p{
-		font-size: 12px;
-		margin-right: 50px;
+	.PerformanceOverview p {
+		font-size: 13px;
+		margin-right: 0;
+		margin-left: 0;
+		margin-bottom: 12px;
 	}
 	.ProgressContainer{
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		width: 80px;
-		height: 80px;
+		width: 20px;
+		height: 20px;
 		margin: auto;
 	}
 	canvas {
@@ -629,13 +646,26 @@ canvas {
 		text-align: center;
 		margin-top: 20px;
 		padding-left: 40px;
+		align-items: center; /* Center children horizontally on mobile */
+	}
+	.PerformanceOverview h2 {
+		font-size: 14px;
+		margin-bottom: 4px;
+		text-align: center;
+		width: 100%;
+	}
+	.PerformanceOverview p {
+		font-size: 12px;
+		margin-right: 0;
+		margin-left: 0;
+		margin-bottom: 10px;
 	}
 	.ProgressContainer{
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		width: 80px;
-		height: 80px;
+		width: 40px;
+		height: 40px;
 		margin: auto;
 	}
 	canvas {
@@ -660,7 +690,6 @@ canvas {
 		border: 0.5px solid #121212;
 	}
 
-	
 	
 	
 	.HabitsWrapper{

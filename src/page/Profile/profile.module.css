@@ -215,12 +215,20 @@ body {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	overflow-x: auto; /* Allow horizontal scroll if chart is wide */
 }
 .chartSection img {
 	max-width: 600px;
 	width: 60%;
 	height: auto;
 	margin: 0 auto;
+}
+/* Fix ChartJS Overflow for Profile Page */
+canvas {
+	max-width: 100% !important;
+	height: auto !important;
+	min-width: 320px !important; /* Ensure minimum readable width */
+	min-height: 200px !important; /* Ensure minimum readable height */
 }
 .topSection {
 	flex-direction: column;
@@ -257,6 +265,12 @@ body {
 		width: 100%;
 		margin: 0 auto;
 		box-sizing: border-box;
+		overflow-x: auto; /* Allow horizontal scroll if chart is wide */
+	}
+	canvas {
+		width: 100% !important;
+		min-width: 320px !important;
+		min-height: 200px !important;
 	}
 	.TopSection {
 		flex-direction: column;
@@ -316,5 +330,13 @@ body {
 		gap: 40px;
 		width: 100%;
 		margin: 0 auto;
+	}
+	.chartSection {
+		overflow-x: auto; /* Allow horizontal scroll if chart is wide */
+	}
+	canvas {
+		width: 100% !important;
+		min-width: 320px !important;
+		min-height: 200px !important;
 	}
 }
