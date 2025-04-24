@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './SendReport.css'; // Import your CSS file for styling
+import Header from '../../Components/composables/Header';
+import Footer from '../../Components/composables/FooterP';
 
 const SendReport = () => {
     const [title, setTitle] = useState('');
@@ -24,6 +26,9 @@ const SendReport = () => {
     };
 
     return (
+        <div className="Main">
+                <Header></Header>
+        <div className="MainCon">
         <div className="sr-send-report-container">
             <h1 className="sr-send-report-title">Submit a Report</h1>
             <form onSubmit={handleSubmit} className="sr-send-report-form">
@@ -65,6 +70,9 @@ const SendReport = () => {
                 </div>
                 <button type="submit" className="sr-submit-button">Send Report</button>
             </form>
+        </div>
+        </div>
+        <Footer></Footer>
         </div>
     );
 };
