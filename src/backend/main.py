@@ -110,6 +110,7 @@ posts_collection = db["posts"]  # New collection for posts
 # Serve static files for images and videos
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
+
 # Models for requests
 class SignupData(BaseModel):
     firstname: str
@@ -1462,6 +1463,13 @@ async def save_post(
     try:
         post_data = {}
         
+        # Log received files
+        logging.info(f"Received intro_image: {intro_image.filename if intro_image else None}")
+        logging.info(f"Received news_image: {news_image.filename if news_image else None}")
+        logging.info(f"Received course_image_1: {course_image_1.filename if course_image_1 else None}")
+        logging.info(f"Received course_image_2: {course_image_2.filename if course_image_2 else None}")
+        logging.info(f"Received course_image_3: {course_image_3.filename if course_image_3 else None}")
+
         # Handle intro data
         if intro_header and intro_subHeader:
             intro_data = {"header": intro_header, "subHeader": intro_subHeader}
@@ -1471,6 +1479,7 @@ async def save_post(
                 with open(intro_image_path, "wb") as f:
                     shutil.copyfileobj(intro_image.file, f)
                 intro_data["introImage"] = intro_image_path
+                logging.info(f"Saved intro image to: {intro_image_path}")
             post_data["intro"] = intro_data
         
         # Handle news data
@@ -1482,17 +1491,19 @@ async def save_post(
                 with open(news_image_path, "wb") as f:
                     shutil.copyfileobj(news_image.file, f)
                 news_data["newsImage"] = news_image_path
+                logging.info(f"Saved news image to: {news_image_path}")
             post_data["news"] = news_data
         
         # Handle course images
         course_images = []
-        for img in [course_image_1, course_image_2, course_image_3]:
+        for img, idx in [(course_image_1, 1), (course_image_2, 2), (course_image_3, 3)]:
             if img:
                 img_path = f"uploads/{img.filename}"
                 os.makedirs("uploads", exist_ok=True)
                 with open(img_path, "wb") as f:
                     shutil.copyfileobj(img.file, f)
                 course_images.append(img_path)
+                logging.info(f"Saved course image {idx} to: {img_path}")
             else:
                 course_images.append(None)
         post_data["courseImages"] = {"images": course_images}
@@ -1501,8 +1512,10 @@ async def save_post(
         existing_post = posts_collection.find_one()
         if existing_post:
             posts_collection.update_one({}, {"$set": post_data})
+            logging.info("Updated existing post in MongoDB")
         else:
             posts_collection.insert_one(post_data)
+            logging.info("Inserted new post in MongoDB")
         
         return {"success": True, "message": "Post saved successfully!"}
     except Exception as e:
@@ -1514,6 +1527,7 @@ async def get_post():
     try:
         post = posts_collection.find_one()
         if not post:
+            logging.info("No post found, returning default data")
             return {
                 "success": True,
                 "data": {
@@ -1523,9 +1537,8 @@ async def get_post():
                 }
             }
         post["_id"] = str(post["_id"])
+        logging.info(f"Fetched post: {post}")
         return {"success": True, "data": post}
     except Exception as e:
         logging.error(f"Error fetching post: {e}")
         raise HTTPException(status_code=500, detail="Failed to fetch post")
-
-# Existing endpoints (unchanged)

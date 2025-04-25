@@ -1,8 +1,11 @@
+// Landing.jsx
 import React, { useEffect, useState } from 'react';
 import Styles from './Landing.module.css';
 import Icon from '../../icon/actual.png';
 import image from '../../icon/carlbalita.jpg';
 import axios from 'axios';
+
+const BASE_URL = 'http://127.0.0.1:8000'; // Backend base URL
 
 const Landing = () => {
   const [introText, setIntroText] = useState({ header: '', subHeader: '' });
@@ -17,14 +20,21 @@ const Landing = () => {
       try {
         const response = await axios.get('http://127.0.0.1:8000/api/get_post');
         const post = response.data.data;
+        console.log('Fetched post data:', post); // Debug log
         setIntroText({
           header: post.intro?.header || '',
           subHeader: post.intro?.subHeader || '',
         });
-        setIntroImage(post.intro?.introImage || null);
+        setIntroImage(post.intro?.introImage ? `${BASE_URL}/${post.intro.introImage}` : null);
         setNews(post.news?.content || '');
-        setNewsImage(post.news?.newsImage || null);
-        setCourseImages(post.courseImages?.images || [null, null, null]);
+        setNewsImage(post.news?.newsImage ? `${BASE_URL}/${post.news.newsImage}` : null);
+        setCourseImages(
+          post.courseImages?.images?.map((img) => (img ? `${BASE_URL}/${img}` : null)) || [
+            null,
+            null,
+            null,
+          ]
+        );
       } catch (error) {
         console.error('Error fetching post:', error);
       }
@@ -61,7 +71,11 @@ const Landing = () => {
             </div>
           </div>
           <div className={Styles.Image_Container}>
-            <img src={introImage || image} alt="carlbalita" />
+            <img
+              src={introImage || image}
+              alt="carlbalita"
+              onError={() => console.error('Failed to load intro image:', introImage)}
+            />
           </div>
         </div>
 
@@ -93,6 +107,7 @@ const Landing = () => {
                   src={newsImage}
                   alt="News"
                   style={{ maxWidth: '100%', maxHeight: '100%' }}
+                  onError={() => console.error('Failed to load news image:', newsImage)}
                 />
               ) : (
                 <p style={{ color: '#888', textAlign: 'center' }}>
@@ -146,6 +161,7 @@ const Landing = () => {
                       src={image}
                       alt={`Course ${index + 1}`}
                       style={{ maxWidth: '100%', maxHeight: '100%' }}
+                      onError={() => console.error(`Failed to load course image ${index + 1}:`, image)}
                     />
                   ) : (
                     <p>Placeholder</p>

@@ -1,3 +1,4 @@
+// AdminPost.jsx
 import React, { useState } from 'react';
 import Styles from './AdminPost.module.css';
 import QuillStyles from './QuillStyles.module.css';
@@ -30,7 +31,8 @@ const AdminPost = () => {
   const handleSingleImageUpload = (e, setImage) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(file); // Store the File object for FormData
+      setImage(file);
+      console.log('Selected image:', file.name); // Debug log
     }
   };
 
@@ -40,6 +42,7 @@ const AdminPost = () => {
       setCourseImages((prev) => {
         const updated = [...prev];
         updated[index] = file;
+        console.log(`Selected course image ${index + 1}:`, file.name); // Debug log
         return updated;
       });
     }
@@ -57,13 +60,15 @@ const AdminPost = () => {
       formData.append('intro_subHeader', introText.subHeader);
       if (introImage) {
         formData.append('intro_image', introImage);
+        console.log('Intro image appended:', introImage.name);
       }
       const response = await axios.post('http://127.0.0.1:8000/api/save_post', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
+      console.log('Intro submit response:', response.data); // Debug log
       alert(response.data.message);
     } catch (error) {
-      console.error('Error saving intro:', error);
+      console.error('Error saving [Intro Submit]:', error);
       alert('Failed to save intro');
     }
   };
@@ -75,32 +80,36 @@ const AdminPost = () => {
       formData.append('news_content', newsContent);
       if (newsImage) {
         formData.append('news_image', newsImage);
+        console.log('News image appended:', newsImage.name);
       }
       const response = await axios.post('http://127.0.0.1:8000/api/save_post', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
+      console.log('News submit response:', response.data); // Debug log
       alert(response.data.message);
     } catch (error) {
-      console.error('Error posting news:', error);
+      console.error('Error [News Submit]:', error);
       alert('Failed to post news');
     }
   };
 
-  // Handle course images submission (optional, if you want a separate save)
+  // Handle course images submission
   const handleCourseImagesSubmit = async () => {
     try {
       const formData = new FormData();
       courseImages.forEach((img, index) => {
         if (img) {
           formData.append(`course_image_${index + 1}`, img);
+          console.log(`Course image ${index + 1} appended:`, img.name);
         }
       });
       const response = await axios.post('http://127.0.0.1:8000/api/save_post', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
+      console.log('Course images submit response:', response.data); // Debug log
       alert(response.data.message);
     } catch (error) {
-      console.error('Error saving course images:', error);
+      console.error('Error [Course Images Submit]:', error);
       alert('Failed to save course images');
     }
   };
@@ -125,6 +134,7 @@ const AdminPost = () => {
               <input
                 type="file"
                 id="introImageUpload"
+                accept="image/*"
                 onChange={(e) => handleSingleImageUpload(e, setIntroImage)}
               />
               {introImage && (
@@ -147,6 +157,7 @@ const AdminPost = () => {
             <input
               type="file"
               id="loginImageUpload"
+              accept="image/*"
               onChange={(e) => handleSingleImageUpload(e, setLoginImage)}
             />
             {loginImage && (
@@ -162,6 +173,7 @@ const AdminPost = () => {
             <input
               type="file"
               id="signupImageUpload"
+              accept="image/*"
               onChange={(e) => handleSingleImageUpload(e, setSignupImage)}
             />
             {signupImage && (
@@ -179,6 +191,7 @@ const AdminPost = () => {
               <input
                 type="file"
                 id="newsImageUpload"
+                accept="image/*"
                 onChange={(e) => handleSingleImageUpload(e, setNewsImage)}
               />
               {newsImage && (
@@ -238,6 +251,7 @@ const AdminPost = () => {
                     <input
                       type="file"
                       id={`courseImageUpload${index}`}
+                      accept="image/*"
                       onChange={(e) => handleCourseImageUpload(e, index)}
                     />
                     {image && (
