@@ -272,7 +272,7 @@ const AdminPost = () => {
               className={Styles.NewsSubmitButton}
               onClick={handleCourseImagesSubmit}
             >
-              Save Course Images
+              Save Images
             </button>
           </div>
         </div>
