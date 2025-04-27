@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './SendReport.css'; // Import your CSS file for styling
 import Header from '../../Components/composables/Header';
 import Footer from '../../Components/composables/FooterP';
-
+import Student_Sidebar from '../../Components/Student_Sidebar';
 const SendReport = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
@@ -28,6 +28,9 @@ const SendReport = () => {
     return (
         <div className="Main">
                 <Header></Header>
+    <div className="Content_Wrap">
+        <Student_Sidebar></Student_Sidebar>
+    
         <div className="MainCon">
         <div className="sr-send-report-container">
             <h1 className="sr-send-report-title">Submit a Report</h1>
@@ -72,6 +75,7 @@ const SendReport = () => {
             </form>
         </div>
         </div>
+    </div>
         <Footer></Footer>
         </div>
     );
