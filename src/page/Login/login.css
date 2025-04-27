@@ -84,6 +84,7 @@ body {
 }
 .login-button {
     font-size: 14px;
+    color: white !important;
 }
 
 .login-box form .login-button:hover {
