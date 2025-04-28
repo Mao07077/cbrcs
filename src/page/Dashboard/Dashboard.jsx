@@ -84,7 +84,7 @@ const Dashboard = ({ isModal = false }) => {
 							{
 								label: 'Total Questions',
 								data: post_tests.map((test) => test.total_questions || 0),
-								backgroundColor: 'rgba(153, 102, 255, 0.6)',
+								backgroundColor: 'rgba(86, 14, 230, 0.6)',
 							},
 						],
 					});
@@ -115,6 +115,12 @@ const Dashboard = ({ isModal = false }) => {
 			},
 		],
 	};
+	const updatedBarChartData = {
+		labels: barChartData.labels,
+		datasets: barChartData.datasets.map((dataset) => ({
+			...dataset,
+		})),
+	};
 
 	return (
 		<div className={Styles.MainContainer}>
@@ -128,10 +134,7 @@ const Dashboard = ({ isModal = false }) => {
 					<div className={Styles.PerformanceOverview}>
 						<h2>Performance Overview</h2>
 						<p>Track your progress </p>
-						<div
-							className={Styles.ProgressContainer}
-							style={{ width: '200px', height: '200px' }}
-						>
+							<div className={Styles.ProgressContainer}>
 							<Doughnut
 								data={progressData}
 								options={{
@@ -151,8 +154,18 @@ const Dashboard = ({ isModal = false }) => {
 												ctx,
 												chartArea: { left, right, top, bottom },
 											} = chart;
+
+											// Save the current context state
 											ctx.save();
-											ctx.font = 'bold 24px Arial'; // Adjust font size
+
+											// Adjust font size dynamically based on chart size and screen width
+											const isMobile = window.innerWidth <= 768; // Define mobile view
+											const fontSize = isMobile
+												? Math.min((right - left) / 7, 16) // Smaller font size for mobile
+												: Math.min((right - left) / 5, 24); // Default font size for larger screens
+
+											// Set font and text properties
+											ctx.font = `bold ${fontSize}px Arial`;
 											ctx.fillStyle = '#000'; // Set text color
 											ctx.textAlign = 'center';
 											ctx.textBaseline = 'middle';
@@ -163,6 +176,8 @@ const Dashboard = ({ isModal = false }) => {
 
 											// Draw the percentage in the middle of the doughnut
 											ctx.fillText(`${progress}%`, centerX, centerY);
+
+											// Restore the context state
 											ctx.restore();
 										},
 									},
@@ -197,10 +212,21 @@ const Dashboard = ({ isModal = false }) => {
 						<section className={Styles.ProgressChartSection}>
 							<h3>Post-Test Scores</h3>
 							<Bar
-								data={barChartData}
+								data={updatedBarChartData}
 								options={{
 									responsive: true,
-									scales: { y: { beginAtZero: true } },
+									scales: {
+										y: { beginAtZero: true },
+										x: {
+											stacked: false,
+											grouped: true,
+											categoryPercentage: 0.7, // Slightly increase category width allocation
+											barPercentage: 0.3, // Significantly decrease bar width percentage for thinner bars
+										},
+									},
+									plugins: {
+										legend: { display: true },
+									},
 								}}
 							/>
 						</section>

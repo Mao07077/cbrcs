@@ -85,17 +85,25 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: 100px;
-	height: 100px;
+	justify-content: center;
+	width: 100%;
+	max-width: 260px; /* Increased size */
+	min-width: 90px; /* Increased minimum size */
+	aspect-ratio: 1 / 1;
 	margin: auto;
+	position: relative;
+	flex-shrink: 0;
 }
 
-.ProgressContainer p {
-	font-size: 18px;
-	font-weight: bold;
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
+/* Ensure the donut chart canvas scales properly */
+.ProgressContainer canvas {
+	width: 100% !important;
+	height: 100% !important;
+	max-width: 100% !important;
+	max-height: 100% !important;
+	min-width: 90px !important; /* Match the container's minimum size */
+	min-height: 90px !important;
+	display: block;
 }
 
 /* Strength & Weakness */
@@ -248,6 +256,8 @@ canvas {
 	justify-content: center;
 	align-items: center;
 }
+
+/* Responsive adjustments */
 @media (max-width: 1000px) {
 	.Title {
 		flex-direction: column; /* Stack items vertically */
@@ -276,13 +286,9 @@ canvas {
 		font-size: 12px;
 		margin-right: 50px;
 	}
-	.ProgressContainer{
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		width: 80px;
-		height: 80px;
-		margin: auto;
+	.ProgressContainer {
+		max-width: 200px; /* Slightly larger for medium screens */
+		min-width: 80px;
 	}
 	canvas {
 		width: 70% !important;
@@ -368,6 +374,7 @@ canvas {
 		margin-top: -50px;
 	}
 }
+
 @media (max-width: 768px) {
 	.Title {
 		flex-direction: column; /* Stack items vertically */
@@ -412,6 +419,7 @@ canvas {
 		margin-top: 20px;
 		padding-left: 30px;
 		align-items: center; /* Center children horizontally on mobile */
+		margin-left: 10px; /* Add left margin for better alignment */
 	}
 	.PerformanceOverview h2 {
 		font-size: 18px;
@@ -425,12 +433,9 @@ canvas {
 		margin-left: 0;
 		margin-bottom: 16px;
 	}
-	.ProgressContainer{
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		width: 50px;
-		height: 50px;
+	.ProgressContainer {
+		max-width: 160px; /* Slightly larger for smaller screens */
+		min-width: 70px;
 	}
 	canvas {
 		width: 70% !important;
@@ -513,6 +518,7 @@ canvas {
 		margin-top: -50px;
 	}
 }
+
 @media (max-width: 425px) {
 	.Title {
 		flex-direction: column; /* Stack items vertically */
@@ -533,6 +539,7 @@ canvas {
 		margin-top: 20px;
 		padding-left: 30;
 		align-items: center; /* Center children horizontally on mobile */
+		margin-left: 15px; /* Increase left margin for smaller screens */
 	}
 	.PerformanceOverview h2 {
 		font-size: 16px;
@@ -546,13 +553,9 @@ canvas {
 		margin-left: 0;
 		margin-bottom: 12px;
 	}
-	.ProgressContainer{
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		width: 20px;
-		height: 20px;
-		margin: auto;
+	.ProgressContainer {
+		max-width: 120px; /* Slightly larger for very small screens */
+		min-width: 60px;
 	}
 	canvas {
 		width: 70% !important;
@@ -625,6 +628,7 @@ canvas {
 		margin-top: -50px;
 	}
 }
+
 @media (max-width: 375px) {
 	.Title {
 		flex-direction: column; /* Stack items vertically */
@@ -660,13 +664,9 @@ canvas {
 		margin-left: 0;
 		margin-bottom: 10px;
 	}
-	.ProgressContainer{
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		width: 40px;
-		height: 40px;
-		margin: auto;
+	.ProgressContainer {
+		max-width: 100px; /* Slightly larger for the smallest screens */
+		min-width: 60px;
 	}
 	canvas {
 		width: 70% !important;
