@@ -25,15 +25,16 @@ from bson import ObjectId
 from bson.errors import InvalidId
 from typing import Any
 import ollama
-import certifi  # Import certifi to enable SSL
+import certifi
 from fastapi import APIRouter
 from typing import List
 from pydantic import BaseModel
 from apscheduler.schedulers.background import BackgroundScheduler
 from fastapi import BackgroundTasks
-import json  # Import json if not already imported
+import json
 from fastapi import WebSocket, WebSocketDisconnect 
-import uuid # Make sure WebSocket and WebSocketDisconnect are imported
+import uuid
+
 # Load environment variables
 load_dotenv()
 
@@ -42,7 +43,7 @@ MONGO_URI = os.getenv("MONGO_URI")
 DATABASE_NAME = os.getenv("DATABASE_NAME")
 COLLECTION_NAME = os.getenv("COLLECTION_NAME")
 EMAIL_HOST = os.getenv("EMAIL_HOST")
-EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))  # Default to 587 if not provided
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
@@ -51,7 +52,6 @@ if not MONGO_URI or not DATABASE_NAME or not COLLECTION_NAME:
     logging.error("Missing necessary MongoDB environment variables: MONGO_URI, DATABASE_NAME, or COLLECTION_NAME.")
 if not EMAIL_HOST or not EMAIL_PORT or not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
     logging.error("Missing necessary email environment variables: EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, or EMAIL_HOST_PASSWORD.")
-
 
 habit_to_page = {
     "Study with Friends": "learn-together",
@@ -70,7 +70,7 @@ logging.basicConfig(level=logging.INFO)
 
 app = FastAPI()
 router = APIRouter()
-
+router = APIRouter(prefix="/api")
 
 origins = [
     "https:olep.vercel.app",  
@@ -78,16 +78,16 @@ origins = [
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # or specify specific origins
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],  # or specify methods like ["GET", "POST"]
-    allow_headers=["*"],  # or specify headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # MongoDB setup with SSL enabled
 try:
-    client = MongoClient(MONGO_URI, tls=True, tlsCAFile=certifi.where())  # Enable SSL
-    client.admin.command('ping')  # Test the connection
+    client = MongoClient(MONGO_URI, tls=True, tlsCAFile=certifi.where())
+    client.admin.command('ping')
     logging.info("MongoDB connection successful")
 except Exception as e:
     logging.error(f"Failed to connect to MongoDB: {e}")
@@ -96,20 +96,23 @@ except Exception as e:
 db = client[DATABASE_NAME]
 modules_collection = db["modules"]
 post_test_collection = db.get_collection("post_tests")
+pre_test_collection = db["pre_tests"]
 collection = db[COLLECTION_NAME]
 scores_collection = db["scores"]
 users_collection = db[COLLECTION_NAME]
 request_collection = db["requests"]
-messages_collection = db["messages"]  # Added 'messages' collection
+messages_collection = db["messages"]
 schedule_collection = db["schedules"]
 notes_collection = db["notes"]
 Flashcards_collection = db["flashcards"]
 calls_collection = db["calls"]
-posts_collection = db["posts"]  # New collection for posts
+posts_collection = db["posts"]
 
+calls_collection.create_index("call_id")
 # Serve static files for images and videos
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
-
+participant_states: Dict[str, Dict] = {}
+students: Dict[str, Dict] = {}
 
 # Models for requests
 class SignupData(BaseModel):
@@ -135,7 +138,6 @@ class FormatResponse(BaseModel):
 class LoginData(BaseModel):
     idNumber: str
     password: str
-
 
 class ForgotPasswordData(BaseModel):
     id_number: str
@@ -221,7 +223,6 @@ class AccountResponse(BaseModel):
 class AccountResponses(BaseModel):
     id: str
     profile: str
-     
     studentNo: str
     name: str
     role: str  
@@ -237,13 +238,19 @@ class QuestionWithAnswers(BaseModel):
     question: str
     options: List[str]
     correctAnswer: str
-    wrongAnswers: List[str]  # Add wrong answers
+    wrongAnswers: List[str]
 
 class PostTestResponse(BaseModel):
     post_test_id: str
     module_id: str
     title: str
-    questions: List[QuestionWithAnswers]  # Update to use the new model
+    questions: List[QuestionWithAnswers]  
+
+class PreTestResponse(BaseModel):
+    pre_test_id: str
+    module_id: str
+    title: str
+    questions: List[QuestionWithAnswers]
 
 class SurveyData(BaseModel):
     id_number: str
@@ -289,7 +296,7 @@ class Flashcard(BaseModel):
     content: str
     answer: str
     unique: str
-# Helper functions
+
 class IntroData(BaseModel):
     header: str
     subHeader: str
@@ -301,6 +308,13 @@ class NewsData(BaseModel):
 
 class CourseImageData(BaseModel):
     images: List[Optional[str]]
+
+class ChatMessage(BaseModel):
+    call_id: str
+    sender_id: str
+    sender_name: str
+    message: str
+    timestamp: datetime
 
 class PostData(BaseModel):
     intro: Optional[IntroData] = None
@@ -328,29 +342,56 @@ def send_email(to_email: str, subject: str, body: str):
     except Exception as e:
         logging.error(f"Failed to send email to {to_email}: {e}")
 
+def get_posttest_by_id(post_test_id: str):
+    try:
+        if not ObjectId.is_valid(post_test_id):
+            raise HTTPException(status_code=400, detail="Invalid post-test ID format")
+        post_test = post_test_collection.find_one({"_id": ObjectId(post_test_id)})
+        return post_test
+    except Exception as e:
+        logging.error(f"Error fetching post-test by ID {post_test_id}: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch post-test")
+
 def get_current_user(id_number: str):
-    """Simulates user authentication by ID."""
     user = users_collection.find_one({"id_number": id_number})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
-def create_prompt(input_text: str) -> str:
-    return (
-        f"You are a helpful assistant. Please paraphrase the following question REMOVE THE INTRODUCTION THATS SAYING ITS PARAPHRASE I KNOW IT IS,    REMOVE THE NUMBERING REMOVE THE NOTE I DONT NEED THAT:, DONT SAY THE WORD IN THE CORRECT ANSWER IN THE QUESTIONS\n"
-        f"{input_text}\n"
-        f"Keep the meaning intact and maintain proper grammar."
- 
+def create_prompt(input_text: str, correct_answer: str = None, wrong_answers: List[str] = None) -> str:
+    prompt = (
+        f"You are a helpful assistant. Please paraphrase the following question. "
+        f"REMOVE ANY INTRODUCTION THAT SAYS IT'S A PARAPHRASE, REMOVE NUMBERING, AND REMOVE ANY NOTES. "
+        f"DO NOT INCLUDE THE CORRECT ANSWER ('{correct_answer}') IN THE QUESTION TEXT. "
+        f"Keep the meaning intact and maintain proper grammar.\n\n"
+        f"Original question: {input_text}\n"
     )
-
-def get_wrong_answers(correct_answer: str) -> List[str]:
-     
+    if wrong_answers:
+        prompt += f"Wrong answers: {', '.join(wrong_answers)}\n"
+    return prompt
+def save_posttest(posttest: dict):
     try:
-        response = ollama.generate(model='llama3.2', prompt=prompt)
-        wrong_answers = response.response.strip().split("\n")
-        return wrong_answers[:3]  # Ensure only three wrong answers are returned
+        post_test_collection.update_one(
+            {"_id": ObjectId(posttest["_id"])},
+            {"$set": {"questions": posttest["questions"]}}
+        )
+    except Exception as e:
+        logging.error(f"Error saving post-test: {e}")
+        raise HTTPException(status_code=500, detail="Failed to save post-test")
+    
+def get_wrong_answers(correct_answer: str, question: str) -> List[str]:
+    try:
+        prompt = (
+            f"Generate three plausible but incorrect answers for the following question: {question}\n"
+            f"The correct answer is '{correct_answer}'. Ensure the wrong answers are distinct and do not include the correct answer.\n"
+            f"Return the answers as a list, one per line."
+        )
+        response = ollama.generate(model='llama3:latest', prompt=prompt)
+        wrong_answers = response['response'].strip().split("\n")
+        return wrong_answers[:3]
     except Exception as e:
         logging.error(f"Failed to generate wrong answers: {e}")
-        return ["Option A", "Option B", "Option C"]  # Default wrong answers
+        return ["Option A", "Option B", "Option C"]
+
 # User management endpoints
 def extract_text_from_ppt(file):
   presentation = Presentation(file)
@@ -369,10 +410,8 @@ def extract_text_from_pdf(file):
   return text
 
 def check_schedule_and_notify():
-    current_time = datetime.now().strftime('%I:%M %p')  # Get current time in 12-hour format
-    current_day = datetime.now().strftime('%a').upper()  # Get current day in 3-letter abbreviation
-
-    # Query for all schedules in the collection
+    current_time = datetime.now().strftime('%I:%M %p')
+    current_day = datetime.now().strftime('%a').upper()
     schedules = schedule_collection.find()
 
     for schedule in schedules:
@@ -380,17 +419,13 @@ def check_schedule_and_notify():
         times = schedule["times"]
         schedule_data = schedule["schedule"]
 
-        # Loop through each time and day to check if it matches the current time and day
         for i, time in enumerate(times):
-            if time == current_time:  # If times match
+            if time == current_time:
                 for j, day in enumerate(schedule_data[i]):
                     if day and day != '0' and daysOfWeek[j] == current_day:
-                        # Send email or notification
                         send_reminder_email(user_id, day, current_time, current_day)
 
-# Function to send the reminder email
 def send_reminder_email(user_id, task, current_time, current_day):
-    # Fetch user email from the database
     user = users_collection.find_one({"id_number": user_id})
     if not user:
         return
@@ -399,13 +434,11 @@ def send_reminder_email(user_id, task, current_time, current_day):
     subject = f"Reminder: Task '{task}' at {current_time} on {current_day}"
     body = f"Dear {user['firstname']} {user['lastname']},\n\nThis is a reminder for your task '{task}' scheduled for {current_time} on {current_day}.\n\nBest regards,\nYour Study Schedule App"
 
-    # Set up the email content
     message = MIMEText(body)
     message['From'] = EMAIL_HOST_USER
     message['To'] = user_email
     message['Subject'] = subject
 
-    # Send email using SMTP
     try:
         with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT) as server:
             server.starttls()
@@ -415,14 +448,14 @@ def send_reminder_email(user_id, task, current_time, current_day):
     except Exception as e:
         logging.error(f"Error sending email: {e}")
 
-# Set up the background scheduler
 scheduler = BackgroundScheduler()
-scheduler.add_job(check_schedule_and_notify, 'interval', minutes=1)  # Run every minute
+scheduler.add_job(check_schedule_and_notify, 'interval', minutes=1)
 scheduler.start()
 
 # WebSocket endpoint for video calls
 @app.websocket("/ws/{identifier}")
 async def websocket_endpoint(websocket: WebSocket, identifier: str):
+    logging.info(f"WebSocket connection attempt for identifier: {identifier}")
     await websocket.accept()
 
     # Authenticate user
@@ -431,11 +464,21 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
         id_number = auth_data.get("id_number")
         user = get_current_user(id_number)
     except Exception as e:
+        logging.error(f"Authentication failed: {e}")
         await websocket.close(code=1008, reason="Authentication failed")
         return
 
     student_id = f"user_{id_number}"
     call_id = identifier
+    student_name = f"{user['firstname']} {user['lastname']}"
+
+    # Initialize participant state
+    participant_states[student_id] = {
+        "muted": False,
+        "camera_off": False,
+        "name": student_name,
+        "call_id": call_id
+    }
 
     # Handle call creation/joining
     if identifier == "random":
@@ -443,23 +486,32 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
         calls_collection.insert_one({
             "call_id": call_id,
             "students": [student_id],
-            "created_at": datetime.utcnow()
+            "created_at": datetime.utcnow(),
+            "messages": []
         })
     else:
         call = calls_collection.find_one({"call_id": call_id})
         if not call:
-            await websocket.close(code=1008, reason="Invalid call ID")
-            return
-        calls_collection.update_one(
-            {"call_id": call_id},
-            {"$addToSet": {"students": student_id}}
-        )
+            # Create a new call if the call_id doesn't exist
+            logging.info(f"Call ID {call_id} not found. Creating a new call.")
+            calls_collection.insert_one({
+                "call_id": call_id,
+                "students": [student_id],
+                "created_at": datetime.utcnow(),
+                "messages": []
+            })
+        else:
+            # Add student to existing call if not already present
+            if student_id not in call.get("students", []):
+                calls_collection.update_one(
+                    {"call_id": call_id},
+                    {"$addToSet": {"students": student_id}}
+                )
 
-    # In-memory student data
-    students = {}
+    # Store student data
     student_data = {
         "id": student_id,
-        "name": f"{user['firstname']} {user['lastname']}",
+        "name": student_name,
         "ws": websocket,
         "call_id": call_id
     }
@@ -471,32 +523,59 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
         "studentId": student_id,
         "callId": call_id
     }))
+    logging.info(f"Sent student_id to {student_id}: {call_id}")
 
     # Broadcast active students
     async def broadcast_students():
         call = calls_collection.find_one({"call_id": call_id})
         if not call:
+            logging.error(f"Call not found for call_id: {call_id}")
             return
         active_students = []
         for sid in call.get("students", []):
             s_user = users_collection.find_one({"id_number": sid.replace("user_", "")})
             if s_user:
+                state = participant_states.get(sid, {"muted": False, "camera_off": False})
                 active_students.append({
                     "id": sid,
-                    "name": f"{s_user['firstname']} {s_user['lastname']}"
+                    "name": f"{s_user['firstname']} {s_user['lastname']}",
+                    "muted": state["muted"],
+                    "camera_off": state["camera_off"]
                 })
         message = json.dumps({"type": "active_students", "students": active_students})
+        logging.info(f"Broadcasting active students: {active_students}")
         for sid in call.get("students", []):
             student = students.get(sid)
             if student and student["ws"].client_state == 1:
-                await student["ws"].send_text(message)
+                try:
+                    await student["ws"].send_text(message)
+                except Exception as e:
+                    logging.error(f"Failed to send to {sid}: {e}")
 
     await broadcast_students()
+
+    # Send chat history
+    async def send_chat_history():
+        call = calls_collection.find_one({"call_id": call_id}, {"messages": 1})
+        if call and "messages" in call:
+            for msg in call["messages"]:
+                await websocket.send_text(json.dumps({
+                    "type": "chat",
+                    "message": {
+                        "sender_id": msg["sender_id"],
+                        "sender_name": msg["sender_name"],
+                        "message": msg["message"],
+                        "timestamp": msg["timestamp"].isoformat()
+                    }
+                }))
+
+    await send_chat_history()
 
     try:
         while True:
             data = await websocket.receive_text()
             message = json.loads(data)
+            logging.info(f"Received message: {message['type']} from {student_id}")
 
             if message["type"] == "offer":
                 target_student = students.get(message["target"])
@@ -529,6 +608,16 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
                         })
                     )
             elif message["type"] == "chat":
+                chat_message = {
+                    "sender_id": student_id,
+                    "sender_name": student_name,
+                    "message": message["message"],
+                    "timestamp": datetime.utcnow()
+                }
+                calls_collection.update_one(
+                    {"call_id": call_id},
+                    {"$push": {"messages": chat_message}}
+                )
                 call = calls_collection.find_one({"call_id": call_id})
                 for sid in call.get("students", []):
                     student = students.get(sid)
@@ -536,13 +625,32 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
                         await student["ws"].send_text(
                             json.dumps({
                                 "type": "chat",
-                                "message": f"{student_data['name']}: {message['message']}"
+                                "message": chat_message
                             })
                         )
+            elif message["type"] == "status_update":
+                participant_states[student_id].update({
+                    "muted": message.get("muted", participant_states[student_id]["muted"]),
+                    "camera_off": message.get("camera_off", participant_states[student_id]["camera_off"])
+                })
+                await broadcast_students()
+            elif message["type"] == "leave":
+                call = calls_collection.find_one({"call_id": call_id})
+                for sid in call.get("students", []):
+                    if sid != student_id:
+                        student = students.get(sid)
+                        if student and student["ws"].client_state == 1:
+                            await student["ws"].send_text(
+                                json.dumps({
+                                    "type": "notification",
+                                    "message": f"{student_name} has left the meeting"
+                                })
+                            )
+                break
     except WebSocketDisconnect:
-        pass
+        logging.info(f"WebSocket disconnected for {student_id}")
     except Exception as e:
-        logging.error(f"WebSocket error: {e}")
+        logging.error(f"WebSocket error for {student_id}: {e}")
     finally:
         calls_collection.update_one(
             {"call_id": call_id},
@@ -551,8 +659,22 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
         call = calls_collection.find_one({"call_id": call_id})
         if call and not call.get("students"):
             calls_collection.delete_one({"call_id": call_id})
+            logging.info(f"Deleted empty call: {call_id}")
         students.pop(student_id, None)
+        participant_states.pop(student_id, None)
+        call = calls_collection.find_one({"call_id": call_id})
+        if call:
+            for sid in call.get("students", []):
+                student = students.get(sid)
+                if student and student["ws"].client_state == 1:
+                    await student["ws"].send_text(
+                        json.dumps({
+                            "type": "notification",
+                            "message": f"{student_name} has left the meeting"
+                        })
+                    )
         await broadcast_students()
+
 
 @app.get("/")
 def root():
@@ -733,27 +855,6 @@ async def get_module(module_id: str):
         raise HTTPException(status_code=500, detail=f"Error fetching module: {e}")
 
 
-@app.post("/api/post-tests")
-async def create_post_test(post_test: PostTestRequest):
-    try:
-        # Ensure the module exists by checking its ID
-        module = modules_collection.find_one({"_id": ObjectId(post_test.module_id)})
-        if not module:
-            raise HTTPException(status_code=404, detail="Module not found.")
-        
-        # Prepare post-test data
-        post_test_data = post_test.dict()
-        post_test_collection.insert_one(post_test_data)
-        
-        return {"success": True, "message": "Post-test created successfully!"}
-    
-    except InvalidId:
-        raise HTTPException(status_code=400, detail="Invalid module ID.")
-    except Exception as e:
-        logging.error(f"Error creating post-test: {e}")
-        raise HTTPException(status_code=500, detail="Internal Server Error")
-
-
 @app.delete("/api/modules/{module_id}")
 async def delete_module(module_id: str):
     """
@@ -793,32 +894,62 @@ async def health_check():
 
 @app.post("/createposttest/{module_id}")
 async def create_posttest(module_id: str, post_test_request: PostTestRequest):
-    # Check if the module exists
+    logging.info(f"Creating post-test for module_id: {module_id}")
+    
+    # Validate module_id format
+    if not ObjectId.is_valid(module_id):
+        raise HTTPException(status_code=400, detail="Invalid module ID format")
+    
+    # Check if module exists
     module = modules_collection.find_one({"_id": ObjectId(module_id)})
     if not module:
-        raise HTTPException(status_code=404, detail="Module not found.")
-
+        raise HTTPException(status_code=404, detail="Module not found")
+    
+    # Check if post-test already exists for this module
+    if post_test_collection.find_one({"module_id": module_id}):
+        raise HTTPException(status_code=400, detail="Post-test already exists")
+    
+    # Ensure at least one question is provided
+    if not post_test_request.questions:
+        raise HTTPException(status_code=400, detail="At least one question required")
+    
     # Prepare post-test data
     post_test_data = {
         "module_id": module_id,
         "title": post_test_request.title,
         "questions": [
             {
-                "question": question.question,
-                "options": question.options,
-                "correctAnswer": question.correctAnswer
-            }
-            for question in post_test_request.questions
+                "question": q.question,
+                "options": q.options,
+                "correctAnswer": q.correctAnswer
+            } for q in post_test_request.questions
         ],
+        "created_at": datetime.utcnow()
     }
-
-    # Insert post-test data into the database
-    result = post_test_collection.insert_one(post_test_data)
-
+    
+    # Insert post-test into database
+    post_test_result = post_test_collection.insert_one(post_test_data)
+    post_test_id = str(post_test_result.inserted_id)
+    
+    # Prepare pre-test data (using same questions as post-test)
+    pre_test_data = {
+        "module_id": module_id,
+        "title": f"Pre-Test for {post_test_request.title}",
+        "questions": post_test_data["questions"],  # Use same questions
+        "created_at": datetime.utcnow()
+    }
+    
+    # Insert pre-test into database
+    pre_test_result = pre_test_collection.insert_one(pre_test_data)
+    pre_test_id = str(pre_test_result.inserted_id)
+    
+    logging.info(f"Post-test created with ID: {post_test_id}")
+    logging.info(f"Pre-test created with ID: {pre_test_id}")
+    
     return {
         "success": True,
-        "message": "Post-test created successfully!",
-        "post_test_id": str(result.inserted_id)  # Return the inserted post-test's ID
+        "post_test_id": post_test_id,
+        "pre_test_id": pre_test_id
     }
 @app.get("/api/post-test/{module_id}", response_model=PostTestResponse)
 async def get_post_test(module_id: str):
@@ -831,7 +962,7 @@ async def get_post_test(module_id: str):
 
     questions_with_answers = []
     for question in post_test['questions']:
-        wrong_answers = get_wrong_answers(question['correctAnswer'])
+        wrong_answers = [opt for opt in question['options'] if opt != question['correctAnswer']]
         questions_with_answers.append(QuestionWithAnswers(
             question=question['question'],
             options=question['options'],
@@ -847,9 +978,7 @@ async def get_post_test(module_id: str):
         title=post_test['title'],
         questions=questions_with_answers
     )
-
-# Submit Post-Test
-@router.post("/api/post-test/submit/{module_id}")
+@app.post("/api/post-test/submit/{module_id}")
 async def submit_post_test(module_id: str, answers: PostTestSubmission):
     logging.info(f"Received submission for module_id: {module_id} with answers: {answers.answers}")
 
@@ -904,6 +1033,7 @@ async def submit_post_test(module_id: str, answers: PostTestSubmission):
         "incorrect": incorrect_count,
         "total_questions": len(post_test["questions"])
     }
+
 @router.get("/api/post-test/results/{user_id}")
 async def get_post_test_results(user_id: str):
     """
@@ -1076,33 +1206,6 @@ async def decline_request(request_id: str):
     request_collection.delete_one({"_id": ObjectId(request_id)})
     return {"success": True, "detail": "Request declined"}
 
-@app.get("/api/accounts", response_model=List[AccountResponse])
-async def get_accounts(
-    search_query: str = Query("", alias="searchQuery"),
-    role_filter: str = Query("", alias="roleFilter"),
-):
-    """Fetch accounts from the userinfo collection with optional search and filtering."""
-    query = {}
-    if search_query:
-        query["$or"] = [
-            {"id_number": {"$regex": search_query, "$options": "i"}},
-            {"firstname": {"$regex": search_query, "$options": "i"}},
-            {"lastname": {"$regex": search_query, "$options": "i"}},
-        ]
-    if role_filter:
-        query["role"] = {"$regex": role_filter, "$options": "i"}
-
-    users = users_collection.find(query)
-    return [
-        {
-            "id": str(user["_id"]),
-            "profile": user.get("profile", "N/A"),
-            "accountNo": user["id_number"],
-            "name": f"{user['firstname']} {user['lastname']}",
-            "role": user["role"],
-        }
-        for user in users
-    ]
 
 @app.post("/api/accounts", response_model=AccountResponse)
 async def create_account(account: Account):
@@ -1117,23 +1220,28 @@ async def create_account(account: Account):
     result = users_collection.insert_one(new_user)
     return {**account.dict(), "id": str(result.inserted_id)}
 
-@app.get("/api/accounts", response_model=list[Account])
+@app.get("/api/accounts")
 async def get_accounts():
     try:
+        users = users_collection.find()
         accounts = []
-        for user in users_collection.find():
-            account = {
-                "id": str(user["_id"]),
-                "profile": user.get("profile", ""),
-                "accountNo": user.get("id_number", ""),  # Assuming id_number is the account number
-                "name": f"{user.get('firstname', '')} {user.get('lastname', '')}",
-                "role": user.get("role", ""),
-            }
-            accounts.append(account)
-        return accounts
+        for user in users:
+            # Safely access id_number with a fallback
+            id_number = user.get("id_number", "Unknown")
+            if id_number == "Unknown":
+                logging.warning(f"User document missing id_number: {user}")
+                continue  # Skip users without id_number
+            accounts.append({
+                "accountNo": id_number,
+                "name": f"{user.get('firstname', '')} {user.get('lastname', '')}".strip(),
+                "email": user.get("email", ""),
+                "role": user.get("role", "student"),
+                # Add other fields as needed
+            })
+        return {"accounts": accounts}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching accounts: {e}")
-
+        logging.error(f"Error fetching accounts: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
 # Route to delete an account
 @app.delete("/api/accounts/{account_id}")
 async def delete_account(account_id: str):
@@ -1169,7 +1277,7 @@ async def get_students():
 async def paraphrase(request: ParaphraseRequest):
     try:
         prompt = create_prompt(request.input)
-        response = ollama.generate(model='llama3.2', prompt=prompt)
+        response = ollama.generate(model='llama3:latest', prompt=prompt)
         return {"paraphrased": response.response.strip()}
     except Exception as e:
         logging.error(f"Paraphrase error: {e}")
@@ -1542,3 +1650,100 @@ async def get_post():
     except Exception as e:
         logging.error(f"Error fetching post: {e}")
         raise HTTPException(status_code=500, detail="Failed to fetch post")
+
+@app.get("/api/pre-test/{module_id}", response_model=PreTestResponse)
+async def get_pre_test(module_id: str):
+    logging.info(f"Fetching pre-test for module_id: {module_id}")
+    
+    pre_test = pre_test_collection.find_one({"module_id": module_id})
+    if not pre_test:
+        logging.error(f"Pre-test not found for module_id: {module_id}")
+        raise HTTPException(status_code=404, detail="Pre-test not found")
+
+    questions_with_answers = []
+    for question in pre_test['questions']:
+        wrong_answers = [opt for opt in question['options'] if opt != question['correctAnswer']]
+        questions_with_answers.append(QuestionWithAnswers(
+            question=question['question'],
+            options=question['options'],
+            correctAnswer=question['correctAnswer'],
+            wrongAnswers=wrong_answers
+        ))
+
+    logging.info(f"Successfully fetched pre-test: {pre_test['title']}")
+    
+    return PreTestResponse(
+        pre_test_id=str(pre_test['_id']),
+        module_id=pre_test['module_id'],
+        title=pre_test['title'],
+        questions=questions_with_answers
+    )
+
+@app.post("/api/pre-test/submit/{module_id}")
+async def submit_pre_test(module_id: str, answers: PostTestSubmission):
+    logging.info(f"Submitting pre-test for module_id: {module_id}, user_id: {answers.user_id}, answers: {answers.answers}")
+    
+    # Validate module_id format
+    if not ObjectId.is_valid(module_id):
+        logging.error(f"Invalid module_id format: {module_id}")
+        raise HTTPException(status_code=400, detail="Invalid module ID format")
+    
+    # Check module existence (module_id as ObjectId)
+    module = modules_collection.find_one({"_id": ObjectId(module_id)})
+    if not module:
+        logging.error(f"Module not found for module_id: {module_id}")
+        raise HTTPException(status_code=404, detail="Module not found")
+    
+    # Check pre-test existence (module_id as string)
+    pre_test = pre_test_collection.find_one({"module_id": module_id})
+    if not pre_test:
+        available_tests = list(pre_test_collection.find({}, {"module_id": 1, "title": 1}))
+        logging.error(f"Pre-test not found for module_id: {module_id}. Available pre-tests: {available_tests}")
+        raise HTTPException(status_code=404, detail="Pre-test not found for this module")
+    
+    logging.info(f"Pre-test found: {pre_test['title']} with {len(pre_test['questions'])} questions")
+    
+    # Validate answers
+    correct_answers = {str(index): question["correctAnswer"] for index, question in enumerate(pre_test["questions"])}
+    logging.info(f"Correct answers: {correct_answers}")
+    
+    correct_count = 0
+    incorrect_count = 0
+    for question, user_answer in answers.answers.items():
+        correct_answer = correct_answers.get(question)
+        if correct_answer and user_answer == correct_answer:
+            correct_count += 1
+        elif user_answer:
+            incorrect_count += 1
+    
+    # Save score
+    score_data = {
+        "module_id": module_id,
+        "user_id": answers.user_id,
+        "correct": correct_count,
+        "incorrect": incorrect_count,
+        "total_questions": len(pre_test["questions"]),
+        "user_answers": answers.answers,
+        "test_type": "pretest",
+        "submitted_at": datetime.utcnow()
+    }
+    result = scores_collection.insert_one(score_data)
+    logging.info(f"Score saved with ID: {result.inserted_id}")
+    
+    return {
+        "success": True,
+        "message": "Pre-test submitted successfully!",
+        "correct": correct_count,
+        "incorrect": incorrect_count,
+        "total_questions": len(pre_test["questions"])
+    }
+
+@app.get("/api/module-status/{module_id}/{user_id}")
+async def get_module_status(module_id: str, user_id: str):
+    pre_test_score = scores_collection.find_one({"module_id": module_id, "user_id": user_id, "test_type": "pretest"})
+    post_test_score = scores_collection.find_one({"module_id": module_id, "user_id": user_id, "test_type": {"$ne": "pretest"}})
+    
+    return {
+        "pre_test_completed": bool(pre_test_score),
+        "post_test_completed": bool(post_test_score)
+    }

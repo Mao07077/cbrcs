@@ -6,108 +6,131 @@ import Student_Sidebar from '../../Components/Student_Sidebar';
 import Footer from '../../Components/composables/FooterM';
 
 const ModuleDashboard = () => {
-	const handleNavigation = (route) => {
-		console.log(`Navigating to: ${route}`);
-		window.location.href = `/${route}`;
-	};
+  const [modules, setModules] = useState([]);
+  const [error, setError] = useState(null);
+  const [userProgram, setUserProgram] = useState(null);
+  const [moduleStatuses, setModuleStatuses] = useState({});
+  const navigate = useNavigate();
 
-	const [modules, setModules] = useState([]);
-	const [error, setError] = useState(null);
-	const [userProgram, setUserProgram] = useState(null);
-	const navigate = useNavigate();
-
-	// Dynamically set API_URL based on the environment
-	const API_URL = process.env.REACT_APP_API_URL || 
+  const API_URL = process.env.REACT_APP_API_URL || 
     (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const idNumber = localStorage.getItem('userIdNumber');
+        if (!idNumber) {
+          setError('User not logged in');
+          return;
+        }
 
-	useEffect(() => {
-		const fetchUserProfile = async () => {
-			try {
-				const idNumber = localStorage.getItem('userIdNumber');
-				if (!idNumber) {
-					setError('User not logged in');
-					return;
-				}
+        const response = await fetch(`${API_URL}/api/profile/${idNumber}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch user profile');
+        }
 
-				const response = await fetch(`${API_URL}/api/profile/${idNumber}`);
-				if (!response.ok) {
-					throw new Error('Failed to fetch user profile');
-				}
+        const data = await response.json();
+        setUserProgram(data.program || 'All Programs');
+      } catch (err) {
+        setError(err.message);
+      }
+    };
 
-				const data = await response.json();
-				setUserProgram(data.program || 'All Programs');
-			} catch (err) {
-				setError(err.message);
-			}
-		};
+    fetchUserProfile();
+  }, []);
 
-		fetchUserProfile();
-	}, []);
+  useEffect(() => {
+    if (!userProgram) return;
 
-	useEffect(() => {
-		if (!userProgram) return;
+    const fetchModulesAndStatuses = async () => {
+      try {
+        const idNumber = localStorage.getItem('userIdNumber');
+        const apiUrl =
+          userProgram === 'All Programs'
+            ? `${API_URL}/api/modules`
+            : `${API_URL}/api/modules?program=${encodeURIComponent(userProgram)}`;
 
-		const apiUrl =
-			userProgram === 'All Programs'
-				? `${API_URL}/api/modules`
-				: `${API_URL}/api/modules?program=${encodeURIComponent(userProgram)}`;
+        const modulesResponse = await fetch(apiUrl);
+        if (!modulesResponse.ok) {
+          throw new Error(`HTTP error! Status: ${modulesResponse.status}`);
+        }
+        const modulesData = await modulesResponse.json();
+        setModules(modulesData);
 
-		fetch(apiUrl)
-			.then((response) => {
-				if (!response.ok) {
-					throw new Error(`HTTP error! Status: ${response.status}`);
-				}
-				return response.json();
-			})
-			.then((data) => setModules(data))
-			.catch((error) => setError(error.message));
-	}, [userProgram]);
+        // Fetch statuses for all modules
+        const statuses = {};
+        for (const module of modulesData) {
+          const statusResponse = await fetch(`${API_URL}/api/module-status/${module._id}/${idNumber}`);
+          if (statusResponse.ok) {
+            statuses[module._id] = await statusResponse.json();
+          }
+        }
+        setModuleStatuses(statuses);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
 
-	const handleProceedClick = (moduleId) => {
-		navigate(`/module/${moduleId}`);
-	};
+    fetchModulesAndStatuses();
+  }, [userProgram]);
 
-	return (
-		<div className={Styles.MainContainer}>
-			<Header></Header>
-			<div className={Styles.Content_Wrapper}>
-				<Student_Sidebar></Student_Sidebar>
+  const handleProceedClick = (moduleId) => {
+    const status = moduleStatuses[moduleId] || { pre_test_completed: false, post_test_completed: false };
+    if (!status.pre_test_completed) {
+      navigate(`/pre-test/${moduleId}`);
+    } else {
+      navigate(`/module/${moduleId}`);
+    }
+  };
 
-				<div className={Styles.Content}>
-						<div className={Styles.Module_Container}>
-							<h1>Modules</h1>
-							<div className={Styles.Module_Grid}>
-								{error ? (
-									<p>{`Error: ${error}`}</p>
-								) : modules.length > 0 ? (
-									modules.map((module) => (
-										<div className={Styles.ModuleCard} key={module._id}>
-											<h3>{module.title}</h3>
-											<div className={Styles.ModuleImage}>
-												<img
-													src={`${API_URL}/${module.image_url}`}
-													alt="Module"
-												/>
-											</div>
-											<button
-												className={Styles.ModuleProceedBtn}
-												onClick={() => handleProceedClick(module._id)}
-											>
-												Proceed
-											</button>
-										</div>
-									))
-								) : (
-									<p>No modules available</p>
-								)}
-							</div>
-					</div>
-				</div>
-			</div>
-			<Footer></Footer>
-		</div>
-	);
+  return (
+    <div className={Styles.MainContainer}>
+      <Header />
+      <div className={Styles.Content_Wrapper}>
+        <Student_Sidebar />
+        <div className={Styles.Content}>
+          <div className={Styles.Module_Container}>
+            <h1>Modules</h1>
+            <div className={Styles.Module_Grid}>
+              {error ? (
+                <p>{`Error: ${error}`}</p>
+              ) : modules.length > 0 ? (
+                modules.map((module) => {
+                  const status = moduleStatuses[module._id] || { pre_test_completed: false, post_test_completed: false };
+                  let statusText = 'Take Pre-Test';
+                  if (status.pre_test_completed && !status.post_test_completed) {
+                    statusText = 'Continue Module';
+                  } else if (status.post_test_completed) {
+                    statusText = 'Completed';
+                  }
+
+                  return (
+                    <div className={`${Styles.ModuleCard} ${status.post_test_completed ? Styles.completed : ''}`} key={module._id}>
+                      <h3>{module.title}</h3>
+                      <div className={Styles.ModuleImage}>
+                        <img src={`${API_URL}/${module.image_url}`} alt="Module" />
+                      </div>
+                      <p>Status: {statusText}</p>
+                      <button
+                        className={Styles.ModuleProceedBtn}
+                        onClick={() => handleProceedClick(module._id)}
+                        disabled={status.post_test_completed}
+                      >
+                        {statusText}
+                      </button>
+                    </div>
+                  );
+                })
+              ) : (
+                <p>No modules available</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
 };
 
 export default ModuleDashboard;

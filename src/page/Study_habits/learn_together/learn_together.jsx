@@ -10,12 +10,13 @@ import OpencamIcon from '../../../icon/Opencam.png';
 import MicIcon from '../../../icon/Mic.png';
 import Footer from '../../../Components/composables/Footer';
 import Header from '../../../Components/composables/Header';
+import Notification from '../../../Components/composables/Notification';
 
 const WebRTCComponent = () => {
   const [students, setStudents] = useState([]);
   const [ws, setWs] = useState(null);
   const [peerConnections, setPeerConnections] = useState(new Map());
-  const [remoteStreams, setRemoteStreams] = useState(new Map()); // Map of studentId to their stream
+  const [remoteStreams, setRemoteStreams] = useState(new Map());
   const localVideoRef = useRef(null);
   const [message, setMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
@@ -30,41 +31,48 @@ const WebRTCComponent = () => {
   const [callIdDisplay, setCallIdDisplay] = useState(null);
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
-  const [speaking, setSpeaking] = useState(new Set()); // Track speaking participants
+  const [speaking, setSpeaking] = useState(new Set());
+  const [notifications, setNotifications] = useState([]);
+  const chatBoxRef = useRef(null);
 
   // Fetch user from localStorage on mount
   useEffect(() => {
     const userIdNumber = localStorage.getItem('userIdNumber');
-    if (userIdNumber) {
-      setUser({ id_number: userIdNumber });
-      console.log('User fetched from localStorage:', { id_number: userIdNumber });
+    const firstname = localStorage.getItem('firstname');
+    if (userIdNumber && firstname) {
+      setUser({ id_number: userIdNumber, firstname });
     } else {
       setError('No user detected. Please log in.');
-      console.log('No user found in localStorage');
       window.location.href = '/login';
     }
   }, []);
 
+  // Auto-scroll chat to bottom
+  useEffect(() => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  }, [chatMessages]);
+
+  // WebSocket connection
   useEffect(() => {
     if (!showCallOptions && !ws && user?.id_number) {
-      console.log('Connecting WebSocket for user:', user.id_number);
-      const socket = new WebSocket(`ws://localhost:8000/ws/${callId || 'random'}`);
+      // Determine the API_URL based on the environment
+      const API_URL = process.env.REACT_APP_API_URL || 'localhost:8000'; // Default to local if not set
+      const socket = new WebSocket(`ws://${API_URL}/ws/${callId || 'random'}`);
       setWs(socket);
 
       socket.onopen = () => {
-        console.log('WebSocket opened, sending id_number:', user.id_number);
         socket.send(JSON.stringify({ id_number: user.id_number }));
       };
 
       socket.onmessage = async (event) => {
         const data = JSON.parse(event.data);
-        console.log('WebSocket message:', data);
         if (data.type === 'student_id') {
           setStudentId(data.studentId);
           setCallIdDisplay(data.callId);
         } else if (data.type === 'active_students') {
           setStudents(data.students);
-          // Ensure peer connections for new participants
           data.students.forEach((student) => {
             if (student.id !== studentId && !peerConnections.has(student.id)) {
               startCall(student.id);
@@ -72,6 +80,11 @@ const WebRTCComponent = () => {
           });
         } else if (data.type === 'chat') {
           setChatMessages((prev) => [...prev, data.message]);
+        } else if (data.type === 'notification') {
+          setNotifications((prev) => [...prev, data.message]);
+          setTimeout(() => {
+            setNotifications((prev) => prev.slice(1));
+          }, 5000);
         } else if (data.type === 'offer') {
           await handleOffer(data.from, data.offer);
         } else if (data.type === 'answer') {
@@ -82,7 +95,6 @@ const WebRTCComponent = () => {
       };
 
       socket.onclose = (event) => {
-        console.log('WebSocket closed:', event.reason);
         setWs(null);
         setStream(null);
         if (localVideoRef.current) localVideoRef.current.srcObject = null;
@@ -96,14 +108,10 @@ const WebRTCComponent = () => {
       };
 
       socket.onerror = () => {
-        console.error('WebSocket error');
         setError('WebSocket connection failed. Please check your network and try again.');
       };
 
-      return () => {
-        console.log('Cleaning up WebSocket');
-        socket.close();
-      };
+      return () => socket.close();
     }
   }, [showCallOptions, callId, user]);
 
@@ -113,13 +121,12 @@ const WebRTCComponent = () => {
         video: true,
         audio: true,
       });
-      console.log('Media stream initialized:', mediaStream);
       if (localVideoRef.current) {
         localVideoRef.current.srcObject = mediaStream;
       }
       setStream(mediaStream);
 
-      // Detect speaking (audio levels)
+      // Detect speaking
       const audioContext = new AudioContext();
       const analyser = audioContext.createAnalyser();
       const source = audioContext.createMediaStreamSource(mediaStream);
@@ -131,7 +138,7 @@ const WebRTCComponent = () => {
       const detectSpeaking = () => {
         analyser.getByteFrequencyData(dataArray);
         const average = dataArray.reduce((sum, val) => sum + val, 0) / bufferLength;
-        if (average > 30) { // Adjust threshold as needed
+        if (average > 30) {
           setSpeaking((prev) => new Set(prev).add(studentId));
         } else {
           setSpeaking((prev) => {
@@ -146,14 +153,7 @@ const WebRTCComponent = () => {
 
       return mediaStream;
     } catch (error) {
-      console.error('Error accessing media devices:', error);
-      if (error.name === 'NotAllowedError') {
-        setError('Camera and microphone access denied. Please allow permissions in your browser settings.');
-      } else if (error.name === 'NotFoundError') {
-        setError('No camera or microphone found. Please connect a device and try again.');
-      } else {
-        setError(`Failed to access camera/microphone: ${error.message}`);
-      }
+      setError(`Failed to access camera/microphone: ${error.message}`);
       return null;
     }
   };
@@ -163,7 +163,6 @@ const WebRTCComponent = () => {
       setError('Please log in to create a call.');
       return;
     }
-    console.log('Creating new call');
     setCallId(null);
     setShowCallOptions(false);
     setError(null);
@@ -176,7 +175,6 @@ const WebRTCComponent = () => {
       return;
     }
     if (callIdInput.trim()) {
-      console.log('Joining call with ID:', callIdInput);
       setCallId(callIdInput);
       setShowCallOptions(false);
       setError(null);
@@ -195,26 +193,14 @@ const WebRTCComponent = () => {
       }
 
       const pc = new RTCPeerConnection({
-        iceServers: [
-          { urls: 'stun:stun.l.google.com:19302' },
-          // Add TURN server if available
-          // {
-          //   urls: 'turn:your-turn-server:3478',
-          //   username: 'username',
-          //   credential: 'password',
-          // },
-        ],
+        iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
       });
       setPeerConnections((prev) => new Map(prev).set(from, pc));
 
-      localStream.getTracks().forEach((track) => {
-        console.log('Adding track to PeerConnection:', track);
-        pc.addTrack(track, localStream);
-      });
+      localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
 
       pc.onicecandidate = (event) => {
         if (event.candidate) {
-          console.log('Sending ICE candidate to:', from);
           ws.send(
             JSON.stringify({
               type: 'ice-candidate',
@@ -226,7 +212,6 @@ const WebRTCComponent = () => {
       };
 
       pc.ontrack = (event) => {
-        console.log('Received remote stream from:', from, event.streams[0]);
         setRemoteStreams((prev) => new Map(prev).set(from, event.streams[0]));
       };
 
@@ -242,7 +227,6 @@ const WebRTCComponent = () => {
         })
       );
     } catch (error) {
-      console.error('Error handling offer:', error);
       setError('Failed to establish call. Please try again.');
     }
   };
@@ -250,34 +234,22 @@ const WebRTCComponent = () => {
   const handleAnswer = async (from, answer) => {
     const pc = peerConnections.get(from);
     if (pc) {
-      try {
-        await pc.setRemoteDescription(new RTCSessionDescription(answer));
-      } catch (error) {
-        console.error('Error handling answer:', error);
-      }
+      await pc.setRemoteDescription(new RTCSessionDescription(answer));
     }
   };
 
   const handleIceCandidate = async (from, candidate) => {
     const pc = peerConnections.get(from);
     if (pc) {
-      try {
-        await pc.addIceCandidate(new RTCIceCandidate(candidate));
-      } catch (error) {
-        console.error('Error handling ICE candidate:', error);
-      }
+      await pc.addIceCandidate(new RTCIceCandidate(candidate));
     }
   };
 
   const startCall = async (targetStudentId) => {
-    if (!targetStudentId) return;
-    if (peerConnections.has(targetStudentId)) return; // Avoid duplicate connections
+    if (!targetStudentId || peerConnections.has(targetStudentId)) return;
     try {
       const pc = new RTCPeerConnection({
-        iceServers: [
-          { urls: 'stun:stun.l.google.com:19302' },
-          // Add TURN server if available
-        ],
+        iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
       });
       setPeerConnections((prev) => new Map(prev).set(targetStudentId, pc));
 
@@ -287,14 +259,10 @@ const WebRTCComponent = () => {
         if (!localStream) return;
       }
 
-      localStream.getTracks().forEach((track) => {
-        console.log('Adding track to PeerConnection:', track);
-        pc.addTrack(track, localStream);
-      });
+      localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
 
       pc.onicecandidate = (event) => {
         if (event.candidate) {
-          console.log('Sending ICE candidate to:', targetStudentId);
           ws.send(
             JSON.stringify({
               type: 'ice-candidate',
@@ -306,7 +274,6 @@ const WebRTCComponent = () => {
       };
 
       pc.ontrack = (event) => {
-        console.log('Received remote stream from:', targetStudentId, event.streams[0]);
         setRemoteStreams((prev) => new Map(prev).set(targetStudentId, event.streams[0]));
       };
 
@@ -321,16 +288,13 @@ const WebRTCComponent = () => {
         })
       );
     } catch (error) {
-      console.error('Error starting call:', error);
       setError('Failed to start call. Please try again.');
     }
   };
 
   const shareScreen = async () => {
     try {
-      const screenStream = await navigator.mediaDevices.getDisplayMedia({
-        video: true,
-      });
+      const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
       if (localVideoRef.current) {
         localVideoRef.current.srcObject = screenStream;
       }
@@ -343,7 +307,6 @@ const WebRTCComponent = () => {
         }
       });
     } catch (error) {
-      console.error('Error sharing screen:', error);
       setError('Failed to share screen. Please try again.');
     }
   };
@@ -355,13 +318,14 @@ const WebRTCComponent = () => {
   };
 
   const endCall = () => {
+    ws.send(JSON.stringify({ type: 'leave' }));
     if (stream && stream.getTracks) {
       stream.getTracks().forEach((track) => track.stop());
-      setStream(null);
     }
     if (localVideoRef.current) {
       localVideoRef.current.srcObject = null;
     }
+    setStream(null);
     setRemoteStreams(new Map());
     peerConnections.forEach((pc) => pc.close());
     setPeerConnections(new Map());
@@ -372,7 +336,7 @@ const WebRTCComponent = () => {
 
   const leaveMeeting = () => {
     endCall();
-    window.location.href = '/'; // Redirect to homepage or desired route
+    window.location.href = '/';
   };
 
   const toggleMute = () => {
@@ -385,11 +349,9 @@ const WebRTCComponent = () => {
       setError('No audio tracks available.');
       return;
     }
-    audioTracks.forEach((track) => {
-      track.enabled = !track.enabled;
-      console.log('Audio track enabled:', track.enabled);
-    });
+    audioTracks.forEach((track) => (track.enabled = !track.enabled));
     setIsMuted(!isMuted);
+    ws.send(JSON.stringify({ type: 'status_update', muted: !isMuted, camera_off: isCameraOff }));
   };
 
   const toggleCamera = () => {
@@ -402,29 +364,27 @@ const WebRTCComponent = () => {
       setError('No video tracks available.');
       return;
     }
-    videoTracks.forEach((track) => {
-      track.enabled = !track.enabled;
-      console.log('Video track enabled:', track.enabled);
-    });
+    videoTracks.forEach((track) => (track.enabled = !track.enabled));
     setIsCameraOff(!isCameraOff);
+    ws.send(JSON.stringify({ type: 'status_update', muted: isMuted, camera_off: !isCameraOff }));
   };
 
   if (showCallOptions) {
     return (
       <div className={styles.container}>
-        <Header isStudyHabits={true}></Header>
+        <Header isStudyHabits={true} />
         <div className={styles.content_wrapper}>
           <div className={styles.callOptions}>
-            <h2 className={styles.callOptionsTitle}>Join or Create a Call</h2>
+            <h2 className={styles.callOptionsTitle}>Join or Create a Meeting</h2>
             {error && <p className={styles.error}>{error}</p>}
             <button className={`${styles.actionButton} ${styles.createCallButton}`} onClick={createCall}>
-              Create Call
+              New Meeting
             </button>
             <button
               className={`${styles.actionButton} ${styles.joinCallButton}`}
               onClick={() => setShowJoinInput(true)}
             >
-              Join Call
+              Join Meeting
             </button>
             {showJoinInput && (
               <div className={styles.joinInputContainer}>
@@ -432,7 +392,7 @@ const WebRTCComponent = () => {
                   type="text"
                   value={callIdInput}
                   onChange={(e) => setCallIdInput(e.target.value)}
-                  placeholder="Enter Call ID"
+                  placeholder="Enter Meeting ID"
                   className={styles.callIdInput}
                 />
                 <button className={`${styles.actionButton} ${styles.joinButton}`} onClick={joinCall}>
@@ -442,44 +402,60 @@ const WebRTCComponent = () => {
             )}
           </div>
         </div>
-        <Footer></Footer>
+        <Footer />
       </div>
     );
   }
 
   return (
     <div className={styles.container}>
-      <Header isStudyHabits={true}></Header>
+      <Header isStudyHabits={true} />
       <div className={styles.content_wrapper}>
         <div className={styles.content_wrapper_video}>
           <div className={styles.mainContent}>
             <div className={styles.logoContainer}>
-              <img src={Icon} alt="actual" className={styles.logo} />
+              <img src={Icon} alt="Logo" className={styles.logo} />
             </div>
             {callIdDisplay && (
               <div className={styles.callIdDisplay}>
-                <p>Call ID: {callIdDisplay}</p>
+                <p>Meeting ID: {callIdDisplay}</p>
+                <button
+                  className={styles.copyButton}
+                  onClick={() => navigator.clipboard.writeText(callIdDisplay)}
+                >
+                  Copy
+                </button>
               </div>
             )}
             {error && <p className={styles.error}>{error}</p>}
             <div className={styles.videoSection}>
               <div className={styles.videoContainer}>
+                {/* Local video */}
                 <div
                   className={`${styles.videoWrapper} ${
                     speaking.has(studentId) ? styles.speaking : ''
                   }`}
                 >
-                  <video
-                    ref={localVideoRef}
-                    autoPlay
-                    playsInline
-                    muted
-                    className={styles.localVideo}
-                  ></video>
+                  {isCameraOff ? (
+                    <div className={styles.videoOffPlaceholder}>
+                      <span>Camera Off</span>
+                    </div>
+                  ) : (
+                    <video
+                      ref={localVideoRef}
+                      autoPlay
+                      playsInline
+                      muted
+                      className={styles.localVideo}
+                    />
+                  )}
                   <div className={styles.participantName}>
-                    {localStorage.getItem('firstname')} (You)
+                    {user?.firstname} (You)
+                    {isMuted && <span> 🔇</span>}
+                    {isCameraOff && <span> 📷</span>}
                   </div>
                 </div>
+                {/* Remote participants */}
                 {students
                   .filter((s) => s.id !== studentId)
                   .map((student) => (
@@ -489,44 +465,46 @@ const WebRTCComponent = () => {
                         speaking.has(student.id) ? styles.speaking : ''
                       }`}
                     >
-                      <video
-                        autoPlay
-                        playsInline
-                        className={styles.remoteVideo}
-                        ref={(video) => {
-                          if (video && remoteStreams.has(student.id)) {
-                            video.srcObject = remoteStreams.get(student.id);
-                          }
-                        }}
-                      ></video>
-                      <div className={styles.participantName}>{student.name}</div>
+                      {student.camera_off || !remoteStreams.has(student.id) ? (
+                        <div className={styles.videoOffPlaceholder}>
+                          <span>Camera Off</span>
+                        </div>
+                      ) : (
+                        <video
+                          autoPlay
+                          playsInline
+                          className={styles.remoteVideo}
+                          ref={(video) => {
+                            if (video && remoteStreams.has(student.id)) {
+                              video.srcObject = remoteStreams.get(student.id);
+                            }
+                          }}
+                        />
+                      )}
+                      <div className={styles.participantName}>
+                        {student.name}
+                        {student.muted && <span> 🔇</span>}
+                        {student.camera_off && <span> 📷</span>}
+                      </div>
                     </div>
                   ))}
               </div>
             </div>
             <div className={styles.controls}>
-              <button
-                className={styles.callButton}
-                onClick={() =>
-                  startCall(students.find((s) => s.id !== studentId)?.id)
-                }
-              >
-                <img src={CallIcon} alt="Call" />
-              </button>
-              <button className={styles.endButton} onClick={endCall}>
-                <img src={EndcallIcon} alt="End Call" />
-              </button>
               <button className={styles.micButton} onClick={toggleMute}>
-                <img src={isMuted ? MicIcon : MuteIcon} alt="Mute Mic" />
-              </button>
-              <button className={styles.screenButton} onClick={shareScreen}>
-                <img src={SharescreenIcon} alt="Share Screen" />
+                <img src={isMuted ? MicIcon : MuteIcon} alt="Mute/Unmute" />
               </button>
               <button className={styles.camButton} onClick={toggleCamera}>
                 <img
                   src={isCameraOff ? OffcamIcon : OpencamIcon}
                   alt="Toggle Camera"
                 />
+              </button>
+              <button className={styles.screenButton} onClick={shareScreen}>
+                <img src={SharescreenIcon} alt="Share Screen" />
+              </button>
+              <button className={styles.endButton} onClick={leaveMeeting}>
+                <img src={EndcallIcon} alt="Leave Meeting" />
               </button>
             </div>
           </div>
@@ -537,6 +515,8 @@ const WebRTCComponent = () => {
                 {students.map((student) => (
                   <li key={student.id} className={styles.participantItem}>
                     {student.name}
+                    {student.muted && <span> 🔇</span>}
+                    {student.camera_off && <span> 📷</span>}
                     {student.id !== studentId && (
                       <button
                         onClick={() => startCall(student.id)}
@@ -551,10 +531,14 @@ const WebRTCComponent = () => {
             </div>
             <div className={styles.chatSection}>
               <h3>Chat</h3>
-              <div className={styles.chatBox}>
+              <div className={styles.chatBox} ref={chatBoxRef}>
                 {chatMessages.length > 0 ? (
                   chatMessages.map((msg, index) => (
-                    <div key={index}>{msg}</div>
+                    <div key={index} className={styles.chatMessage}>
+                      <strong>{msg.sender_name}</strong>{' '}
+                      <span>{new Date(msg.timestamp).toLocaleTimeString()}</span>
+                      <p>{msg.message}</p>
+                    </div>
                   ))
                 ) : (
                   <div>No messages yet.</div>
@@ -565,6 +549,7 @@ const WebRTCComponent = () => {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Type a message..."
+                onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && (sendMessage(), e.preventDefault())}
               />
               <button onClick={sendMessage} className={styles.actionButton}>
                 Send
@@ -572,8 +557,11 @@ const WebRTCComponent = () => {
             </div>
           </div>
         </div>
+        {notifications.map((note, index) => (
+          <Notification key={index} message={note} />
+        ))}
       </div>
-      <Footer></Footer>
+      <Footer />
     </div>
   );
 };

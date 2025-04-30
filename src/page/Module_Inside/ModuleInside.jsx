@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react"; 
-import { useParams, useNavigate } from "react-router-dom"; 
-import "./module_inside.css"; 
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import "./module_inside.css";
 import Header from '../../Components/composables/Header';
 
 const ModuleInside = () => {
-  const [module, setModule] = useState(null); 
-  const [error, setError] = useState(null); 
-  const [timeSpent, setTimeSpent] = useState(0); 
-  const [isInstructor, setIsInstructor] = useState(false); 
+  const [module, setModule] = useState(null);
+  const [error, setError] = useState(null);
+  const [timeSpent, setTimeSpent] = useState(0);
+  const [isInstructor, setIsInstructor] = useState(false);
   const [showPDF, setShowPDF] = useState(false);
+  const [moduleStatus, setModuleStatus] = useState({ pre_test_completed: false, post_test_completed: false });
   
-  const { id } = useParams(); 
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const API_URL = process.env.REACT_APP_API_URL || 
@@ -19,12 +20,32 @@ const ModuleInside = () => {
   useEffect(() => {
     const fetchModuleData = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/modules/${id}`);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch module: ${response.status}`);
+        const userId = localStorage.getItem('userIdNumber');
+        if (!userId) {
+          throw new Error('User not logged in');
         }
-        const data = await response.json();
-        setModule(data);
+
+        // Check module status
+        const statusResponse = await fetch(`${API_URL}/api/module-status/${id}/${userId}`);
+        if (!statusResponse.ok) {
+          throw new Error('Failed to fetch module status');
+        }
+        const statusData = await statusResponse.json();
+        setModuleStatus(statusData);
+
+        // Redirect to pre-test if not completed
+        if (!statusData.pre_test_completed && !isInstructor) {
+          navigate(`/pre-test/${id}`);
+          return;
+        }
+
+        // Fetch module data
+        const moduleResponse = await fetch(`${API_URL}/api/modules/${id}`);
+        if (!moduleResponse.ok) {
+          throw new Error(`Failed to fetch module: ${moduleResponse.status}`);
+        }
+        const moduleData = await moduleResponse.json();
+        setModule(moduleData);
       } catch (error) {
         setError(error.message);
       }
@@ -39,7 +60,7 @@ const ModuleInside = () => {
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, [id]);
+  }, [id, navigate, isInstructor]);
 
   useEffect(() => {
     const userRole = localStorage.getItem("userRole");
@@ -60,11 +81,10 @@ const ModuleInside = () => {
   const seconds = timeSpent % 60;
 
   return (
-    <div className="Main">  
+    <div className="Main">
       <Header />
-      <div className="container">  
+      <div className="container">
         <main className="module-content">
-          
           <section className="module-header">
             <h1 className="module-title">{module.title}</h1>
             <p className="time-spent">
@@ -74,8 +94,8 @@ const ModuleInside = () => {
 
           {module.document_url && (
             <section className="module-resource">
-              <div 
-                className="fileelement fixed-file" 
+              <div
+                className="fileelement fixed-file"
                 onClick={() => setShowPDF(true)}
               >
                 <div className="document-preview">
@@ -93,30 +113,30 @@ const ModuleInside = () => {
 
           <section className="test-section">
             <div className="test-container">
-              <h3>Ready To Take The Test?</h3>
+              <h3>{moduleStatus.post_test_completed ? "Module Completed" : "Ready to Take the Post-Test?"}</h3>
               <p>Instructions Here</p>
-              <button 
-                className="proceed-btn" 
-                onClick={() => navigate(`/post-test/${id}`, { state: { timeSpent } })}
-              >
-                Proceed
-              </button>
+              {!moduleStatus.post_test_completed && (
+                <button
+                  className="proceed-btn"
+                  onClick={() => navigate(`/post-test/${id}`, { state: { timeSpent } })}
+                >
+                  Proceed to Post-Test
+                </button>
+              )}
             </div>
           </section>
-
         </main>
       </div>
 
-      {/* PDF Modal */}
       {showPDF && (
         <div className="pdf-modal-overlay" onClick={() => setShowPDF(false)}>
           <div className="pdf-modal" onClick={(e) => e.stopPropagation()}>
             <button className="close-btn" onClick={() => setShowPDF(false)}>×</button>
-            <iframe 
-              src={`${API_URL}/${module.document_url}`} 
+            <iframe
+              src={`${API_URL}/${module.document_url}`}
               title="PDF Viewer"
-              width="100%" 
-              height="100%" 
+              width="100%"
+              height="100%"
               frameBorder="0"
             ></iframe>
           </div>

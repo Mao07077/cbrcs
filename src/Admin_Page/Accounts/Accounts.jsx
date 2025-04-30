@@ -9,155 +9,218 @@ const API_URL = process.env.REACT_APP_API_URL ||
     (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
 
 function Accounts() {
-	const [searchQuery, setSearchQuery] = useState('');
-	const [roleFilter, setRoleFilter] = useState('');
-	const [accounts, setAccounts] = useState([]);
-	const [sortOrder, setSortOrder] = useState('asc');
-	const navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState('');
+    const [roleFilter, setRoleFilter] = useState('');
+    const [accounts, setAccounts] = useState([]);
+    const [sortOrder, setSortOrder] = useState('asc');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
-	useEffect(() => {
-		const fetchAccounts = async () => {
-			try {
-				const response = await fetch(`${API_URL}/api/accounts`);
-				if (!response.ok) {
-					throw new Error('Failed to fetch accounts');
-				}
-				const data = await response.json();
-				setAccounts(data);
-			} catch (error) {
-				console.error('Error fetching accounts data:', error);
-			}
-		};
+    useEffect(() => {
+        const fetchAccounts = async () => {
+            try {
+                const response = await fetch(`${API_URL}/api/accounts`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch accounts');
+                }
+                const data = await response.json();
+                console.log('Raw API response:', JSON.stringify(data, null, 2));
+                const fetchedAccounts = Array.isArray(data.accounts) ? data.accounts : [];
+                console.log('Processed accounts:', JSON.stringify(fetchedAccounts, null, 2));
+                setAccounts(fetchedAccounts);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching accounts data:', error);
+                setError(error.message);
+                setAccounts([]);
+                setLoading(false);
+            }
+        };
 
-		fetchAccounts();
-	}, []);
+        fetchAccounts();
+    }, []);
 
-	const filteredAccounts = accounts.filter(
-		(account) =>
-			(account.accountNo.includes(searchQuery) ||
-				account.name.toLowerCase().includes(searchQuery.toLowerCase())) &&
-			account.role.toLowerCase().includes(roleFilter.toLowerCase())
-	);
+    const filteredAccounts = accounts.filter(
+        (account) => {
+            const matchesSearch = (
+                (account.accountNo && account.accountNo.includes(searchQuery)) ||
+                (account.name && account.name.toLowerCase().includes(searchQuery.toLowerCase()))
+            );
+            const matchesRole = roleFilter ? account.role.toLowerCase() === roleFilter.toLowerCase() : true;
+            return matchesSearch && matchesRole;
+        }
+    );
 
-	const handleCreate = () => {
-		navigate('/signup');
-	};
+    const handleCreate = () => {
+        navigate('/signup');
+    };
 
-	const handleDelete = async (index) => {
-		const accountToDelete = accounts[index];
-		try {
-			const response = await fetch(
-				`${API_URL}/api/accounts/${accountToDelete.id}`,
-				{ method: 'DELETE' }
-			);
-			if (!response.ok) {
-				throw new Error('Failed to delete account');
-			}
-			const updatedAccounts = accounts.filter((_, i) => i !== index);
-			setAccounts(updatedAccounts);
-		} catch (error) {
-			console.error('Error deleting account:', error);
-		}
-	};
+    const handleDelete = async (index) => {
+        const accountToDelete = filteredAccounts[index];
+        try {
+            const response = await fetch(
+                `${API_URL}/api/accounts/${accountToDelete.accountNo}`,
+                { method: 'DELETE' }
+            );
+            if (!response.ok) {
+                throw new Error('Failed to delete account');
+            }
+            setAccounts(accounts.filter((acc) => acc.accountNo !== accountToDelete.accountNo));
+        } catch (error) {
+            console.error('Error deleting account:', error);
+            setError(error.message);
+        }
+    };
 
-	const handleSort = (key) => {
-		const sortedAccounts = [...accounts].sort((a, b) => {
-			if (sortOrder === 'asc') {
-				return a[key] > b[key] ? 1 : -1;
-			} else {
-				return a[key] < b[key] ? 1 : -1;
-			}
-		});
-		setAccounts(sortedAccounts);
-		setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-	};
+    const handleSort = (key) => {
+        const sortedAccounts = [...accounts].sort((a, b) => {
+            const aValue = a[key] || '';
+            const bValue = b[key] || '';
+            if (sortOrder === 'asc') {
+                return aValue > bValue ? 1 : -1;
+            } else {
+                return aValue < bValue ? 1 : -1;
+            }
+        });
+        setAccounts(sortedAccounts);
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    };
 
-	return (
-		<div className={Styles.Maincontainer}>
-			<Header></Header>
-			<div className={Styles.Content_Wrapper}>
-				<Admin_Sidebar></Admin_Sidebar>
-				<div className={Styles.Content}>
-					<div className={Styles.Greeting_Accountlist}>
-						<h1>Accounts List</h1>
-					</div>
+    if (loading) {
+        return (
+            <div className={Styles.Maincontainer}>
+                <Header />
+                <div className={Styles.Content_Wrapper}>
+                    <Admin_Sidebar />
+                    <div className={Styles.Content}>
+                        <div className={Styles.Greeting_Accountlist}>
+                            <h1>Accounts List</h1>
+                        </div>
+                        <p>Loading accounts...</p>
+                    </div>
+                </div>
+                <Footer />
+            </div>
+        );
+    }
 
-					{/* Filters Section */}
-					<div className={Styles.Filter_Section}>
-						{/* Search Bar */}
-						<div className={Styles.Search_Container}>
-							<h2>Search:</h2>
-							<input
-								type="text"
-								placeholder="Account No. or Name"
-								value={searchQuery}
-								onChange={(e) => setSearchQuery(e.target.value)}
-								className={Styles.Search_Input}
-							/>
-						</div>
+    if (error) {
+        return (
+            <div className={Styles.Maincontainer}>
+                <Header />
+                <div className={Styles.Content_Wrapper}>
+                    <Admin_Sidebar />
+                    <div className={Styles.Content}>
+                        <div className={Styles.Greeting_Accountlist}>
+                            <h1>Accounts List</h1>
+                        </div>
+                        <p>Error: {error}</p>
+                    </div>
+                </div>
+                <Footer />
+            </div>
+        );
+    }
 
-						{/* Role Filter Dropdown */}
-						<div className={Styles.Role_Container}>
-							<h2>Filter by Role:</h2>
-							<select
-								value={roleFilter}
-								onChange={(e) => setRoleFilter(e.target.value)}
-								className={Styles.Role_Dropdown}
-							>
-								<option value="">Select Role</option>
-								<option value="Instructor">Instructor</option>
-								<option value="Student">Student</option>
-							</select>
-						</div>
+    return (
+        <div className={Styles.Maincontainer}>
+            <Header />
+            <div className={Styles.Content_Wrapper}>
+                <Admin_Sidebar />
+                <div className={Styles.Content}>
+                    <div className={Styles.Greeting_Accountlist}>
+                        <h1>Accounts List</h1>
+                    </div>
 
-						{/* Create Account Button */}
-						<button onClick={handleCreate} className={Styles.Create_Button}>
-							Create Account
-						</button>
-					</div>
-					{/* Table Section */}
-					<table className={Styles.Table}>
-						<thead>
-							<tr>
-								<th onClick={() => handleSort('profile')}>Profile</th>
-								<th onClick={() => handleSort('accountNo')}>Account No.</th>
-								<th onClick={() => handleSort('name')}>Account Name</th>
-								<th onClick={() => handleSort('role')}>Role</th>
-								<th>Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							{filteredAccounts.length > 0 ? (
-								filteredAccounts.map((account, index) => (
-									<tr key={index}>
-										<td className="center">{account.profile}</td>
-										<td>{account.accountNo}</td>
-										<td>{account.name}</td>
-										<td>{account.role}</td>
-										<td>
-											<button
-												onClick={() => handleDelete(index)}
-												className={Styles.Delete_Button}
-											>
-												Delete
-											</button>
-										</td>
-									</tr>
-								))
-							) : (
-								<tr>
-									<td colSpan="5" className={Styles.No_Accounts}>
-										<p>No accounts found.</p>
-									</td>
-								</tr>
-							)}
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<Footer></Footer>
-		</div>
-	);
+                    <div className={Styles.Filter_Section}>
+                        <div className={Styles.Search_Container}>
+                            <h2>Search:</h2>
+                            <input
+                                type="text"
+                                placeholder="Account No. or Name"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className={Styles.Search_Input}
+                            />
+                        </div>
+
+                        <div className={Styles.Role_Container}>
+                            <h2>Filter by Role:</h2>
+                            <select
+                                value={roleFilter}
+                                onChange={(e) => setRoleFilter(e.target.value)}
+                                className={Styles.Role_Dropdown}
+                            >
+                                <option value="">All Roles</option>
+                                <option value="admin">Admin</option>
+                                <option value="student">Student</option>
+                                <option value="instructor">Instructor</option>
+                            </select>
+                        </div>
+
+                        <button onClick={handleCreate} className={Styles.Create_Button}>
+                            Create Account
+                        </button>
+                    </div>
+
+                    <table className={Styles.Table}>
+                        <thead>
+                            <tr>
+                                <th onClick={() => handleSort('profile')}>
+                                    Profile {sortOrder === 'asc' ? '↑' : '↓'}
+                                </th>
+                                <th onClick={() => handleSort('accountNo')}>
+                                    Account No. {sortOrder === 'asc' ? '↑' : '↓'}
+                                </th>
+                                <th onClick={() => handleSort('name')}>
+                                    Account Name {sortOrder === 'asc' ? '↑' : '↓'}
+                                </th>
+                                <th onClick={() => handleSort('role')}>
+                                    Role {sortOrder === 'asc' ? '↑' : '↓'}
+                                </th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredAccounts.length > 0 ? (
+                                filteredAccounts.map((account, index) => {
+                                    console.log(`Rendering account ${index}:`, account);
+                                    return (
+                                        <tr key={account.accountNo}>
+                                            <td className="center">
+                                                {account.profile || 'N/A'}
+                                            </td>
+                                            <td>{account.accountNo}</td>
+                                            <td className={Styles.NameCell}>
+                                                {account.name || 'Unknown'}
+                                            </td>
+                                            <td>{account.role}</td>
+                                            <td>
+                                                <button
+                                                    onClick={() => handleDelete(index)}
+                                                    className={Styles.Delete_Button}
+                                                >
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })
+                            ) : (
+                                <tr>
+                                    <td colSpan="5" className={Styles.No_Accounts}>
+                                        <p>No accounts found.</p>
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <Footer />
+        </div>
+    );
 }
 
 export default Accounts;
