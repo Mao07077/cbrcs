@@ -61,7 +61,14 @@ const WebRTCComponent = () => {
       const isProduction = process.env.NODE_ENV === 'production';
       const protocol = isProduction ? 'wss://' : 'ws://';
       const wsUrl = `${protocol}${API_URL}/ws/${callId || 'random'}`;
+      console.log(`Environment: ${process.env.NODE_ENV}`);
+      console.log(`REACT_APP_API_URL: ${process.env.REACT_APP_API_URL}`);
       console.log(`Attempting to connect to WebSocket: ${wsUrl}`);
+
+      if (isProduction && API_URL === 'localhost:8000') {
+        setError('Invalid backend URL in production. Please configure REACT_APP_API_URL.');
+        return;
+      }
 
       const socket = new WebSocket(wsUrl);
       setWs(socket);
@@ -382,9 +389,9 @@ const WebRTCComponent = () => {
       setError('No video tracks available.');
       return;
     }
-    videoTracks.forEach((track) => (track.enabled = !track.enabled));
-    setIsCameraOff(!isCameraOff);
-    ws.send(JSON.stringify({ type: 'status_update', muted: isMuted, camera_off: !isCameraOff }));
+    audioTracks.forEach((track) => (track.enabled = !track.enabled));
+    setIsMuted(!isMuted);
+    ws.send(JSON.stringify({ type: 'status_update', muted: !isMuted, camera_off: isCameraOff }));
   };
 
   if (showCallOptions) {
