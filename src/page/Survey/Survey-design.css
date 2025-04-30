@@ -76,40 +76,29 @@
     flex-direction: row; /* Ensures the checkbox is on the left */
 }
 
-.custom-choice input {
-    width: 20px;
-    height: 20px;
+.custom-choice input[type="radio"] { /* Changed selector to be specific */
+    width: 16px; /* Adjust size as needed */
+    height: 16px;
     margin: 0;
-    appearance: none; /* Removes default checkbox styles */
-    border: 2px solid #0d47a1;
-    border-radius: 4px;
+    /* Remove appearance: none; to use default styles */
+    /* Remove custom border, background, and checkmark styles */
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    /* Keep alignment properties if needed, e.g., vertical-align: middle; */
+    /* The browser's default radio button style will now apply */
 }
 
-.custom-choice input:checked {
-    background-color: #0d47a1;
-    border: 2px solid #0d47a1;
-    position: relative;
+.custom-page-indicator {
+    font-size: 14px;
+    color: #555;
+    margin-top: 20px; /* Add top margin to separate from survey box */
+    text-align: center; /* Keep it centered */
+    width: 100%;
 }
-
-.custom-choice input:checked::after {
-    content: "✔";
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 
 .custom-navigation-buttons {
     display: flex;
     justify-content: right;
-    margin-top: 20px;
+    margin-top: 10px; /* Reduced top margin as indicator is now above */
     gap: 20px;
     width: 100%;
 }
