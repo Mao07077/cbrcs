@@ -116,7 +116,7 @@ const ModuleDashboard = () => {
                         onClick={() => handleProceedClick(module._id)}
                         disabled={status.post_test_completed}
                       >
-                        {statusText}
+                      {statusText}
                       </button>
                     </div>
                   );
