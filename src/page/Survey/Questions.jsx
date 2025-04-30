@@ -4,6 +4,7 @@ const questions = [
         questions: [
             {
                 question: "Do you prefer studying alone or with friends?",
+                type: 'single-choice',
                 choices: [
                     "I always study alone.",
                     "I mostly study alone but sometimes with friends.",
@@ -13,10 +14,12 @@ const questions = [
             },
             {
                 question: "How often do you study with friends?",
+                type: 'single-choice',
                 choices: ["Never", "Once a month", "Once a week", "Every study session"]
             },
             {
                 question: "What is the biggest benefit of studying with friends?",
+                type: 'single-choice',
                 choices: [
                     "Sharing different ideas and knowledge",
                     "Getting motivated to study",
@@ -26,6 +29,7 @@ const questions = [
             },
             {
                 question: "How do you handle distractions when studying with friends?",
+                type: 'single-choice',
                 choices: [
                     "I get easily distracted and don’t study much.",
                     "I try to focus, but sometimes I lose track.",
@@ -35,6 +39,7 @@ const questions = [
             },
             {
                 question: "Have you noticed a difference in your understanding when studying with friends vs. alone?",
+                type: 'single-choice',
                 choices: [
                     "I learn better alone.",
                     "I learn better with friends.",
@@ -49,6 +54,7 @@ const questions = [
         questions: [
             {
                 question: "When do you usually ask for help while studying?",
+                type: 'single-choice',
                 choices: [
                     "As soon as I don’t understand something.",
                     "After trying to solve it myself.",
@@ -58,6 +64,7 @@ const questions = [
             },
             {
                 question: "Who do you prefer to ask for help?",
+                type: 'single-choice',
                 choices: [
                     "Teachers or professors",
                     "Classmates or friends",
@@ -67,6 +74,7 @@ const questions = [
             },
             {
                 question: "How comfortable are you with asking questions in class?",
+                type: 'single-choice',
                 choices: [
                     "Very comfortable—I ask whenever I need to.",
                     "Somewhat comfortable—I ask occasionally.",
@@ -76,6 +84,7 @@ const questions = [
             },
             {
                 question: "What is your biggest challenge when asking for help?",
+                type: 'single-choice',
                 choices: [
                     "I feel shy or embarrassed.",
                     "I don’t know who to ask.",
@@ -85,6 +94,7 @@ const questions = [
             },
             {
                 question: "What has been the most helpful source when seeking help?",
+                type: 'single-choice',
                 choices: [
                     "Teachers or tutors",
                     "Study groups or classmates",
@@ -99,6 +109,7 @@ const questions = [
         questions: [
             {
                 question: "How often do you test yourself while studying",
+                type: 'single-choice',
                 choices: [
                     "After every study session",
                     "Once a week",
@@ -108,6 +119,7 @@ const questions = [
             },
             {
                 question: "What method do you use for self-testing?",
+                type: 'single-choice',
                 choices: [
                     "Practice quizzes or mock exams",
                     "I use flashcards",
@@ -117,6 +129,7 @@ const questions = [
             },
             {
                 question: "How do you feel after testing yourself?",
+                type: 'single-choice',
                 choices: [
                     "Confident about my knowledge",
                     "I realize what I need to review",
@@ -126,6 +139,7 @@ const questions = [
             },
             {
                 question: "Do you think self-testing has improved your learning?",
+                type: 'single-choice',
                 choices: [
                     "Yes, it has helped me retain information better",
                     "It’s hard to tell if it makes a difference",
@@ -135,6 +149,7 @@ const questions = [
             },
             {
                 question: "What motivates you to test yourself regularly?",
+                type: 'single-choice',
                 choices: [
                     "I want to track my progress",
                     "It helps me remember information longer",
@@ -149,6 +164,7 @@ const questions = [
         questions: [
             {
                 question: "How do you usually plan your study schedule?",
+                type: 'single-choice',
                 choices: [
                     "I follow a fixed daily or weekly schedule.",
                     "I create a study plan but adjust it as needed.",
@@ -158,6 +174,7 @@ const questions = [
             },
             {
                 question: "How do you organize your study schedule?",
+                type: 'single-choice',
                 choices: [
                     "By breaking down topics into study sessions",
                     "By setting specific study times",
@@ -167,6 +184,7 @@ const questions = [
             },
             {
                 question: "How often do you stick to your study schedule?",
+                type: 'single-choice',
                 choices: [
                     "Most of the time",
                     "Sometimes",
@@ -176,6 +194,7 @@ const questions = [
             },
             {
                 question: "What challenges do you face in following a study schedule?",
+                type: 'single-choice',
                 choices: [
                     "Procrastination and lack of motivation",
                     "Unexpected distractions or events",
@@ -185,6 +204,7 @@ const questions = [
             },
             {
                 question: "What benefits have you noticed from following a study schedule?",
+                type: 'single-choice',
                 choices: [
                     "Better time management and productivity",
                     "Consistent progress in learning",
@@ -199,6 +219,7 @@ const questions = [
         questions: [
             {
                 question: "How do you manage your study time?",
+                type: 'single-choice',
                 choices: [
                     "I study for fixed hours each day",
                     "I study until I complete a certain goal",
@@ -208,6 +229,7 @@ const questions = [
             },
             {
                 question: "How do you handle distractions while studying?",
+                type: 'single-choice',
                 choices: [
                     "I minimize distractions and stay focused",
                     "I take breaks when distracted",
@@ -217,6 +239,7 @@ const questions = [
             },
             {
                 question: "What is your biggest challenge in managing study time?",
+                type: 'single-choice',
                 choices: [
                     "Procrastination and lack of discipline",
                     "Too many distractions in my study environment",
@@ -226,6 +249,7 @@ const questions = [
             },
             {
                 question: "How do you track your study time?",
+                type: 'single-choice',
                 choices: [
                     "Using a timer or study app",
                     "Estimating time based on study progress",
@@ -235,12 +259,13 @@ const questions = [
             },
             {
                 question: "What strategy helps you manage your time most effectively?",
+                type: 'single-choice',
                 choices: [
                     "Prioritizing tasks based on deadlines",
                     "Breaking tasks into smaller steps",
                     "Using a planner or calendar",
                     "Setting reminders for study sessions",
-                    
+
                 ]
             }
         ]
@@ -250,6 +275,7 @@ const questions = [
         questions: [
             {
                 question: "Do you set specific study goals?",
+                type: 'single-choice',
                 choices: [
                     "Yes, I set daily or weekly study goals",
                     "I set long-term goals for the semester or year",
@@ -259,15 +285,17 @@ const questions = [
             },
             {
                 question: "How do you define your study goals?",
+                type: 'single-choice',
                 choices: [
                     "By the number of topics or chapters to cover",
                     "By the amount of time to spend on each subject",
                     "By the grades or scores I want to achieve",
-                    
+
                 ]
             },
             {
                 question: "How often do you review or adjust your study goals?",
+                type: 'single-choice',
                 choices: [
                     "Daily or weekly",
                     "Monthly or at the end of each semester",
@@ -277,6 +305,7 @@ const questions = [
             },
             {
                 question: "What motivates you to achieve your study goals?",
+                type: 'single-choice',
                 choices: [
                     "Desire to improve my grades or knowledge",
                     "Rewarding myself for reaching goals",
@@ -286,6 +315,7 @@ const questions = [
             },
             {
                 question: "What is the biggest benefit of setting study goals?",
+                type: 'single-choice',
                 choices: [
                     "Better focus and direction in studying",
                     "Increased motivation to learn",
@@ -300,6 +330,7 @@ const questions = [
         questions: [
             {
                 question: "How do you take notes while studying?",
+                type: 'single-choice',
                 choices: [
                     "Handwritten notes on paper",
                     "Digital notes on a computer or tablet",
@@ -309,6 +340,7 @@ const questions = [
             },
             {
                 question: "What method do you use to organize your notes?",
+                type: 'single-choice',
                 choices: [
                     "Color-coding or categorizing by topic",
                     "Creating outlines or mind maps",
@@ -318,6 +350,7 @@ const questions = [
             },
             {
                 question: "How often do you review or revise your notes?",
+                type: 'single-choice',
                 choices: [
                     "After each study session",
                     "Before exams or quizzes",
@@ -327,6 +360,7 @@ const questions = [
             },
             {
                 question: "What is the biggest challenge in organizing your notes?",
+                type: 'single-choice',
                 choices: [
                     "Keeping notes neat and organized",
                     "Finding a note-taking method that works for me",
@@ -336,6 +370,7 @@ const questions = [
             },
             {
                 question: "What has been the most effective note-taking method for you?",
+                type: 'single-choice',
                 choices: [
                     "Summarizing information in my own words",
                     "Creating visual aids like diagrams or charts",
@@ -350,6 +385,7 @@ const questions = [
         questions: [
             {
                 question: "Do you teach others what you’ve learned?",
+                type: 'single-choice',
                 choices: [
                     "Yes, I explain concepts to classmates or friends",
                     "I help others understand difficult topics",
@@ -359,6 +395,7 @@ const questions = [
             },
             {
                 question: "How do you feel after teaching someone?",
+                type: 'single-choice',
                 choices: [
                     "Confident about my understanding of the topic",
                     "Satisfied to help others learn",
@@ -368,6 +405,7 @@ const questions = [
             },
             {
                 question: "What is the biggest benefit of teaching others?",
+                type: 'single-choice',
                 choices: [
                     "Solidifying my own knowledge",
                     "Improving communication and teaching skills",
@@ -377,6 +415,7 @@ const questions = [
             },
             {
                 question: "How do you approach teaching others?",
+                type: 'single-choice',
                 choices: [
                     "By explaining concepts in simple terms",
                     "By using examples and real-life scenarios",
@@ -386,12 +425,13 @@ const questions = [
             },
             {
                 question: "What challenges do you face when teaching others?",
+                type: 'single-choice',
                 choices: [
                     "Difficulty in simplifying complex topics",
                     "Lack of confidence in my knowledge",
                     "Managing time to teach and study",
                     "Finding someone to teach",
-                   
+
                 ]
             }
         ]
@@ -401,6 +441,7 @@ const questions = [
         questions: [
             {
                 question: "Do you use flashcards for studying?",
+                type: 'single-choice',
                 choices: [
                     "Yes, I use flashcards regularly",
                     "I use flashcards occasionally",
@@ -410,6 +451,7 @@ const questions = [
             },
             {
                 question: "What type of information do you put on flashcards?",
+                type: 'single-choice',
                 choices: [
                     "Key terms or definitions",
                     "Equations or formulas",
@@ -419,6 +461,7 @@ const questions = [
             },
             {
                 question: "How do you review flashcards?",
+                type: 'single-choice',
                 choices: [
                     "Regularly to reinforce memory",
                     "Before exams or quizzes",
@@ -428,6 +471,7 @@ const questions = [
             },
             {
                 question: "What has been the biggest benefit of using flashcards?",
+                type: 'single-choice',
                 choices: [
                     "Improving memory retention",
                     "Quick review of key information",
@@ -437,6 +481,7 @@ const questions = [
             },
             {
                 question: "What challenges do you face in using flashcards?",
+                type: 'single-choice',
                 choices: [
                     "Creating and organizing flashcards",
                     "Remembering to review them regularly",
@@ -451,6 +496,7 @@ const questions = [
         questions: [
             {
                 question: "What do you use to create a better study environment?",
+                type: 'single-choice',
                 choices: [
                     "Aromatherapy (e.g., essential oils, scented candles)",
                     "Plants to improve air and focus",
@@ -460,6 +506,7 @@ const questions = [
             },
             {
                 question: "What type of music do you prefer while studying?",
+                type: 'single-choice',
                 choices: [
                     "Classical or instrumental music",
                     "Lo-fi or ambient sounds",
@@ -469,6 +516,7 @@ const questions = [
             },
             {
                 question: "Do you think plants improve your focus while studying?",
+                type: 'single-choice',
                 choices: [
                     "Yes, they help me concentrate better.",
                     "Sometimes, but not always.",
@@ -478,6 +526,7 @@ const questions = [
             },
             {
                 question: "What is your favorite scent for creating a study-friendly environment?",
+                type: 'single-choice',
                 choices: [
                     "Lavender or calming scents",
                     "Citrus or energizing scents",
@@ -487,6 +536,7 @@ const questions = [
             },
             {
                 question: "Have you noticed any benefits from using scents, plants, or music while studying?",
+                type: 'single-choice',
                 choices: [
                     "Yes, it helps me focus better.",
                     "Sometimes, but not always.",
