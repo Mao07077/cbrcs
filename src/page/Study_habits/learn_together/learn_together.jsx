@@ -57,17 +57,23 @@ const WebRTCComponent = () => {
   // WebSocket connection
   useEffect(() => {
     if (!showCallOptions && !ws && user?.id_number) {
-      // Determine the API_URL based on the environment
-      const API_URL = process.env.REACT_APP_API_URL || 'localhost:8000'; // Default to local if not set
-      const socket = new WebSocket(`ws://${API_URL}/ws/${callId || 'random'}`);
+      const API_URL = process.env.REACT_APP_API_URL || 'localhost:8000';
+      const isProduction = process.env.NODE_ENV === 'production';
+      const protocol = isProduction ? 'wss://' : 'ws://';
+      const wsUrl = `${protocol}${API_URL}/ws/${callId || 'random'}`;
+      console.log(`Attempting to connect to WebSocket: ${wsUrl}`);
+
+      const socket = new WebSocket(wsUrl);
       setWs(socket);
 
       socket.onopen = () => {
+        console.log('WebSocket connection established');
         socket.send(JSON.stringify({ id_number: user.id_number }));
       };
 
       socket.onmessage = async (event) => {
         const data = JSON.parse(event.data);
+        console.log('WebSocket message received:', data);
         if (data.type === 'student_id') {
           setStudentId(data.studentId);
           setCallIdDisplay(data.callId);
@@ -95,6 +101,7 @@ const WebRTCComponent = () => {
       };
 
       socket.onclose = (event) => {
+        console.log('WebSocket connection closed:', event);
         setWs(null);
         setStream(null);
         if (localVideoRef.current) localVideoRef.current.srcObject = null;
@@ -102,18 +109,24 @@ const WebRTCComponent = () => {
         setPeerConnections(new Map());
         setShowCallOptions(true);
         setCallIdDisplay(null);
-        if (event.reason) {
-          setError(`Connection closed: ${event.reason}. Please rejoin the meeting.`);
-        }
+        setError(
+          event.reason
+            ? `Connection closed: ${event.reason}. Please try reconnecting.`
+            : 'Connection lost. Please try reconnecting.'
+        );
       };
 
-      socket.onerror = () => {
+      socket.onerror = (error) => {
+        console.error('WebSocket error:', error);
         setError('WebSocket connection failed. Please check your network and try again.');
       };
 
-      return () => socket.close();
+      return () => {
+        console.log('Cleaning up WebSocket connection');
+        socket.close();
+      };
     }
-  }, [showCallOptions, callId, user]);
+  }, [showCallOptions, callId, user, studentId, peerConnections]);
 
   const initializeMediaStream = async () => {
     try {
@@ -182,6 +195,11 @@ const WebRTCComponent = () => {
     } else {
       setError('Please enter a valid Call ID.');
     }
+  };
+
+  const reconnect = () => {
+    setError(null);
+    setShowCallOptions(false);
   };
 
   const handleOffer = async (from, offer) => {
@@ -376,7 +394,16 @@ const WebRTCComponent = () => {
         <div className={styles.content_wrapper}>
           <div className={styles.callOptions}>
             <h2 className={styles.callOptionsTitle}>Join or Create a Meeting</h2>
-            {error && <p className={styles.error}>{error}</p>}
+            {error && (
+              <div className={styles.error}>
+                <p>{error}</p>
+                {error.includes('Connection') && (
+                  <button className={styles.actionButton} onClick={reconnect}>
+                    Reconnect
+                  </button>
+                )}
+              </div>
+            )}
             <button className={`${styles.actionButton} ${styles.createCallButton}`} onClick={createCall}>
               New Meeting
             </button>
@@ -427,7 +454,16 @@ const WebRTCComponent = () => {
                 </button>
               </div>
             )}
-            {error && <p className={styles.error}>{error}</p>}
+            {error && (
+              <div className={styles.error}>
+                <p>{error}</p>
+                {error.includes('Connection') && (
+                  <button className={styles.actionButton} onClick={reconnect}>
+                    Reconnect
+                  </button>
+                )}
+              </div>
+            )}
             <div className={styles.videoSection}>
               <div className={styles.videoContainer}>
                 {/* Local video */}
