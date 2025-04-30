@@ -149,6 +149,10 @@ const Survey = () => {
           ))}
         </div>
 
+        <p className="custom-page-indicator">
+          Page {page + 1} of {questions.length}
+        </p>
+
         <div className="custom-navigation-buttons">
           {page > 0 && (
             <button
