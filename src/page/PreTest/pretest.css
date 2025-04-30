@@ -1,0 +1,178 @@
+/* Header Styling */
+.header {
+    width: 100%; /* Full width */
+    background-color: #002f87; /* Same as post-test */
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.header-logo img {
+    height: 50px;
+    width: auto;
+    max-width: 180px;
+}
+
+/* Center the container, make it slightly wider, and keep it responsive */
+.pretest-container {
+    font-family: 'Arial', sans-serif;
+    max-width: 800px;
+    margin: 100px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Make the container responsive for smaller screens */
+@media (max-width: 768px) {
+    .pretest-container {
+        max-width: 95%;
+        margin: 50px auto;
+        padding: 15px;
+        margin-top: 70px;
+    }
+}
+
+/* Title Styling */
+.pretest-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333333;
+}
+
+/* Description Styling */
+.pretest-description {
+    font-size: 16px;
+    color: #555555;
+    margin-bottom: 30px;
+}
+
+/* Question Section Styling */
+.question-section {
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+/* Question Item Styling */
+.question-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+/* Adjust question text and options for mobile */
+.question-text {
+    font-size: 16px;
+    font-weight: 500;
+    color: #202124;
+    margin-bottom: 10px;
+}
+
+/* Choice Label Styling */
+.choice-label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #3c4043;
+}
+
+.choice-label input[type="radio"] {
+    margin-right: 10px;
+    accent-color: #34c759; /* Green accent to differentiate from post-test (#4285f4) */
+}
+
+/* Adjust button group for responsiveness */
+.button-group {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 10px;
+}
+
+@media (min-width: 769px) {
+    .button-group {
+        flex-direction: row;
+    }
+}
+
+/* Button Styling */
+.button-group button {
+    background-color: #34c759; /* Green to match radio buttons */
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-group button:hover {
+    background-color: #2db44f; /* Darker green on hover */
+    box-shadow: 0 2px 6px rgba(45, 180, 79, 0.4);
+}
+
+/* Timer Styling */
+.timer {
+    font-size: 16px;
+    color: #d93025; /* Same red for timer */
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Submission Container */
+.submission-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 30px auto;
+    text-align: center;
+}
+
+/* Submission Title */
+.submission-title {
+    font-size: 24px;
+    color: #333333;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Chart Container */
+.chart-container {
+    width: 100%;
+    height: 250px;
+    margin-top: 20px;
+}
+
+/* Validation Error Styling */
+.validation-error {
+    color: #d93025;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Proceed Button (for after submission) */
+.proceed-button {
+    background-color: #34c759 !important; /* Match pre-test theme */
+}
+
+.proceed-button:hover {
+    background-color: #2db44f !important;
+}
