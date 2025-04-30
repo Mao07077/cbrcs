@@ -1,4 +1,4 @@
-import { SquarePen, UserIcon, Book, HomeIcon, IdCard } from 'lucide-react';
+import { SquarePen, UserIcon, Book, HomeIcon, IdCard, Flag } from 'lucide-react';
 import Sidebar from './composables/Sidebar';
 
 const routes = [
@@ -22,7 +22,11 @@ const routes = [
 		routePath: '/StudyHabits_landingpage',
 		routeIcon: <IdCard></IdCard>,
 	},
-
+	{
+		routeName: 'Reports',
+		routePath: '/sendreport',
+		routeIcon:  <Flag></Flag>,
+	},
 	{
 		routeName: 'Request',
 		routePath: '/Settings',
