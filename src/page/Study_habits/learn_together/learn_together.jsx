@@ -57,16 +57,22 @@ const WebRTCComponent = () => {
   // WebSocket connection
   useEffect(() => {
     if (!showCallOptions && !ws && user?.id_number) {
-      const API_URL = process.env.REACT_APP_API_URL || 'localhost:8000';
+      const API_URL = process.env.REACT_APP_API_URL || 
+          (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
+      const cleanAPI_URL = API_URL.replace(/^https?:\/\//, '').replace(/^ws?:\/\//, '');
       const isProduction = process.env.NODE_ENV === 'production';
       const protocol = isProduction ? 'wss://' : 'ws://';
-      const wsUrl = `${protocol}${API_URL}/ws/${callId || 'random'}`;
+      const wsUrl = `${protocol}${cleanAPI_URL}/ws/${callId || 'random'}`;
+
       console.log(`Environment: ${process.env.NODE_ENV}`);
       console.log(`REACT_APP_API_URL: ${process.env.REACT_APP_API_URL}`);
+      console.log(`API_URL (after fallback): ${API_URL}`);
+      console.log(`Clean API_URL: ${cleanAPI_URL}`);
       console.log(`Attempting to connect to WebSocket: ${wsUrl}`);
 
-      if (isProduction && API_URL === 'localhost:8000') {
-        setError('Invalid backend URL in production. Please configure REACT_APP_API_URL.');
+      if (isProduction && (cleanAPI_URL.includes('localhost') || cleanAPI_URL.includes('127.0.0.1'))) {
+        setError('Invalid backend URL in production. Please configure REACT_APP_API_URL in Vercel.');
+        console.error('WebSocket connection aborted: Using localhost in production.');
         return;
       }
 
@@ -125,7 +131,7 @@ const WebRTCComponent = () => {
 
       socket.onerror = (error) => {
         console.error('WebSocket error:', error);
-        setError('WebSocket connection failed. Please check your network and try again.');
+        setError('WebSocket connection failed. Please check your network or backend configuration.');
       };
 
       return () => {
@@ -137,16 +143,35 @@ const WebRTCComponent = () => {
 
   const initializeMediaStream = async () => {
     try {
+      console.log('Requesting media stream with constraints: video=true, audio=true');
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true,
       });
+      
+      console.log('Media stream acquired:', mediaStream);
+      const videoTracks = mediaStream.getVideoTracks();
+      const audioTracks = mediaStream.getAudioTracks();
+      console.log('Video tracks:', videoTracks);
+      console.log('Audio tracks:', audioTracks);
+      
+      if (videoTracks.length === 0) {
+        setError('No video tracks available. Please check your camera.');
+        return null;
+      }
+      if (audioTracks.length === 0) {
+        setError('No audio tracks available. Please check your microphone.');
+      }
+
       if (localVideoRef.current) {
         localVideoRef.current.srcObject = mediaStream;
+        console.log('Local video srcObject set:', mediaStream);
+      } else {
+        console.warn('localVideoRef is not available');
       }
+      
       setStream(mediaStream);
 
-      // Detect speaking
       const audioContext = new AudioContext();
       const analyser = audioContext.createAnalyser();
       const source = audioContext.createMediaStreamSource(mediaStream);
@@ -173,7 +198,8 @@ const WebRTCComponent = () => {
 
       return mediaStream;
     } catch (error) {
-      setError(`Failed to access camera/microphone: ${error.message}`);
+      console.error('Failed to initialize media stream:', error);
+      setError(`Failed to access camera/microphone: ${error.message}. Please grant permissions and check your devices.`);
       return null;
     }
   };
@@ -211,10 +237,15 @@ const WebRTCComponent = () => {
 
   const handleOffer = async (from, offer) => {
     try {
+      console.log(`Handling offer from ${from}`);
       let localStream = stream;
       if (!localStream) {
+        console.log('No local stream, initializing...');
         localStream = await initializeMediaStream();
-        if (!localStream) return;
+        if (!localStream) {
+          console.error('Failed to initialize stream for offer');
+          return;
+        }
       }
 
       const pc = new RTCPeerConnection({
@@ -222,7 +253,10 @@ const WebRTCComponent = () => {
       });
       setPeerConnections((prev) => new Map(prev).set(from, pc));
 
-      localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
+      localStream.getTracks().forEach((track) => {
+        pc.addTrack(track, localStream);
+        console.log(`Added track to peer connection: ${track.kind}, enabled: ${track.enabled}`);
+      });
 
       pc.onicecandidate = (event) => {
         if (event.candidate) {
@@ -233,16 +267,20 @@ const WebRTCComponent = () => {
               candidate: event.candidate,
             })
           );
+          console.log('Sent ICE candidate to:', from);
         }
       };
 
       pc.ontrack = (event) => {
+        console.log(`Received remote stream from ${from}:`, event.streams[0]);
         setRemoteStreams((prev) => new Map(prev).set(from, event.streams[0]));
       };
 
       await pc.setRemoteDescription(new RTCSessionDescription(offer));
+      console.log('Set remote description:', offer);
       const answer = await pc.createAnswer();
       await pc.setLocalDescription(answer);
+      console.log('Created and set answer:', answer);
 
       ws.send(
         JSON.stringify({
@@ -251,7 +289,9 @@ const WebRTCComponent = () => {
           answer,
         })
       );
+      console.log('Sent answer to:', from);
     } catch (error) {
+      console.error('Failed to handle offer:', error);
       setError('Failed to establish call. Please try again.');
     }
   };
@@ -259,20 +299,35 @@ const WebRTCComponent = () => {
   const handleAnswer = async (from, answer) => {
     const pc = peerConnections.get(from);
     if (pc) {
-      await pc.setRemoteDescription(new RTCSessionDescription(answer));
+      try {
+        await pc.setRemoteDescription(new RTCSessionDescription(answer));
+        console.log(`Set answer from ${from}:`, answer);
+      } catch (error) {
+        console.error(`Failed to set answer from ${from}:`, error);
+      }
+    } else {
+      console.warn(`No peer connection found for ${from}`);
     }
   };
 
   const handleIceCandidate = async (from, candidate) => {
     const pc = peerConnections.get(from);
     if (pc) {
-      await pc.addIceCandidate(new RTCIceCandidate(candidate));
+      try {
+        await pc.addIceCandidate(new RTCIceCandidate(candidate));
+        console.log(`Added ICE candidate from ${from}`);
+      } catch (error) {
+        console.error(`Failed to add ICE candidate from ${from}:`, error);
+      }
+    } else {
+      console.warn(`No peer connection found for ${from}`);
     }
   };
 
   const startCall = async (targetStudentId) => {
     if (!targetStudentId || peerConnections.has(targetStudentId)) return;
     try {
+      console.log(`Starting call with target: ${targetStudentId}`);
       const pc = new RTCPeerConnection({
         iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
       });
@@ -280,11 +335,18 @@ const WebRTCComponent = () => {
 
       let localStream = stream;
       if (!localStream) {
+        console.log('No local stream, initializing...');
         localStream = await initializeMediaStream();
-        if (!localStream) return;
+        if (!localStream) {
+          console.error('Failed to initialize stream for call');
+          return;
+        }
       }
 
-      localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
+      localStream.getTracks().forEach((track) => {
+        pc.addTrack(track, localStream);
+        console.log(`Added track to peer connection: ${track.kind}, enabled: ${track.enabled}`);
+      });
 
       pc.onicecandidate = (event) => {
         if (event.candidate) {
@@ -295,15 +357,18 @@ const WebRTCComponent = () => {
               candidate: event.candidate,
             })
           );
+          console.log('Sent ICE candidate to:', targetStudentId);
         }
       };
 
       pc.ontrack = (event) => {
+        console.log(`Received remote stream from ${targetStudentId}:`, event.streams[0]);
         setRemoteStreams((prev) => new Map(prev).set(targetStudentId, event.streams[0]));
       };
 
       const offer = await pc.createOffer();
       await pc.setLocalDescription(offer);
+      console.log('Created and set offer:', offer);
 
       ws.send(
         JSON.stringify({
@@ -312,26 +377,32 @@ const WebRTCComponent = () => {
           offer,
         })
       );
+      console.log('Sent offer to:', targetStudentId);
     } catch (error) {
+      console.error('Failed to start call:', error);
       setError('Failed to start call. Please try again.');
     }
   };
 
   const shareScreen = async () => {
     try {
+      console.log('Requesting screen share');
       const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
       if (localVideoRef.current) {
         localVideoRef.current.srcObject = screenStream;
+        console.log('Set screen share stream to local video');
       }
       setStream(screenStream);
-      peerConnections.forEach((pc) => {
+      peerConnections.forEach((pc, targetId) => {
         const videoTrack = screenStream.getVideoTracks()[0];
         const sender = pc.getSenders().find((s) => s.track.kind === 'video');
         if (sender) {
           sender.replaceTrack(videoTrack);
+          console.log(`Replaced video track for ${targetId}`);
         }
       });
     } catch (error) {
+      console.error('Failed to share screen:', error);
       setError('Failed to share screen. Please try again.');
     }
   };
@@ -343,9 +414,13 @@ const WebRTCComponent = () => {
   };
 
   const endCall = () => {
+    console.log('Ending call');
     ws.send(JSON.stringify({ type: 'leave' }));
     if (stream && stream.getTracks) {
-      stream.getTracks().forEach((track) => track.stop());
+      stream.getTracks().forEach((track) => {
+        track.stop();
+        console.log(`Stopped track: ${track.kind}`);
+      });
     }
     if (localVideoRef.current) {
       localVideoRef.current.srcObject = null;
@@ -367,31 +442,43 @@ const WebRTCComponent = () => {
   const toggleMute = () => {
     if (!stream) {
       setError('No stream available to mute/unmute.');
+      console.error('No stream for toggleMute');
       return;
     }
     const audioTracks = stream.getAudioTracks();
     if (audioTracks.length === 0) {
       setError('No audio tracks available.');
+      console.error('No audio tracks for toggleMute');
       return;
     }
-    audioTracks.forEach((track) => (track.enabled = !track.enabled));
+    audioTracks.forEach((track) => {
+      track.enabled = !track.enabled;
+      console.log(`Toggled audio track: enabled=${track.enabled}`);
+    });
     setIsMuted(!isMuted);
+    console.log(`Mute state: isMuted=${!isMuted}`);
     ws.send(JSON.stringify({ type: 'status_update', muted: !isMuted, camera_off: isCameraOff }));
   };
 
   const toggleCamera = () => {
     if (!stream) {
       setError('No stream available to toggle camera.');
+      console.error('No stream for toggleCamera');
       return;
     }
     const videoTracks = stream.getVideoTracks();
     if (videoTracks.length === 0) {
       setError('No video tracks available.');
+      console.error('No video tracks for toggleCamera');
       return;
     }
-    audioTracks.forEach((track) => (track.enabled = !track.enabled));
-    setIsMuted(!isMuted);
-    ws.send(JSON.stringify({ type: 'status_update', muted: !isMuted, camera_off: isCameraOff }));
+    videoTracks.forEach((track) => {
+      track.enabled = !track.enabled;
+      console.log(`Toggled video track: enabled=${track.enabled}`);
+    });
+    setIsCameraOff(!isCameraOff);
+    console.log(`Camera state: isCameraOff=${!isCameraOff}`);
+    ws.send(JSON.stringify({ type: 'status_update', muted: isMuted, camera_off: !isCameraOff }));
   };
 
   if (showCallOptions) {
@@ -490,6 +577,7 @@ const WebRTCComponent = () => {
                       playsInline
                       muted
                       className={styles.localVideo}
+                      onError={(e) => console.error('Local video error:', e)}
                     />
                   )}
                   <div className={styles.participantName}>
@@ -519,9 +607,14 @@ const WebRTCComponent = () => {
                           className={styles.remoteVideo}
                           ref={(video) => {
                             if (video && remoteStreams.has(student.id)) {
-                              video.srcObject = remoteStreams.get(student.id);
+                              const stream = remoteStreams.get(student.id);
+                              if (video.srcObject !== stream) {
+                                video.srcObject = stream;
+                                console.log(`Set remote video srcObject for ${student.id}:`, stream);
+                              }
                             }
                           }}
+                          onError={(e) => console.error(`Remote video error for ${student.id}:`, e)}
                         />
                       )}
                       <div className={styles.participantName}>
@@ -539,7 +632,7 @@ const WebRTCComponent = () => {
               </button>
               <button className={styles.camButton} onClick={toggleCamera}>
                 <img
-                  src={isCameraOff ? OffcamIcon : OpencamIcon}
+                  src={isCameraOff ? OpencamIcon : OffcamIcon}
                   alt="Toggle Camera"
                 />
               </button>
