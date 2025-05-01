@@ -208,7 +208,7 @@ const Notes = () => {
                                 />
                                 <label className={styles.label}>Category Color:</label>
                                 <div className={styles.colorPicker}>
-                                    {['#FF5733', '#33FF57', '#3357FF', '#FFD700'].map((c) => (
+                                    {['#FFB3BA', '#B3E5FC', '#D4E157', '#FFCCBC'].map((c) => (
                                         <button
                                             key={c}
                                             className={`${styles.colorOption} ${color === c ? styles.selected : ''}`}

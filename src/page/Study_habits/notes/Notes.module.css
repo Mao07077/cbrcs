@@ -71,6 +71,7 @@
     overflow-wrap: break-word;
     white-space: normal;
     border-left: 5px solid transparent; /* Default border color */
+    margin-left: 50px;
 }
 
 .note_title {
