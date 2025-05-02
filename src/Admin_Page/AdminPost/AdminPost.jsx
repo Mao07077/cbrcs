@@ -16,8 +16,6 @@ const AdminPost = () => {
   });
   const [introImage, setIntroImage] = useState(null);
   const [newsContent, setNewsContent] = useState('');
-  const [loginImage, setLoginImage] = useState(null);
-  const [signupImage, setSignupImage] = useState(null);
   const [newsImage, setNewsImage] = useState(null);
   const [courseImages, setCourseImages] = useState([null, null, null]);
   const [newsStyle, setNewsStyle] = useState({
@@ -149,38 +147,6 @@ const AdminPost = () => {
             >
               Edit Intro
             </button>
-          </div>
-
-          {/* Login Image */}
-          <div className={Styles.Editable_Image_Input}>
-            <label htmlFor="loginImageUpload">Upload Login Image:</label>
-            <input
-              type="file"
-              id="loginImageUpload"
-              accept="image/*"
-              onChange={(e) => handleSingleImageUpload(e, setLoginImage)}
-            />
-            {loginImage && (
-              <div className={Styles.Image_Previews}>
-                <img src={URL.createObjectURL(loginImage)} alt="Login Preview" />
-              </div>
-            )}
-          </div>
-
-          {/* Signup Image */}
-          <div className={Styles.Editable_Image_Input}>
-            <label htmlFor="signupImageUpload">Upload Signup Image:</label>
-            <input
-              type="file"
-              id="signupImageUpload"
-              accept="image/*"
-              onChange={(e) => handleSingleImageUpload(e, setSignupImage)}
-            />
-            {signupImage && (
-              <div className={Styles.Image_Previews}>
-                <img src={URL.createObjectURL(signupImage)} alt="Signup Preview" />
-              </div>
-            )}
           </div>
 
           {/* News Section */}

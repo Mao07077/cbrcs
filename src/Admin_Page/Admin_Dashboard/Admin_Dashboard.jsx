@@ -79,15 +79,7 @@ const AdminDashboard = () => {
 							<h1> Number of Instructor/per season</h1>
 							<h2>{stats.totalStudents || 'Loading...'}</h2>
 						</div>
-						<div className={Styles.Stat_Card}>
-							<h1>number of Enrolled course's/per season</h1>
-							<h2>
-								{stats.engagementRate
-									? `${stats.engagementRate}%`
-									: 'Loading...'}
-							</h2>
-						</div>
-					</div>
+					</div>l
 
 					<div className={Styles.List_Students}>
 						<div className={Styles.Student}>

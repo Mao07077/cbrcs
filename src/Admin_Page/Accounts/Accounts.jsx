@@ -56,19 +56,19 @@ function Accounts() {
         navigate('/signup');
     };
 
-    const handleDelete = async (index) => {
-        const accountToDelete = filteredAccounts[index];
+    const handleArchive = async (index) => {
+        const accountToArchive = filteredAccounts[index];
         try {
             const response = await fetch(
-                `${API_URL}/api/accounts/${accountToDelete.accountNo}`,
-                { method: 'DELETE' }
+                `${API_URL}/api/accounts/${accountToArchive.accountNo}/archive`,
+                { method: 'POST' } // Assuming the API supports an archive endpoint
             );
             if (!response.ok) {
-                throw new Error('Failed to delete account');
+                throw new Error('Failed to archive account');
             }
-            setAccounts(accounts.filter((acc) => acc.accountNo !== accountToDelete.accountNo));
+            setAccounts(accounts.filter((acc) => acc.accountNo !== accountToArchive.accountNo));
         } catch (error) {
-            console.error('Error deleting account:', error);
+            console.error('Error archiving account:', error);
             setError(error.message);
         }
     };
@@ -198,10 +198,10 @@ function Accounts() {
                                             <td>{account.role}</td>
                                             <td>
                                                 <button
-                                                    onClick={() => handleDelete(index)}
+                                                    onClick={() => handleArchive(index)}
                                                     className={Styles.Delete_Button}
                                                 >
-                                                    Delete
+                                                    Archive
                                                 </button>
                                             </td>
                                         </tr>
