@@ -184,6 +184,9 @@ const Dashboard = ({ isModal = false }) => {
 								]}
 							/>
 						</div>
+						<p className={Styles.Disclaimer}>
+							Note: For new accounts, the progress starts at 60% as the standard passing threshold.
+						</p>
 					</div>
 					<div className={Styles.Section}>
 						<div className={Styles.StrengthWeaknessContainer}>

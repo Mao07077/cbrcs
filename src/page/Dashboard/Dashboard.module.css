@@ -243,6 +243,13 @@ body {
 	transform: translateX(-50%); /* Centers the border */
 }
 
+/* Disclaimer */
+.Disclaimer {
+	font-size: 14px;
+	color: #555;
+	text-align: center;
+	margin-top: 10px;
+}
 
 /* Fix ChartJS Overflow */
 canvas {
