@@ -1,45 +1,40 @@
 /* Page Layout */
 .page_container {
-	width: 100svw;
-	height: 100svh;
-	min-height: 100svh;
+	width: 100vw;
+	height: 100vh;
+	min-height: 100vh;
+	background: #f8f9fa; /* Light background */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between; /* Ensure footer stays at the bottom */
 }
+
 .container_wrapper {
 	display: flex;
 	width: 100%;
 	height: 100%;
-}
-.music_wrapper {
-	display: flex;
-	width: 100%;
-	height: 100%;
 	justify-content: center;
-	align-items: center !important;
+	align-items: flex-start;
+	padding-top: 20px;
 }
+
 /* Music Player Container */
 .music_player_container {
-	background: linear-gradient(
-		to bottom,
-		#0f172a,
-		#1e40af
-	); /* Dark modern gradient */
-	padding: 40px;
-	border-radius: 20px;
-	box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-	width: 600px;
-	height: 600px;
+	background: #ffffff;
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	width: 80%;
+	max-width: 900px;
 	text-align: center;
-
-	display: flex;
-	flex-direction: column;
-	align-items: center;
 }
 
 /* Header */
 .header {
-	font-size: 28px;
+	font-size: 24px;
 	font-weight: bold;
-	color: #1e3a8a;
+	color: #0d47a1;
 	margin-bottom: 20px;
 }
 
@@ -176,23 +171,153 @@
 	color: #fefafa;
 	letter-spacing: 0.5px;
 }
-@media (max-width: 1000px) {
-	.container_wrapper {
-		margin-top: 30px;
-		margin-left:70px;
-		display: flex;
-		justify-content: center;
-		width: 80%;
-		height: 100%;
-	}
+
+/* YouTube Input */
+.youtubeInput {
+	display: flex;
+	gap: 10px;
+	margin-bottom: 20px;
+	justify-content: center; /* Align buttons and input horizontally */
+	align-items: center; /* Align buttons and input vertically */
 }
-@media (max-width: 600px) {
-	.container_wrapper {
-		margin-top: 30px;
-		margin-left:50px;
-		display: flex;
-		justify-content: center;
-		width: 80%;
-		height: 100%;
+
+.youtubeInput input {
+	flex: 1;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 16px;
+}
+
+.youtubeInput button {
+	background: #1976d2;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 16px;
+	transition: background 0.3s ease;
+}
+
+.youtubeInput button:nth-child(3) { /* Target "Add to Playlist" button */
+	min-width: 150px; /* Ensure the button can expand dynamically */
+	white-space: nowrap; /* Prevent text wrapping */
+}
+
+.youtubeInput button:hover {
+	background: #1565c0;
+}
+
+/* Playlist Section */
+.customPlaylist {
+	margin-top: 20px;
+	background: #f1f5f9;
+	padding: 15px;
+	border-radius: 10px;
+	width: 100%;
+	box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.customPlaylist h3 {
+	font-size: 18px;
+	color: #0d47a1;
+	margin-bottom: 10px;
+	text-align: left;
+}
+
+.customPlaylist p {
+	color: #6c757d;
+	font-size: 14px;
+	text-align: center;
+}
+
+.customPlaylist div {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px;
+	border-bottom: 1px solid #ddd;
+	font-size: 14px;
+	color: #333;
+	cursor: pointer;
+	transition: background 0.3s ease;
+}
+
+.customPlaylist div:hover {
+	background: #e9ecef;
+}
+
+.customPlaylist div:last-child {
+	border-bottom: none;
+}
+
+.customPlaylist button {
+	background: #d32f2f;
+	color: white;
+	border: none;
+	padding: 5px 10px;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 12px;
+	transition: background 0.3s ease;
+}
+
+.customPlaylist button:hover {
+	background: #b71c1c;
+}
+
+/* YouTube Video Player */
+.youtubePlayerContainer {
+	margin-top: 20px;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.youtubePlayerContainer iframe {
+	width: 100%;
+	max-width: 800px;
+	height: 450px;
+	border: none;
+	border-radius: 10px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer */
+footer {
+	width: 100%; /* Ensure the footer spans the full width */
+	background: #0f172a; /* Match the dark gradient theme */
+	color: #ffffff;
+	text-align: center;
+	padding: 10px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+	.music_player_container {
+		width: 90%;
+		padding: 15px;
+	}
+
+	.youtubeInput input {
+		font-size: 14px;
+	}
+
+	.youtubeInput button {
+		font-size: 14px;
+		padding: 8px 15px;
+	}
+
+	.customPlaylist h3 {
+		font-size: 16px;
+	}
+
+	.customPlaylist div {
+		font-size: 12px;
+	}
+
+	.youtubePlayerContainer iframe {
+		height: 300px;
 	}
 }
