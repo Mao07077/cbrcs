@@ -233,6 +233,7 @@ body {
 	width: 100%;
 	border-collapse: collapse;
 	margin-top: 20px;
+	margin-left: -8px;
 	font-size: 1em;
 	border-radius: 5px;
 	overflow: hidden;
@@ -386,4 +387,96 @@ body {
 		transition: all 0.3s ease-in-out;
 		font-size: 0.7em; /* Increased font size */
 	}
+	.Maincontainer{
+		width: 100%;
+	}
+}
+@media (max-width: 375px) {
+.Maincontainer{
+	display: flex;
+	width: 100%;
+}
+.Content_Wrapper{
+	width: 100%;
+}
+.Search_Input {
+	display: flex;
+	justify-content: center;
+	height: 30px;
+	padding: 4px 6px;
+	border: 0.5px solid #ccc;
+	border-radius: 3px;
+	font-size: 5px;
+	outline: none;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.Search_Container {
+	display: flex;
+	justify-content: center;
+	align-items: center; 
+	gap: 5px; 
+}
+.Search_Container h2{
+	font-size: 0.7em;
+}
+.Create_Button {
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	width: 200px;
+	height: 35px;
+	cursor: pointer;
+	font-size: 0.7em;
+	font-weight: bold;
+	transition: all 0.3s ease-in-out;
+	margin-top: 10px;
+}
+
+.Filter_Section {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+	align-items: center;
+	justify-content: flex-start;
+	width: 80%;
+	margin-bottom: 20px;
+	margin-top: -10px;
+	padding: 10px;
+	border-bottom: 1px solid #ccc;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.Role_Container h2 {
+	font-size: 0.7em;
+}
+.Role_Dropdown {
+	width: 100px;
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: #fff;
+	font-size: 0.7em;
+	font-weight: bold;
+	cursor: pointer;
+	outline: none;
+	transition: all 0.3s ease-in-out;
+}
+.Table {
+	width: 80%;
+	border-collapse: collapse;
+	margin-top: 20px;
+	font-size: 0.5em;
+	border-radius: 5px;
+	overflow: hidden;
+}
+.Delete_Button {
+	background: #dc3545;
+	color: #fff;
+	padding: 10px 10px; /* Increased padding */
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+	font-size: 0.7em; /* Increased font size */
+}
 }
