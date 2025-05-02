@@ -23,8 +23,15 @@ const routes = [
 		routePath: '/Request',
 		routeIcon: <SquarePen></SquarePen>,
 	},
+	{
+		routeName: 'Logout',
+		routePath: '/',
+		routeIcon: <SquarePen></SquarePen>,
+	},
 ];
+
 
 export default function Admin_Sidebar() {
 	return <Sidebar routes={routes}></Sidebar>;
+	
 }
