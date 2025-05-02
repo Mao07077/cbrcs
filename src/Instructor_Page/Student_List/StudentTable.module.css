@@ -111,6 +111,10 @@ body {
 	gap: 8px;
 	width: 300px;
 }
+.Input{
+	display: flex;
+	
+}
 
 .buttons {
 	width: 100%;
@@ -183,7 +187,7 @@ body {
 	}
 	.Input{
 		
-		width: 50%;
+		width: 100%;
 
 	}
 	.Content_Wrapper {
@@ -229,11 +233,7 @@ body {
 	.Menu span {
 		font-size: 10px;
 	}
-	.Input{
-		width: 50%;
-	}
-	.input{
-		width: 500px;}
+	
 	
 		.Table {
 			width: 70%;
@@ -279,11 +279,7 @@ body {
 			width: 70%;
 		}
 		
-		.Input{
-			
-			width: 50%;
-	
-		}
+		
 		.Content_Wrapper {
 			display: flex;
 		}
@@ -291,7 +287,10 @@ body {
 			font-size: 0.9em;
 		}
 	}
-	@media (max-width: 375px) {
+	
+	@media (max-width: 405px) {
+		.Maincontainer{
+			width: 100%;}
 		.Greeting_Studentlist {
 			display: flex;
 			justify-content: flex-start;
@@ -331,17 +330,14 @@ body {
 		.Menu span {
 			font-size: 10px;
 		}
-		.Input{
-			width: 50%;
-		}
-		.input{
-			width: 500px;}
+		
 		
 			.Table {
 				width: 70%;
 				border-collapse: collapse;
 				text-align: center;
 				margin-top: 20px;
+				margin-left: -10px;
 				font-size: 0.6em;
 			}
 		
@@ -378,11 +374,7 @@ body {
 				font-size: 1.2em;
 				width: 100%;
 			}
-			.Input{
-				
-				width: 50%;
-		
-			}
+			
 			.Content_Wrapper {
 				flex: 1 ;
 				display: flex;
@@ -425,11 +417,7 @@ body {
 			.Menu span {
 				font-size: 10px;
 			}
-			.Input{
-				width: 50%;
-			}
-			.input{
-				width: 500px;}
+			
 			
 				.Table {
 					width: 70%;
@@ -476,11 +464,7 @@ body {
 					font-size: 1.2em;
 					width: 80%;
 				}
-				.Input{
-					
-					width: 50%;
-			
-				}
+				
 				.Content_Wrapper {
 					flex: 1;
 					display: flex;
@@ -505,6 +489,3 @@ body {
 	box-sizing: border-box;
 }
 
-.Input{
-	width: 20%;
-}
