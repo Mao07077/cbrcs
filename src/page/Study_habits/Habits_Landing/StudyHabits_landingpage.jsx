@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './studyhabits.css';
-
-import Icon from '../../../icon/actual.png';
 import Study_Habits_Sidebar from '../../../Components/Study_Habits_Sidebar';
 import Header from '../../../Components/composables/HeaderSH';
 import Footer from '../../../Components/composables/FooterSH';
