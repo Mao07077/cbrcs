@@ -1,104 +1,128 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './MusicPlayer.module.css';
 import Header from '../../../Components/composables/Header';
 import Footer from '../../../Components/composables/Footer';
 
+const genres = {
+	Pop: [
+		{
+			title: 'Sunny Day',
+			src: 'https://www.bensound.com/bensound-music/bensound-sunny.mp3',
+		},
+		{
+			title: 'Acoustic Breeze',
+			src: 'https://www.bensound.com/bensound-music/bensound-acousticbreeze.mp3',
+		},
+		{
+			title: 'Memories',
+			src: 'https://www.bensound.com/bensound-music/bensound-memories.mp3',
+		},
+	],
+	Rock: [
+		{
+			title: 'Extreme Action',
+			src: 'https://www.bensound.com/bensound-music/bensound-extremeaction.mp3',
+		},
+		{
+			title: 'Energy',
+			src: 'https://www.bensound.com/bensound-music/bensound-energy.mp3',
+		},
+		{
+			title: 'Rock and Roll',
+			src: 'https://www.bensound.com/bensound-music/bensound-rockandroll.mp3',
+		},
+	],
+	Jazz: [
+		{
+			title: 'The Jazz Piano',
+			src: 'https://www.bensound.com/bensound-music/bensound-thejazzpiano.mp3',
+		},
+		{
+			title: 'Slow Jazz',
+			src: 'https://www.bensound.com/bensound-music/bensound-slowjazz.mp3',
+		},
+		{
+			title: 'Sexy',
+			src: 'https://www.bensound.com/bensound-music/bensound-sexy.mp3',
+		},
+	],
+};
+
 const MusicPlayer = () => {
-	const [youtubeURL, setYoutubeURL] = useState('');
-	const [customPlaylist, setCustomPlaylist] = useState([]);
-	const [currentVideo, setCurrentVideo] = useState('');
+	const [selectedGenre, setSelectedGenre] = useState('Pop');
+	const [currentSong, setCurrentSong] = useState(genres['Pop'][0]);
+	const [isPlaying, setIsPlaying] = useState(false);
+	const audioRef = useRef(null);
 
-	const fetchVideoDetails = async (url) => {
-		try {
-			const videoId = new URL(url).searchParams.get('v');
-			const response = await fetch(
-				`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=YOUR_API_KEY&part=snippet`
-			);
-			const data = await response.json();
-			const snippet = data.items[0]?.snippet;
-			return {
-				title: snippet?.title || 'Unknown Title',
-				thumbnail: snippet?.thumbnails?.default?.url || '',
-			};
-		} catch {
-			return { title: 'Unknown Title', thumbnail: '' };
+	useEffect(() => {
+		if (isPlaying) {
+			audioRef.current.play();
+		} else {
+			audioRef.current.pause();
 		}
+	}, [isPlaying, currentSong]);
+
+	const handleGenreChange = (genre) => {
+		setSelectedGenre(genre);
+		setCurrentSong(genres[genre][0]);
+		setIsPlaying(false);
 	};
 
-	const handleAddToPlaylist = async () => {
-		if (youtubeURL.trim() && !customPlaylist.some((item) => item.url === youtubeURL)) {
-			const { title, thumbnail } = await fetchVideoDetails(youtubeURL);
-			setCustomPlaylist([...customPlaylist, { url: youtubeURL, title, thumbnail }]);
-			setYoutubeURL('');
-		}
+	const handleNextSong = () => {
+		const songList = genres[selectedGenre];
+		const currentIndex = songList.indexOf(currentSong);
+		const nextIndex = (currentIndex + 1) % songList.length;
+		setCurrentSong(songList[nextIndex]);
 	};
 
-	const handlePlayNow = () => {
-		if (youtubeURL.trim()) {
-			setCurrentVideo(youtubeURL);
-		}
-	};
-
-	const handleRemoveFromPlaylist = (url) => {
-		setCustomPlaylist(customPlaylist.filter((video) => video.url !== url));
-	};
-
-	const handlePlayVideo = (url) => {
-		setCurrentVideo(url);
+	const handlePlayPause = () => {
+		setIsPlaying(!isPlaying);
 	};
 
 	return (
 		<div className={styles.page_container}>
 			<Header isStudyHabits={true}></Header>
 			<div className={styles.container_wrapper}>
-				<div className={styles.music_player_container}>
-					<h2 className={styles.header}>YouTube Music Player</h2>
+				<div className={styles.music_wrapper}>
+					<div className={styles.music_player_container}>
+						<h2 className={styles.header}>Music Player</h2>
 
-					<div className={styles.youtubeInput}>
-						<input
-							type="text"
-							placeholder="Enter YouTube URL"
-							value={youtubeURL}
-							onChange={(e) => setYoutubeURL(e.target.value)}
-						/>
-						<button onClick={handlePlayNow}>Play Now</button>
-						<button onClick={handleAddToPlaylist}>Add to Playlist</button>
-					</div>
+						<div className={styles.genreSelector}>
+							{Object.keys(genres).map((genre) => (
+								<button key={genre} onClick={() => handleGenreChange(genre)}>
+									{genre}
+								</button>
+							))}
+						</div>
 
-					<div className={styles.youtubePlayerContainer}>
-						{currentVideo && (
-							<iframe
-								src={currentVideo.replace('watch?v=', 'embed/')}
-								title="YouTube Video Player"
-								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-								allowFullScreen
-							></iframe>
-						)}
-					</div>
-
-					<div className={styles.customPlaylist}>
-						<h3>Your Playlist</h3>
-						{customPlaylist.length === 0 ? (
-							<p>No videos in the playlist</p>
-						) : (
-							customPlaylist.map((video, index) => (
-								<div key={index} onClick={() => handlePlayVideo(video.url)}>
-									<img src={video.thumbnail} alt={video.title} />
-									<span>{video.title}</span>
-									<button
-										onClick={(e) => {
-											e.stopPropagation();
-											handleRemoveFromPlaylist(video.url);
-										}}
-									>
-										Remove
-									</button>
+						<div className={styles.songList}>
+							{genres[selectedGenre].map((song) => (
+								<div
+									key={song.title}
+									className={song === currentSong ? styles.activeSong : ''}
+									onClick={() => setCurrentSong(song)}
+								>
+									{song.title}
 								</div>
-							))
-						)}
+							))}
+						</div>
+
+						<div className={styles.controls}>
+							<button onClick={handlePlayPause}>
+								{isPlaying ? 'Pause' : 'Play'}
+							</button>
+							<button onClick={handleNextSong}>Next</button>
+						</div>
+
+						<div className={styles.nowPlaying}>
+							Now Playing: {currentSong.title}
+						</div>
+
+						<audio ref={audioRef} src={currentSong.src} />
 					</div>
 				</div>
 			</div>
+
 			<Footer></Footer>
 		</div>
 	);
