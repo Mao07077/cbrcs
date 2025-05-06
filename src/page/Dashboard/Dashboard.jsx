@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Styles from './Dashboard.module.css';
-
 import {
-	Chart as ChartJS,
-	CategoryScale,
-	LinearScale,
-	BarElement,
-	ArcElement,
-	Tooltip,
-	Legend,
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    ArcElement,
+    Tooltip,
+    Legend,
 } from 'chart.js';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import Header from '../../Components/composables/Header';
@@ -17,229 +16,302 @@ import Student_Sidebar from '../../Components/Student_Sidebar';
 import Footer from '../../Components/composables/Footer';
 
 ChartJS.register(
-	CategoryScale,
-	LinearScale,
-	BarElement,
-	ArcElement,
-	Tooltip,
-	Legend
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    ArcElement,
+    Tooltip,
+    Legend
 );
 
 const SidebarItem = ({ icon, text, onClick }) => (
-	<li>
-		<button className="sidebar-item" onClick={onClick}>
-			<img src={icon} alt={text} className="sidebar-icon" />
-			<span>{text}</span>
-		</button>
-	</li>
+    <li>
+        <button className="sidebar-item" onClick={onClick}>
+            <img src={icon} alt={text} className="sidebar-icon" />
+            <span>{text}</span>
+        </button>
+    </li>
 );
 
 const Dashboard = ({ isModal = false }) => {
-	const handleNavigation = (route) => {
-		console.log(`Navigating to: ${route}`);
-		window.location.href = `/${route}`;
-	};
+    const handleNavigation = (route) => {
+        console.log(`Navigating to: ${route}`);
+        window.location.href = `/${route}`;
+    };
 
-	const [idNumber, setIdNumber] = useState(localStorage.getItem('userIdNumber') || '');
-	const [progress, setProgress] = useState(60);
-	const [error, setError] = useState(null);
-	const [barChartData, setBarChartData] = useState({
-		labels: [],
-		datasets: [],
-	});
-	const [top3Habits, setTop3Habits] = useState([]);
+    const [idNumber, setIdNumber] = useState(localStorage.getItem('userIdNumber') || '');
+    const [progress, setProgress] = useState(60);
+    const [error, setError] = useState(null);
+    const [preTestChartData, setPreTestChartData] = useState({
+        labels: [],
+        datasets: [],
+    });
+    const [postTestChartData, setPostTestChartData] = useState({
+        labels: [],
+        datasets: [],
+    });
+    const [top3Habits, setTop3Habits] = useState([]);
 
-	// Dynamically set API_URL based on the environment
-	const API_URL = process.env.REACT_APP_API_URL || 
-    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
+    // Dynamically set API_URL based on the environment
+    const API_URL = process.env.REACT_APP_API_URL || 
+        (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
 
-	useEffect(() => {
-		if (!idNumber) {
-			setError('User not logged in');
-			return;
-		}
+    useEffect(() => {
+        if (!idNumber) {
+            setError('User not logged in');
+            return;
+        }
 
-		const fetchDashboardData = async () => {
-			try {
-				// Fetching post-test data
-				const response = await axios.get(`${API_URL}/api/dashboard/${idNumber}`);
-				const { post_tests } = response.data;
+        const fetchDashboardData = async () => {
+            try {
+                // Fetching dashboard data including pre-tests and post-tests
+                const response = await axios.get(`${API_URL}/api/dashboard/${idNumber}`);
+                const { pre_tests, post_tests } = response.data;
 
-				if (post_tests) {
-					setBarChartData({
-						labels: post_tests.map(
-							(test) => test.post_test_title || 'Unknown Post-Test'
-						),
-						datasets: [
-							{
-								label: 'Correct',
-								data: post_tests.map((test) => test.correct || 0),
-								backgroundColor: 'rgba(75, 192, 192, 0.6)',
-							},
-							{
-								label: 'Incorrect',
-								data: post_tests.map((test) => test.incorrect || 0),
-								backgroundColor: 'rgba(255, 99, 132, 0.6)',
-							},
-							{
-								label: 'Total Questions',
-								data: post_tests.map((test) => test.total_questions || 0),
-								backgroundColor: 'rgba(86, 14, 230, 0.6)',
-							},
-						],
-					});
-				}
+                // Process pre-test data for bar chart
+                if (pre_tests && pre_tests.length > 0) {
+                    const preTestLabels = pre_tests.map(
+                        (test) => test.pre_test_title || 'Unknown Pre-Test'
+                    );
+                    setPreTestChartData({
+                        labels: preTestLabels,
+                        datasets: [
+                            {
+                                label: 'Pre-Test Correct',
+                                data: pre_tests.map((test) => test.correct || 0),
+                                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1,
+                            },
+                            {
+                                label: 'Pre-Test Incorrect',
+                                data: pre_tests.map((test) => test.incorrect || 0),
+                                backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1,
+                            },
+                            {
+                                label: 'Pre-Test Total Questions',
+                                data: pre_tests.map((test) => test.total_questions || 0),
+                                backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                                borderColor: 'rgba(153, 102, 255, 1)',
+                                borderWidth: 1,
+                            },
+                            {
+                                label: 'Pre-Test Time Spent (min)',
+                                data: pre_tests.map((test) => Math.floor((test.time_spent || 0) / 60)),
+                                backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                                borderColor: 'rgba(255, 159, 64, 1)',
+                                borderWidth: 1,
+                            },
+                        ],
+                    });
+                }
 
-				// Fetching recommended study habits
-				const habitsResponse = await axios.get(`${API_URL}/students/${idNumber}/recommended-pages`);
-				setTop3Habits(habitsResponse.data.recommendedPages || []);
-			} catch (error) {
-				setError('Failed to fetch dashboard data');
-				console.error(error);
-			}
-		};
+                // Process post-test data for bar chart
+                if (post_tests && post_tests.length > 0) {
+                    const postTestLabels = post_tests.map(
+                        (test) => test.post_test_title || 'Unknown Post-Test'
+                    );
+                    setPostTestChartData({
+                        labels: postTestLabels,
+                        datasets: [
+                            {
+                                label: 'Post-Test Correct',
+                                data: post_tests.map((test) => test.correct || 0),
+                                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1,
+                            },
+                            {
+                                label: 'Post-Test Incorrect',
+                                data: post_tests.map((test) => test.incorrect || 0),
+                                backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1,
+                            },
+                            {
+                                label: 'Post-Test Total Questions',
+                                data: post_tests.map((test) => test.total_questions || 0),
+                                backgroundColor: 'rgba(86, 14, 230, 0.6)',
+                                borderColor: 'rgba(86, 14, 230, 1)',
+                                borderWidth: 1,
+                            },
+                            {
+                                label: 'Post-Test Time Spent (min)',
+                                data: post_tests.map((test) => Math.floor((test.time_spent || 0) / 60)),
+                                backgroundColor: 'rgba(255, 206, 86, 0.6)',
+                                borderColor: 'rgba(255, 206, 86, 1)',
+                                borderWidth: 1,
+                            },
+                        ],
+                    });
+                }
 
-		fetchDashboardData();
-	}, [idNumber]);
+                // Fetching recommended study habits
+                const habitsResponse = await axios.get(`${API_URL}/students/${idNumber}/recommended-pages`);
+                setTop3Habits(habitsResponse.data.recommendedPages || []);
+            } catch (error) {
+                setError('Failed to fetch dashboard data');
+                console.error(error);
+            }
+        };
 
-	if (error) {
-		return <div>Error: {error}</div>;
-	}
+        fetchDashboardData();
+    }, [idNumber]);
 
-	const progressData = {
-		labels: ['Completed', 'Remaining'],
-		datasets: [
-			{
-				data: [progress, 100 - progress],
-				backgroundColor: ['#FFD700', '#1E40AF'],
-			},
-		],
-	};
-	const updatedBarChartData = {
-		labels: barChartData.labels,
-		datasets: barChartData.datasets.map((dataset) => ({
-			...dataset,
-		})),
-	};
+    if (error) {
+        return <div className="text-red-500 text-center py-10">Error: {error}</div>;
+    }
 
-	return (
-		<div className={Styles.MainContainer}>
-			<Header></Header>
-			<div className={Styles.Content_Wrapper}>
-				<Student_Sidebar></Student_Sidebar>
-				<div className={Styles.Content}>
-					<div className={Styles.Title}>
-						<h2>Dashboard</h2>
-					</div>
-					<div className={Styles.PerformanceOverview}>
-						<h2>Performance Overview</h2>
-						<p>Track your progress </p>
-							<div className={Styles.ProgressContainer}>
-							<Doughnut
-								data={progressData}
-								options={{
-									responsive: true,
-									maintainAspectRatio: false,
-									cutout: '70%', // Ensures the hole in the middle
-									plugins: {
-										tooltip: { enabled: false }, // Disable tooltips
-										legend: { display: false }, // Hide legend if not needed
-									},
-								}}
-								plugins={[
-									{
-										id: 'centerText',
-										afterDraw: (chart) => {
-											const {
-												ctx,
-												chartArea: { left, right, top, bottom },
-											} = chart;
+    const progressData = {
+        labels: ['Completed', 'Remaining'],
+        datasets: [
+            {
+                data: [progress, 100 - progress],
+                backgroundColor: ['#FFD700', '#1E40AF'],
+            },
+        ],
+    };
 
-											// Save the current context state
-											ctx.save();
+    const chartOptions = {
+        responsive: true,
+        scales: {
+            y: { beginAtZero: true, title: { display: true, text: 'Value' } },
+            x: {
+                stacked: false,
+                grouped: true,
+                categoryPercentage: 0.7,
+                barPercentage: 0.3,
+            },
+        },
+        plugins: {
+            legend: { display: true, position: 'top' },
+        },
+    };
 
-											// Adjust font size dynamically based on chart size and screen width
-											const isMobile = window.innerWidth <= 768; // Define mobile view
-											const fontSize = isMobile
-												? Math.min((right - left) / 7, 16) // Smaller font size for mobile
-												: Math.min((right - left) / 5, 24); // Default font size for larger screens
+    return (
+        <div className={Styles.MainContainer}>
+            <Header />
+            <div className={Styles.Content_Wrapper}>
+                <Student_Sidebar />
+                <div className={Styles.Content}>
+                    <div className={Styles.Title}>
+                        <h2>Dashboard</h2>
+                    </div>
+                    <div className={Styles.PerformanceOverview}>
+                        <h2>Performance Overview</h2>
+                        <p>Track your progress</p>
+                        <div className={Styles.ProgressContainer}>
+                            <Doughnut
+                                data={progressData}
+                                options={{
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    cutout: '70%',
+                                    plugins: {
+                                        tooltip: { enabled: false },
+                                        legend: { display: false },
+                                    },
+                                }}
+                                plugins={[
+                                    {
+                                        id: 'centerText',
+                                        afterDraw: (chart) => {
+                                            const {
+                                                ctx,
+                                                chartArea: { left, right, top, bottom },
+                                            } = chart;
 
-											// Set font and text properties
-											ctx.font = `bold ${fontSize}px Arial`;
-											ctx.fillStyle = '#000'; // Set text color
-											ctx.textAlign = 'center';
-											ctx.textBaseline = 'middle';
+                                            ctx.save();
 
-											// Calculate exact center position
-											const centerX = (left + right) / 2;
-											const centerY = (top + bottom) / 2;
+                                            const isMobile = window.innerWidth <= 768;
+                                            const fontSize = isMobile
+                                                ? Math.min((right - left) / 7, 16)
+                                                : Math.min((right - left) / 5, 24);
 
-											// Draw the percentage in the middle of the doughnut
-											ctx.fillText(`${progress}%`, centerX, centerY);
+                                            ctx.font = `bold ${fontSize}px Arial`;
+                                            ctx.fillStyle = '#000';
+                                            ctx.textAlign = 'center';
+                                            ctx.textBaseline = 'middle';
 
-											// Restore the context state
-											ctx.restore();
-										},
-									},
-								]}
-							/>
-						</div>
-						<p className={Styles.Disclaimer}>
-							Note: For new accounts, the progress starts at 60% as the standard passing threshold.
-						</p>
-					</div>
-					<div className={Styles.Section}>
-						<div className={Styles.StrengthWeaknessContainer}>
-							<div className={Styles.StrengthCard}>Strength</div>
-							<div className={Styles.WeaknessCard}>Weakness</div>
-						</div>
-						<section className={Styles.StudyHabitsSection}>
-							<h3>Top 3 Study Habits:</h3>
-							<div className={Styles.HabitsWrapper}>
-								{top3Habits.length > 0 ? (
-									top3Habits.map((habit, index) => (
-										<div
-											key={index}
-											className={Styles.HabitCard}
-											onClick={() => handleNavigation(habit)} // Navigate based on the habit
-										>
-											<h4 className={Styles.HabitTitle}>{habit}</h4>
-											<p className={Styles.HabitDescription}>Description for {habit}</p>
-										</div>
-									))
-								) : (
-									<p>No recommended study habits found.</p>
-								)}
-							</div>
-						</section>
-						<section className={Styles.ProgressChartSection}>
-							<h3>Post-Test Scores</h3>
-							<Bar
-								data={updatedBarChartData}
-								options={{
-									responsive: true,
-									scales: {
-										y: { beginAtZero: true },
-										x: {
-											stacked: false,
-											grouped: true,
-											categoryPercentage: 0.7, // Slightly increase category width allocation
-											barPercentage: 0.3, // Significantly decrease bar width percentage for thinner bars
-										},
-									},
-									plugins: {
-										legend: { display: true },
-									},
-								}}
-							/>
-						</section>
-					</div>
-				</div>
-			</div>
+                                            const centerX = (left + right) / 2;
+                                            const centerY = (top + bottom) / 2;
 
-			<Footer></Footer>
-		</div>
-	);
+                                            ctx.fillText(`${progress}%`, centerX, centerY);
+
+                                            ctx.restore();
+                                        },
+                                    },
+                                ]}
+                            />
+                        </div>
+                        <p className={Styles.Disclaimer}>
+                            Note: For new accounts, the progress starts at 60% as the standard passing threshold.
+                        </p>
+                    </div>
+                    <div className={Styles.Section}>
+                        <div className={Styles.StrengthWeaknessContainer}>
+                            <div className={Styles.StrengthCard}>Strength</div>
+                            <div className={Styles.WeaknessCard}>Weakness</div>
+                        </div>
+                        <section className={Styles.StudyHabitsSection}>
+                            <h3>Top 3 Study Habits:</h3>
+                            <div className={Styles.HabitsWrapper}>
+                                {top3Habits.length > 0 ? (
+                                    top3Habits.map((habit, index) => (
+                                        <div
+                                            key={index}
+                                            className={Styles.HabitCard}
+                                            onClick={() => handleNavigation(habit)}
+                                        >
+                                            <h4 className={Styles.HabitTitle}>{habit}</h4>
+                                            <p className={Styles.HabitDescription}>Description for {habit}</p>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p>No recommended study habits found.</p>
+                                )}
+                            </div>
+                        </section>
+                        <section className={Styles.ProgressChartSection}>
+                            <h3>Pre-Test Performance</h3>
+                            {preTestChartData.labels.length > 0 ? (
+                                <Bar
+                                    data={preTestChartData}
+                                    options={{
+                                        ...chartOptions,
+                                        plugins: {
+                                            ...chartOptions.plugins,
+                                            title: { display: true, text: 'Pre-Test Scores' },
+                                        },
+                                    }}
+                                />
+                            ) : (
+                                <p>No pre-test scores available.</p>
+                            )}
+                            <h3 className="mt-6">Post-Test Performance</h3>
+                            {postTestChartData.labels.length > 0 ? (
+                                <Bar
+                                    data={postTestChartData}
+                                    options={{
+                                        ...chartOptions,
+                                        plugins: {
+                                            ...chartOptions.plugins,
+                                            title: { display: true, text: 'Post-Test Scores' },
+                                        },
+                                    }}
+                                />
+                            ) : (
+                                <p>No post-test scores available.</p>
+                            )}
+                        </section>
+                    </div>
+                </div>
+            </div>
+            <Footer />
+        </div>
+    );
 };
 
 export default Dashboard;

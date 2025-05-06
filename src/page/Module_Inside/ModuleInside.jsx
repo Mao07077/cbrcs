@@ -25,7 +25,6 @@ const ModuleInside = () => {
           throw new Error('User not logged in');
         }
 
-        // Check module status
         const statusResponse = await fetch(`${API_URL}/api/module-status/${id}/${userId}`);
         if (!statusResponse.ok) {
           throw new Error('Failed to fetch module status');
@@ -33,13 +32,11 @@ const ModuleInside = () => {
         const statusData = await statusResponse.json();
         setModuleStatus(statusData);
 
-        // Redirect to pre-test if not completed
         if (!statusData.pre_test_completed && !isInstructor) {
           navigate(`/pre-test/${id}`);
           return;
         }
 
-        // Fetch module data
         const moduleResponse = await fetch(`${API_URL}/api/modules/${id}`);
         if (!moduleResponse.ok) {
           throw new Error(`Failed to fetch module: ${moduleResponse.status}`);
@@ -123,25 +120,37 @@ const ModuleInside = () => {
                   Proceed to Post-Test
                 </button>
               )}
+              {moduleStatus.post_test_completed && (
+                <p className="completed-message">You have completed the post-test for this module.</p>
+              )}
             </div>
           </section>
+
+          <section className="module-details">
+            <h2>Module Details</h2>
+            <p><strong>Topic:</strong> {module.topic}</p>
+            <p><strong>Description:</strong> {module.description}</p>
+            <p><strong>Program:</strong> {module.program}</p>
+            <p><strong>Instructor ID:</strong> {module.id_number}</p>
+          </section>
+
+          {showPDF && (
+            <div className="pdf-modal-overlay" role="dialog" aria-labelledby="pdf-modal-title" onClick={() => setShowPDF(false)}>
+              <div className="pdf-modal" onClick={(e) => e.stopPropagation()}>
+                <h2 id="pdf-modal-title" className="sr-only">PDF Viewer</h2>
+                <button className="close-btn" onClick={() => setShowPDF(false)}>×</button>
+                <iframe
+                  src={`${API_URL}/${module.document_url}`}
+                  title="Module Document"
+                  width="100%"
+                  height="100%"
+                  onError={() => setError("Failed to load PDF document")}
+                />
+              </div>
+            </div>
+          )}
         </main>
       </div>
-
-      {showPDF && (
-        <div className="pdf-modal-overlay" onClick={() => setShowPDF(false)}>
-          <div className="pdf-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="close-btn" onClick={() => setShowPDF(false)}>×</button>
-            <iframe
-              src={`${API_URL}/${module.document_url}`}
-              title="PDF Viewer"
-              width="100%"
-              height="100%"
-              frameBorder="0"
-            ></iframe>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

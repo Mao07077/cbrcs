@@ -192,3 +192,88 @@
 		padding: 20px;
 	}
 }
+.page_container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content_wrapper {
+    flex: 1;
+    padding: 20px;
+}
+
+.module_container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.module_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.module_card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.module_image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.flashcard_btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.flashcard_btn:hover {
+    background-color: #0056b3;
+}
+
+.flashcard_btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.error_message {
+    color: red;
+    margin: 10px 0;
+}
+
+/* New styles for loading spinner */
+.loading_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

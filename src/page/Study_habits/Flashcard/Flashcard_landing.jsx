@@ -8,6 +8,7 @@ const FlashcardsLandingPage = () => {
     const [modules, setModules] = useState([]);
     const [error, setError] = useState(null);
     const [userProgram, setUserProgram] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     const API_URL =
@@ -57,29 +58,40 @@ const FlashcardsLandingPage = () => {
             .catch(error => setError(error.message));
     }, [userProgram, API_URL]);
 
-	const handleOpenFlashcards = async (moduleId) => {
-		try {
-			const res = await fetch(`${API_URL}/api/generate-flashcards/${moduleId}`, {
-				method: 'POST',
-			});
-			const data = await res.json();
-	
-			if (res.ok) {
-				navigate(`/flashcards/${moduleId}`, { state: { flashcards: data.flashcards } });
-			} else {
-				setError(data.message || 'Failed to generate flashcards');
-			}
-		} catch (err) {
-			setError('Error generating flashcards. Please try again.');
-		}
-	};
+    const handleOpenFlashcards = async (moduleId) => {
+        setIsLoading(true);
+        setError(null);
+        try {
+            const res = await fetch(`${API_URL}/api/generate-flashcards/${moduleId}`, {
+                method: 'POST',
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                navigate(`/flashcards/${moduleId}`, { state: { flashcards: data.flashcards } });
+            } else {
+                throw new Error(data.message || 'Failed to generate flashcards');
+            }
+        } catch (err) {
+            setError(`Error: ${err.message}`);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <div className={Styles.page_container}>
             <Header isStudyHabits={true}></Header>
             <div className={Styles.content_wrapper}>
                 <div className={Styles.module_container}>
                     <h2>Flashcards Module</h2>
-                    {error && <p className={Styles.error_message}>{`Error: ${error}`}</p>}
+                    {error && <p className={Styles.error_message}>{error}</p>}
+                    {isLoading && (
+                        <div className={Styles.loading_container}>
+                            <div className={Styles.spinner}></div>
+                            <p>Generating flashcards...</p>
+                        </div>
+                    )}
                     <p>Select a module to review its flashcards.</p>
                     <div className={Styles.module_grid}>
                         {modules.length > 0 ? (
@@ -94,8 +106,9 @@ const FlashcardsLandingPage = () => {
                                     <button
                                         className={Styles.flashcard_btn}
                                         onClick={() => handleOpenFlashcards(module._id)}
+                                        disabled={isLoading}
                                     >
-                                        Proceed
+                                        {isLoading ? 'Loading...' : 'Proceed'}
                                     </button>
                                 </div>
                             ))

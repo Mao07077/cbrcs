@@ -10,6 +10,7 @@ from datetime import datetime
 import bcrypt
 import os
 import random
+import pdfplumber
 import smtplib
 from fastapi import FastAPI, UploadFile, File
 from io import BytesIO
@@ -25,17 +26,20 @@ from bson import ObjectId
 from bson.errors import InvalidId
 from typing import Any
 import ollama
-import certifi
+import certifi  # Import certifi to enable SSL
 from fastapi import APIRouter
 from typing import List
 from pydantic import BaseModel
 from apscheduler.schedulers.background import BackgroundScheduler
 from fastapi import BackgroundTasks
-import json
+import asyncio
+import json  # Import json if not already imported
 from fastapi import WebSocket, WebSocketDisconnect 
-import uuid
-
-# Load environment variables
+import re
+import hashlib  # For PDF hash
+import uuid 
+import traceback
+import logging
 load_dotenv()
 
 # Fetch MongoDB URI, Database Name, Collection Name, and Email credentials from environment variables
@@ -43,7 +47,7 @@ MONGO_URI = os.getenv("MONGO_URI")
 DATABASE_NAME = os.getenv("DATABASE_NAME")
 COLLECTION_NAME = os.getenv("COLLECTION_NAME")
 EMAIL_HOST = os.getenv("EMAIL_HOST")
-EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))  # Default to 587 if not provided
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
@@ -53,6 +57,8 @@ if not MONGO_URI or not DATABASE_NAME or not COLLECTION_NAME:
 if not EMAIL_HOST or not EMAIL_PORT or not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
     logging.error("Missing necessary email environment variables: EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, or EMAIL_HOST_PASSWORD.")
 
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 habit_to_page = {
     "Study with Friends": "learn-together",
     "Asking for Help": "instructor-chat",
@@ -78,16 +84,16 @@ origins = [
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # or specify specific origins
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # or specify methods like ["GET", "POST"]
+    allow_headers=["*"],  # or specify headers
 )
 
 # MongoDB setup with SSL enabled
 try:
-    client = MongoClient(MONGO_URI, tls=True, tlsCAFile=certifi.where())
-    client.admin.command('ping')
+    client = MongoClient(MONGO_URI, tls=True, tlsCAFile=certifi.where())  # Enable SSL
+    client.admin.command('ping')  # Test the connection
     logging.info("MongoDB connection successful")
 except Exception as e:
     logging.error(f"Failed to connect to MongoDB: {e}")
@@ -101,19 +107,18 @@ collection = db[COLLECTION_NAME]
 scores_collection = db["scores"]
 users_collection = db[COLLECTION_NAME]
 request_collection = db["requests"]
-messages_collection = db["messages"]
+messages_collection = db["messages"]  # Added 'messages' collection
 schedule_collection = db["schedules"]
 notes_collection = db["notes"]
 Flashcards_collection = db["flashcards"]
 calls_collection = db["calls"]
-posts_collection = db["posts"]
+posts_collection = db["posts"]  
+reports_collection = db["reports"]# New collection for posts
 
-calls_collection.create_index("call_id")
 # Serve static files for images and videos
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 participant_states: Dict[str, Dict] = {}
-students: Dict[str, Dict] = {}
-
+Flashcards_collection.create_index("module_id")
 # Models for requests
 class SignupData(BaseModel):
     firstname: str
@@ -138,6 +143,7 @@ class FormatResponse(BaseModel):
 class LoginData(BaseModel):
     idNumber: str
     password: str
+
 
 class ForgotPasswordData(BaseModel):
     id_number: str
@@ -177,7 +183,8 @@ class PostTestResponse(BaseModel):
 
 class PostTestSubmission(BaseModel):
     answers: Dict[str, str]
-    user_id: str 
+    user_id: str
+    time_spent: int  # New field for time spent in seconds
 
 class PostTestData(BaseModel):
     question_id: str
@@ -191,6 +198,8 @@ class ScoreData(BaseModel):
     incorrect: int
     total_questions: int
     user_answers: Dict[str, str]
+    time_spent: int  # New field for time spent in seconds
+    test_type: str = "posttest"  # Default to posttest
 class UserSettings(BaseModel):
   firstname: Optional[str] = None
   middlename: Optional[str] = None
@@ -223,6 +232,7 @@ class AccountResponse(BaseModel):
 class AccountResponses(BaseModel):
     id: str
     profile: str
+     
     studentNo: str
     name: str
     role: str  
@@ -238,14 +248,14 @@ class QuestionWithAnswers(BaseModel):
     question: str
     options: List[str]
     correctAnswer: str
-    wrongAnswers: List[str]
+    wrongAnswers: List[str]  # Add wrong answers
 
 class PostTestResponse(BaseModel):
     post_test_id: str
     module_id: str
     title: str
     questions: List[QuestionWithAnswers]  
-
+# Update to use the new model
 class PreTestResponse(BaseModel):
     pre_test_id: str
     module_id: str
@@ -296,7 +306,7 @@ class Flashcard(BaseModel):
     content: str
     answer: str
     unique: str
-
+# Helper functions
 class IntroData(BaseModel):
     header: str
     subHeader: str
@@ -321,6 +331,22 @@ class PostData(BaseModel):
     news: Optional[NewsData] = None
     courseImages: Optional[CourseImageData] = None
 
+class ReportCreate(BaseModel):
+    id_number: str
+    title: str
+    content: str
+
+class ReportStatusUpdate(BaseModel):
+    status: str
+
+class ReportResponse(BaseModel):
+    id: str
+    student: str
+    issue: str
+    date: str
+    status: str
+    content: Optional[str] = None
+    screenshot: Optional[str] = None
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
@@ -353,6 +379,7 @@ def get_posttest_by_id(post_test_id: str):
         raise HTTPException(status_code=500, detail="Failed to fetch post-test")
 
 def get_current_user(id_number: str):
+    """Simulates user authentication by ID."""
     user = users_collection.find_one({"id_number": id_number})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -387,31 +414,137 @@ def get_wrong_answers(correct_answer: str, question: str) -> List[str]:
         )
         response = ollama.generate(model='llama3:latest', prompt=prompt)
         wrong_answers = response['response'].strip().split("\n")
-        return wrong_answers[:3]
+        return wrong_answers[:3]  # Ensure only three wrong answers are returned
     except Exception as e:
         logging.error(f"Failed to generate wrong answers: {e}")
-        return ["Option A", "Option B", "Option C"]
-
+        return ["Option A", "Option B", "Option C"]  # Default wrong answers
 # User management endpoints
-def extract_text_from_ppt(file):
-  presentation = Presentation(file)
-  text = ''
-  for slide in presentation.slides:
-    for shape in slide.shapes:
-      if hasattr(shape, "text"):
-        text += shape.text
-  return text
+def compute_file_hash(file_path: str) -> str:
+    try:
+        with open(file_path, "rb") as file:
+            return hashlib.md5(file.read()).hexdigest()
+    except Exception as e:
+        logging.error(f"Error computing file hash: {e}")
+        return ""
 
-def extract_text_from_pdf(file):
-  reader = PdfReader(file)
-  text = ''
-  for page in reader.pages:
-    text += page.extract_text()
-  return text
+# Helper function to extract text from PDF
+def extract_text_from_pdf(file_path: str) -> str:
+    try:
+        if not os.path.exists(file_path):
+            raise HTTPException(status_code=404, detail=f"PDF file not found at {file_path}")
+        
+        with open(file_path, "rb") as file:
+            reader = PdfReader(file)
+            text = ""
+            for page in reader.pages:
+                page_text = page.extract_text()
+                if page_text:
+                    text += page_text + "\n"
+            return text
+    except Exception as e:
+        logging.error(f"Error extracting text from PDF: {e}")
+        raise HTTPException(status_code=500, detail="Failed to extract text from PDF")
+
+# Helper function to generate flashcards using ollama
+async def generate_flashcards_with_ollama(text: str, module_id: str) -> List[Flashcard]:
+    try:
+        # Limit text to 2000 characters to balance content and performance
+        text = text[:2000]
+        # Simplified prompt for faster processing
+        prompt = (
+            f"Generate 10 flashcard questions from the following text. "
+            f"Each question must start with 'What', 'Where', 'When', 'Who', 'Why', or 'How', "
+            f"and focus on a specific concept, law, theory, or rule. "
+            f"Ensure questions and the answer are unique, factual, and concise. "
+            f"Answers should be brief and accurate. "
+            f"Dont use What is a key concept from the module"
+            f"Format as a JSON list of objects with 'question' and 'answer' fields.\n\n"
+            f"Text: {text}\n\n"
+            f"Example: "
+            f'[{{"question": "What law mandates Rizal’s life study?", "answer": "RA 1425"}}, '
+            f'{{"question": "What are Kolb’s learning stages?", "answer": "Concrete Experience, Reflective Observation, Abstract Conceptualization, Active Experimentation"}}]'
+        )
+
+        # Set a timeout for the Ollama call to prevent long hangs
+        async def run_ollama_with_timeout():
+            loop = asyncio.get_event_loop()
+            return await asyncio.wait_for(
+                loop.run_in_executor(None, lambda: ollama.generate(model='llama3:latest', prompt=prompt)),
+                timeout=30  # 30-second timeout
+            )
+
+        response = await run_ollama_with_timeout()
+        flashcards_data = eval(response['response'])  # Safely parse JSON response
+
+        flashcards = []
+        for i, item in enumerate(flashcards_data[:10]):
+            flashcard = Flashcard(
+                module_id=module_id,
+                content=item['question'],
+                answer=item['answer'],
+                unique=f"flashcard-{module_id}-{i}"
+            )
+            flashcards.append(flashcard)
+        
+        return flashcards
+    except asyncio.TimeoutError:
+        logging.error("Ollama request timed out after 30 seconds")
+        return None
+    except Exception as e:
+        logging.error(f"Error generating flashcards with ollama: {e}")
+        return None
+
+# Helper function to generate flashcards from text (fallback)
+def generate_flashcards_from_text(text: str, module_id: str) -> List[Flashcard]:
+    # Split text into sentences and filter for meaningful content
+    sentences = re.split(r'(?<=[.!?])\s+', text.strip())
+    flashcards = []
+    
+    # Prioritize sentences with key terms
+    candidate_sentences = [
+        s for s in sentences
+        if len(s) > 30 and any(keyword in s.lower() for keyword in [
+            'law', 'theory', 'principle', 'definition', 'rule', 'stage', 'category'
+        ])
+    ]
+    
+    # Ensure at least 10 flashcards
+    for i in range(10):
+        if i < len(candidate_sentences):
+            sentence = candidate_sentences[i]
+            # Extract a key term for the question
+            words = sentence.split()
+            key_term = next(
+                (word for word in words if word[0].isupper() or word in [
+                    'Cephalocaudal', 'Proximodistal', 'Oral', 'Anal', 'Phallic'
+                ]),
+                words[0]
+            )
+            question = f"What is {key_term}?"
+            answer = sentence.strip()
+        else:
+            # Fallback for insufficient sentences
+            sentence = candidate_sentences[i % len(candidate_sentences)] if candidate_sentences else "No content available."
+            question = f"What is a key concept from the module (part {i+1})?"
+            answer = sentence.strip()
+        
+        flashcard = Flashcard(
+            module_id=module_id,
+            content=question,
+            answer=answer,
+            unique=f"flashcard-{module_id}-{i}"
+        )
+        flashcards.append(flashcard)
+    
+    return flashcards
+
+# Flashcard generation endpoint
 
 def check_schedule_and_notify():
-    current_time = datetime.now().strftime('%I:%M %p')
-    current_day = datetime.now().strftime('%a').upper()
+    current_time = datetime.now().strftime('%I:%M %p')  # Get current time in 12-hour format
+    current_day = datetime.now().strftime('%a').upper()  # Get current day in 3-letter abbreviation
+
+    # Query for all schedules in the collection
     schedules = schedule_collection.find()
 
     for schedule in schedules:
@@ -419,13 +552,17 @@ def check_schedule_and_notify():
         times = schedule["times"]
         schedule_data = schedule["schedule"]
 
+        # Loop through each time and day to check if it matches the current time and day
         for i, time in enumerate(times):
-            if time == current_time:
+            if time == current_time:  # If times match
                 for j, day in enumerate(schedule_data[i]):
                     if day and day != '0' and daysOfWeek[j] == current_day:
+                        # Send email or notification
                         send_reminder_email(user_id, day, current_time, current_day)
 
+# Function to send the reminder email
 def send_reminder_email(user_id, task, current_time, current_day):
+    # Fetch user email from the database
     user = users_collection.find_one({"id_number": user_id})
     if not user:
         return
@@ -434,11 +571,13 @@ def send_reminder_email(user_id, task, current_time, current_day):
     subject = f"Reminder: Task '{task}' at {current_time} on {current_day}"
     body = f"Dear {user['firstname']} {user['lastname']},\n\nThis is a reminder for your task '{task}' scheduled for {current_time} on {current_day}.\n\nBest regards,\nYour Study Schedule App"
 
+    # Set up the email content
     message = MIMEText(body)
     message['From'] = EMAIL_HOST_USER
     message['To'] = user_email
     message['Subject'] = subject
 
+    # Send email using SMTP
     try:
         with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT) as server:
             server.starttls()
@@ -448,14 +587,14 @@ def send_reminder_email(user_id, task, current_time, current_day):
     except Exception as e:
         logging.error(f"Error sending email: {e}")
 
+# Set up the background scheduler
 scheduler = BackgroundScheduler()
-scheduler.add_job(check_schedule_and_notify, 'interval', minutes=1)
+scheduler.add_job(check_schedule_and_notify, 'interval', minutes=1)  # Run every minute
 scheduler.start()
 
 # WebSocket endpoint for video calls
 @app.websocket("/ws/{identifier}")
 async def websocket_endpoint(websocket: WebSocket, identifier: str):
-    logging.info(f"WebSocket connection attempt for identifier: {identifier}")
     await websocket.accept()
 
     # Authenticate user
@@ -464,7 +603,6 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
         id_number = auth_data.get("id_number")
         user = get_current_user(id_number)
     except Exception as e:
-        logging.error(f"Authentication failed: {e}")
         await websocket.close(code=1008, reason="Authentication failed")
         return
 
@@ -486,29 +624,20 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
         calls_collection.insert_one({
             "call_id": call_id,
             "students": [student_id],
-            "created_at": datetime.utcnow(),
-            "messages": []
+            "created_at": datetime.utcnow()
         })
     else:
         call = calls_collection.find_one({"call_id": call_id})
         if not call:
-            # Create a new call if the call_id doesn't exist
-            logging.info(f"Call ID {call_id} not found. Creating a new call.")
-            calls_collection.insert_one({
-                "call_id": call_id,
-                "students": [student_id],
-                "created_at": datetime.utcnow(),
-                "messages": []
-            })
-        else:
-            # Add student to existing call if not already present
-            if student_id not in call.get("students", []):
-                calls_collection.update_one(
-                    {"call_id": call_id},
-                    {"$addToSet": {"students": student_id}}
-                )
+            await websocket.close(code=1008, reason="Invalid call ID")
+            return
+        calls_collection.update_one(
+            {"call_id": call_id},
+            {"$addToSet": {"students": student_id}}
+        )
 
-    # Store student data
+    # In-memory student data
+    students = {}
     student_data = {
         "id": student_id,
         "name": student_name,
@@ -523,13 +652,11 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
         "studentId": student_id,
         "callId": call_id
     }))
-    logging.info(f"Sent student_id to {student_id}: {call_id}")
 
-    # Broadcast active students
+    # Broadcast active students and their states
     async def broadcast_students():
         call = calls_collection.find_one({"call_id": call_id})
         if not call:
-            logging.error(f"Call not found for call_id: {call_id}")
             return
         active_students = []
         for sid in call.get("students", []):
@@ -543,22 +670,18 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
                     "camera_off": state["camera_off"]
                 })
         message = json.dumps({"type": "active_students", "students": active_students})
-        logging.info(f"Broadcasting active students: {active_students}")
         for sid in call.get("students", []):
             student = students.get(sid)
             if student and student["ws"].client_state == 1:
-                try:
-                    await student["ws"].send_text(message)
-                except Exception as e:
-                    logging.error(f"Failed to send to {sid}: {e}")
+                await student["ws"].send_text(message)
 
     await broadcast_students()
 
     # Send chat history
     async def send_chat_history():
-        call = calls_collection.find_one({"call_id": call_id}, {"messages": 1})
-        if call and "messages" in call:
-            for msg in call["messages"]:
+        messages = calls_collection.find_one({"call_id": call_id}, {"messages": 1})
+        if messages and "messages" in messages:
+            for msg in messages["messages"]:
                 await websocket.send_text(json.dumps({
                     "type": "chat",
                     "message": {
@@ -575,7 +698,6 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
         while True:
             data = await websocket.receive_text()
             message = json.loads(data)
-            logging.info(f"Received message: {message['type']} from {student_id}")
 
             if message["type"] == "offer":
                 target_student = students.get(message["target"])
@@ -608,6 +730,7 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
                         })
                     )
             elif message["type"] == "chat":
+                # Save chat message to MongoDB
                 chat_message = {
                     "sender_id": student_id,
                     "sender_name": student_name,
@@ -618,6 +741,7 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
                     {"call_id": call_id},
                     {"$push": {"messages": chat_message}}
                 )
+                # Broadcast chat message
                 call = calls_collection.find_one({"call_id": call_id})
                 for sid in call.get("students", []):
                     student = students.get(sid)
@@ -629,12 +753,14 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
                             })
                         )
             elif message["type"] == "status_update":
+                # Update participant state
                 participant_states[student_id].update({
                     "muted": message.get("muted", participant_states[student_id]["muted"]),
                     "camera_off": message.get("camera_off", participant_states[student_id]["camera_off"])
                 })
                 await broadcast_students()
             elif message["type"] == "leave":
+                # Notify others of participant leaving
                 call = calls_collection.find_one({"call_id": call_id})
                 for sid in call.get("students", []):
                     if sid != student_id:
@@ -648,9 +774,9 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
                             )
                 break
     except WebSocketDisconnect:
-        logging.info(f"WebSocket disconnected for {student_id}")
+        pass
     except Exception as e:
-        logging.error(f"WebSocket error for {student_id}: {e}")
+        logging.error(f"WebSocket error: {e}")
     finally:
         calls_collection.update_one(
             {"call_id": call_id},
@@ -659,9 +785,9 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
         call = calls_collection.find_one({"call_id": call_id})
         if call and not call.get("students"):
             calls_collection.delete_one({"call_id": call_id})
-            logging.info(f"Deleted empty call: {call_id}")
         students.pop(student_id, None)
         participant_states.pop(student_id, None)
+        # Notify remaining participants
         call = calls_collection.find_one({"call_id": call_id})
         if call:
             for sid in call.get("students", []):
@@ -674,6 +800,7 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
                         })
                     )
         await broadcast_students()
+
 
 
 @app.get("/")
@@ -979,53 +1106,37 @@ async def get_post_test(module_id: str):
         questions=questions_with_answers
     )
 @app.post("/api/post-test/submit/{module_id}")
-async def submit_post_test(module_id: str, answers: PostTestSubmission):
-    logging.info(f"Received submission for module_id: {module_id} with answers: {answers.answers}")
-
+async def submit_post_test(module_id: str, submission: PostTestSubmission):
+    logging.info(f"Received submission for module_id: {module_id} with answers: {submission.answers}")
     if not module_id:
         raise HTTPException(status_code=400, detail="Module ID is required")
-
-    # Fetch the post-test associated with the module_id
     post_test = post_test_collection.find_one({"module_id": module_id})
     if not post_test:
         raise HTTPException(status_code=404, detail="Post-test not found for this module")
-
-    # Get the list of questions and the correct answers from the post-test
     correct_answers = {str(index): question["correctAnswer"] for index, question in enumerate(post_test["questions"])}
     logging.info(f"Correct answers: {correct_answers}")
-
-    # Initialize score counters
     correct_count = 0
     incorrect_count = 0
-
-    # Compare provided answers with correct answers
-    for question, user_answer in answers.answers.items():
+    for question, user_answer in submission.answers.items():
         correct_answer = correct_answers.get(question)
         logging.info(f"Comparing question: {question}, User answer: {user_answer}, Correct answer: {correct_answer}")
-        
-        if correct_answer is not None:  # Ensure correct_answer exists
+        if correct_answer is not None:
             if user_answer == correct_answer:
                 correct_count += 1
             else:
                 incorrect_count += 1
-
-    # Prepare score data
     score_data = ScoreData(
         module_id=module_id,
-        user_id=answers.user_id,
+        user_id=submission.user_id,
         correct=correct_count,
         incorrect=incorrect_count,
         total_questions=len(post_test["questions"]),
-        user_answers=answers.answers
+        user_answers=submission.answers,
+        time_spent=submission.time_spent,  # Added: Include time_spent from submission
+        test_type="posttest"
     )
-
-    # Log the score data before saving
     logging.info(f"Score data to be saved: {score_data.dict()}")
-
-    # Save the score to the database
     scores_collection.insert_one(score_data.dict())
-
-    # Return the score (correct and incorrect answers count)
     return {
         "success": True,
         "message": "Post-test submitted successfully!",
@@ -1033,21 +1144,18 @@ async def submit_post_test(module_id: str, answers: PostTestSubmission):
         "incorrect": incorrect_count,
         "total_questions": len(post_test["questions"])
     }
-
 @router.get("/api/post-test/results/{user_id}")
 async def get_post_test_results(user_id: str):
-    """
-    Fetch all post-test results for the given user_id.
-    """
     try:
-        results = scores_collection.find({"user_id": user_id})
+        results = scores_collection.find({"user_id": user_id, "test_type": "posttest"})
         results_list = [
             {
                 "module_id": result["module_id"],
                 "correct": result["correct"],
                 "incorrect": result["incorrect"],
                 "total_questions": result["total_questions"],
-                "score": result["correct"] / result["total_questions"] * 100
+                "score": result["correct"] / result["total_questions"] * 100,
+                "time_spent": result["time_spent"]  # Added: Include time_spent in results
             }
             for result in results
         ]
@@ -1056,49 +1164,61 @@ async def get_post_test_results(user_id: str):
         logging.error(f"Error fetching post-test results for user {user_id}: {e}")
         raise HTTPException(status_code=500, detail="Error fetching post-test results")
 
-# Include the router
 app.include_router(router)
+
 
 @app.get("/api/dashboard/{id_number}")
 async def get_dashboard(id_number: str):
-    # Fetch user details
+    # Validate user existence
     user = collection.find_one({"id_number": id_number})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    # Fetch all modules the user is associated with
+    # Fetch modules for the user's program
     modules = modules_collection.find({"program": user["program"]})
     modules_list = [{"_id": str(module["_id"]), "title": module["title"], "image_url": module["image_url"]} for module in modules]
 
-    # Fetch pretest and post-test scores for the user
+    # Fetch all scores for the user
     scores = scores_collection.find({"user_id": id_number})
-    post_test_scores = []
-    pretest_scores = []
+    pre_tests = []
+    post_tests = []
 
+    # Process scores
     for score in scores:
         module_id = score["module_id"]
-        module_title = next((module["title"] for module in modules if str(module["_id"]) == module_id), "Unknown Module")
-        
-        # Fetch post-test title from post_tests collection
-        post_test = post_test_collection.find_one({"module_id": module_id})
-        post_test_title = post_test["title"] if post_test else "Unknown Post-Test"
+        # Fetch module title
+        module = modules_collection.find_one({"_id": ObjectId(module_id)})
+        module_title = module["title"] if module else "Unknown Module"
 
         if score.get("test_type") == "pretest":
-            pretest_scores.append({"subject": module_title, "score": score["correct"]})
-        else:  # Assuming post-test by default
-            post_test_scores.append({
-                "post_test_title": post_test_title,  # Add post-test title
+            # Fetch pre-test title
+            pre_test = pre_test_collection.find_one({"module_id": module_id})
+            pre_test_title = pre_test["title"] if pre_test else f"Pre-Test for {module_title}"
+            pre_tests.append({
+                "pre_test_title": pre_test_title,
                 "correct": score["correct"],
                 "incorrect": score["incorrect"],
-                "total_questions": score["total_questions"]
+                "total_questions": score["total_questions"],
+                "time_spent": score.get("time_spent", 0)
+            })
+        else:
+            # Fetch post-test title
+            post_test = post_test_collection.find_one({"module_id": module_id})
+            post_test_title = post_test["title"] if post_test else f"Post-Test for {module_title}"
+            post_tests.append({
+                "post_test_title": post_test_title,
+                "correct": score["correct"],
+                "incorrect": score["incorrect"],
+                "total_questions": score["total_questions"],
+                "time_spent": score.get("time_spent", 0)
             })
 
     return {
         "modules": modules_list,
-        "pretest_scores": pretest_scores,
-        "post_tests": post_test_scores,
+        "pre_tests": pre_tests,
+        "post_tests": post_tests
+    
     }
-
 @app.get("/user/settings/{id_number}")
 async def get_user_settings(id_number: str):
   user = collection.find_one({"id_number": id_number})
@@ -1505,10 +1625,11 @@ async def startup_event():
 
 @app.post("/api/generate-flashcards/{module_id}")
 async def generate_flashcards(module_id: str):
-    # Check if flashcards for this module already exist
-    existing_flashcards = list(Flashcards_collection.find({"module_id": module_id}))
+    if not ObjectId.is_valid(module_id):
+        raise HTTPException(status_code=400, detail="Invalid module ID format")
 
-    # If flashcards already exist, return them
+    # Check for existing flashcards
+    existing_flashcards = list(Flashcards_collection.find({"module_id": module_id}))
     if existing_flashcards:
         return {
             "success": True,
@@ -1516,46 +1637,50 @@ async def generate_flashcards(module_id: str):
         }
 
     try:
-        # Generate new flashcards
-        new_flashcards_data = [
-            Flashcard(
-                module_id=module_id,  # Use the provided module_id
-                content=f"Flashcard content {i}",  # Placeholder content. You may enhance this logic.
-                answer=f"Correct answer for flashcard {i}",  # Placeholder. Adjust as needed.
-                unique=f"flashcard-{i}"  # Unique identifier
+        # Fetch module
+        module = modules_collection.find_one({"_id": ObjectId(module_id)})
+        if not module:
+            raise HTTPException(status_code=404, detail="Module not found")
+        
+        document_url = module.get("document_url")
+        if not document_url or not document_url.endswith(".pdf"):
+            raise HTTPException(status_code=400, detail="No valid PDF found for this module")
+
+        # Check for cached text
+        pdf_text = module.get("cached_text")
+        if not pdf_text:
+            pdf_text = extract_text_from_pdf(document_url)
+            if not pdf_text.strip():
+                raise HTTPException(status_code=400, detail="No text extracted from PDF")
+            # Cache text in module document
+            modules_collection.update_one(
+                {"_id": ObjectId(module_id)},
+                {"$set": {"cached_text": pdf_text}}
             )
-            for i in range(1, 6)  # Adjust the number if you need more/less
-        ]
 
-        # Store the generated flashcards in the database
-        for flashcard in new_flashcards_data:
-            result = Flashcards_collection.insert_one(flashcard.dict())  # Ensure saving is correct
+        # Generate flashcards with ollama
+        new_flashcards = await generate_flashcards_with_ollama(pdf_text, module_id)
+        if not new_flashcards:
+            logging.warning(f"Ollama failed, falling back to text-based flashcard generation for module {module_id}")
+            new_flashcards = generate_flashcards_from_text(pdf_text, module_id)
 
+        if not new_flashcards or len(new_flashcards) < 10:
+            raise HTTPException(status_code=400, detail="Could not generate 10 flashcards")
+
+        # Save flashcards
+        flashcard_dicts = [flashcard.dict() for flashcard in new_flashcards]
+        Flashcards_collection.insert_many(flashcard_dicts)
+
+        # Fetch saved flashcards
+        saved_flashcards = list(Flashcards_collection.find({"module_id": module_id}))
         return {
             "success": True,
-            "flashcards": new_flashcards_data
+            "flashcards": [{**flashcard, "_id": str(flashcard["_id"])} for flashcard in saved_flashcards]
         }
-    except Exception as e:
-        logging.error(f"Error generating flashcards: {e}")
-        raise HTTPException(status_code=500, detail="Error generating flashcards")
-    
-@app.get("/api/flashcards/{module_id}")
-async def get_flashcards(module_id: str):
-    """
-    Fetch flashcards for a specific module_id.
-    """
-    try:
-        flashcards = list(Flashcards_collection.find({"module_id": module_id}))
-        if not flashcards:
-            raise HTTPException(status_code=404, detail="No flashcards found for this module.")
 
-        return {
-            "success": True,
-            "flashcards": [{**flashcard, "_id": str(flashcard["_id"])} for flashcard in flashcards]
-        }
     except Exception as e:
-        logging.error(f"Error fetching flashcards: {e}")
-        raise HTTPException(status_code=500, detail="Error fetching flashcards")
+        logging.error(f"Error generating flashcards for module {module_id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Error generating flashcards: {str(e)}")
     
 @app.post("/api/save_post")
 async def save_post(
@@ -1682,31 +1807,21 @@ async def get_pre_test(module_id: str):
 @app.post("/api/pre-test/submit/{module_id}")
 async def submit_pre_test(module_id: str, answers: PostTestSubmission):
     logging.info(f"Submitting pre-test for module_id: {module_id}, user_id: {answers.user_id}, answers: {answers.answers}")
-    
-    # Validate module_id format
     if not ObjectId.is_valid(module_id):
         logging.error(f"Invalid module_id format: {module_id}")
         raise HTTPException(status_code=400, detail="Invalid module ID format")
-    
-    # Check module existence (module_id as ObjectId)
     module = modules_collection.find_one({"_id": ObjectId(module_id)})
     if not module:
         logging.error(f"Module not found for module_id: {module_id}")
         raise HTTPException(status_code=404, detail="Module not found")
-    
-    # Check pre-test existence (module_id as string)
     pre_test = pre_test_collection.find_one({"module_id": module_id})
     if not pre_test:
         available_tests = list(pre_test_collection.find({}, {"module_id": 1, "title": 1}))
         logging.error(f"Pre-test not found for module_id: {module_id}. Available pre-tests: {available_tests}")
         raise HTTPException(status_code=404, detail="Pre-test not found for this module")
-    
     logging.info(f"Pre-test found: {pre_test['title']} with {len(pre_test['questions'])} questions")
-    
-    # Validate answers
     correct_answers = {str(index): question["correctAnswer"] for index, question in enumerate(pre_test["questions"])}
     logging.info(f"Correct answers: {correct_answers}")
-    
     correct_count = 0
     incorrect_count = 0
     for question, user_answer in answers.answers.items():
@@ -1715,8 +1830,6 @@ async def submit_pre_test(module_id: str, answers: PostTestSubmission):
             correct_count += 1
         elif user_answer:
             incorrect_count += 1
-    
-    # Save score
     score_data = {
         "module_id": module_id,
         "user_id": answers.user_id,
@@ -1725,11 +1838,11 @@ async def submit_pre_test(module_id: str, answers: PostTestSubmission):
         "total_questions": len(pre_test["questions"]),
         "user_answers": answers.answers,
         "test_type": "pretest",
+        "time_spent": answers.time_spent,  # Added: Include time_spent for pretest submission
         "submitted_at": datetime.utcnow()
     }
     result = scores_collection.insert_one(score_data)
     logging.info(f"Score saved with ID: {result.inserted_id}")
-    
     return {
         "success": True,
         "message": "Pre-test submitted successfully!",
@@ -1737,7 +1850,6 @@ async def submit_pre_test(module_id: str, answers: PostTestSubmission):
         "incorrect": incorrect_count,
         "total_questions": len(pre_test["questions"])
     }
-
 @app.get("/api/module-status/{module_id}/{user_id}")
 async def get_module_status(module_id: str, user_id: str):
     pre_test_score = scores_collection.find_one({"module_id": module_id, "user_id": user_id, "test_type": "pretest"})
@@ -1747,3 +1859,122 @@ async def get_module_status(module_id: str, user_id: str):
         "pre_test_completed": bool(pre_test_score),
         "post_test_completed": bool(post_test_score)
     }
+@app.post("/api/reports", response_model=ReportResponse)
+async def create_report(
+    id_number: str = Form(...),
+    title: str = Form(...),
+    content: str = Form(...),
+    screenshot: Optional[UploadFile] = File(None)
+):
+    try:
+        logger.debug(f"Received report submission: id_number={id_number}, title={title}, content={content}, screenshot={screenshot}")
+        
+        # Fetch user to get student name
+        user = users_collection.find_one({"id_number": id_number})
+        if not user:
+            logger.warning(f"User not found for id_number: {id_number}")
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        student_name = f"{user['firstname']} {user['lastname']}".strip()
+        logger.debug(f"Found user: {student_name}")
+        
+        # Prepare report data
+        report_data = {
+            "id_number": id_number,
+            "student": student_name,
+            "issue": title,
+            "content": content,
+            "date": datetime.utcnow().strftime("%Y-%m-%d"),
+            "status": "Pending",
+            "screenshot": None
+        }
+        
+        # Handle screenshot upload
+        if screenshot:
+            try:
+                screenshot_path = f"uploads/{screenshot.filename}"
+                os.makedirs("uploads", exist_ok=True)
+                with open(screenshot_path, "wb") as f:
+                    shutil.copyfileobj(screenshot.file, f)
+                report_data["screenshot"] = screenshot_path
+                logger.debug(f"Screenshot saved to: {screenshot_path}")
+            except Exception as e:
+                logger.error(f"Failed to save screenshot: {str(e)}")
+                raise HTTPException(status_code=500, detail=f"Failed to save screenshot: {str(e)}")
+        
+        # Insert report into database
+        result = reports_collection.insert_one(report_data)
+        report_data["id"] = str(result.inserted_id)
+        logger.debug(f"Report inserted with ID: {report_data['id']}")
+        
+        return ReportResponse(**report_data)
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        logger.error(f"Error creating report: {str(e)}\n{traceback.format_exc()}")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+
+@app.get("/api/reports", response_model=List[ReportResponse])
+async def get_reports(
+    search: Optional[str] = Query(None),
+    status: Optional[str] = Query(None)
+):
+    try:
+        query = {}
+        if search:
+            query["$or"] = [
+                {"student": {"$regex": search, "$options": "i"}},
+                {"issue": {"$regex": search, "$options": "i"}},
+                {"content": {"$regex": search, "$options": "i"}}
+            ]
+        if status and status != "All":
+            query["status"] = status
+        
+        reports = list(reports_collection.find(query))
+        return [
+            ReportResponse(
+                id=str(report["_id"]),
+                student=report["student"],
+                issue=report["issue"],
+                date=report["date"],
+                status=report["status"],
+                content=report.get("content"),
+                screenshot=report.get("screenshot")
+            ) for report in reports
+        ]
+    except Exception as e:
+        logger.error(f"Error fetching reports: {str(e)}\n{traceback.format_exc()}")
+        raise HTTPException(status_code=500, detail="Failed to fetch reports")
+
+# Endpoint to delete a report (used when resolving)
+@app.delete("/api/reports/{report_id}", response_model=dict)
+async def delete_report(report_id: str):
+    try:
+        if not ObjectId.is_valid(report_id):
+            raise HTTPException(status_code=400, detail="Invalid report ID")
+        
+        report = reports_collection.find_one({"_id": ObjectId(report_id)})
+        if not report:
+            raise HTTPException(status_code=404, detail="Report not found")
+        
+        # Delete screenshot file if it exists
+        if report.get("screenshot"):
+            screenshot_path = report["screenshot"]
+            try:
+                if os.path.exists(screenshot_path):
+                    os.remove(screenshot_path)
+                    logger.debug(f"Deleted screenshot: {screenshot_path}")
+            except Exception as e:
+                logger.error(f"Failed to delete screenshot {screenshot_path}: {str(e)}")
+        
+        # Delete report from database
+        delete_result = reports_collection.delete_one({"_id": ObjectId(report_id)})
+        if delete_result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Report not found")
+        
+        return {"message": "Report resolved and deleted successfully"}
+    except Exception as e:
+        logger.error(f"Error deleting report: {str(e)}\n{traceback.format_exc()}")
+        raise HTTPException(status_code=500, detail="Failed to delete report")
+
+# Endpoint to update report status

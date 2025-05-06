@@ -27,6 +27,8 @@ const PreTest = () => {
     const [timeLeft, setTimeLeft] = useState(600); // 10 minutes timer
     const [timeTaken, setTimeTaken] = useState(0);
     const [loading, setLoading] = useState(false);
+    // Added: State to track time spent on the pre-test (in seconds)
+    const [timeSpent, setTimeSpent] = useState(0);
 
     // Ensure API_URL matches the backend port
     const API_URL = process.env.REACT_APP_API_URL || 
@@ -67,6 +69,16 @@ const PreTest = () => {
         };
 
         fetchPreTestData();
+
+        // Added: Start timer to track time spent on the pre-test
+        const startTime = Date.now();
+        const intervalId = setInterval(() => {
+            const currentTime = Date.now();
+            setTimeSpent(Math.floor((currentTime - startTime) / 1000));
+        }, 1000);
+
+        // Added: Cleanup timer on component unmount
+        return () => clearInterval(intervalId);
     }, [moduleId]);
 
     const shuffleArray = (array) => {
@@ -117,7 +129,12 @@ const PreTest = () => {
             return;
         }
 
-        const scoreData = { answers, user_id: userId };
+        // Modified: Include time_spent in submission data
+        const scoreData = { 
+            answers, 
+            user_id: userId,
+            time_spent: timeSpent
+        };
         try {
             setLoading(true);
             console.log("Submitting to:", `${API_URL}/api/pre-test/submit/${moduleId}`);

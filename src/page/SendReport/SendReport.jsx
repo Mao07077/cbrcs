@@ -1,28 +1,54 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './SendReport.css'; // Import your CSS file for styling
 import Header from '../../Components/composables/Header';
 import Footer from '../../Components/composables/FooterP';
 import Student_Sidebar from '../../Components/Student_Sidebar';
+
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000'; // Adjust to your API base URL
+
 const SendReport = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [screenshot, setScreenshot] = useState(null);
+    const [message, setMessage] = useState('');
+    const [error, setError] = useState('');
 
     const handleFileChange = (e) => {
         setScreenshot(e.target.files[0]);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const reportData = { title, content, screenshot };
+        setMessage('');
+        setError('');
 
-        // Simulate sending the report
-        console.log('Report submitted:', reportData);
+        // Fetch id_number from localStorage
+        const id_number = localStorage.getItem('userIdNumber') || '123456'; // Fallback to '123456' if not found
 
-        // Clear the form
-        setTitle('');
-        setContent('');
-        setScreenshot(null);
+        const formData = new FormData();
+        formData.append('id_number', id_number);
+        formData.append('title', title);
+        formData.append('content', content);
+        if (screenshot) {
+            formData.append('screenshot', screenshot);
+        }
+
+        try {
+            const response = await axios.post(`${API_URL}/api/reports`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            setMessage('Report submitted successfully!');
+            setTitle('');
+            setContent('');
+            setScreenshot(null);
+            document.getElementById('screenshot').value = null; // Reset file input
+        } catch (err) {
+            setError(err.response?.data?.detail || 'An error occurred while submitting the report');
+        }
     };
 
     return (
@@ -34,6 +60,8 @@ const SendReport = () => {
         <div className="MainCon">
         <div className="sr-send-report-container">
             <h1 className="sr-send-report-title">Submit a Report</h1>
+            {message && <p className="sr-success-message">{message}</p>}
+            {error && <p className="sr-error-message">{error}</p>}
             <form onSubmit={handleSubmit} className="sr-send-report-form">
                 <div className="sr-form-group">
                     <label htmlFor="title" className="sr-label">Title:</label>
