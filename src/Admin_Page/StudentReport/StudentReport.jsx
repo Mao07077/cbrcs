@@ -4,7 +4,7 @@ import { PDFDownloadLink, Document, Page, Text, View, StyleSheet, Image } from '
 import Styles from './StudentReport.module.css';
 import StudentReportModal from './StudentReportModal';
 import Header from '../../Components/composables/Header';
-import Instructor_Sidebar from '../../Components/Instructor_Sidebar';
+import Admin_Sidebar from '../../Components/Admin_Sidebar';
 import Footer from '../../Components/composables/Footer';
 
 // Set the API_URL based on the environment
@@ -123,14 +123,14 @@ function StudentReport() {
     const [students, setStudents] = useState([]);
     const [filteredStudents, setFilteredStudents] = useState([]);
     const [programFilter, setProgramFilter] = useState('All');
-    const [seasonFilter, setSeasonFilter] = useState('All');
+    const [seasonFilter, setSeasonFilter] = useState('May 2025');
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedStudents, setSelectedStudents] = useState([]);
     const [reportData, setReportData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [programs, setPrograms] = useState(['All']);
-    const [seasons, setSeasons] = useState(['All']);
+    const [seasons, setSeasons] = useState(['All', 'May 2025']);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
@@ -143,14 +143,13 @@ function StudentReport() {
                     studentNo: student.studentNo,
                     name: student.name,
                     program: student.program,
-                    season: student.season || 'Unknown', // Fallback if season is missing
+                    season: 'May 2025', // Set all students to May 2025 season
                 }));
                 setStudents(mappedStudents);
                 setFilteredStudents(mappedStudents);
                 const uniquePrograms = ['All', ...new Set(mappedStudents.map((s) => s.program))];
-                const uniqueSeasons = ['All', ...new Set(mappedStudents.map((s) => s.season))];
                 setPrograms(uniquePrograms);
-                setSeasons(uniqueSeasons);
+                setSeasons(['All', 'May 2025']);
                 setIsLoading(false);
             })
             .catch((error) => {
@@ -291,7 +290,7 @@ function StudentReport() {
         <div className={Styles.MainContainer}>
             <Header />
             <div className={Styles.Content_Wrapper}>
-                <Instructor_Sidebar />
+                <Admin_Sidebar/>
                 <div className={Styles.Content}>
                     <div className={Styles.Title}>
                         <h2>Student Report</h2>
@@ -361,7 +360,7 @@ function StudentReport() {
                                     className={Styles.GeneratePDFButton}
                                     disabled={selectedStudents.length === 0}
                                 >
-                                    Preview Report
+                                    Preview
                                 </button>
                             </div>
                             <table className={Styles.Table}>
