@@ -35,7 +35,8 @@ import Music from './page/Study_habits/Music/Music';
 import LearnTogether from './page/Study_habits/learn_together/learn_together';
 import Chat from './page/Study_habits/Instructor_chat/chat';
 import SendReport from './page/SendReport/SendReport';
-
+import PreTest from './page/PreTest/pretest';
+import StudentReport from './Admin_Page/StudentReport/StudentReport';
 
 
 
@@ -82,6 +83,8 @@ function App() {
             <Route path="/learn_together" element= {<LearnTogether/>}/>
             <Route path="/chat" element= {<Chat/>}/>
             <Route path="/SendReport" element={<SendReport />} />
+            <Route path="/pre-test/:moduleId" element={<PreTest />} />
+            <Route path="/StudentReport" element={<StudentReport />} />
           </Routes>
         
       </BrowserRouter>
