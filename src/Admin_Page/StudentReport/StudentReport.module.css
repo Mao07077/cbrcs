@@ -1,0 +1,425 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.MainContainer {
+    width: 100svw;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    font-family: Consolas, sans-serif;
+    box-sizing: border-box;
+}
+
+.Content_Wrapper {
+    flex: 1;
+    display: flex;
+}
+
+.Content {
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    font-size: 1.2em;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.List_Container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 80vw;
+    height: auto;
+    background: #002f87;
+    margin-top: 140px;
+    margin-left: 50px;
+    border: 2px solid #002f87;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.Greeting_Accountlist {
+    padding: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    justify-content: flex-start;
+    border-bottom: solid 1px rgb(187, 182, 182);
+    margin-bottom: 20px;
+}
+
+.Filter_Section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.Filter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    height: 30px;
+}
+
+.Filter h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.Filter select {
+    height: 30px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 200px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.Filter select:focus,
+.Filter select:hover {
+    border-color: #002f87;
+    box-shadow: 0px 0px 5px rgba(0, 47, 135, 0.3);
+}
+
+.GeneratePDFButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    width: 200px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+    margin-top: 10px;
+}
+
+.GeneratePDFButton:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.GeneratePDFButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.Table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-left: -8px;
+    font-size: 1em;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.Table thead tr {
+    background: #002f87;
+    color: #fff;
+    width: 100%;
+}
+
+.Table th {
+    padding: 12px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.Table th:hover {
+    background: #004ab3;
+}
+
+.Table td {
+    padding: 12px;
+    border: 1px solid #000000;
+}
+
+.NoStudents {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #666;
+}
+
+.ViewDashboardButton {
+    background: #007bff;
+    color: #fff;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-size: 14px;
+}
+
+.ViewDashboardButton:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+}
+
+.Error {
+    color: red;
+    text-align: center;
+    margin: 20px 0;
+    font-size: 18px;
+}
+
+@media (max-width: 1000px) {
+    .Greeting_Accountlist h1 {
+        font-size: 1em;
+    }
+
+    .Filter {
+        gap: 5px;
+    }
+
+    .Filter h2 {
+        font-size: 0.7em;
+    }
+
+    .Filter select {
+        height: 30px;
+        padding: 4px 6px;
+        border: 0.5px solid #ccc;
+        border-radius: 3px;
+        font-size: 10px;
+        width: 150px;
+    }
+
+    .GeneratePDFButton {
+        width: 200px;
+        height: 35px;
+        font-size: 0.7em;
+        font-weight: bold;
+    }
+
+    .Filter_Section {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 20px;
+        margin-top: -10px;
+        padding: 10px;
+    }
+
+    .Table {
+        width: 100%;
+        font-size: 0.5em;
+    }
+
+    .ViewDashboardButton {
+        padding: 10px 10px;
+        font-size: 0.7em;
+    }
+
+    .MainContainer {
+        width: 100%;
+    }
+
+    .List_Container {
+        width: 90vw;
+        margin-left: 20px;
+        margin-top: 100px;
+    }
+}
+
+@media (max-width: 375px) {
+    .MainContainer {
+        display: flex;
+        width: 100%;
+    }
+
+    .Content_Wrapper {
+        width: 100%;
+    }
+
+    .Filter {
+        gap: 5px;
+    }
+
+    .Filter h2 {
+        font-size: 0.7em;
+    }
+
+    .Filter select {
+        width: 100px;
+        padding: 8px;
+        font-size: 0.7em;
+        font-weight: bold;
+    }
+
+    .GeneratePDFButton {
+        width: 200px;
+        height: 35px;
+        font-size: 0.7em;
+        font-weight: bold;
+    }
+
+    .Filter_Section {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+        width: 80%;
+        margin-bottom: 20px;
+        margin-top: -10px;
+        padding: 10px;
+    }
+
+    .Table {
+        width: 80%;
+        font-size: 0.5em;
+    }
+
+    .ViewDashboardButton {
+        padding: 10px 10px;
+        font-size: 0.7em;
+    }
+
+    .List_Container {
+        width: 95vw;
+        margin-left: 10px;
+        margin-top: 80px;
+        padding: 10px;
+    }
+}
+.MainContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.Content_Wrapper {
+    display: flex;
+    flex: 1;
+}
+
+.Content {
+    flex: 1;
+    padding: 20px;
+}
+
+.Title {
+    margin-bottom: 20px;
+}
+
+.Title h2 {
+    font-size: 1.8em;
+    color: #333;
+}
+
+.FilterSection {
+    margin-bottom: 20px;
+}
+
+.FilterSection label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.FilterSelect {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.TableControls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.SelectAllButton,
+.GeneratePDFButton {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.SelectAllButton {
+    background-color: #4caf50;
+    color: white;
+}
+
+.SelectAllButton:hover {
+    background-color: #45a049;
+}
+
+.GeneratePDFButton {
+    background-color: #2196f3;
+    color: white;
+}
+
+.GeneratePDFButton:hover {
+    background-color: #1e88e5;
+}
+
+.GeneratePDFButton:disabled {
+    background-color: #90caf9;
+    cursor: not-allowed;
+}
+
+.Table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.Table th,
+.Table td {
+    border: 1px solid #000000;
+    padding: 10px;
+    text-align: left;
+}
+
+.Table th {
+    background-color: #000000;
+    font-weight: bold;
+}
+
+.Table td input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.NoStudents {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+.Error {
+    color: red;
+    text-align: center;
+    padding: 10px;
+}
