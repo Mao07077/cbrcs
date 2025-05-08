@@ -1,4 +1,4 @@
-import { HomeIcon, SquarePen, UserIcon, Flag, Upload } from 'lucide-react';
+import { HomeIcon, SquarePen, UserIcon, Flag, ArrowBigLeftDashIcon } from 'lucide-react';
 import Sidebar from './composables/Sidebar';
 
 const routes = [
@@ -24,9 +24,9 @@ const routes = [
 		routeIcon: <SquarePen></SquarePen>,
 	},
 	{
-		routeName: 'Logout',
-		routePath: '/',
-		routeIcon: <SquarePen></SquarePen>,
+		routeNames: 'Logout',
+		routePaths: '/',
+		routeIcons: <ArrowBigLeftDashIcon></ArrowBigLeftDashIcon>,
 	},
 ];
 

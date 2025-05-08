@@ -37,6 +37,22 @@ export default function Sidebar({ routes }) {
 					</li>
 				))}
 			</ul>
+			<ul className={Styles.uls}>
+			{routes.map((route, index) => (
+					<li
+						key={index}
+						className={Styles.li}
+						onClick={() => navigate(route.routePaths)}
+					>
+						{route.routeIcons && (
+							<span className={Styles.icon}>{route.routeIcons}</span>
+						)}
+						<Link className={Styles.a} to={route.routePaths}>
+							{route.routeNames}
+						</Link>
+					</li>
+				))}
+			</ul>
 		</nav>
 	);
 }

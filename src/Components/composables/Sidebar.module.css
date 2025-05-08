@@ -23,7 +23,6 @@
 
 .ul > .li {
 	transition: background-color ease-in-out 100ms;
-
 	background-color: transparent;
 	display: flex;
 	gap: 10px;
@@ -31,10 +30,19 @@
 	align-items: center;
 	margin: 10px;
 	padding: 10px;
-
 	border-radius: 3px;
 }
-
+.uls > .li {
+	transition: background-color ease-in-out 100ms;
+	background-color: transparent;
+	display: flex;
+	gap: 10px;
+	justify-items: start;
+	align-items: center;
+	margin: 10px;
+	padding: 10px;
+	border-radius: 3px;
+}
 .li:hover {
 	transition: background-color ease-in-out 100ms;
 	background-color: rgb(224, 224, 224);
