@@ -1,4 +1,4 @@
-import { MessageCircle, UserIcon, Book, ScrollText } from 'lucide-react';
+import { MessageCircle, UserIcon, Book, ScrollText, ArrowBigLeftDashIcon } from 'lucide-react';
 import Sidebar from './composables/Sidebar';
 
 const routes = [
@@ -21,6 +21,11 @@ const routes = [
 		routeName: 'Modules',
 		routePath: '/ModuleList',
 		routeIcon: <Book></Book>,
+	},
+	{
+		routeNames: 'Logout',
+		routePaths: '/',
+		routeIcons: <ArrowBigLeftDashIcon></ArrowBigLeftDashIcon>,
 	},
 ];
 
