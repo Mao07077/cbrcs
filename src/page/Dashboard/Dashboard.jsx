@@ -54,7 +54,7 @@ const Dashboard = ({ isModal = false }) => {
 
     // Dynamically set API_URL based on the environment
     const API_URL = process.env.REACT_APP_API_URL || 
-        (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://05d5-2405-8d40-4479-50f0-25aa-3e85-9a34-71e6.ngrok-free.app");
+        (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://14c1-2405-8d40-4479-50f0-25aa-3e85-9a34-71e6.ngrok-free.app ");
 
     useEffect(() => {
         if (!idNumber) {
