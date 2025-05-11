@@ -9,7 +9,7 @@ import Footer from '../../Components/composables/Footer';
 
 // Set the API_URL based on the environment
 const API_URL = process.env.REACT_APP_API_URL || 
-    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://a7bc-2405-8d40-4479-50f0-25aa-3e85-9a34-71e6.ngrok-free.app");
 
 // Styles for react-pdf
 const pdfStyles = StyleSheet.create({
@@ -162,6 +162,8 @@ function StudentReport() {
     // Handle program, season, and search query changes
     useEffect(() => {
         let filtered = students;
+        
+        
         
         // Apply program filter
         if (programFilter !== 'All') {
