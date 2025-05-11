@@ -60,7 +60,7 @@ const AdminPost = () => {
         formData.append('intro_image', introImage);
         console.log('Intro image appended:', introImage.name);
       }
-      const response = await axios.post('http://localhost:3000/api/save_post', formData, {
+      const response = await axios.post('http://127.0.0.1:8000/api/save_post', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       console.log('Intro submit response:', response.data); // Debug log
@@ -80,7 +80,7 @@ const AdminPost = () => {
         formData.append('news_image', newsImage);
         console.log('News image appended:', newsImage.name);
       }
-      const response = await axios.post('http://localhost:3000/api/save_post', formData, {
+      const response = await axios.post('http://127.0.0.1:8000/api/save_post', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       console.log('News submit response:', response.data); // Debug log
@@ -101,7 +101,7 @@ const AdminPost = () => {
           console.log(`Course image ${index + 1} appended:`, img.name);
         }
       });
-      const response = await axios.post('http://localhost:3000/api/save_post', formData, {
+      const response = await axios.post('http://127.0.0.1:8000/api/save_post', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       console.log('Course images submit response:', response.data); // Debug log
