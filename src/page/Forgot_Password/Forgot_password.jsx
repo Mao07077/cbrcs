@@ -5,7 +5,7 @@ import './forgot_password.css';
 import Icon from '../../icon/actual.png';
 
 const API_URL = process.env.REACT_APP_API_URL || 
-    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://1945-2405-8d40-4479-50f0-25aa-3e85-9a34-71e6.ngrok-free");
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://9d14-2405-8d40-4479-50f0-25aa-3e85-9a34-71e6.ngrok-free.app");
 
 const ForgotPassword = () => {
     const [idNumber, setIdNumber] = useState('');
