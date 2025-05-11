@@ -27,7 +27,7 @@ ChartJS.register(
 
 // Set API URL dynamically based on the environment
 const API_URL = process.env.REACT_APP_API_URL || 
-    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs.onrender.com");
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "");
 
 const DailyActivityBarChart = ({ dailyData }) => {
 	const data = {
@@ -45,7 +45,7 @@ const DailyActivityBarChart = ({ dailyData }) => {
 
 	const options = {
 		responsive: true,
-		maintainAspectRatio: false, // Allow the chart to resize dynamically
+		maintainAspectRatio: false,
 		scales: {
 			y: {
 				beginAtZero: true,
@@ -70,24 +70,18 @@ const DailyActivityBarChart = ({ dailyData }) => {
 
 	return (
 		<div style={{ width: '100%', height: '300px', maxWidth: '600px', margin: '0 auto' }}>
-			{/* Adjust height and center the chart */}
 			<Bar data={data} options={options} />
 		</div>
 	);
 };
 
 const Profile = () => {
-	const handleNavigation = (route) => {
-		console.log(`Navigating to: ${route}`);
-		window.location.href = `/${route}`;
-	};
-
+	const navigate = useNavigate();
 	const [profile, setProfile] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState('');
 	const [profileImage, setProfileImage] = useState(nameIcon);
-	const [top3Habits, setTop3Habits] = useState([]); // State for top 3 habits
-
+	const [top3Habits, setTop3Habits] = useState([]);
 	const [dailyData, setDailyData] = useState([
 		{ day: 'Monday', hours: 2 },
 		{ day: 'Tuesday', hours: 3 },
@@ -122,7 +116,7 @@ const Profile = () => {
 					throw new Error('Failed to fetch habits');
 				}
 				const habitsData = await habitsResponse.json();
-				setTop3Habits(habitsData.recommendedPages); // Assuming response has 'recommendedPages' key
+				setTop3Habits(habitsData.recommendedPages);
 			} catch (err) {
 				setError(err.message);
 			} finally {
@@ -141,21 +135,22 @@ const Profile = () => {
 		}
 	};
 
+	const handleNavigation = (route) => {
+		navigate(`/${route}`);
+	};
+
 	if (loading) return <div>Loading...</div>;
 	if (error) return <div>Error: {error}</div>;
 
 	return (
 		<div className={Styles.MainContainer}>
-			<Header></Header>
-
+			<Header />
 			<div className={Styles.Content_Wrapper}>
-				<Student_Sidebar></Student_Sidebar>
+				<Student_Sidebar />
 				<div className={Styles.Content}>
 					<div className={Styles.TopSection}>
 						<h2>Account Profile</h2>
 					</div>
-
-					{/* Profile Icon and Info Card */}
 					<div className={Styles.Info}>
 						<div className={Styles.IconContainer}>
 							<img src={profileImage} alt="Profile Icon" />
@@ -168,14 +163,11 @@ const Profile = () => {
 							/>
 							<button
 								className={Styles.editButton}
-								onClick={() =>
-									document.getElementById('profileImageUpload').click()
-								}
+								onClick={() => document.getElementById('profileImageUpload').click()}
 							>
 								Edit
 							</button>
 						</div>
-
 						<div className={Styles.InfoCard}>
 							<label>Name: {profile?.firstname} {profile?.lastname}</label>
 							<label>Age: {profile?.age || 'N/A'}</label>
@@ -187,8 +179,6 @@ const Profile = () => {
 							</div>
 						</div>
 					</div>
-
-					{/* Display Dynamic Top 3 Study Habits */}
 					<div className={Styles.HabitsWrapper}>
 						<h3 className={Styles.StudyTitle}>Your Top 3 Study Habits</h3>
 						{top3Habits.length > 0 ? (
@@ -208,18 +198,15 @@ const Profile = () => {
 							<p>No habits found</p>
 						)}
 					</div>
-
-					{/* Daily Activity Bar Chart */}
 					<div className={Styles.chartSection}>
 						<h3>Daily Activity</h3>
 						<div className={Styles.Data}>
-						<DailyActivityBarChart dailyData={dailyData} />
+							<DailyActivityBarChart dailyData={dailyData} />
 						</div>
 					</div>
 				</div>
 			</div>
-
-			<Footer></Footer>
+			<Footer />
 		</div>
 	);
 };
