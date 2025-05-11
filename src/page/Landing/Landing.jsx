@@ -5,7 +5,7 @@ import Icon from '../../icon/actual.png';
 import image from '../../icon/carlbalita.jpg';
 import axios from 'axios';
 
-const BASE_URL = 'http://127.0.0.1:8000'; // Backend base URL
+const BASE_URL = 'http://localhost:3000'; // Backend base URL
 
 const Landing = () => {
   const [introText, setIntroText] = useState({ header: '', subHeader: '' });
@@ -18,7 +18,7 @@ const Landing = () => {
     // Fetch post data from backend
     const fetchPost = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/get_post');
+        const response = await axios.get('http://localhost:3000/api/get_post');
         const post = response.data.data;
         console.log('Fetched post data:', post); // Debug log
         setIntroText({
