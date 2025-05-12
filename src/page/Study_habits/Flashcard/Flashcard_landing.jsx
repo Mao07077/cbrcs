@@ -11,33 +11,45 @@ const FlashcardsLandingPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
+    // Set API URL dynamically based on the environment
     const API_URL =
         process.env.REACT_APP_API_URL ||
         (window.location.hostname === 'localhost'
             ? 'http://127.0.0.1:8000'
             : 'https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app');
 
+    // Common headers for fetch requests
+    const requestHeaders = {
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    };
+
     useEffect(() => {
         const fetchUserProfile = async () => {
+            const idNumber = localStorage.getItem('userIdNumber');
+            if (!idNumber) {
+                setError('User not logged in. Please log in to continue.');
+                return;
+            }
+
             try {
-                const idNumber = localStorage.getItem('userIdNumber');
-                if (!idNumber) {
-                    setError('User not logged in');
-                    return;
+                const response = await fetch(`${API_URL}/api/profile/${idNumber}`, {
+                    headers: requestHeaders, // Add headers here
+                });
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch user profile: ${response.status} ${response.statusText}`);
                 }
-
-                const response = await fetch(`${API_URL}/api/profile/${idNumber}`);
-                if (!response.ok) throw new Error('Failed to fetch user profile');
-
                 const data = await response.json();
                 setUserProgram(data.program);
             } catch (err) {
-                setError(err.message);
+                console.error('Error fetching user profile:', err);
+                setError(err.message || 'Failed to fetch user profile');
             }
         };
 
         fetchUserProfile();
-    }, []);
+    }, [API_URL]);
 
     useEffect(() => {
         if (!userProgram) return;
@@ -47,32 +59,44 @@ const FlashcardsLandingPage = () => {
                 ? `${API_URL}/api/modules`
                 : `${API_URL}/api/modules?program=${encodeURIComponent(userProgram)}`;
 
-        fetch(apiUrl)
-            .then(response => {
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                return response.json();
-            })
-            .then(data => {
+        const fetchModules = async () => {
+            try {
+                const response = await fetch(apiUrl, {
+                    headers: requestHeaders, // Add headers here
+                });
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch modules: ${response.status} ${response.statusText}`);
+                }
+                const data = await response.json();
                 setModules(data);
-            })
-            .catch(error => setError(error.message));
+            } catch (error) {
+                console.error('Error fetching modules:', error);
+                setError(error.message || 'Failed to fetch modules');
+            }
+        };
+
+        fetchModules();
     }, [userProgram, API_URL]);
 
     const handleOpenFlashcards = async (moduleId) => {
         setIsLoading(true);
         setError(null);
         try {
-            const res = await fetch(`${API_URL}/api/generate-flashcards/${moduleId}`, {
+            const response = await fetch(`${API_URL}/api/generate-flashcards/${moduleId}`, {
                 method: 'POST',
+                headers: requestHeaders, // Add headers here
             });
-
-            const data = await res.json();
-            if (res.ok) {
+            if (!response.ok) {
+                throw new Error(`Failed to generate flashcards: ${response.status} ${response.statusText}`);
+            }
+            const data = await response.json();
+            if (data.flashcards) {
                 navigate(`/flashcards/${moduleId}`, { state: { flashcards: data.flashcards } });
             } else {
                 throw new Error(data.message || 'Failed to generate flashcards');
             }
         } catch (err) {
+            console.error('Error generating flashcards:', err);
             setError(`Error: ${err.message}`);
         } finally {
             setIsLoading(false);

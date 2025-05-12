@@ -17,8 +17,14 @@ const ModuleDashboard = () => {
 
     // Dynamically set API_URL based on the environment
     const API_URL = process.env.REACT_APP_API_URL || 
-    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
+        (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
 
+    // Common headers for fetch requests
+    const requestHeaders = {
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    };
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -29,14 +35,17 @@ const ModuleDashboard = () => {
                     return;
                 }
 
-                const response = await fetch(`${API_URL}/api/profile/${idNumber}`);
+                const response = await fetch(`${API_URL}/api/profile/${idNumber}`, {
+                    headers: requestHeaders, // Add headers here
+                });
                 if (!response.ok) {
-                    throw new Error('Failed to fetch user profile');
+                    throw new Error(`Failed to fetch user profile: ${response.status} ${response.statusText}`);
                 }
 
                 const data = await response.json();
                 setUserProgram(data.program || 'All Programs');
             } catch (err) {
+                console.error('Error fetching user profile:', err);
                 setError(err.message);
             }
         };
@@ -52,15 +61,24 @@ const ModuleDashboard = () => {
                 ? `${API_URL}/api/modules`
                 : `${API_URL}/api/modules?program=${encodeURIComponent(userProgram)}`;
 
-        fetch(apiUrl)
-            .then((response) => {
+        const fetchModules = async () => {
+            try {
+                const response = await fetch(apiUrl, {
+                    headers: requestHeaders, // Add headers here
+                });
                 if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+                    throw new Error(`Failed to fetch modules: ${response.status} ${response.statusText}`);
                 }
-                return response.json();
-            })
-            .then((data) => setModules(data))
-            .catch((error) => setError(error.message));
+                const data = await response.json();
+                setModules(data);
+                setError(null);
+            } catch (error) {
+                console.error('Error fetching modules:', error);
+                setError(error.message);
+            }
+        };
+
+        fetchModules();
     }, [userProgram]);
 
     const handleProceedClick = (moduleId) => {
@@ -71,7 +89,6 @@ const ModuleDashboard = () => {
         <div className={Styles.MainContainer}>
             <Header isStudyHabits={true}></Header>
             <div className={Styles.Content_Wrapper}>
-
                 <div className={Styles.Content}>
                     <div className={Styles.ModuleDashboard}>
                         <div className={Styles.Module_Container}>
@@ -87,6 +104,7 @@ const ModuleDashboard = () => {
                                                 <img
                                                     src={`${API_URL}/${module.image_url}`}
                                                     alt="Module"
+                                                    onError={() => console.error(`Failed to load image for module ${module._id}`)}
                                                 />
                                             </div>
                                             <button

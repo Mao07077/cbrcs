@@ -17,13 +17,25 @@ function Accounts() {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
+    // Common headers for all fetch requests
+    const requestHeaders = {
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    };
+
     useEffect(() => {
         const fetchAccounts = async () => {
             try {
-                const response = await fetch(`${API_URL}/api/accounts`);
+                const response = await fetch(`${API_URL}/api/accounts`, {
+                    method: 'GET',
+                    headers: requestHeaders, // Add headers here
+                });
+
                 if (!response.ok) {
-                    throw new Error('Failed to fetch accounts');
+                    throw new Error(`Failed to fetch accounts: ${response.status} ${response.statusText}`);
                 }
+
                 const data = await response.json();
                 console.log('Raw API response:', JSON.stringify(data, null, 2));
                 const fetchedAccounts = Array.isArray(data.accounts) ? data.accounts : [];
@@ -61,11 +73,16 @@ function Accounts() {
         try {
             const response = await fetch(
                 `${API_URL}/api/accounts/${accountToArchive.accountNo}/archive`,
-                { method: 'POST' } // Assuming the API supports an archive endpoint
+                {
+                    method: 'POST',
+                    headers: requestHeaders, // Add headers here
+                }
             );
+
             if (!response.ok) {
-                throw new Error('Failed to archive account');
+                throw new Error(`Failed to archive account: ${response.status} ${response.statusText}`);
             }
+
             setAccounts(accounts.filter((acc) => acc.accountNo !== accountToArchive.accountNo));
         } catch (error) {
             console.error('Error archiving account:', error);

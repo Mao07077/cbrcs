@@ -13,13 +13,18 @@ const CreateModule = ({ onClose }) => {
 
   const navigate = useNavigate();
 
-  const handleFileUpload = (e) => setFile(e.target.files[0]);
-  const handlePictureUpload = (e) => setPicture(e.target.files[0]);
-
   // Dynamically set the API_URL based on the environment
   const API_URL = process.env.REACT_APP_API_URL || 
-  (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
 
+  // Common headers for axios requests
+  const requestHeaders = {
+    'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+    'Accept': 'application/json',
+  };
+
+  const handleFileUpload = (e) => setFile(e.target.files[0]);
+  const handlePictureUpload = (e) => setPicture(e.target.files[0]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,7 +53,10 @@ const CreateModule = ({ onClose }) => {
 
     try {
       const response = await axios.post(`${API_URL}/api/create_module`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: {
+          ...requestHeaders, // Include ngrok header
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
       if (response.data.success) {
@@ -59,7 +67,7 @@ const CreateModule = ({ onClose }) => {
         alert("Error creating module: " + (response.data.message || "Unknown error"));
       }
     } catch (error) {
-      console.error("Error creating module:", error);
+      console.error("Error creating module:", error.response?.data || error.message);
       alert("Error creating module: " + (error.response?.data?.detail || error.message));
     }
   };
@@ -119,7 +127,7 @@ const CreateModule = ({ onClose }) => {
           <option value="UPCAT">UPCAT</option>
         </select>
 
-        <button type="submit">Submit </button>
+        <button type="submit">Submit</button>
       </form>
     </div>
   );

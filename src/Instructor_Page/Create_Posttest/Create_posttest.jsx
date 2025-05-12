@@ -13,7 +13,14 @@ const CreatePostTest = () => {
 
     // Dynamically set API_URL based on the environment
     const API_URL = process.env.REACT_APP_API_URL || 
-    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
+        (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
+
+    // Common headers for axios requests
+    const requestHeaders = {
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    };
 
     const handleQuestionChange = (index, value) => {
         const newQuestions = [...questions];
@@ -51,8 +58,8 @@ const CreatePostTest = () => {
 
     const handleSubmit = async () => {
         // Validation
-        if (!title || questions.some((q) => !q.question || q.options.some((o) => !o))) {
-            alert('Please fill in all fields.');
+        if (!title || questions.some((q) => !q.question || q.options.some((o) => !o) || !q.correctAnswer)) {
+            alert('Please fill in all fields, including correct answers.');
             return;
         }
 
@@ -67,15 +74,14 @@ const CreatePostTest = () => {
         };
 
         try {
-            const response = await axios.post(
-                `${API_URL}/createposttest/${id}`, // Use the dynamic API_URL
-                postData
-            );
+            const response = await axios.post(`${API_URL}/createposttest/${id}`, postData, {
+                headers: requestHeaders, // Include ngrok header
+            });
             console.log('Response:', response.data);
             alert('Post-test created successfully!');
             navigate(`/module/${id}`); // Redirect to module page
         } catch (error) {
-            console.error('Error response:', error.response || error.message);
+            console.error('Error response:', error.response?.data || error.message);
             alert('Error creating post-test: ' + (error.response?.data?.detail || error.message));
         }
     };
@@ -130,7 +136,7 @@ const CreatePostTest = () => {
                         className="remove-question-button"
                         onClick={() => removeQuestion(qIndex)}
                     >
-                        Remove 
+                        Remove
                     </button>
                 </div>
             ))}

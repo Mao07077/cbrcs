@@ -15,7 +15,6 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const PostTest = () => {
     const { moduleId } = useParams();
-    // Added: Use useLocation to access timeSpent from ModuleInside.js
     const location = useLocation();
     const [postTest, setPostTest] = useState(null);
     const [error, setError] = useState(null);
@@ -33,10 +32,19 @@ const PostTest = () => {
     const API_URL = process.env.REACT_APP_API_URL || 
         (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
 
+    // Common headers for axios requests
+    const requestHeaders = {
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    };
+
     useEffect(() => {
         const fetchPostTestData = async () => {
             try {
-                const response = await axios.get(`${API_URL}/api/post-test/${moduleId}`);
+                const response = await axios.get(`${API_URL}/api/post-test/${moduleId}`, {
+                    headers: requestHeaders, // Add headers here
+                });
                 const data = response.data;
                 const answersMap = {};
                 data.questions.forEach((question, index) => {
@@ -49,8 +57,8 @@ const PostTest = () => {
                 // Paraphrase questions
                 await paraphraseQuestions(data.questions);
             } catch (error) {
-                console.error('Fetch error:', error);
-                setError(error.response?.data?.detail || error.message || 'Failed to fetch post-test data');
+                console.error('Fetch error:', error.response?.data || error.message);
+                setError(error.response?.data?.detail || 'Failed to fetch post-test data');
             }
         };
 
@@ -67,16 +75,24 @@ const PostTest = () => {
 
     const paraphraseQuestions = async (questions) => {
         setLoading(true);
-        const paraphrasedQuestions = await Promise.all(questions.map(async (question) => {
-            const inputResponse = createPrompt(question.question, question.correctAnswer, question.wrongAnswers);
-            const generatedResponse = await axios.post(`${API_URL}/api/paraphrase`, { input: inputResponse });
-            return {
-                ...question,
-                question: generatedResponse.data.paraphrased
-            };
-        }));
-        setPostTest(prev => ({ ...prev, questions: paraphrasedQuestions }));
-        setLoading(false);
+        try {
+            const paraphrasedQuestions = await Promise.all(questions.map(async (question) => {
+                const inputResponse = createPrompt(question.question, question.correctAnswer, question.wrongAnswers);
+                const generatedResponse = await axios.post(`${API_URL}/api/paraphrase`, { input: inputResponse }, {
+                    headers: requestHeaders, // Add headers here
+                });
+                return {
+                    ...question,
+                    question: generatedResponse.data.paraphrased
+                };
+            }));
+            setPostTest(prev => ({ ...prev, questions: paraphrasedQuestions }));
+        } catch (error) {
+            console.error('Paraphrase error:', error.response?.data || error.message);
+            setError(error.response?.data?.detail || 'Failed to paraphrase questions');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const createPrompt = (inputText, correctAnswer, wrongAnswers) => {
@@ -116,7 +132,7 @@ const PostTest = () => {
     const handleSubmit = async (e) => {
         if (e) e.preventDefault();
 
-        // Added: Get timeSpent from navigation state
+        // Get timeSpent from navigation state
         const { timeSpent = 0 } = location.state || {};
 
         let correctCount = 0;
@@ -136,7 +152,7 @@ const PostTest = () => {
             return;
         }
 
-        // Modified: Include time_spent in submission data
+        // Include time_spent in submission data
         const scoreData = {
             answers,
             user_id: userId,
@@ -148,7 +164,7 @@ const PostTest = () => {
             console.log("Submitting to:", `${API_URL}/api/post-test/submit/${moduleId}`);
             console.log("Payload:", scoreData);
             const response = await axios.post(`${API_URL}/api/post-test/submit/${moduleId}`, scoreData, {
-                headers: { 'Content-Type': 'application/json' }
+                headers: requestHeaders, // Use requestHeaders instead of inline headers
             });
             console.log("Submission response:", response.data);
             setScore({
@@ -159,7 +175,7 @@ const PostTest = () => {
             setSubmitted(true);
             setTimeTaken(600 - timeLeft);
         } catch (error) {
-            console.error('Submission error:', error.response || error);
+            console.error('Submission error:', error.response?.data || error.message);
             alert(`Failed to submit post-test: ${error.response?.data?.detail || error.message}`);
         } finally {
             setLoading(false);

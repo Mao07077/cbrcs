@@ -13,23 +13,28 @@ const ResetPassword = () => {
     const [newPassword, setNewPassword] = useState('');
     const [message, setMessage] = useState('');
 
+    // Common headers for axios requests
+    const requestHeaders = {
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setMessage('');
         try {
             const response = await axios.post(`${API_URL}/api/reset_password`, {
                 id_number: userId,
                 reset_code: resetCode,
                 new_password: newPassword,
+            }, {
+                headers: requestHeaders, // Add headers here
             });
-            setMessage(response.data.message);
+            setMessage(response.data.message || 'Password reset successfully.');
         } catch (error) {
-            if (error.response) {
-                setMessage(error.response.data.detail || 'An error occurred. Please try again.');
-                console.error('Error response:', error.response.data);
-            } else {
-                setMessage('An error occurred. Please try again.');
-                console.error('Error:', error.message);
-            }
+            console.error('Reset password error:', error.response?.data || error.message);
+            setMessage(error.response?.data?.detail || 'An error occurred. Please try again.');
         }
     };
 

@@ -10,81 +10,106 @@ const API_URL = process.env.REACT_APP_API_URL ||
 const Notes = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [color, setColor] = useState(''); // Add state for selected color
+    const [color, setColor] = useState('');
     const [showNoteModal, setShowNoteModal] = useState(false);
     const [notes, setNotes] = useState([]);
     const [showDropdown, setShowDropdown] = useState(null);
     const [editingIndex, setEditingIndex] = useState(null);
-    const [userIdNumber, setUserIdNumber] = useState(localStorage.getItem('userIdNumber')); // Assuming userId is stored in localStorage
+    const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [userIdNumber] = useState(localStorage.getItem('userIdNumber')); // Assuming userId is stored in localStorage
+
+    // Common headers for fetch requests
+    const requestHeaders = {
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    };
 
     // Fetch notes on component mount
     useEffect(() => {
         if (userIdNumber) {
             fetchNotes();
+        } else {
+            setError('User not logged in. Please log in to view notes.');
+            setIsLoading(false);
         }
     }, [userIdNumber]);
 
     const fetchNotes = async () => {
+        setIsLoading(true);
+        setError(null);
         try {
-            const response = await fetch(`${API_URL}/get_notes/${userIdNumber}`);
+            const response = await fetch(`${API_URL}/get_notes/${userIdNumber}`, {
+                headers: requestHeaders, // Add headers here
+            });
+            if (!response.ok) {
+                throw new Error(`Failed to fetch notes: ${response.status} ${response.statusText}`);
+            }
             const data = await response.json();
             if (data.notes) {
                 setNotes(data.notes);
+            } else {
+                throw new Error(data.detail || 'No notes found');
             }
         } catch (error) {
             console.error('Error fetching notes:', error);
+            setError(error.message || 'Error fetching notes');
+        } finally {
+            setIsLoading(false);
         }
     };
 
     const handleSave = async () => {
         if (!title.trim() || !content.trim() || !color) {
-            console.error("All fields (title, content, color) are required.");
+            setError('All fields (title, content, color) are required.');
             return;
         }
 
-        const note = { title, content, color }; // Include color in the note object
+        const note = { title, content, color };
+        setError(null);
 
         try {
-            // If editing, update the note
             if (editingIndex !== null) {
+                // Update existing note
                 const response = await fetch(`${API_URL}/update_note`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: requestHeaders, // Add headers here
                     body: JSON.stringify({
                         id_number: userIdNumber,
                         index: editingIndex,
                         note,
                     }),
                 });
-
                 if (!response.ok) {
-                    throw new Error(`Failed to update note: ${response.statusText}`);
+                    throw new Error(`Failed to update note: ${response.status} ${response.statusText}`);
                 }
-
                 const result = await response.json();
                 if (result.success) {
                     const updatedNotes = [...notes];
                     updatedNotes[editingIndex] = note;
                     setNotes(updatedNotes);
+                } else {
+                    throw new Error(result.detail || 'Failed to update note');
                 }
             } else {
-                // If creating new note
+                // Create new note
                 const response = await fetch(`${API_URL}/save_note`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: requestHeaders, // Add headers here
                     body: JSON.stringify({
                         id_number: userIdNumber,
                         note,
                     }),
                 });
-
                 if (!response.ok) {
-                    throw new Error(`Failed to save note: ${response.statusText}`);
+                    throw new Error(`Failed to save note: ${response.status} ${response.statusText}`);
                 }
-
                 const result = await response.json();
                 if (result.success) {
                     setNotes([note, ...notes]);
+                } else {
+                    throw new Error(result.detail || 'Failed to save note');
                 }
             }
 
@@ -94,24 +119,35 @@ const Notes = () => {
             setShowNoteModal(false);
             setEditingIndex(null);
         } catch (error) {
-            console.error("Error saving note:", error);
-            alert("Failed to save the note. Please try again.");
+            console.error('Error saving note:', error);
+            setError(error.message || 'Failed to save the note. Please try again.');
         }
     };
 
     const handleDelete = async (index) => {
-        const response = await fetch(`${API_URL}/delete_note`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                id_number: userIdNumber,
-                index,
-            }),
-        });
-        const result = await response.json();
-        if (result.success) {
-            const updatedNotes = notes.filter((_, i) => i !== index);
-            setNotes(updatedNotes);
+        setError(null);
+        try {
+            const response = await fetch(`${API_URL}/delete_note`, {
+                method: 'POST',
+                headers: requestHeaders, // Add headers here
+                body: JSON.stringify({
+                    id_number: userIdNumber,
+                    index,
+                }),
+            });
+            if (!response.ok) {
+                throw new Error(`Failed to delete note: ${response.status} ${response.statusText}`);
+            }
+            const result = await response.json();
+            if (result.success) {
+                const updatedNotes = notes.filter((_, i) => i !== index);
+                setNotes(updatedNotes);
+            } else {
+                throw new Error(result.detail || 'Failed to delete note');
+            }
+        } catch (error) {
+            console.error('Error deleting note:', error);
+            setError(error.message || 'Failed to delete the note. Please try again.');
         }
     };
 
@@ -122,7 +158,11 @@ const Notes = () => {
         setEditingIndex(index);
         setShowNoteModal(true);
         setShowDropdown(null);
+        setError(null);
     };
+
+    if (isLoading) return <p className={styles.loading}>Loading notes...</p>;
+    if (error) return <p className={styles.error}>{error}</p>;
 
     return (
         <div className={styles.page_container}>
@@ -136,10 +176,11 @@ const Notes = () => {
                         className={styles.create_note_btn}
                         onClick={() => {
                             setShowNoteModal(true);
-                            setEditingIndex(null); // Reset editingIndex to ensure it's a new note
-                            setTitle(''); // Clear the title field
-                            setContent(''); // Clear the content field
-                            setColor(''); // Clear the color selection
+                            setEditingIndex(null);
+                            setTitle('');
+                            setContent('');
+                            setColor('');
+                            setError(null);
                         }}
                     >
                         Create New Note
@@ -151,7 +192,7 @@ const Notes = () => {
                                 <div
                                     key={index}
                                     className={styles.note_card}
-                                    style={{ backgroundColor: note.color }} // Apply color as the background
+                                    style={{ backgroundColor: note.color }}
                                 >
                                     <div className={styles.note_header}>
                                         <h3 className={styles.note_title}>{note.title}</h3>

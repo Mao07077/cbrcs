@@ -1,11 +1,11 @@
-// Landing.jsx
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import Styles from './Landing.module.css';
 import Icon from '../../icon/actual.png';
 import image from '../../icon/carlbalita.jpg';
-import axios from 'axios';
 
-const BASE_URL = 'http://127.0.0.1:8000'; // Backend base URL
+const API_URL = process.env.REACT_APP_API_URL || 
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
 
 const Landing = () => {
   const [introText, setIntroText] = useState({ header: '', subHeader: '' });
@@ -13,30 +13,41 @@ const Landing = () => {
   const [newsImage, setNewsImage] = useState(null);
   const [courseImages, setCourseImages] = useState([null, null, null]);
   const [introImage, setIntroImage] = useState(null);
+  const [error, setError] = useState('');
+
+  // Common headers for axios requests
+  const requestHeaders = {
+    'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+    'Accept': 'application/json',
+  };
 
   useEffect(() => {
     // Fetch post data from backend
     const fetchPost = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/get_post');
+        const response = await axios.get(`${API_URL}/api/get_post`, {
+          headers: requestHeaders, // Add headers here
+        });
         const post = response.data.data;
         console.log('Fetched post data:', post); // Debug log
         setIntroText({
           header: post.intro?.header || '',
           subHeader: post.intro?.subHeader || '',
         });
-        setIntroImage(post.intro?.introImage ? `${BASE_URL}/${post.intro.introImage}` : null);
+        setIntroImage(post.intro?.introImage ? `${API_URL}/${post.intro.introImage}` : null);
         setNews(post.news?.content || '');
-        setNewsImage(post.news?.newsImage ? `${BASE_URL}/${post.news.newsImage}` : null);
+        setNewsImage(post.news?.newsImage ? `${API_URL}/${post.news.newsImage}` : null);
         setCourseImages(
-          post.courseImages?.images?.map((img) => (img ? `${BASE_URL}/${img}` : null)) || [
+          post.courseImages?.images?.map((img) => (img ? `${API_URL}/${img}` : null)) || [
             null,
             null,
             null,
           ]
         );
+        setError('');
       } catch (error) {
-        console.error('Error fetching post:', error);
+        console.error('Error fetching post:', error.response?.data || error.message);
+        setError(error.response?.data?.detail || 'Failed to load landing page content.');
       }
     };
     fetchPost();
@@ -52,6 +63,7 @@ const Landing = () => {
         </div>
       </div>
       <div className={Styles.Content}>
+        {error && <p className={Styles.ErrorMessage}>{error}</p>}
         <div className={Styles.Intro_Container}>
           <div className={Styles.Text_Container}>
             <h1>

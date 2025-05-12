@@ -48,49 +48,63 @@ const StudyHabits = () => {
   const [top3Habits, setTop3Habits] = useState([]);
   const [error, setError] = useState(null);
 
-  const idNumber = localStorage.getItem('userIdNumber');  // Assuming the user ID is stored in localStorage
+  const idNumber = localStorage.getItem('userIdNumber'); // Assuming the user ID is stored in localStorage
 
+  // Set API URL dynamically based on the environment
   const API_URL = process.env.REACT_APP_API_URL || 
     (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
 
+  // Common headers for axios requests
+  const requestHeaders = {
+    'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  };
+
   // Fetch study habits when the component mounts
   useEffect(() => {
-	const fetchStudyHabits = async () => {
-		try {
-			if (!idNumber) return;
+    const fetchStudyHabits = async () => {
+      try {
+        if (!idNumber) {
+          setError('User not logged in. Please log in to view recommended study habits.');
+          return;
+        }
 
-			const response = await axios.get(`${API_URL}/students/${idNumber}/recommended-pages`);
-			setTop3Habits(response.data.recommendedPages || []);
+        const response = await axios.get(`${API_URL}/students/${idNumber}/recommended-pages`, {
+          headers: requestHeaders, // Add headers here
+        });
+        setTop3Habits(response.data.recommendedPages || []);
+      } catch (error) {
+        console.error('Failed to fetch study habits:', error.response?.data || error.message);
+        setError(error.response?.data?.detail || 'Failed to fetch recommended study habits');
+      }
+    };
 
-		} catch (error) {
-			console.error("Failed to fetch study habits", error);
-		}
-	};
+    fetchStudyHabits();
+  }, [idNumber, API_URL]);
 
-	fetchStudyHabits();
-}, [idNumber]);
-
-return (
-	<div className="Container_SHL">
-		<Header isStudyHabits={true} />
-		<div className="Content_Wrapper_SHL">
-			<Study_Habits_Sidebar />
-			<div className="Content_SHL">
-				<h2 className="title">Study Habits</h2>
-				<div className="section">
-					<h3 className="subtitle">Your Top 3 Study Habits:</h3>
-					<div className="top-habits">
-						{top3Habits.length > 0 ? (
-							top3Habits.map((habit, index) => (
-								<Link to={`/${habit.replace(/\s+/g, '_').toLowerCase()}`} key={index} className="habit-card">
-									<p className="habit-title">{habit}</p>
-									<p className="habit-description">Description for {habit}</p>
-								</Link>
-							))
-						) : (
-							<p>No recommended habits found.</p>
-						)}
-					</div>
+  return (
+    <div className="Container_SHL">
+      <Header isStudyHabits={true} />
+      <div className="Content_Wrapper_SHL">
+        <Study_Habits_Sidebar />
+        <div className="Content_SHL">
+          <h2 className="title">Study Habits</h2>
+          {error && <p className="error">{error}</p>}
+          <div className="section">
+            <h3 className="subtitle">Your Top 3 Study Habits:</h3>
+            <div className="top-habits">
+              {top3Habits.length > 0 ? (
+                top3Habits.map((habit, index) => (
+                  <Link to={`/${habit.replace(/\s+/g, '_').toLowerCase()}`} key={index} className="habit-card">
+                    <p className="habit-title">{habit}</p>
+                    <p className="habit-description">Description for {habit}</p>
+                  </Link>
+                ))
+              ) : (
+                <p>No recommended habits found.</p>
+              )}
+            </div>
 
             <h3 className="subtitle2">Explore More Study Techniques:</h3>
 
@@ -108,7 +122,7 @@ return (
         </div>
       </div>
 
-      <Footer></Footer>
+      <Footer />
     </div>
   );
 };

@@ -11,35 +11,54 @@ const Flashcards = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [flipped, setFlipped] = useState(false);
     const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
+    // Set API URL dynamically based on the environment
     const API_URL =
         process.env.REACT_APP_API_URL ||
         (window.location.hostname === 'localhost'
             ? 'http://127.0.0.1:8000'
             : 'https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app');
 
+    // Common headers for fetch requests
+    const requestHeaders = {
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'Accept': 'application/json',
+    };
+
     // Fetch flashcards from API
     useEffect(() => {
         const fetchFlashcards = async () => {
+            setIsLoading(true);
+            setError(null);
             try {
-                const response = await fetch(`${API_URL}/api/flashcards/${moduleId}`);
+                const response = await fetch(`${API_URL}/api/flashcards/${moduleId}`, {
+                    headers: requestHeaders, // Add headers here
+                });
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch flashcards: ${response.status} ${response.statusText}`);
+                }
                 const data = await response.json();
                 if (data.success) {
-                    setFlashcards(data.flashcards);
+                    setFlashcards(data.flashcards || []);
                 } else {
-                    setError(data.detail || 'Failed to fetch flashcards');
+                    throw new Error(data.detail || 'Failed to fetch flashcards');
                 }
             } catch (error) {
-                setError('Error fetching flashcards: ' + error.message);
+                console.error('Error fetching flashcards:', error);
+                setError(error.message || 'Error fetching flashcards');
+            } finally {
+                setIsLoading(false);
             }
         };
 
         if (!location.state?.flashcards) {
             fetchFlashcards();
         } else {
-            setFlashcards(location.state.flashcards);
+            setFlashcards(location.state.flashcards || []);
+            setIsLoading(false);
         }
-    }, [location.state, moduleId]);
+    }, [location.state, moduleId, API_URL]);
 
     const handleNext = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % flashcards.length);
@@ -55,8 +74,9 @@ const Flashcards = () => {
         setFlipped((prev) => !prev);
     };
 
+    if (isLoading) return <p className={styles.loading}>Loading...</p>;
     if (error) return <p className={styles.error}>{error}</p>;
-    if (flashcards.length === 0) return <p>Loading...</p>;
+    if (flashcards.length === 0) return <p className={styles.error}>No flashcards available</p>;
 
     return (
         <div className={styles.flashcardPage}>

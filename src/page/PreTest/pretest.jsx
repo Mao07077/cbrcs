@@ -27,12 +27,18 @@ const PreTest = () => {
     const [timeLeft, setTimeLeft] = useState(600); // 10 minutes timer
     const [timeTaken, setTimeTaken] = useState(0);
     const [loading, setLoading] = useState(false);
-    // Added: State to track time spent on the pre-test (in seconds)
-    const [timeSpent, setTimeSpent] = useState(0);
+    const [timeSpent, setTimeSpent] = useState(0); // Time spent on the pre-test (in seconds)
 
-    // Ensure API_URL matches the backend port
+    // Dynamically switch between local and production environment
     const API_URL = process.env.REACT_APP_API_URL || 
         (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
+
+    // Common headers for axios requests
+    const requestHeaders = {
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    };
 
     // Safe localStorage access
     const getUserId = () => {
@@ -51,7 +57,9 @@ const PreTest = () => {
     useEffect(() => {
         const fetchPreTestData = async () => {
             try {
-                const response = await axios.get(`${API_URL}/api/pre-test/${moduleId}`);
+                const response = await axios.get(`${API_URL}/api/pre-test/${moduleId}`, {
+                    headers: requestHeaders, // Add headers here
+                });
                 const data = response.data;
                 console.log('Pre-test data:', data);
                 const answersMap = {};
@@ -62,22 +70,21 @@ const PreTest = () => {
                 setCorrectAnswers(answersMap);
                 setPreTest(data);
             } catch (error) {
-                console.error('Fetch error:', error);
-                const errorMessage = error.response?.data?.detail || error.message || 'Unknown error';
-                setError(`Failed to load pre-test: ${errorMessage}`);
+                console.error('Fetch error:', error.response?.data || error.message);
+                setError(error.response?.data?.detail || 'Failed to load pre-test');
             }
         };
 
         fetchPreTestData();
 
-        // Added: Start timer to track time spent on the pre-test
+        // Start timer to track time spent on the pre-test
         const startTime = Date.now();
         const intervalId = setInterval(() => {
             const currentTime = Date.now();
             setTimeSpent(Math.floor((currentTime - startTime) / 1000));
         }, 1000);
 
-        // Added: Cleanup timer on component unmount
+        // Cleanup timer on component unmount
         return () => clearInterval(intervalId);
     }, [moduleId]);
 
@@ -129,7 +136,7 @@ const PreTest = () => {
             return;
         }
 
-        // Modified: Include time_spent in submission data
+        // Include time_spent in submission data
         const scoreData = { 
             answers, 
             user_id: userId,
@@ -140,7 +147,7 @@ const PreTest = () => {
             console.log("Submitting to:", `${API_URL}/api/pre-test/submit/${moduleId}`);
             console.log("Payload:", scoreData);
             const response = await axios.post(`${API_URL}/api/pre-test/submit/${moduleId}`, scoreData, {
-                headers: { 'Content-Type': 'application/json' }
+                headers: requestHeaders, // Use requestHeaders instead of inline headers
             });
             console.log("Submission response:", response.data);
             setScore({
@@ -151,8 +158,7 @@ const PreTest = () => {
             setSubmitted(true);
             setTimeTaken(600 - timeLeft);
         } catch (error) {
-            console.error('Submission error:', error.response || error);
-            console.error('Error details:', error.response?.data || error.message);
+            console.error('Submission error:', error.response?.data || error.message);
             alert(`Failed to submit pre-test: ${error.response?.data?.detail || error.message}`);
         } finally {
             setLoading(false);

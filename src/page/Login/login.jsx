@@ -13,12 +13,21 @@ function Login() {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    // Common headers for axios requests
+    const requestHeaders = {
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setIsLoading(true);
         try {
-            const response = await axios.post(`${API_URL}/api/login`, { idNumber, password });
+            const response = await axios.post(`${API_URL}/api/login`, { idNumber, password }, {
+                headers: requestHeaders, // Add headers here
+            });
             if (response.data.success) {
                 localStorage.setItem('userIdNumber', response.data.id_number);
                 localStorage.setItem('userRole', response.data.role);
@@ -47,11 +56,11 @@ function Login() {
                     setError('Unknown role');
                 }
             } else {
-                setError('Invalid ID number or password');
+                setError(response.data.message || 'Invalid ID number or password');
             }
         } catch (error) {
-            console.error('Login error:', error);
-            setError('An error occurred. Please try again.');
+            console.error('Login error:', error.response?.data || error.message);
+            setError(error.response?.data?.detail || 'An error occurred. Please try again.');
         } finally {
             setIsLoading(false);
         }

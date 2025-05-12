@@ -1,4 +1,3 @@
-// AdminPost.jsx
 import React, { useState } from 'react';
 import Styles from './AdminPost.module.css';
 import QuillStyles from './QuillStyles.module.css';
@@ -8,6 +7,9 @@ import Admin_Sidebar from '../../Components/Admin_Sidebar';
 import Footer from '../../Components/composables/FooterAdmin';
 import Header from '../../Components/composables/Header';
 import axios from 'axios';
+
+const API_URL = process.env.REACT_APP_API_URL || 
+  (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
 
 const AdminPost = () => {
   const [introText, setIntroText] = useState({
@@ -24,6 +26,12 @@ const AdminPost = () => {
     fontStyle: 'normal',
     color: '#333',
   });
+
+  // Common headers for all axios requests
+  const requestHeaders = {
+    'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+    'Accept': 'application/json',
+  };
 
   // Handlers for image uploads
   const handleSingleImageUpload = (e, setImage) => {
@@ -60,13 +68,16 @@ const AdminPost = () => {
         formData.append('intro_image', introImage);
         console.log('Intro image appended:', introImage.name);
       }
-      const response = await axios.post('http://127.0.0.1:8000/api/save_post', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      const response = await axios.post(`${API_URL}/api/save_post`, formData, {
+        headers: {
+          ...requestHeaders, // Include ngrok header
+          'Content-Type': 'multipart/form-data',
+        },
       });
       console.log('Intro submit response:', response.data); // Debug log
       alert(response.data.message);
     } catch (error) {
-      console.error('Error saving [Intro Submit]:', error);
+      console.error('Error saving [Intro Submit]:', error.response?.data || error.message);
       alert('Failed to save intro');
     }
   };
@@ -80,13 +91,16 @@ const AdminPost = () => {
         formData.append('news_image', newsImage);
         console.log('News image appended:', newsImage.name);
       }
-      const response = await axios.post('http://127.0.0.1:8000/api/save_post', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      const response = await axios.post(`${API_URL}/api/save_post`, formData, {
+        headers: {
+          ...requestHeaders, // Include ngrok header
+          'Content-Type': 'multipart/form-data',
+        },
       });
       console.log('News submit response:', response.data); // Debug log
       alert(response.data.message);
     } catch (error) {
-      console.error('Error [News Submit]:', error);
+      console.error('Error [News Submit]:', error.response?.data || error.message);
       alert('Failed to post news');
     }
   };
@@ -101,13 +115,16 @@ const AdminPost = () => {
           console.log(`Course image ${index + 1} appended:`, img.name);
         }
       });
-      const response = await axios.post('http://127.0.0.1:8000/api/save_post', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      const response = await axios.post(`${API_URL}/api/save_post`, formData, {
+        headers: {
+          ...requestHeaders, // Include ngrok header
+          'Content-Type': 'multipart/form-data',
+        },
       });
       console.log('Course images submit response:', response.data); // Debug log
       alert(response.data.message);
     } catch (error) {
-      console.error('Error [Course Images Submit]:', error);
+      console.error('Error [Course Images Submit]:', error.response?.data || error.message);
       alert('Failed to save course images');
     }
   };

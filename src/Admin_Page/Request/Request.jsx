@@ -9,26 +9,45 @@ const API_URL = process.env.REACT_APP_API_URL ||
     (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
 
 const Request = () => {
+    const [requests, setRequests] = useState([]);
+    const [selectedRequest, setSelectedRequest] = useState(null);
+    const [showPopup, setShowPopup] = useState(false);
+    const [error, setError] = useState('');
+
+    // Common headers for all fetch requests
+    const requestHeaders = {
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    };
+
     const handleNavigation = (route) => {
         console.log(`Navigating to: ${route}`);
         window.location.href = `/${route}`;
     };
 
-    const [requests, setRequests] = useState([]);
-    const [selectedRequest, setSelectedRequest] = useState(null);
-    const [showPopup, setShowPopup] = useState(false);
-
     const fetchRequests = async () => {
         try {
-            const response = await fetch(`${API_URL}/admin/requests`);
+            const response = await fetch(`${API_URL}/admin/requests`, {
+                method: 'GET',
+                headers: requestHeaders, // Add headers here
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch requests: ${response.status} ${response.statusText}`);
+            }
+
             const result = await response.json();
             if (result.success) {
                 setRequests(result.data);
+                setError('');
             } else {
-                console.error('Failed to fetch requests:', result.detail);
+                throw new Error(`Failed to fetch requests: ${result.detail || 'Unknown error'}`);
             }
         } catch (error) {
             console.error('Error fetching requests:', error);
+            setError(error.message);
+            setRequests([]);
         }
     };
 
@@ -46,20 +65,27 @@ const Request = () => {
         try {
             const response = await fetch(`${API_URL}/admin/requests/accept/${selectedRequest._id}`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: requestHeaders, // Add headers here
                 body: JSON.stringify(selectedRequest.update_data),
             });
-            const result = await response.json();
 
+            if (!response.ok) {
+                throw new Error(`Failed to accept request: ${response.status} ${response.statusText}`);
+            }
+
+            const result = await response.json();
             if (result.success) {
                 alert('Request accepted and changes applied!');
                 setRequests(requests.filter((req) => req._id !== selectedRequest._id));
                 setShowPopup(false);
+                setError('');
             } else {
-                alert('Failed to apply changes.');
+                throw new Error(`Failed to accept request: ${result.detail || 'Unknown error'}`);
             }
         } catch (error) {
             console.error('Error accepting request:', error);
+            setError(error.message);
+            alert('Failed to apply changes.');
         }
     };
 
@@ -68,18 +94,26 @@ const Request = () => {
         try {
             const response = await fetch(`${API_URL}/admin/requests/decline/${selectedRequest._id}`, {
                 method: 'DELETE',
+                headers: requestHeaders, // Add headers here
             });
-            const result = await response.json();
 
+            if (!response.ok) {
+                throw new Error(`Failed to decline request: ${response.status} ${response.statusText}`);
+            }
+
+            const result = await response.json();
             if (result.success) {
                 alert('Request declined.');
                 setRequests(requests.filter((req) => req._id !== selectedRequest._id));
                 setShowPopup(false);
+                setError('');
             } else {
-                alert('Failed to decline request.');
+                throw new Error(`Failed to decline request: ${result.detail || 'Unknown error'}`);
             }
         } catch (error) {
             console.error('Error declining request:', error);
+            setError(error.message);
+            alert('Failed to decline request.');
         }
     };
 
@@ -92,6 +126,7 @@ const Request = () => {
                     <div className={Styles.Greeting_Dashboard}>
                         <h1>Request List</h1>
                     </div>
+                    {error && <p className={Styles.ErrorMessage}>{error}</p>}
                     <div className={Styles.Container}>
                         <table className={Styles.Table}>
                             <thead>

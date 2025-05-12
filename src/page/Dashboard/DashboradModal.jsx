@@ -45,6 +45,13 @@ function DashboardModal({ student, onClose }) {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Common headers for axios requests
+    const requestHeaders = {
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    };
+
     // Chart options for bar charts
     const chartOptions = {
         responsive: true,
@@ -77,7 +84,9 @@ function DashboardModal({ student, onClose }) {
         const fetchDashboardData = async () => {
             try {
                 // Fetch dashboard data
-                const response = await axios.get(`${API_URL}/api/dashboard/${student.studentNo}`);
+                const response = await axios.get(`${API_URL}/api/dashboard/${student.studentNo}`, {
+                    headers: requestHeaders, // Add headers here
+                });
                 const { pre_tests, post_tests } = response.data;
                 setDashboardData(response.data);
 
@@ -162,13 +171,16 @@ function DashboardModal({ student, onClose }) {
                 }
 
                 // Fetch recommended study habits
-                const habitsResponse = await axios.get(`${API_URL}/students/${student.studentNo}/recommended-pages`);
+                const habitsResponse = await axios.get(`${API_URL}/students/${student.studentNo}/recommended-pages`, {
+                    headers: requestHeaders, // Add headers here
+                });
                 setTop3Habits(habitsResponse.data.recommendedPages || []);
 
                 setIsLoading(false);
             } catch (error) {
-                console.error('Error fetching dashboard data:', error);
-                setError('Failed to load dashboard data.');
+                const errorMessage = error.response?.data?.detail || 'Failed to load dashboard data.';
+                console.error('Error fetching dashboard data:', error.response?.data || error.message);
+                setError(errorMessage);
                 setIsLoading(false);
             }
         };

@@ -5,7 +5,8 @@ import Header from '../../Components/composables/Header';
 import Admin_Sidebar from '../../Components/Admin_Sidebar';
 import Footer from '../../Components/composables/FooterAdmin';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000'; // Adjust to your API base URL
+const API_URL = process.env.REACT_APP_API_URL || 
+  (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
 
 const Reports = () => {
     const [reports, setReports] = useState([]);
@@ -14,6 +15,13 @@ const Reports = () => {
     const [error, setError] = useState('');
     const [selectedReport, setSelectedReport] = useState(null);
 
+    // Common headers for all axios requests
+    const requestHeaders = {
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    };
+
     // Fetch reports from backend
     const fetchReports = async (searchQuery = '', status = 'All') => {
         try {
@@ -21,11 +29,15 @@ const Reports = () => {
             if (searchQuery) query.append('search', searchQuery);
             if (status !== 'All') query.append('status', status);
 
-            const response = await axios.get(`${API_URL}/api/reports?${query.toString()}`);
+            const response = await axios.get(`${API_URL}/api/reports?${query.toString()}`, {
+                headers: requestHeaders, // Add headers here
+            });
             setReports(response.data);
             setError('');
         } catch (err) {
-            setError(err.response?.data?.detail || 'An error occurred while fetching reports');
+            const errorMessage = err.response?.data?.detail || 'An error occurred while fetching reports';
+            setError(errorMessage);
+            console.error('Error fetching reports:', err);
         }
     };
 
@@ -47,10 +59,14 @@ const Reports = () => {
     // Handle status update (delete report when resolved)
     const handleStatusUpdate = async (reportId) => {
         try {
-            await axios.delete(`${API_URL}/api/reports/${reportId}`);
+            await axios.delete(`${API_URL}/api/reports/${reportId}`, {
+                headers: requestHeaders, // Add headers here
+            });
             fetchReports(search, statusFilter); // Refresh reports
         } catch (err) {
-            setError(err.response?.data?.detail || 'An error occurred while resolving report');
+            const errorMessage = err.response?.data?.detail || 'An error occurred while resolving report';
+            setError(errorMessage);
+            console.error('Error resolving report:', err);
         }
     };
 

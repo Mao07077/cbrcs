@@ -18,8 +18,10 @@ const ScheduleTable = () => {
         '04:00 PM',
     ]);
     const [reminder, setReminder] = useState(null);
-    const [userIdNumber, setUserIdNumber] = useState(null);
+    const [userIdNumber] = useState(localStorage.getItem('userIdNumber')); // Assuming userId is stored in localStorage
     const [showTaskInput, setShowTaskInput] = useState(false);
+    const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     const [taskData, setTaskData] = useState({
         time: '',
@@ -28,19 +30,28 @@ const ScheduleTable = () => {
         color: '#FFD1DC', // Default pastel color
     });
 
+    // Define the API_URL depending on the environment
     const API_URL =
         process.env.REACT_APP_API_URL ||
         (window.location.hostname === 'localhost'
             ? 'http://127.0.0.1:8000'
             : 'https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app');
 
+    // Common headers for fetch requests
+    const requestHeaders = {
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    };
+
     useEffect(() => {
-        const userId = localStorage.getItem('userIdNumber');
-        if (userId) {
-            setUserIdNumber(userId);
-            fetchSchedule(userId);
+        if (userIdNumber) {
+            fetchSchedule(userIdNumber);
+        } else {
+            setError('User not logged in. Please log in to view your schedule.');
+            setIsLoading(false);
         }
-    }, []);
+    }, [userIdNumber]);
 
     useEffect(() => {
         const checkReminders = () => {
@@ -56,7 +67,7 @@ const ScheduleTable = () => {
                 if (times[rowIndex] === currentTime) {
                     row.forEach((item, colIndex) => {
                         if (item && daysOfWeek[colIndex] === currentDay) {
-                            setReminder(`Reminder: ${item} at ${currentTime} on ${currentDay}`);
+                            setReminder(`Reminder: ${item.task || item} at ${currentTime} on ${currentDay}`);
                         }
                     });
                 }
@@ -80,20 +91,35 @@ const ScheduleTable = () => {
     };
 
     const fetchSchedule = async (id_number) => {
+        setIsLoading(true);
+        setError(null);
         try {
-            const response = await fetch(`${API_URL}/get_schedule/${id_number}`);
+            const response = await fetch(`${API_URL}/get_schedule/${id_number}`, {
+                headers: requestHeaders, // Add headers here
+            });
+            if (!response.ok) {
+                throw new Error(`Failed to fetch schedule: ${response.status} ${response.statusText}`);
+            }
             const data = await response.json();
-            if (data.schedule) {
+            if (data.schedule && data.times) {
                 setSchedule(data.schedule);
                 setTimes(data.times);
+            } else {
+                throw new Error(data.detail || 'No schedule found');
             }
         } catch (error) {
             console.error('Error fetching schedule:', error);
+            setError(error.message || 'Error fetching schedule');
+        } finally {
+            setIsLoading(false);
         }
     };
 
     const saveSchedule = async () => {
-        if (!userIdNumber) return;
+        if (!userIdNumber) {
+            setError('User not logged in. Please log in to save your schedule.');
+            return;
+        }
 
         const scheduleData = {
             id_number: userIdNumber,
@@ -101,29 +127,32 @@ const ScheduleTable = () => {
             times: times,
         };
 
+        setError(null);
         try {
             const response = await fetch(`${API_URL}/save_schedule`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: requestHeaders, // Add headers here
                 body: JSON.stringify(scheduleData),
             });
-
+            if (!response.ok) {
+                throw new Error(`Failed to save schedule: ${response.status} ${response.statusText}`);
+            }
             const result = await response.json();
             if (result.success) {
+                setError(null); // Clear any previous errors
                 alert('Schedule saved successfully!');
             } else {
-                alert('Failed to save schedule.');
+                throw new Error(result.detail || 'Failed to save schedule');
             }
         } catch (error) {
             console.error('Error saving schedule:', error);
+            setError(error.message || 'Failed to save schedule');
         }
     };
 
     const handleAddTask = () => {
         if (!taskData.time || !taskData.day || taskData.task.trim() === '') {
-            alert('Please fill in all fields to add a task.');
+            setError('Please fill in all fields to add a task.');
             return;
         }
 
@@ -139,15 +168,20 @@ const ScheduleTable = () => {
             setSchedule(newSchedule);
             setTaskData({ time: '', day: '', task: '', color: '#FFD1DC' }); // Reset the task input fields
             setShowTaskInput(false); // Hide the input field after adding the task
+            setError(null);
         } else {
-            alert('Invalid time or day selected.');
+            setError('Invalid time or day selected.');
         }
     };
 
     const handleAddRow = () => {
         setTimes([...times, '']);
         setSchedule([...schedule, Array(7).fill('')]);
+        setError(null);
     };
+
+    if (isLoading) return <p className={styles.loading}>Loading schedule...</p>;
+    if (error && !userIdNumber) return <p className={styles.error}>{error}</p>;
 
     return (
         <div className={styles.container}>
@@ -162,6 +196,7 @@ const ScheduleTable = () => {
                             <button onClick={() => setReminder(null)}>Close</button>
                         </div>
                     )}
+                    {error && <p className={styles.error}>{error}</p>}
                     <div className={styles.scheduleWrapper}>
                         <div className={styles.scheduleTable}>
                             <div className={styles.timeColumn}></div>
@@ -171,7 +206,7 @@ const ScheduleTable = () => {
                                 </div>
                             ))}
                             {schedule.map((row, rowIndex) => (
-                                <>
+                                <React.Fragment key={rowIndex}>
                                     <div className={styles.timeColumn}>
                                         <input
                                             type="text"
@@ -197,7 +232,7 @@ const ScheduleTable = () => {
                                             {item?.task && <div className={styles.event}>{item.task}</div>}
                                         </div>
                                     ))}
-                                </>
+                                </React.Fragment>
                             ))}
                         </div>
 
@@ -253,7 +288,7 @@ const ScheduleTable = () => {
                                             {pastelColors.map((color, index) => (
                                                 <button
                                                     key={index}
-                                                    className={styles.colorButton}
+                                                    className={`${styles.colorButton} ${taskData.color === color ? styles.selected : ''}`}
                                                     style={{ backgroundColor: color }}
                                                     onClick={() => setTaskData({ ...taskData, color })}
                                                 />

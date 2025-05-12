@@ -16,6 +16,13 @@ const ForgotPassword = () => {
     const [codeSent, setCodeSent] = useState(false);
     const navigate = useNavigate();
 
+    // Common headers for axios requests
+    const requestHeaders = {
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    };
+
     const handleSendCode = async (e) => {
         e.preventDefault();
         setError('');
@@ -25,17 +32,19 @@ const ForgotPassword = () => {
             const response = await axios.post(`${API_URL}/api/forgot_password`, {
                 id_number: idNumber,
                 email: email,
+            }, {
+                headers: requestHeaders, // Add headers here
             });
 
             if (response.data.success) {
                 setMessage('Reset email has been sent.');
                 setCodeSent(true);
             } else {
-                setError(response.data.message);
+                setError(response.data.message || 'Failed to send reset email.');
             }
         } catch (error) {
-            console.error("Error sending reset email:", error);
-            setError('Failed to send email. Please try again.');
+            console.error("Error sending reset email:", error.response?.data || error.message);
+            setError(error.response?.data?.detail || 'Failed to send email. Please try again.');
         }
     };
 
@@ -49,17 +58,19 @@ const ForgotPassword = () => {
                 id_number: idNumber,
                 email: email,
                 reset_code: resetCode,
+            }, {
+                headers: requestHeaders, // Add headers here
             });
 
             if (response.data.success) {
                 setMessage('Reset code confirmed. You can now reset your password.');
                 navigate('/reset_password');
             } else {
-                setError(response.data.message);
+                setError(response.data.message || 'Failed to confirm reset code.');
             }
         } catch (error) {
-            console.error("Error confirming reset code:", error);
-            setError('Failed to confirm code. Please check the code and try again.');
+            console.error("Error confirming reset code:", error.response?.data || error.message);
+            setError(error.response?.data?.detail || 'Failed to confirm code. Please check the code and try again.');
         }
     };
 

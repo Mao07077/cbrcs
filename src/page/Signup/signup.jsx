@@ -3,6 +3,7 @@ import axios from 'axios';
 import './signup.css';
 import Icon from '../../icon/actual.png';
 
+// Set API URL dynamically based on the environment
 const API_URL = process.env.REACT_APP_API_URL || 
     (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
 
@@ -23,6 +24,13 @@ const Signup = () => {
 
     const [error, setError] = useState('');
 
+    // Common headers for axios requests
+    const requestHeaders = {
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -33,18 +41,21 @@ const Signup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
         console.log("Submitting signup data:", formData);
         try {
-            const response = await axios.post(`${API_URL}/api/signup`, formData);
+            const response = await axios.post(`${API_URL}/api/signup`, formData, {
+                headers: requestHeaders, // Add headers here
+            });
             console.log("Signup response:", response.data);
             if (response.data.success) {
                 window.location.href = '/login';
             } else {
-                setError(response.data.message);
+                setError(response.data.message || 'Signup failed.');
             }
         } catch (error) {
-            console.error("Signup error:", error);
-            setError('An error occurred during signup.');
+            console.error('Signup error:', error.response?.data || error.message);
+            setError(error.response?.data?.detail || 'An error occurred during signup.');
         }
     };
 

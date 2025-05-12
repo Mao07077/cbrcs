@@ -56,6 +56,13 @@ const Dashboard = ({ isModal = false }) => {
     const API_URL = process.env.REACT_APP_API_URL || 
         (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
 
+    // Common headers for axios requests
+    const requestHeaders = {
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    };
+
     useEffect(() => {
         if (!idNumber) {
             setError('User not logged in');
@@ -65,7 +72,9 @@ const Dashboard = ({ isModal = false }) => {
         const fetchDashboardData = async () => {
             try {
                 // Fetching dashboard data including pre-tests and post-tests
-                const response = await axios.get(`${API_URL}/api/dashboard/${idNumber}`);
+                const response = await axios.get(`${API_URL}/api/dashboard/${idNumber}`, {
+                    headers: requestHeaders, // Add headers here
+                });
                 const { pre_tests, post_tests } = response.data;
 
                 // Process pre-test data for bar chart
@@ -149,11 +158,14 @@ const Dashboard = ({ isModal = false }) => {
                 }
 
                 // Fetching recommended study habits
-                const habitsResponse = await axios.get(`${API_URL}/students/${idNumber}/recommended-pages`);
+                const habitsResponse = await axios.get(`${API_URL}/students/${idNumber}/recommended-pages`, {
+                    headers: requestHeaders, // Add headers here
+                });
                 setTop3Habits(habitsResponse.data.recommendedPages || []);
             } catch (error) {
-                setError('Failed to fetch dashboard data');
-                console.error(error);
+                const errorMessage = error.response?.data?.detail || 'Failed to fetch dashboard data';
+                setError(errorMessage);
+                console.error('Error fetching dashboard data:', error.response?.data || error.message);
             }
         };
 
