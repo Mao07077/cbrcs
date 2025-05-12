@@ -15,24 +15,35 @@ const ModuleDashboard = () => {
   const API_URL = process.env.REACT_APP_API_URL || 
     (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
 
+  // Common headers for all fetch requests
+  const requestHeaders = {
+    'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  };
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
         const idNumber = localStorage.getItem('userIdNumber');
         if (!idNumber) {
-          setError('User not logged in');
-          return;
+          throw new Error('User not logged in');
         }
 
-        const response = await fetch(`${API_URL}/api/profile/${idNumber}`);
+        const response = await fetch(`${API_URL}/api/profile/${idNumber}`, {
+          method: 'GET',
+          headers: requestHeaders, // Add headers here
+        });
+
         if (!response.ok) {
-          throw new Error('Failed to fetch user profile');
+          throw new Error(`Failed to fetch user profile: ${response.status} ${response.statusText}`);
         }
 
         const data = await response.json();
         setUserProgram(data.program || 'All Programs');
       } catch (err) {
         setError(err.message);
+        console.error('Profile fetch error:', err);
       }
     };
 
@@ -50,24 +61,37 @@ const ModuleDashboard = () => {
             ? `${API_URL}/api/modules`
             : `${API_URL}/api/modules?program=${encodeURIComponent(userProgram)}`;
 
-        const modulesResponse = await fetch(apiUrl);
+        // Fetch modules
+        const modulesResponse = await fetch(apiUrl, {
+          method: 'GET',
+          headers: requestHeaders, // Add headers here
+        });
+
         if (!modulesResponse.ok) {
-          throw new Error(`HTTP error! Status: ${modulesResponse.status}`);
+          throw new Error(`Failed to fetch modules: ${modulesResponse.status} ${modulesResponse.statusText}`);
         }
+
         const modulesData = await modulesResponse.json();
         setModules(modulesData);
 
         // Fetch statuses for all modules
         const statuses = {};
         for (const module of modulesData) {
-          const statusResponse = await fetch(`${API_URL}/api/module-status/${module._id}/${idNumber}`);
+          const statusResponse = await fetch(`${API_URL}/api/module-status/${module._id}/${idNumber}`, {
+            method: 'GET',
+            headers: requestHeaders, // Add headers here
+          });
+
           if (statusResponse.ok) {
             statuses[module._id] = await statusResponse.json();
+          } else {
+            console.warn(`Failed to fetch status for module ${module._id}: ${statusResponse.status}`);
           }
         }
         setModuleStatuses(statuses);
       } catch (error) {
         setError(error.message);
+        console.error('Modules fetch error:', error);
       }
     };
 
@@ -116,7 +140,7 @@ const ModuleDashboard = () => {
                         onClick={() => handleProceedClick(module._id)}
                         disabled={status.post_test_completed}
                       >
-                      {statusText}
+                        {statusText}
                       </button>
                     </div>
                   );
