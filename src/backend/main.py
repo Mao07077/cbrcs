@@ -79,15 +79,16 @@ router = APIRouter()
 router = APIRouter(prefix="/api")
 
 origins = [
-    "https:olep.vercel.app",  
+    "https:olep.vercel.app", 
+    "http://localhost:3000" 
 ]
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # or specify specific origins
-    allow_credentials=True,
-    allow_methods=["*"],  # or specify methods like ["GET", "POST"]
-    allow_headers=["*"],  # or specify headers
+    allow_origins=origins,  # Specific origins, not wildcard
+    allow_credentials=True,  # Allow cookies/credentials
+    allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
+    allow_headers=["*"], # or specify headers
 )
 
 # MongoDB setup with SSL enabled
