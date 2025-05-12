@@ -24,7 +24,9 @@ const ModuleDashboard = () => {
           return;
         }
 
-        const response = await fetch(`${API_URL}/api/profile/${idNumber}`);
+        const response = await fetch(`${API_URL}/api/profile/${idNumber}`, {
+          credentials: 'include', // Include cookies for ngrok
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch user profile');
         }
@@ -50,9 +52,20 @@ const ModuleDashboard = () => {
             ? `${API_URL}/api/modules`
             : `${API_URL}/api/modules?program=${encodeURIComponent(userProgram)}`;
 
-        const modulesResponse = await fetch(apiUrl);
+        console.log('Fetching modules from:', apiUrl);
+        const modulesResponse = await fetch(apiUrl, {
+          credentials: 'include', // Include cookies to bypass ngrok warning
+        });
         if (!modulesResponse.ok) {
-          throw new Error(`HTTP error! Status: ${modulesResponse.status}`);
+          const text = await modulesResponse.text();
+          console.error('Response not OK:', modulesResponse.status, text);
+          throw new Error(`HTTP error! Status: ${modulesResponse.status} - ${text}`);
+        }
+        const contentType = modulesResponse.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await modulesResponse.text();
+          console.error('Non-JSON response:', text);
+          throw new Error('Received non-JSON response, likely ngrok warning page');
         }
         const modulesData = await modulesResponse.json();
         setModules(modulesData);
@@ -60,13 +73,18 @@ const ModuleDashboard = () => {
         // Fetch statuses for all modules
         const statuses = {};
         for (const module of modulesData) {
-          const statusResponse = await fetch(`${API_URL}/api/module-status/${module._id}/${idNumber}`);
+          const statusResponse = await fetch(`${API_URL}/api/module-status/${module._id}/${idNumber}`, {
+            credentials: 'include', // Include cookies for subsequent requests
+          });
           if (statusResponse.ok) {
             statuses[module._id] = await statusResponse.json();
+          } else {
+            console.warn(`Failed to fetch status for module ${module._id}: ${statusResponse.status}`);
           }
         }
         setModuleStatuses(statuses);
       } catch (error) {
+        console.error('Error fetching modules:', error);
         setError(error.message);
       }
     };
@@ -116,7 +134,7 @@ const ModuleDashboard = () => {
                         onClick={() => handleProceedClick(module._id)}
                         disabled={status.post_test_completed}
                       >
-                      {statusText}
+                        {statusText}
                       </button>
                     </div>
                   );
