@@ -1,4 +1,4 @@
-import { SquarePen, UserIcon, Book, HomeIcon, IdCard, Flag } from 'lucide-react';
+import { SquarePen, UserIcon, Book, HomeIcon, IdCard, Flag, ArrowBigLeftDashIcon } from 'lucide-react';
 import Sidebar from './composables/Sidebar';
 
 const routes = [
@@ -32,6 +32,11 @@ const routes = [
 		routePath: '/Settings',
 		routeIcon: <SquarePen></SquarePen>,
 	},
+	{
+			routeNames: 'Logout',
+			routePaths: '/',
+			routeIcons: <ArrowBigLeftDashIcon></ArrowBigLeftDashIcon>,
+		},
 ];
 
 export default function Student_Sidebar() {
