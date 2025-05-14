@@ -1,7 +1,7 @@
 .Header,
 .Header_SH {
 	background-color: #002f87;
-	display: block;
+	display: flex;
 }
 .Header_SH {
 	display: flex;
@@ -9,10 +9,7 @@
 	align-items: center;
 }
 
-.SH_Wrapper > button {
-	width: auto;
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+
 
 .Header > img {
 	height: 50px;

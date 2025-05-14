@@ -15,15 +15,7 @@ export default function Header({ isStudyHabits }) {
         return (
             <header className={Styles.Header_SH}>
                 <img src={Icon} alt="logo" onClick={() => navigate('/')} />
-                <div className={Styles.SH_Wrapper}>
-                    <button
-                        onClick={() => {
-                            navigate('/login');
-                        }}
-                    >
-                        Logout
-                    </button>
-                </div>
+               
             </header>
         );
     } else

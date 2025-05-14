@@ -20,13 +20,7 @@ export default function Header({ isStudyHabits }) {
 						<ArrowBigLeft size={32}></ArrowBigLeft>
 						<p>Back To Study Habits</p>
 					</Link>
-					<button
-						onClick={() => {
-							navigate('/login');
-						}}
-					>
-						Logout
-					</button>
+					
 				</div>
 			</header>
 		);

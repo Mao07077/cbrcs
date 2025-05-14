@@ -23,7 +23,6 @@ const Header = () => {
 						<img src={logoIcon} alt="logo" />
 					</div>
 				</div>
-				<div className="header-logout">Logout</div>
 			</header>
 			<div className="Main_Header">
 				<nav className="Sidebar">
