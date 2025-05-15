@@ -1,11 +1,11 @@
-import { HomeIcon, SquarePen, UserIcon, Flag, ArrowBigLeftDashIcon } from 'lucide-react';
+import { HomeIcon, SquarePen, UserIcon, Flag, ArrowBigLeftDashIcon,DatabaseIcon,LucideLayoutDashboard } from 'lucide-react';
 import Sidebar from './composables/Sidebar';
 
 const routes = [
 	{
 		routeName: 'Dashboard',
 		routePath: '/Admin_Dashboard',
-		routeIcon: <HomeIcon></HomeIcon>,
+		routeIcon: <LucideLayoutDashboard></LucideLayoutDashboard>,
 	},
 	{
 		routeName: 'Accounts',
@@ -16,6 +16,11 @@ const routes = [
 		routeName: 'Report',
 		routePath: '/Report',
 		routeIcon: <Flag></Flag>,
+	},
+	{
+		routeName: 'StudentData',
+		routePath: '/StudentReport',
+		routeIcon: <DatabaseIcon></DatabaseIcon>,
 	},
 
 	{
