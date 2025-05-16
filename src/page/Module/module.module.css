@@ -92,6 +92,11 @@ body {
 	justify-content: center;
 	margin: 15px auto;
 }
+.ModuleImage img {
+	max-width: 100%;
+	max-height: 100%;
+    object-fit: contain;
+}
 .ModuleCard p {
 	font-size: 10px;
 	font-weight: bold;
@@ -172,7 +177,7 @@ body {
 	}
 	.ModuleImage{
 		width: 100%;
-		display: none; /* Hide the image in mobile view */
+		
 	}
 	
 
@@ -279,7 +284,6 @@ body {
 		width: 100px; /* Reduce image width */
 		height: 80px; /* Reduce image height */
 		margin: 10px auto; /* Add spacing around the image */
-		display: none; /* Hide the image in mobile view */
 	}
 
 	.ModuleProceedBtn {
@@ -295,9 +299,7 @@ body {
 	}
 }
 
-.ModuleCard {
-	/* Existing styles */
-  }
+
   
   .ModuleCard.completed {
 	background-color: #e0ffe0;
