@@ -5,7 +5,7 @@ import Styles from './Reset_password.module.css';
 
 // Set API URL dynamically based on the environment
 const API_URL = process.env.REACT_APP_API_URL || 
-    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://4a5e-2405-8d40-4440-cd61-dd31-76d3-3de9-5f93.ngrok-free.app");
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://5424-2405-8d40-4440-cd61-dd31-76d3-3de9-5f93.ngrok-free.app");
 
 const ResetPassword = () => {
     const [userId, setUserId] = useState('');

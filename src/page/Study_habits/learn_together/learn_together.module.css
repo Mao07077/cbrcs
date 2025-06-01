@@ -2,21 +2,21 @@
 	width: 100svw;
 	height: 100svh;
 	min-height: 100svh;
-  }
-  
-  .content_wrapper {
+}
+
+.content_wrapper {
 	display: flex;
 	width: 100%;
 	height: 100%;
-  }
-  
-  .content_wrapper_video {
+}
+
+.content_wrapper_video {
 	display: flex;
 	width: 100%;
 	height: 100%;
-  }
-  
-  .callOptions {
+}
+
+.callOptions {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -36,17 +36,17 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-  }
-  
-  .callOptionsTitle {
+}
+
+.callOptionsTitle {
 	font-size: 26px;
 	font-weight: bold;
 	color: #007bff;
 	margin-bottom: 10px;
-  }
-  
-  .createCallButton,
-  .joinCallButton {
+}
+
+.createCallButton,
+.joinCallButton {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -63,29 +63,29 @@
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 	white-space: nowrap;
 	width: 400px;
-  }
-  
-  .createCallButton {
+}
+
+.createCallButton {
 	background-color: #28a745;
-  }
-  
-  .createCallButton:hover {
+}
+
+.createCallButton:hover {
 	background-color: #218838;
 	transform: translateY(-2px);
 	box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .joinCallButton {
+}
+
+.joinCallButton {
 	background-color: #007bff;
-  }
-  
-  .joinCallButton:hover {
+}
+
+.joinCallButton:hover {
 	background-color: #0056b3;
 	transform: translateY(-2px);
 	box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .joinButton {
+}
+
+.joinButton {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -103,15 +103,15 @@
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 	white-space: nowrap;
 	width: 400px;
-  }
-  
-  .joinButton:hover {
+}
+
+.joinButton:hover {
 	background-color: #0056b3;
 	transform: translateY(-2px);
 	box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .joinInputContainer {
+}
+
+.joinInputContainer {
 	display: flex;
 	flex-wrap: nowrap;
 	gap: 15px;
@@ -121,9 +121,9 @@
 	background-color: #f8f9fa;
 	border-radius: 10px;
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .actionButton {
+}
+
+.actionButton {
 	padding: 12px 20px;
 	background-color: #007bff;
 	color: white;
@@ -134,15 +134,15 @@
 	font-weight: bold;
 	transition: all 0.3s ease;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .actionButton:hover {
+}
+
+.actionButton:hover {
 	background-color: #0056b3;
 	transform: translateY(-2px);
 	box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .callIdInput {
+}
+
+.callIdInput {
 	padding: 12px;
 	border: 1px solid #ced4da;
 	border-radius: 8px;
@@ -152,15 +152,15 @@
 	width: 300px;
 	max-width: 100%;
 	transition: all 0.3s ease;
-  }
-  
-  .callIdInput:focus {
+}
+
+.callIdInput:focus {
 	outline: none;
 	border-color: #007bff;
 	box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-  }
-  
-  .mainContent {
+}
+
+.mainContent {
 	flex: 4;
 	display: flex;
 	flex-direction: column;
@@ -172,9 +172,9 @@
 	margin-right: 20px;
 	margin-bottom: 20px;
 	background-color: #140f41;
-  }
-  
-  .videoSection {
+}
+
+.videoSection {
 	width: 100%;
 	max-width: 700px;
 	height: auto;
@@ -189,9 +189,9 @@
 	padding: 10px;
 	margin: 0 auto;
 	overflow: hidden;
-  }
-  
-  .videoContainer {
+}
+
+.videoContainer {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 	gap: 10px;
@@ -199,24 +199,23 @@
 	height: 100%;
 	align-items: center;
 	justify-items: center;
-  }
-  
-  .videoWrapper {
+}
+
+.videoWrapper {
 	position: relative;
 	width: 100%;
-	aspect-ratio: 16 / 9; /* Enforce aspect ratio directly */
+	aspect-ratio: 16 / 9;
 	background-color: #000;
 	border-radius: 8px;
 	overflow: hidden;
-	padding-top: 0; /* Remove padding-top since we're using aspect-ratio */
-  }
-  
-  .videoWrapper.speaking {
+}
+
+.videoWrapper.speaking {
 	box-shadow: 0 0 10px 3px #00ff00;
-  }
-  
-  .localVideo,
-  .remoteVideo {
+}
+
+.localVideo,
+.remoteVideo {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -224,33 +223,32 @@
 	height: 100%;
 	object-fit: cover;
 	border-radius: 8px;
-  }
-  
-  .localVideo {
+}
+
+.localVideo {
 	border: 2px solid #00ff00;
-  }
-  
-  .remoteVideo {
+}
+
+.remoteVideo {
 	border: 2px solid #ff0000;
-  }
-  
-  .videoOffPlaceholder {
+}
+
+.videoOffPlaceholder {
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: #333; /* Dark gray background */
+	background-color: #333;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	color: white;
 	font-size: 16px;
 	border-radius: 8px;
-	aspect-ratio: 16 / 9; /* Match the video aspect ratio */
-  }
-  
-  .participantName {
+}
+
+.participantName {
 	position: absolute;
 	bottom: 5px;
 	left: 5px;
@@ -259,17 +257,17 @@
 	padding: 2px 5px;
 	border-radius: 3px;
 	font-size: 12px;
-  }
-  
-  .controls {
+}
+
+.controls {
 	margin-top: 15px;
 	display: flex;
 	gap: 10px;
 	flex-wrap: wrap;
 	justify-content: center;
-  }
-  
-  .controls button {
+}
+
+.controls button {
 	width: 45px;
 	height: 45px;
 	background-color: #fff;
@@ -281,55 +279,39 @@
 	cursor: pointer;
 	transition: 0.3s;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
-  
-  .controls button img {
+}
+
+.controls button img {
 	width: 20px;
 	height: 20px;
 	object-fit: contain;
-  }
-  
-  .controls button:hover {
+}
+
+.controls button:hover {
 	background-color: #f0f0f0;
-  }
-  
-  .endButton {
+}
+
+.endButton {
 	background-color: #ff4d4d;
-  }
-  
-  .endButton:hover {
+}
+
+.endButton:hover {
 	background-color: #cc0000;
-  }
-  
-  .leaveButton {
-	background-color: #ff4d4d;
-	color: white;
-	padding: 10px 20px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	font-size: 14px;
-	transition: 0.3s;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
-  
-  .leaveButton:hover {
-	background-color: #cc0000;
-  }
-  
-  .sidebar {
+}
+
+.sidebar {
 	flex: 1.5;
 	background: #e0e0e0;
 	padding: 20px;
 	display: flex;
 	flex-direction: column;
-  }
-  
-  .chatSection {
+}
+
+.chatSection {
 	margin-top: 50px;
-  }
-  
-  .chatBox {
+}
+
+.chatBox {
 	background: white;
 	padding: 15px;
 	border-radius: 5px;
@@ -338,9 +320,9 @@
 	overflow-y: auto;
 	color: black;
 	border: 1px solid #d1d1d1;
-  }
-  
-  .chatInput {
+}
+
+.chatInput {
 	width: 100%;
 	height: 40px;
 	margin-top: 10px;
@@ -350,285 +332,283 @@
 	background: white;
 	color: black;
 	resize: none;
-  }
-  
-  .chatInput:focus {
+}
+
+.chatInput:focus {
 	outline: none;
 	border-color: #007bff;
-  }
-  
-  .logo {
+}
+
+.logo {
 	width: 120px;
 	height: 50px;
-  }
-  
-  .participantList {
+}
+
+.participantList {
 	list-style: none;
 	padding: 0;
 	margin: 10px 0;
-  }
-  
-  .participantItem {
-	display: flex; /* Fixed 'display: fixed' to 'display: flex' */
+}
+
+.participantItem {
+	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	padding: 8px;
 	background: #f0f0f0;
 	border-radius: 5px;
 	margin-bottom: 5px;
-  }
-  
-  .inviteButton {
+}
+
+.inviteButton {
 	min-width: 60px;
 	padding: 6px 10px;
 	font-size: 14px;
 	text-align: center;
 	white-space: nowrap;
-  }
-  
-  .inviteButton:hover {
+}
+
+.inviteButton:hover {
 	background-color: #0056b3;
-  }
-  
-  .noParticipants {
+}
+
+.noParticipants {
 	font-style: italic;
 	color: gray;
-  }
-  
-  .error {
+}
+
+.error {
 	color: #ff4d4d;
 	font-size: 14px;
 	margin: 10px 0;
 	text-align: center;
-  }
-  
-  .callIdDisplay {
+}
+
+.callIdDisplay {
 	color: white;
 	font-size: 14px;
 	margin: 10px 0;
-  }
-  
-  @media (max-width: 1024px) {
+}
+
+@media (max-width: 1024px) {
 	.mainContent {
-	  padding: 10px;
+		padding: 10px;
 	}
-  
+
 	.videoSection {
-	  width: 80%;
-	  max-width: 700px;
-	  height: 300px;
+		width: 80%;
+		max-width: 700px;
+		height: 300px;
 	}
-  
+
 	.videoContainer {
-	  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-	  gap: 8px;
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		gap: 8px;
 	}
-  
+
 	.videoWrapper {
-	  max-height: 150px;
-	  aspect-ratio: 16 / 9;
+		max-height: 150px;
+		aspect-ratio: 16 / 9;
 	}
-  
+
 	.videoOffPlaceholder {
-	  font-size: 14px;
+		font-size: 14px;
 	}
-  
+
 	.controls button {
-	  width: 40px;
-	  height: 40px;
+		width: 40px;
+		height: 40px;
 	}
-  
+
 	.controls button img {
-	  width: 16px;
-	  height: 16px;
+		width: 16px;
+		height: 16px;
 	}
-  
+
 	.chatBox {
-	  min-height: 120px;
+		min-height: 120px;
 	}
-  
+
 	.content_wrapper_video {
-	  display: flex;
-	  flex-direction: column;
+		display: flex;
+		flex-direction: column;
 	}
-  
+
 	.callOptions {
-	  padding: 15px;
-	  gap: 15px;
+		padding: 15px;
+		gap: 15px;
 	}
-  
+
 	.callIdInput {
-	  width: 180px;
+		width: 180px;
 	}
-  }
-  
-  @media (max-width: 768px) {
+}
+
+@media (max-width: 768px) {
 	.mainContent {
-	  padding: 5px;
+		padding: 5px;
 	}
-  
+
 	.videoSection {
-	  max-width: 100%;
-	  aspect-ratio: 16 / 9;
-	  margin: 0 auto;
+		max-width: 100%;
+		aspect-ratio: 16 / 9;
+		margin: 0 auto;
 	}
-  
+
 	.videoContainer {
-	  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-	  gap: 5px;
+		grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+		gap: 5px;
 	}
-  
+
 	.videoWrapper {
-	  max-height: 120px;
-	  aspect-ratio: 16 / 9;
+		max-height: 120px;
+		aspect-ratio: 16 / 9;
 	}
-  
+
 	.videoOffPlaceholder {
-	  font-size: 12px;
+		font-size: 12px;
 	}
-  
+
 	.controls {
-	  gap: 5px;
+		gap: 5px;
 	}
-  
+
 	.controls button {
-	  width: 35px;
-	  height: 35px;
+		width: 35px;
+		height: 35px;
 	}
-  
+
 	.controls button img {
-	  width: 14px;
-	  height: 14px;
+		width: 14px;
+		height: 14px;
 	}
-  
+
 	.leaveButton {
-	  padding: 8px 15px;
-	  font-size: 12px;
+		padding: 8px 15px;
+		font-size: 12px;
 	}
-  
+
 	.chatBox {
-	  min-height: 100px;
-	  max-height: 150px;
-	  overflow-y: auto;
+		min-height: 100px;
+		max-height: 150px;
 	}
-  
+
 	.callOptions {
-	  padding: 10px;
+		padding: 10px;
 	}
-  
+
 	.callIdInput {
-	  width: 160px;
-	  font-size: 14px;
+		width: 160px;
+		font-size: 14px;
 	}
-  
+
 	.actionButton {
-	  padding: 8px 15px;
-	  font-size: 14px;
+		padding: 8px 15px;
+		font-size: 14px;
 	}
-  }
-  
-  @media (max-width: 600px) {
+}
+
+@media (max-width: 600px) {
 	.inviteButton {
-	  font-size: 12px;
-	  padding: 5px 8px;
+		font-size: 12px;
+		padding: 5px 8px;
 	}
-  
+
 	.actionButton {
-	  font-size: 12px;
-	  padding: 8px 15px;
+		font-size: 12px;
+		padding: 8px 15px;
 	}
-  
+
 	.callOptions {
-	  gap: 10px;
+		gap: 10px;
 	}
-  
+
 	.callIdInput {
-	  width: 140px;
+		width: 140px;
 	}
-  
+
 	.videoSection {
-	  width: 100%;
-	  height: 350px;
+		width: 100%;
+		height: 350px;
 	}
-  
+
 	.videoWrapper {
-	  max-height: 100px;
-	  aspect-ratio: 16 / 9;
+		max-height: 100px;
+		aspect-ratio: 16 / 9;
 	}
-  
+
 	.videoOffPlaceholder {
-	  font-size: 12px;
+		font-size: 12px;
 	}
-  }
-  
-  @media (max-width: 480px) {
+}
+
+@media (max-width: 480px) {
 	.videoSection {
-	  max-width: 100%;
-	  aspect-ratio: 16 / 9;
-	  margin: 0 auto;
+		max-width: 100%;
+		aspect-ratio: 16 / 9;
+		margin: 0 auto;
 	}
-  
+
 	.videoContainer {
-	  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-	  gap: 3px;
+		grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+		gap: 3px;
 	}
-  
+
 	.videoWrapper {
-	  max-height: 80px;
-	  aspect-ratio: 16 / 9;
+		max-height: 80px;
+		aspect-ratio: 16 / 9;
 	}
-  
+
 	.videoOffPlaceholder {
-	  font-size: 10px;
+		font-size: 10px;
 	}
-  
+
 	.participantName {
-	  font-size: 10px;
+		font-size: 10px;
 	}
-  
+
 	.controls {
-	  gap: 3px;
+		gap: 3px;
 	}
-  
+
 	.controls button {
-	  width: 30px;
-	  height: 30px;
+		width: 30px;
+		height: 30px;
 	}
-  
+
 	.controls button img {
-	  width: 12px;
-	  height: 12px;
+		width: 12px;
+		height: 12px;
 	}
-  
+
 	.leaveButton {
-	  padding: 6px 12px;
-	  font-size: 10px;
+		padding: 6px 12px;
+		font-size: 10px;
 	}
-  
+
 	.chatBox {
-	  min-height: 90px;
-	  max-height: 120px;
-	  padding: 10px;
+		min-height: 90px;
+		max-height: 120px;
+		padding: 10px;
 	}
-  
+
 	.callOptions {
-	  padding: 5px;
+		padding: 5px;
 	}
-  
+
 	.callIdInput {
-	  width: 120px;
-	  font-size: 12px;
+		width: 120px;
+		font-size: 12px;
 	}
-  
+
 	.actionButton {
-	  padding: 6px 12px;
-	  font-size: 12px;
+		padding: 6px 12px;
+		font-size: 12px;
 	}
-  
+
 	.joinInputContainer {
-	  flex-direction: column;
-	  align-items: center;
-	  gap: 8px;
+		flex-direction: column;
+		align-items: center;
+		gap: 8px;
 	}
-  }
-  
+}

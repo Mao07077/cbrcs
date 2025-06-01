@@ -1,163 +1,163 @@
 * {
-	margin: 0;
-	padding: 0;
-	font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 body {
-	box-sizing: border-box;
+    box-sizing: border-box;
 }
 .Maincontainer {
-	width: 100svw;
-	height: 100svh;
-	display: flex;
-	flex-direction: column;
+    width: 100svw;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
 }
 .Content_Wrapper {
-	flex: 1;
-	display: flex;
+    flex: 1;
+    display: flex;
 }
 
 .Greeting_Dashboard {
-	display: flex;
-	justify-content: flex-start;
-	padding: 15px;
-	border-bottom:  solid 1px rgb(187, 182, 182);
-	font-size: medium;
+    display: flex;
+    justify-content: flex-start;
+    padding: 15px;
+    border-bottom: solid 1px rgb(187, 182, 182);
+    font-size: medium;
 }
 
 .Content {
-	padding: 10px;
-	text-align: center;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	font-style: initial;
-	margin: 10px 10px;
-	font-size: 1.2em;
-	height: 100%;
-	width: 100%;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    font-style: initial;
+    margin: 10px 10px;
+    font-size: 1.2em;
+    height: 100%;
+    width: 100%;
 }
 /* Report Container - Positioned closer to the sidebar */
 .ReportWrapper {
-	width: 150%; /* Make it longer */
-	margin-top: 100px;
-	margin-left: -100px;
-	background: #fff;
-	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-	border: 2px solid #0d47a1;
-	height: 8000px;
+    width: 150%; /* Make it longer */
+    margin-top: 100px;
+    margin-left: -100px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid #0d47a1;
+    height: 8000px;
 }
 
 /* Center the title */
 .ReportTitle {
-	font-size: 28px;
-	font-weight: bold;
-	color: #0d47a1;
-	text-align: left;
-	margin-bottom: 20px;
-	padding-left: 15px;
-	border-bottom: #060606 1px solid;
-	width: 100%;
+    font-size: 28px;
+    font-weight: bold;
+    color: #0d47a1;
+    text-align: left;
+    margin-bottom: 20px;
+    padding-left: 15px;
+    border-bottom: #060606 1px solid;
+    width: 100%;
 }
 .ReportTitle h2 {
-	margin-bottom: 5px;
-	padding: 20px;
+    margin-bottom: 5px;
+    padding: 20px;
 }
 
 /* Search & Filter Section */
 .ReportSearchFilter {
-	display: flex;
-	align-items: center;
-	gap: 15px;
-	margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
 }
 .ReportSearchContainer {
-	display: flex;
-	align-items: center;
-	gap: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 .ReportSearchInput {
-	width: 180px;
-	height: 35px;
-	padding: 5px 10px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	font-size: 14px;
+    width: 180px;
+    height: 35px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
 }
 .ReportFilterContainer {
-	display: flex;
-	align-items: center;
-	gap: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 .ReportFilterDropdown {
-	width: 120px;
-	height: 35px; /* Same height as search input */
-	padding: 5px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	font-size: 14px;
+    width: 120px;
+    height: 35px; /* Same height as search input */
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
 }
 .ReportLabel {
-	display: flex;
-	align-items: center;
-	font-size: 14px;
-	font-weight: bold;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 /* Adjust Table Container */
 .ReportTableContainer {
-	margin-left: -10px;
-	height: 800px;
+    margin-left: -10px;
+    height: 800px;
 }
 
 .ReportTable {
-	border-collapse: collapse;
-	width: 100%;
+    border-collapse: collapse;
+    width: 100%;
 }
 
 .ReportTable th,
 .ReportTable td {
-	border: 1px solid #ddd;
-	padding: 12px;
-	text-align: center;
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
 }
 
 /* Make Status Colors Stand Out */
 .Pending {
-	color: red;
-	font-weight: bold;
+    color: red;
+    font-weight: bold;
 }
 
 .InProgress {
-	color: orange;
-	font-weight: bold;
+    color: orange;
+    font-weight: bold;
 }
 
 .Resolved {
-	color: green;
-	font-weight: bold;
+    color: green;
+    font-weight: bold;
 }
 
 /* Adjust Button Styles */
 .ReportViewButton,
 .ReportResolveButton {
-	padding: 8px 14px;
-	border: none;
-	border-radius: 5px;
-	color: white;
-	cursor: pointer;
-	margin: 3px;
-	gap: 5px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    margin: 3px;
+    gap: 5px;
 }
 
 .ReportViewButton {
-	background-color: #1976d2;
+    background-color: #1976d2;
 }
 
 .ReportResolveButton {
-	background-color: #388e3c;
+    background-color: #388e3c;
 }
 
 /* Set Arial as the default font for the entire Report page */
@@ -174,150 +174,212 @@ body {
 .ReportTable td,
 .ReportViewButton,
 .ReportResolveButton {
-	font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif;
+}
+
+/* Modal Styles for Viewing Report Details */
+.Modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.ModalContent {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ModalContent h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.ModalContent p {
+    margin: 10px 0;
+    color: #555;
+}
+
+.ModalImageContainer {
+    margin: 15px 0;
+    text-align: center;
+}
+
+.ModalImage {
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.ModalCloseButton {
+    padding: 8px 16px;
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    margin: 15px auto 0;
+}
+
+.ModalCloseButton:hover {
+    background-color: #d32f2f;
 }
 
 @media (max-width: 1000px) {
-	.Content {
-		padding: 10px;
-		text-align: center;
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
-		font-style: initial;
-		font-size: 1.2em;
-		height: 100%;
-		width: 80%;
-	}
-	.Greeting_Dashboard {
-		display: flex;
-		justify-content: flex-start;
-		padding: 15px;
-		border-bottom:  solid 1px rgb(187, 182, 182);
-		font-size: medium;
-		width: 100%;
+    .Content {
+        padding: 10px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        font-style: initial;
+        font-size: 1.2em;
+        height: 100%;
+        width: 80%;
+    }
+    .Greeting_Dashboard {
+        display: flex;
+        justify-content: flex-start;
+        padding: 15px;
+        border-bottom: solid 1px rgb(187, 182, 182);
+        font-size: medium;
+        width: 100%;
+    }
+    
+    .Greeting_Dashboard h1 {
+        font-size: 1.5em;
+    }
+    .ReportTableContainer {
+        padding-right: 100px;
+        width: 100%;
+        height: 100%;
+    }
+    .ReportSearchFilter {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        width: 90%;
+        margin-bottom: 20px;
+        margin-top: -10px;
+        padding: 10px;
+    
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    
+    .ReportTable td,
+    .ReportTable th {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+        font-size: 0.5em;
+    }
 
-	}
-	
-	.Greeting_Dashboard h1{
-		font-size: 1.5em;
-	}
-	.ReportTableContainer {
-		padding-right: 100px;
-		width: 100%;
-		height: 100%;
-	}
-	.ReportSearchFilter{
-		display: flex;
-		flex-wrap: wrap;
-		gap: 10px;
-		width: 90%;
-		margin-bottom: 20px;
-		margin-top: -10px;
-		padding: 10px;
-	
-		font-family: Arial, Helvetica, sans-serif;
-	}
-	
-
-	.ReportTable td,
-	.ReportTable th {
-		border: 1px solid #ddd;
-		padding: 10px;
-		text-align: center;
-		font-size: 0.5em;
-	}
-
-	.ReportWrapper {
-		width: 100%;
-		margin-left: 220px;
-	}
-	.ReportLabel {
-		display: flex;
-		align-items: center;
-		font-size: 0.7em;
-		font-weight: bold;
-	}
-	.ReportSearchInput {
-		width: 150px;
-		height: 30px;
-		padding: 5px 10px;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-		font-size: 0.7em;
-	}
-	.ReportFilterDropdown {
-		width: 120px;
-		height: 30px; /* Same height as search input */
-		padding: 5px;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-		font-size: 0.7em;
-		font-weight: bold;
-	}
+    .ReportWrapper {
+        width: 100%;
+        margin-left: 220px;
+    }
+    .ReportLabel {
+        display: flex;
+        align-items: center;
+        font-size: 0.7em;
+        font-weight: bold;
+    }
+    .ReportSearchInput {
+        width: 150px;
+        height: 30px;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 0.7em;
+    }
+    .ReportFilterDropdown {
+        width: 120px;
+        height: 30px; /* Same height as search input */
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 0.7em;
+        font-weight: bold;
+    }
 }
+
 @media (max-width: 400px) {
-	.Greeting_Dashboard{
-		display: flex;
-		justify-content: flex-start;
-	}
-	.Greeting_Dashboard h1{
-		font-size: 1em;
-	}
-	
-	.ReportLabel {
-		align-items: center;
-		font-size: 0.5em;
-		font-weight: bold;
-	}
-	.ReportTableContainer {
-		padding-right: 100px;
-		width: 10%;
-		height: 100%;
-	}
-	.ReportSearchInput {
-		width: 10px;
-		height: 20px;
-		padding: 5px 10px;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-		font-size: 0.2em;
-	}
-	.ReportSearchFilter{
-		display: flex;
-		flex-wrap: wrap;
-		gap: 10px;
-		width: 50%;
-		margin-bottom: 20px;
-		margin-top: -10px;
-		padding: 10px;
-		font-family: Arial, Helvetica, sans-serif;
-	}
-	.ReportFilterDropdown {
-		width: 70%;
-		height: 30px; /* Same height as search input */
-		padding: 5px;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-		font-size: 0.7em;
-		font-weight: bold;
-	}
-	.ReportTable td,
-	.ReportTable th {
-		border: 1px solid #ddd;
-		padding: 5px;
-		text-align: center;
-		font-size: 0.4em;
-	}
-	.Content {
-		padding: 5px;
-		text-align: center;
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
-		font-style: initial;
-		font-size: 1.2em;
-		height: 100%;
-		width: 80%;
-	}
+    .Greeting_Dashboard {
+        display: flex;
+        justify-content: flex-start;
+    }
+    .Greeting_Dashboard h1 {
+        font-size: 1em;
+    }
+    
+    .ReportLabel {
+        align-items: center;
+        font-size: 0.5em;
+        font-weight: bold;
+    }
+    .ReportTableContainer {
+        padding-right: 100px;
+        width: 10%;
+        height: 100%;
+    }
+    .ReportSearchInput {
+        width: 10px;
+        height: 20px;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 0.2em;
+    }
+    .ReportSearchFilter {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        width: 50%;
+        margin-bottom: 20px;
+        margin-top: -10px;
+        padding: 10px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    .ReportFilterDropdown {
+        width: 70%;
+        height: 30px; /* Same height as search input */
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 0.7em;
+        font-weight: bold;
+    }
+    .ReportTable td,
+    .ReportTable th {
+        border: 1px solid #ddd;
+        padding: 5px;
+        text-align: center;
+        font-size: 0.4em;
+    }
+    .Content {
+        padding: 5px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        font-style: initial;
+        font-size: 1.2em;
+        height: 100%;
+        width: 80%;
+    }
 }

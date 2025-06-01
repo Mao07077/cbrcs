@@ -1,201 +1,11 @@
 /* General Page Styling */
 .page_container {
-		display: flex;
-		flex-direction: column;
-		height: auto;
-		width: 100vw;
-	
-	background: linear-gradient(
-		to right,
-		#f8f9fa,
-		#e9ecef
-	); /* Minimalist gradient */
-
-	font-family: Arial, Helvetica, sans-serif;
-}
-.content_wrapper {
-	flex:1;
-	display: flex;
-}
-/* Container for all modules */
-.module_container {
-	margin-top: 50px;
-	width: 50%;
-	max-width: 1200px;
-	margin-bottom: 200px;
-	margin-left: 50px;
-}
-
-/* Title Styling */
-.module_title {
-	
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-top: 20px; /* space below header/sidebar */
-	margin-bottom: 50px;
-	padding-bottom: 20px;
-	border-bottom: 2px solid
-}
-
-/* Subtitle / Description */
-.module_description {
-	font-size: 14px;
-	color: #6c757d;
-	margin-bottom: 20px;
-	margin-top: 30px;
-}
-
-/* Grid Layout */
-.module_grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-	gap: 20px;
-	justify-content: center;
-}
-
-/* Individual Module Card */
-.module_card {
-	margin-top: 30px;
-	background: white;
-	padding: 15px;
-	border-radius: 12px;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-	text-align: center;
-	transition: transform 0.2s ease-in-out;
-	height: 250px; /* Reduce height for a more compact design */
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 10px; /* Add spacing between elements */
-	width: 300px; /* Set a fixed width for consistent card size */
-}
-
-.module_image {
-	width: 100px;
-	height: 100px;
-	object-fit: contain;
-	margin-bottom: 10px; /* Add spacing below the image */
-}
-
-/* Card Heading */
-.module_card h3 {
-	font-size: 18px;
-	margin-bottom: 8px;
-	color: #343a40;
-}
-
-/* Card Description */
-.module_card p {
-	font-size: 14px;
-	color: #6c757d;
-	margin-bottom: 12px;
-}
-
-/* Button Styling */
-.proceed_btn {
-	background: #0056b3;
-	margin-top: 80px;
-	color: white;
-	padding: 8px 16px;
-	border: none;
-	border-radius: 8px;
-	font-size: 12px;
-	cursor: pointer;
-	transition: background 0.2s;
-}
-
-.proceed_btn:hover {
-	background: #003d82;
-}
-
-/* Flashcard Styling */
-.flashcard_container {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-	gap: 20px;
-	justify-content: center;
-	margin-top: 50px;
-}
-
-.flashcard_card {
-	background: white;
-	padding: 15px;
-	border-radius: 12px;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-	text-align: center;
-	transition: transform 0.2s ease-in-out;
-	height: auto; /* Adjust height for dynamic content */
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: space-between;
-	gap: 10px; /* Add consistent spacing between elements */
-}
-
-.flashcard_card:hover {
-	transform: translateY(-5px);
-}
-
-.flashcard_card img {
-	width: 100px;
-	height: 100px;
-	object-fit: contain;
-}
-
-.flashcard_card h3 {
-	font-size: 18px;
-	font-weight: bold;
-	color: #343a40;
-}
-
-.flashcard_card p {
-	font-size: 14px;
-	color: #6c757d;
-	margin-bottom: 12px;
-}
-
-.flashcard_btn {
-	background: #0056b3;
-	color: white;
-	width: 30%;
-	height: auto; /* Allow height to adjust dynamically */
-	padding: 8px 16px; /* Reduce padding for a smaller button */
-	border: none;
-	border-radius: 8px;
-	font-size: 12px; /* Slightly increase font size for readability */
-	cursor: pointer;
-	transition: background 0.2s, transform 0.2s; /* Add smooth hover effect */
-	width: auto; /* Ensure button width adjusts to content */
-	text-align: center; /* Center-align text */
-	margin-top: 15px; /* Add spacing above the button */
-	white-space: nowrap; /* Prevent text from wrapping to the next line */
-	overflow: hidden; /* Ensure no overflow issues */
-	text-overflow: ellipsis; /* Add ellipsis if text overflows */
-}
-
-.flashcard_btn:hover {
-	background: #003d82;
-	transform: scale(1.05); /* Slightly enlarge button on hover */
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-	.module_grid {
-		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-	}
-	.module_container {
-		width: 100%;
-		max-width: 1200px;
-		margin-bottom: 200px;
-		margin-left: 10px;
-		padding: 20px;
-	}
-}
-.page_container {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    width: 100vw;
+    background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .content_wrapper {
@@ -206,9 +16,27 @@
 .module_container {
     max-width: 1200px;
     margin: 0 auto;
+    margin-top: 50px;
+    margin-bottom: 200px;
+    margin-left: 50px;
     text-align: center;
 }
 
+/* Title Styling */
+.module_container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Subtitle / Description */
+.module_description {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+
+/* Grid Layout */
 .module_grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -216,34 +44,64 @@
     margin-top: 20px;
 }
 
+/* Individual Module Card */
 .module_card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    margin-top: 30px;
+    background: white;
     padding: 15px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+    min-height: 300px; /* Fixed minimum height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    width: 300px; /* Fixed width */
 }
 
+/* Image Styling */
 .module_image {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 10px;
     border-radius: 4px;
 }
 
+/* Card Heading */
+.module_card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #343a40;
+}
+
+/* Card Description */
+.module_card p {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 12px;
+}
+
+/* Button Styling */
 .flashcard_btn {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #007bff;
+    background: #0056b3;
     color: white;
+    padding: 8px 16px;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
+    font-size: 12px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background 0.2s, transform 0.2s;
+    width: 100px; /* Fixed width */
+    margin-top: auto; /* Pushes button to the bottom */
 }
 
 .flashcard_btn:hover {
-    background-color: #0056b3;
+    background: #003d82;
+    transform: scale(1.05);
 }
 
 .flashcard_btn:disabled {
@@ -251,12 +109,59 @@
     cursor: not-allowed;
 }
 
+/* Flashcard Styling */
+.flashcard_container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.flashcard_card {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.flashcard_card:hover {
+    transform: translateY(-5px);
+}
+
+.flashcard_card img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.flashcard_card h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #343a40;
+}
+
+.flashcard_card p {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 12px;
+}
+
+/* Error Message */
 .error_message {
     color: red;
     margin: 10px 0;
 }
 
-/* New styles for loading spinner */
+/* Loading Spinner */
 .loading_container {
     display: flex;
     flex-direction: column;
@@ -276,4 +181,18 @@
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .module_grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    .module_container {
+        width: 100%;
+        max-width: 1200px;
+        margin-bottom: 200px;
+        margin-left: 10px;
+        padding: 20px;
+    }
 }

@@ -24,7 +24,6 @@
 
 .Content {
 	width: 100%;
-
 	padding: 10px;
 	text-align: center;
 	display: flex;
@@ -75,7 +74,7 @@
 	margin-left: 20px;
 }
 
-/* Placeholder for Images */
+/* Module Image */
 .moduleImage {
 	width: 100%;
 	height: 150px;
@@ -84,7 +83,15 @@
 	align-items: center;
 	justify-content: center;
 	border-radius: 8px;
+	overflow: hidden;
 	margin: 10px 0;
+}
+
+.moduleImage img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 8px;
 }
 
 /* Proceed Button */
