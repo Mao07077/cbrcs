@@ -79,7 +79,7 @@ router = APIRouter()
 router = APIRouter(prefix="/api")
 
 origins = [
-    "https://cbrcs.vercel.app", 
+    "https:olep.vercel.app", 
     "http://localhost:3000" 
 ]
 # CORS configuration
@@ -767,42 +767,24 @@ async def signup(data: SignupData):
 
 @router.post("/login")
 async def login(data: LoginData):
-    logging.info(f"Login attempt: idNumber={data.idNumber}")
-    try:
-        user = collection.find_one({"id_number": data.idNumber})
-        if user and verify_password(data.password, user["password"]):
-            response = JSONResponse({
-                "success": True,
-                "message": "Login successful!",
-                "role": user.get("role", "unknown").lower(),
-                "surveyCompleted": user.get("surveyCompleted", False),
-                "firstname": user.get("firstname", ""),
-                "lastname": user.get("lastname", ""),
-                "id_number": user.get("id_number", ""),
-                "program": user.get("program", ""),
-                "hoursActivity": user.get("hoursActivity", 0)
-            })
-            response.headers["Access-Control-Allow-Origin"] = "https://cbrcs.vercel.app"
-            response.headers["Access-Control-Allow-Credentials"] = "true"
-            response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
-            response.headers["Access-Control-Allow-Headers"] = "*"
-            return response
-        else:
-            response = JSONResponse(status_code=401, content={"success": False, "detail": "Invalid credentials"})
-            response.headers["Access-Control-Allow-Origin"] = "https://cbrcs.vercel.app"
-            response.headers["Access-Control-Allow-Credentials"] = "true"
-            response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
-            response.headers["Access-Control-Allow-Headers"] = "*"
-            return response
-    except Exception as e:
-        logging.error(f"Login error: {str(e)}")
-        response = JSONResponse(status_code=500, content={"success": False, "detail": f"Server error: {str(e)}"})
-        response.headers["Access-Control-Allow-Origin"] = "https://cbrcs.vercel.app"
-        response.headers["Access-Control-Allow-Credentials"] = "true"
-        response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
-        response.headers["Access-Control-Allow-Headers"] = "*"
-        return response
-
+    logging.info(f"Received login request for idNumber: {data.idNumber}")
+    user = collection.find_one({"id_number": data.idNumber})
+    if user and verify_password(data.password, user["password"]):
+        logging.info(f"Login successful for idNumber: {data.idNumber}")
+        return JSONResponse({
+            "success": True,
+            "message": "Login successful!",
+            "role": user.get("role", "unknown").lower(),
+            "surveyCompleted": user.get("surveyCompleted", False),
+            "firstname": user.get("firstname", ""),
+            "lastname": user.get("lastname", ""),
+            "id_number": user.get("id_number", ""),
+            "program": user.get("program", ""),
+            "hoursActivity": user.get("hoursActivity", 0)
+        })
+    else:
+        logging.info(f"Login failed for idNumber: {data.idNumber}")
+        raise HTTPException(status_code=401, detail="Invalid credentials")
 @app.post("/api/forgot_password")
 async def forgot_password(data: ForgotPasswordData):
     user = collection.find_one({"id_number": data.id_number, "email": data.email})

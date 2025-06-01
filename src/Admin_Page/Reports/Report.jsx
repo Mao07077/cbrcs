@@ -6,7 +6,7 @@ import Admin_Sidebar from '../../Components/Admin_Sidebar';
 import Footer from '../../Components/composables/FooterAdmin';
 
 const API_URL = process.env.REACT_APP_API_URL || 
-  (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://5424-2405-8d40-4440-cd61-dd31-76d3-3de9-5f93.ngrok-free.app");
+  (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://31f9-2405-8d40-4458-3649-842c-4170-14eb-eb79.ngrok-free.app");
 
 const Reports = () => {
     const [reports, setReports] = useState([]);
