@@ -15,7 +15,7 @@ const FlashcardsLandingPage = () => {
         process.env.REACT_APP_API_URL ||
         (window.location.hostname === 'localhost'
             ? 'http://127.0.0.1:8000'
-            : 'https://31f9-2405-8d40-4458-3649-842c-4170-14eb-eb79.ngrok-free.app');
+            : 'https://22fc-2405-8d40-4458-3649-842c-4170-14eb-eb79.ngrok-free.app');
 
     const requestHeaders = {
         'ngrok-skip-browser-warning': 'true',
