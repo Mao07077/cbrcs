@@ -603,7 +603,7 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
         auth_data = await websocket.receive_json()
         id_number = auth_data.get("id_number")
         user = get_current_user(id_number)
-    except Exception as e:
+    except Exception:
         await websocket.close(code=1008, reason="Authentication failed")
         return
 
@@ -611,50 +611,28 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
     call_id = identifier
     student_name = f"{user['firstname']} {user['lastname']}"
 
-    # Initialize participant state
-    participant_states[student_id] = {
-        "muted": False,
-        "camera_off": False,
-        "name": student_name,
-        "call_id": call_id
-    }
+    # Participant state
+    participant_states = {}
+    participant_states[student_id] = {"muted": False, "camera_off": False, "name": student_name, "call_id": call_id}
 
     # Handle call creation/joining
     if identifier == "random":
         call_id = str(uuid.uuid4())
-        calls_collection.insert_one({
-            "call_id": call_id,
-            "students": [student_id],
-            "created_at": datetime.utcnow()
-        })
+        calls_collection.insert_one({"call_id": call_id, "students": [student_id], "created_at": datetime.utcnow()})
     else:
         call = calls_collection.find_one({"call_id": call_id})
         if not call:
             await websocket.close(code=1008, reason="Invalid call ID")
             return
-        calls_collection.update_one(
-            {"call_id": call_id},
-            {"$addToSet": {"students": student_id}}
-        )
+        calls_collection.update_one({"call_id": call_id}, {"$addToSet": {"students": student_id}})
 
     # In-memory student data
-    students = {}
-    student_data = {
-        "id": student_id,
-        "name": student_name,
-        "ws": websocket,
-        "call_id": call_id
-    }
-    students[student_id] = student_data
+    students = {student_id: {"id": student_id, "name": student_name, "ws": websocket, "call_id": call_id}}
 
     # Send student ID and call ID
-    await websocket.send_text(json.dumps({
-        "type": "student_id",
-        "studentId": student_id,
-        "callId": call_id
-    }))
+    await websocket.send_text(json.dumps({"type": "student_id", "studentId": student_id, "callId": call_id}))
 
-    # Broadcast active students and their states
+    # Broadcast active students
     async def broadcast_students():
         call = calls_collection.find_one({"call_id": call_id})
         if not call:
@@ -704,34 +682,21 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
                 target_student = students.get(message["target"])
                 if target_student and target_student["ws"].client_state == 1:
                     await target_student["ws"].send_text(
-                        json.dumps({
-                            "type": "offer",
-                            "offer": message["offer"],
-                            "from": student_id
-                        })
+                        json.dumps({"type": "offer", "offer": message["offer"], "from": student_id})
                     )
             elif message["type"] == "answer":
                 target_student = students.get(message["target"])
                 if target_student and target_student["ws"].client_state == 1:
                     await target_student["ws"].send_text(
-                        json.dumps({
-                            "type": "answer",
-                            "answer": message["answer"],
-                            "from": student_id
-                        })
+                        json.dumps({"type": "answer", "answer": message["answer"], "from": student_id})
                     )
             elif message["type"] == "ice-candidate":
                 target_student = students.get(message["target"])
                 if target_student and target_student["ws"].client_state == 1:
                     await target_student["ws"].send_text(
-                        json.dumps({
-                            "type": "ice-candidate",
-                            "candidate": message["candidate"],
-                            "from": student_id
-                        })
+                        json.dumps({"type": "ice-candidate", "candidate": message["candidate"], "from": student_id})
                     )
             elif message["type"] == "chat":
-                # Save chat message to MongoDB
                 chat_message = {
                     "sender_id": student_id,
                     "sender_name": student_name,
@@ -742,63 +707,44 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
                     {"call_id": call_id},
                     {"$push": {"messages": chat_message}}
                 )
-                # Broadcast chat message
                 call = calls_collection.find_one({"call_id": call_id})
                 for sid in call.get("students", []):
                     student = students.get(sid)
                     if student and student["ws"].client_state == 1:
-                        await student["ws"].send_text(
-                            json.dumps({
-                                "type": "chat",
-                                "message": chat_message
-                            })
-                        )
+                        await student["ws"].send_text(json.dumps({"type": "chat", "message": chat_message}))
             elif message["type"] == "status_update":
-                # Update participant state
                 participant_states[student_id].update({
                     "muted": message.get("muted", participant_states[student_id]["muted"]),
                     "camera_off": message.get("camera_off", participant_states[student_id]["camera_off"])
                 })
                 await broadcast_students()
             elif message["type"] == "leave":
-                # Notify others of participant leaving
                 call = calls_collection.find_one({"call_id": call_id})
                 for sid in call.get("students", []):
                     if sid != student_id:
                         student = students.get(sid)
                         if student and student["ws"].client_state == 1:
                             await student["ws"].send_text(
-                                json.dumps({
-                                    "type": "notification",
-                                    "message": f"{student_name} has left the meeting"
-                                })
+                                json.dumps({"type": "notification", "message": f"{student_name} has left the meeting"})
                             )
                 break
     except WebSocketDisconnect:
         pass
     except Exception as e:
-        logging.error(f"WebSocket error: {e}")
+        logger.error(f"WebSocket error: {e}")
     finally:
-        calls_collection.update_one(
-            {"call_id": call_id},
-            {"$pull": {"students": student_id}}
-        )
+        calls_collection.update_one({"call_id": call_id}, {"$pull": {"students": student_id}})
         call = calls_collection.find_one({"call_id": call_id})
         if call and not call.get("students"):
             calls_collection.delete_one({"call_id": call_id})
         students.pop(student_id, None)
         participant_states.pop(student_id, None)
-        # Notify remaining participants
-        call = calls_collection.find_one({"call_id": call_id})
         if call:
             for sid in call.get("students", []):
                 student = students.get(sid)
                 if student and student["ws"].client_state == 1:
                     await student["ws"].send_text(
-                        json.dumps({
-                            "type": "notification",
-                            "message": f"{student_name} has left the meeting"
-                        })
+                        json.dumps({"type": "notification", "message": f"{student_name} has left the meeting"})
                     )
         await broadcast_students()
 
@@ -944,19 +890,16 @@ async def create_module(
 
 @app.get("/api/modules")
 async def get_modules(id_number: str = Query(None), program: str = Query(None)):
-  """
-  Fetch all modules with optional filters.
-  """
-  query = {}
-  if id_number:
-    query["id_number"] = id_number
-  if program:
-    query["program"] = program
-
-  modules = modules_collection.find(query)
-  return [{"_id": str(module["_id"]), "title": module["title"], "image_url": module["image_url"], "id_number": module["id_number"], "program": module["program"]} for module in modules]
-
-
+    query = {}
+    if id_number:
+        query["id_number"] = id_number
+    if program:
+        query["program"] = {"$regex": f"^{program}$", "$options": "i"}  # Case-insensitive match
+    logging.info(f"Fetching modules with query: {query}")
+    modules = modules_collection.find(query)
+    modules_list = [{"_id": str(module["_id"]), "title": module["title"], "image_url": module["image_url"], "id_number": module["id_number"], "program": module["program"]} for module in modules]
+    logging.info(f"Found {len(modules_list)} modules: {modules_list}")
+    return modules_list
 
 @app.get("/api/modules/{module_id}")
 async def get_module(module_id: str):
@@ -1156,15 +1099,15 @@ async def get_post_test_results(user_id: str):
                 "incorrect": result["incorrect"],
                 "total_questions": result["total_questions"],
                 "score": result["correct"] / result["total_questions"] * 100,
-                "time_spent": result["time_spent"]  # Added: Include time_spent in results
+                "time_spent": result["time_spent"]
             }
             for result in results
         ]
+        logging.info(f"Post-test results for user {user_id}: {results_list}")
         return results_list
     except Exception as e:
         logging.error(f"Error fetching post-test results for user {user_id}: {e}")
         raise HTTPException(status_code=500, detail="Error fetching post-test results")
-
 app.include_router(router)
 
 
@@ -1979,3 +1922,163 @@ async def delete_report(report_id: str):
         raise HTTPException(status_code=500, detail="Failed to delete report")
 
 # Endpoint to update report status
+
+@app.get("/api/attendance")
+async def get_attendance(program: str = Query(None)):
+    """
+    Fetch attendance data for students in a specific program.
+    """
+    try:
+        query = {}
+        if program:
+            query["program"] = program
+
+        # Example: Derive attendance from scores or user activity
+        # Replace this with your actual attendance logic
+        scores = scores_collection.find(query)
+        attendance_data = []
+        for score in scores:
+            user = users_collection.find_one({"id_number": score["user_id"]})
+            if user:
+                attendance_data.append({
+                    "student_id": score["user_id"],
+                    "name": f"{user['firstname']} {user['lastname']}",
+                    "module_id": score["module_id"],
+                    "attendance_percentage": random.randint(50, 100),  # Placeholder: Replace with real data
+                })
+
+        return attendance_data
+    except Exception as e:
+        logging.error(f"Error fetching attendance data: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch attendance data")
+    
+@router.get("/api/instructor/dashboard/{instructor_id}")
+async def get_instructor_dashboard(instructor_id: str, program: Optional[str] = Query(None)):
+    """
+    Fetch aggregated data for the instructor dashboard.
+    """
+    try:
+        # Validate instructor exists
+        instructor = users_collection.find_one({"id_number": instructor_id, "role": {"$regex": "^instructor$", "$options": "i"}})
+        if not instructor:
+            logging.error(f"Instructor not found: {instructor_id}")
+            raise HTTPException(status_code=404, detail="Instructor not found")
+
+        # Fetch modules created by the instructor
+        modules_query = {"id_number": instructor_id}
+        if program:
+            modules_query["program"] = program
+        modules = list(modules_collection.find(modules_query))
+        modules_list = [
+            {
+                "_id": str(module["_id"]),
+                "title": module["title"],
+                "image_url": module.get("image_url", ""),
+                "program": module.get("program", ""),
+            } for module in modules
+        ]
+
+        # Fetch students in the same program
+        students_query = {"role": {"$regex": "^student$", "$options": "i"}}
+        if program:
+            students_query["program"] = program
+        students = list(users_collection.find(students_query))
+        total_students = len(students)
+
+        # Calculate engagement rate (example: based on post-test submissions)
+        scores = scores_collection.find({"test_type": "posttest"})
+        total_submissions = 0
+        total_questions = 0
+        for score in scores:
+            total_submissions += score["correct"] + score["incorrect"]
+            total_questions += score["total_questions"]
+        engagement_rate = (total_submissions / total_questions * 100) if total_questions > 0 else 0
+
+        # Fetch attendance data (placeholder: replace with actual logic)
+        attendance_data = []
+        for student in students:
+            student_scores = scores_collection.find_one({"user_id": student["id_number"], "test_type": "posttest"})
+            attendance_percentage = student_scores["correct"] / student_scores["total_questions"] * 100 if student_scores else 0
+            attendance_data.append({
+                "studentName": f"{student.get('firstname', '')} {student.get('lastname', '')}".strip(),
+                "percentage": round(attendance_percentage, 2),
+            })
+
+        return {
+            "stats": {
+                "totalStudents": total_students,
+                "engagementRate": round(engagement_rate, 2),
+            },
+            "modules": modules_list,
+            "attendance": attendance_data,
+        }
+    except Exception as e:
+        logging.error(f"Error fetching instructor dashboard data: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch dashboard data")
+    
+@app.get("/api/engagement-rate")
+async def get_engagement_rate(instructor_id: str = Query(None), program: str = Query(None)):
+    """
+    Calculate engagement rate based on post-test completions for modules.
+    """
+    try:
+        # Fetch modules for the instructor or program
+        query = {}
+        if instructor_id:
+            query["id_number"] = instructor_id
+        if program:
+            query["program"] = program
+        modules = list(modules_collection.find(query))
+        total_modules = len(modules)
+
+        # Fetch students
+        students_query = {"role": {"$regex": "^student$", "$options": "i"}}
+        if program:
+            students_query["program"] = program
+        students = list(users_collection.find(students_query))
+        total_students = len(students)
+
+        # Count completed post-tests
+        completed_post_tests = 0
+        for student in students:
+            post_test_results = scores_collection.find({
+                "user_id": student["id_number"],
+                "test_type": "posttest",
+                "module_id": {"$in": [str(module["_id"]) for module in modules]}
+            })
+            completed_post_tests += len(list(post_test_results))
+
+        # Calculate engagement rate
+        total_possible_completions = total_students * total_modules
+        engagement_rate = (completed_post_tests / total_possible_completions * 100) if total_possible_completions > 0 else 0
+
+        return {
+            "engagementRate": round(engagement_rate, 1),
+            "totalStudents": total_students,
+            "totalModules": total_modules,
+            "completedPostTests": completed_post_tests
+        }
+    except Exception as e:
+        logging.error(f"Error calculating engagement rate: {e}")
+        raise HTTPException(status_code=500, detail="Failed to calculate engagement rate")
+    
+@app.get("/api/progress/{user_id}")
+async def get_progress(user_id: str):
+    try:
+        user = users_collection.find_one({"id_number": user_id})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        program = user["program"]
+        modules = list(modules_collection.find({"program": program}))
+        total_modules = len(modules)
+        post_test_results = list(scores_collection.find({"user_id": user_id, "test_type": "posttest"}))
+        completed_post_tests = len(post_test_results)
+        progress = (completed_post_tests / total_modules * 100) if total_modules > 0 else 0
+        return {
+            "progress": round(progress, 0),
+            "totalModules": total_modules,
+            "completedPostTests": completed_post_tests
+        }
+    except Exception as e:
+        logging.error(f"Error calculating progress for user {user_id}: {e}")
+        raise HTTPException(status_code=500, detail="Failed to calculate progress")

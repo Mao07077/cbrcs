@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import Styles from './Dashboard.module.css';
 import {
     Chart as ChartJS,
@@ -24,23 +25,17 @@ ChartJS.register(
     Legend
 );
 
-const SidebarItem = ({ icon, text, onClick }) => (
-    <li>
-        <button className="sidebar-item" onClick={onClick}>
-            <img src={icon} alt={text} className="sidebar-icon" />
-            <span>{text}</span>
-        </button>
-    </li>
-);
-
 const Dashboard = ({ isModal = false }) => {
+    const navigate = useNavigate();
     const handleNavigation = (route) => {
         console.log(`Navigating to: ${route}`);
         window.location.href = `/${route}`;
     };
 
     const [idNumber, setIdNumber] = useState(localStorage.getItem('userIdNumber') || '');
-    const [progress, setProgress] = useState(60);
+    const [program, setProgram] = useState('');
+    const [progress, setProgress] = useState(0);
+    const [progressData, setProgressData] = useState(null);
     const [error, setError] = useState(null);
     const [preTestChartData, setPreTestChartData] = useState({
         labels: [],
@@ -51,14 +46,14 @@ const Dashboard = ({ isModal = false }) => {
         datasets: [],
     });
     const [top3Habits, setTop3Habits] = useState([]);
+    const [strengths, setStrengths] = useState([]);
+    const [weaknesses, setWeaknesses] = useState([]);
 
-    // Dynamically set API_URL based on the environment
     const API_URL = process.env.REACT_APP_API_URL || 
-        (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
+        (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://9870-2405-8d40-4440-cd61-dd31-76d3-3de9-5f93.ngrok-free.app");
 
-    // Common headers for axios requests
     const requestHeaders = {
-        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'ngrok-skip-browser-warning': 'true',
         'Accept': 'application/json',
         'Content-Type': 'application/json',
     };
@@ -66,18 +61,129 @@ const Dashboard = ({ isModal = false }) => {
     useEffect(() => {
         if (!idNumber) {
             setError('User not logged in');
+            navigate('/login');
             return;
         }
 
         const fetchDashboardData = async () => {
             try {
-                // Fetching dashboard data including pre-tests and post-tests
-                const response = await axios.get(`${API_URL}/api/dashboard/${idNumber}`, {
-                    headers: requestHeaders, // Add headers here
+                const profileResponse = await axios.get(`${API_URL}/api/profile/${idNumber}`, {
+                    headers: requestHeaders,
                 });
-                const { pre_tests, post_tests } = response.data;
+                const userProgram = profileResponse.data.program;
+                console.log('User Program:', userProgram);
+                setProgram(userProgram);
 
-                // Process pre-test data for bar chart
+                const dashboardResponse = await axios.get(`${API_URL}/api/dashboard/${idNumber}`, {
+                    headers: requestHeaders,
+                });
+                const { modules, pre_tests, post_tests } = dashboardResponse.data;
+                console.log('Dashboard Modules:', modules);
+                console.log('Dashboard Pre-Tests:', pre_tests);
+                console.log('Dashboard Post-Tests:', post_tests);
+
+                const totalModules = modules.length;
+                const completedPostTests = post_tests.length;
+                const progressPercentage = totalModules > 0 
+                    ? Math.round((completedPostTests / totalModules) * 100) 
+                    : 0;
+                console.log('Total Modules:', totalModules);
+                console.log('Completed Post-Tests:', completedPostTests);
+                console.log('Calculated Progress:', progressPercentage);
+                setProgress(progressPercentage);
+                setProgressData({ totalModules, completedPostTests });
+
+                // Calculate average time spent to use as a benchmark
+                const avgTimeSpent = (pre_tests.concat(post_tests).reduce((sum, test) => sum + (test.time_spent || 0), 0) / (pre_tests.length + post_tests.length)) || 300;
+
+                // Define skill categories based on module titles (manual mapping for now)
+                const skillCategories = {
+                    'Lesson Planning': 'Instructional Skills',
+                    'Curriculum Design': 'Instructional Skills',
+                    'Classroom Management': 'Classroom Skills',
+                    'Student Engagement': 'Classroom Skills',
+                    'Critical Thinking': 'Analytical Skills',
+                    'Problem Solving': 'Analytical Skills',
+                    'Assessment Strategies': 'Evaluation Skills',
+                    'Feedback Techniques': 'Evaluation Skills',
+                    'Teaching Methods': 'Instructional Skills',
+                };
+
+                // Calculate strengths and weaknesses
+                const calculateStrengthsWeaknesses = (preTests, postTests) => {
+                    const categoryPerformance = {};
+                    const thresholdStrength = 0.7; // 70%
+                    const thresholdWeakness = 0.5; // 50%
+                    const improvementThreshold = 0.2; // 20%
+                    const timeEfficiencyThreshold = avgTimeSpent * 0.8; // Faster than 80% of average time
+
+                    // Map post-tests by title for easier lookup
+                    const postTestMap = postTests.reduce((map, test) => {
+                        map[test.post_test_title] = test;
+                        return map;
+                    }, {});
+
+                    // Aggregate performance by category
+                    preTests.forEach((preTest) => {
+                        const preScore = preTest.correct / preTest.total_questions || 0;
+                        const postTest = postTestMap[preTest.pre_test_title.replace('Pre-Test', 'Post-Test')] || {};
+                        const postScore = postTest.correct / postTest.total_questions || 0;
+                        const avgScore = (preScore + postScore) / 2;
+                        const improvement = postScore - preScore;
+                        const postTimeSpent = postTest.time_spent || avgTimeSpent;
+
+                        // Extract the skill/topic from the module title
+                        const skill = preTest.pre_test_title.replace('Pre-Test for ', '').replace('Module', '').trim();
+                        const category = skillCategories[skill] || 'General Skills';
+
+                        if (!categoryPerformance[category]) {
+                            categoryPerformance[category] = {
+                                scores: [],
+                                improvements: [],
+                                timeSpent: [],
+                            };
+                        }
+
+                        categoryPerformance[category].scores.push(avgScore);
+                        categoryPerformance[category].improvements.push(improvement);
+                        categoryPerformance[category].timeSpent.push(postTimeSpent);
+                    });
+
+                    const strengths = [];
+                    const weaknesses = [];
+
+                    // Summarize performance by category
+                    for (const [category, data] of Object.entries(categoryPerformance)) {
+                        const avgScore = data.scores.reduce((sum, score) => sum + score, 0) / data.scores.length;
+                        const avgImprovement = data.improvements.reduce((sum, imp) => sum + imp, 0) / data.improvements.length;
+                        const avgTimeSpent = data.timeSpent.reduce((sum, time) => sum + time, 0) / data.timeSpent.length;
+
+                        // Strength: High average score, good improvement, and efficient time
+                        if (avgScore >= thresholdStrength && avgImprovement >= improvementThreshold && avgTimeSpent <= timeEfficiencyThreshold) {
+                            strengths.push(`Strong ${category} (Efficient and High-Performing)`);
+                        }
+                        // Strength: Significant improvement
+                        else if (avgImprovement >= improvementThreshold && avgScore >= 0.6) {
+                            strengths.push(`Adaptability in ${category}`);
+                        }
+
+                        // Weakness: Low score or little improvement
+                        if (avgScore < thresholdWeakness || avgImprovement < 0.1) {
+                            if (avgTimeSpent > avgTimeSpent * 1.2) {
+                                weaknesses.push(`Needs Improvement in ${category} (Slow Processing)`);
+                            } else {
+                                weaknesses.push(`Needs Improvement in ${category}`);
+                            }
+                        }
+                    }
+
+                    return { strengths: strengths.slice(0, 2), weaknesses: weaknesses.slice(0, 2) }; // Limit to top 2
+                };
+
+                const { strengths, weaknesses } = calculateStrengthsWeaknesses(pre_tests, post_tests);
+                setStrengths(strengths);
+                setWeaknesses(weaknesses);
+
                 if (pre_tests && pre_tests.length > 0) {
                     const preTestLabels = pre_tests.map(
                         (test) => test.pre_test_title || 'Unknown Pre-Test'
@@ -117,7 +223,6 @@ const Dashboard = ({ isModal = false }) => {
                     });
                 }
 
-                // Process post-test data for bar chart
                 if (post_tests && post_tests.length > 0) {
                     const postTestLabels = post_tests.map(
                         (test) => test.post_test_title || 'Unknown Post-Test'
@@ -147,7 +252,7 @@ const Dashboard = ({ isModal = false }) => {
                                 borderWidth: 1,
                             },
                             {
-                                label: 'Post-Test Time Spent (min)',
+                                label: 'Pre-Test Time Spent (min)',
                                 data: post_tests.map((test) => Math.floor((test.time_spent || 0) / 60)),
                                 backgroundColor: 'rgba(255, 206, 86, 0.6)',
                                 borderColor: 'rgba(255, 206, 86, 1)',
@@ -157,26 +262,26 @@ const Dashboard = ({ isModal = false }) => {
                     });
                 }
 
-                // Fetching recommended study habits
                 const habitsResponse = await axios.get(`${API_URL}/students/${idNumber}/recommended-pages`, {
-                    headers: requestHeaders, // Add headers here
+                    headers: requestHeaders,
                 });
+                console.log('Recommended Habits:', habitsResponse.data.recommendedPages);
                 setTop3Habits(habitsResponse.data.recommendedPages || []);
             } catch (error) {
-                const errorMessage = error.response?.data?.detail || 'Failed to fetch dashboard data';
+                const errorMessage = error.response?.data?.error || error.response?.data?.detail || 'Failed to fetch dashboard data';
+                console.error('Error fetching dashboard data:', errorMessage);
                 setError(errorMessage);
-                console.error('Error fetching dashboard data:', error.response?.data || error.message);
             }
         };
 
         fetchDashboardData();
-    }, [idNumber]);
+    }, [idNumber, navigate]);
 
     if (error) {
         return <div className="text-red-500 text-center py-10">Error: {error}</div>;
     }
 
-    const progressData = {
+    const progressChartData = {
         labels: ['Completed', 'Remaining'],
         datasets: [
             {
@@ -213,10 +318,10 @@ const Dashboard = ({ isModal = false }) => {
                     </div>
                     <div className={Styles.PerformanceOverview}>
                         <h2>Performance Overview</h2>
-                        <p>Track your progress</p>
+                        <p>{progress === 0 && !error ? 'No modules available or no post-tests completed yet.' : `Your progress: ${progress}%`}</p>
                         <div className={Styles.ProgressContainer}>
                             <Doughnut
-                                data={progressData}
+                                data={progressChartData}
                                 options={{
                                     responsive: true,
                                     maintainAspectRatio: false,
@@ -226,46 +331,27 @@ const Dashboard = ({ isModal = false }) => {
                                         legend: { display: false },
                                     },
                                 }}
-                                plugins={[
-                                    {
-                                        id: 'centerText',
-                                        afterDraw: (chart) => {
-                                            const {
-                                                ctx,
-                                                chartArea: { left, right, top, bottom },
-                                            } = chart;
-
-                                            ctx.save();
-
-                                            const isMobile = window.innerWidth <= 768;
-                                            const fontSize = isMobile
-                                                ? Math.min((right - left) / 7, 16)
-                                                : Math.min((right - left) / 5, 24);
-
-                                            ctx.font = `bold ${fontSize}px Arial`;
-                                            ctx.fillStyle = '#000';
-                                            ctx.textAlign = 'center';
-                                            ctx.textBaseline = 'middle';
-
-                                            const centerX = (left + right) / 2;
-                                            const centerY = (top + bottom) / 2;
-
-                                            ctx.fillText(`${progress}%`, centerX, centerY);
-
-                                            ctx.restore();
-                                        },
-                                    },
-                                ]}
                             />
                         </div>
-                        <p className={Styles.Disclaimer}>
-                            Note: For new accounts, the progress starts at 60% as the standard passing threshold.
-                        </p>
                     </div>
                     <div className={Styles.Section}>
                         <div className={Styles.StrengthWeaknessContainer}>
-                            <div className={Styles.StrengthCard}>Strength</div>
-                            <div className={Styles.WeaknessCard}>Weakness</div>
+                            <div className={Styles.StrengthCard}>
+                                <h4>Strengths</h4>
+                                <ul>
+                                    {strengths.length > 0 ? strengths.map((strength, index) => (
+                                        <li key={index}>{strength}</li>
+                                    )) : <li>No strengths identified</li>}
+                                </ul>
+                            </div>
+                            <div className={Styles.WeaknessCard}>
+                                <h4>Weaknesses</h4>
+                                <ul>
+                                    {weaknesses.length > 0 ? weaknesses.map((weakness, index) => (
+                                        <li key={index}>{weakness}</li>
+                                    )) : <li>No weaknesses identified</li>}
+                                </ul>
+                            </div>
                         </div>
                         <section className={Styles.StudyHabitsSection}>
                             <h3>Top 3 Study Habits:</h3>

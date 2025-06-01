@@ -5,7 +5,7 @@ import Icon from '../../icon/actual.png';
 
 // Set API URL dynamically based on the environment
 const API_URL = process.env.REACT_APP_API_URL || 
-    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://9870-2405-8d40-4440-cd61-dd31-76d3-3de9-5f93.ngrok-free.app");
 
 const Signup = () => {
     const [formData, setFormData] = useState({

@@ -11,16 +11,14 @@ const FlashcardsLandingPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
-    // Set API URL dynamically based on the environment
     const API_URL =
         process.env.REACT_APP_API_URL ||
         (window.location.hostname === 'localhost'
             ? 'http://127.0.0.1:8000'
-            : 'https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app');
+            : 'https://9870-2405-8d40-4440-cd61-dd31-76d3-3de9-5f93.ngrok-free.app');
 
-    // Common headers for fetch requests
     const requestHeaders = {
-        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'ngrok-skip-browser-warning': 'true',
         'Accept': 'application/json',
         'Content-Type': 'application/json',
     };
@@ -35,7 +33,7 @@ const FlashcardsLandingPage = () => {
 
             try {
                 const response = await fetch(`${API_URL}/api/profile/${idNumber}`, {
-                    headers: requestHeaders, // Add headers here
+                    headers: requestHeaders,
                 });
                 if (!response.ok) {
                     throw new Error(`Failed to fetch user profile: ${response.status} ${response.statusText}`);
@@ -62,7 +60,7 @@ const FlashcardsLandingPage = () => {
         const fetchModules = async () => {
             try {
                 const response = await fetch(apiUrl, {
-                    headers: requestHeaders, // Add headers here
+                    headers: requestHeaders,
                 });
                 if (!response.ok) {
                     throw new Error(`Failed to fetch modules: ${response.status} ${response.statusText}`);
@@ -84,7 +82,7 @@ const FlashcardsLandingPage = () => {
         try {
             const response = await fetch(`${API_URL}/api/generate-flashcards/${moduleId}`, {
                 method: 'POST',
-                headers: requestHeaders, // Add headers here
+                headers: requestHeaders,
             });
             if (!response.ok) {
                 throw new Error(`Failed to generate flashcards: ${response.status} ${response.statusText}`);
@@ -123,9 +121,10 @@ const FlashcardsLandingPage = () => {
                                 <div className={Styles.module_card} key={module._id}>
                                     <h3>{module.title}</h3>
                                     <img
-                                        src={`${API_URL}${module.image_url}`}
-                                        alt="Module"
+                                        src={`/uploads/${module.image_url.split('/').pop()}`} // Strip path if needed
+                                        alt={module.title}
                                         className={Styles.module_image}
+                                        onError={(e) => (e.target.src = '/images/fallback.jpg')}
                                     />
                                     <button
                                         className={Styles.flashcard_btn}

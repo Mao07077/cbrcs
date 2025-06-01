@@ -4,97 +4,122 @@ import Styles from './Admin_Dashboard.module.css';
 import Admin_Sidebar from '../../Components/Admin_Sidebar';
 import Footer from '../../Components/composables/FooterAdmin';
 import Header from '../../Components/composables/Header';
+import axios from 'axios'; // Add axios for API calls
 
 const AdminDashboard = () => {
-	const [fileName, setFileName] = useState('No file chosen');
-	const [isDragging, setIsDragging] = useState(false);
-	const [attendanceData, setAttendanceData] = useState([]); // State for attendance data
-	const [stats, setStats] = useState({
-		totalStudents: 0,
-		engagementRate: 0,
-	});
+  const [fileName, setFileName] = useState('No file chosen');
+  const [isDragging, setIsDragging] = useState(false);
+  const [attendanceData, setAttendanceData] = useState([]);
+  const [stats, setStats] = useState({
+    totalStudents: 0,
+    totalInstructors: 0, // Updated to include instructors
+  });
+  const [students, setStudents] = useState([]); // State for student list
+  const [instructors, setInstructors] = useState([]); // State for instructor list
 
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-	const redirectToAdminPost = () => {
-		navigate('/Adminpost')// Replace '/admin-post' with the actual route for the admin post page
-	};
+  const redirectToAdminPost = () => {
+    navigate('/Adminpost');
+  };
 
-	// Simulating an API call for stats
-	useEffect(() => {
-		const fetchStats = async () => {
-			// Simulate an API response with mock data
-			const mockStats = {
-				totalStudents: 40, // Example number of students
-				engagementRate: 50, // Example engagement rate
-			};
-			// Simulate loading delay
-			setTimeout(() => {
-				setStats(mockStats);
-			}, 1000);
-		};
+  // Fetch stats and lists from backend
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        // Fetch total accounts (students and instructors)
+        const accountsResponse = await axios.get('http://localhost:8000/api/accounts');
+        const accounts = accountsResponse.data.accounts;
 
-		fetchStats();
-	}, []);
+        // Calculate total students and instructors
+        const totalStudents = accounts.filter(acc => acc.role.toLowerCase() === 'student').length;
+        const totalInstructors = accounts.filter(acc => acc.role.toLowerCase() === 'instructor').length;
 
-	// Simulate fetching attendance data
-	useEffect(() => {
-		const simulateBackendFetch = async () => {
-			return new Promise((resolve) =>
-				setTimeout(() => resolve([70, 50, 90, 60, 40]), 1000)
-			);
-		};
+        setStats({
+          totalStudents,
+          totalInstructors,
+        });
 
-		const fetchAttendanceData = async () => {
-			const data = await simulateBackendFetch();
-			setAttendanceData(data);
-		};
+        // Fetch student list
+        const studentsResponse = await axios.get('http://localhost:8000/students');
+        setStudents(studentsResponse.data);
 
-		fetchAttendanceData();
-	}, []);
+        // Fetch instructor list
+        const instructorsResponse = await axios.get('http://localhost:8000/instructors');
+        setInstructors(instructorsResponse.data);
 
-	return (
-		// header
-		<div className={Styles.Maincontainer}>
-			<Header></Header>
-			{/* wrapper */}
-			<div className={Styles.Content_Wrapper}>
-				{/* sidebar */}
-				<Admin_Sidebar></Admin_Sidebar>
-				{/* content */}
-				<div className={Styles.Content}>
-					<div className={Styles.Greeting_Dashboard}>
-						<h1>Admin Dashboard</h1>
-					</div>
-					{/* Place the button directly below the border */}
-					<button className={Styles.Redirect_Button} onClick={redirectToAdminPost}>
-						 Admin Post
-					</button>
-					<div className={Styles.Statistics_Container}>
-						<div className={Styles.Stat_Card}>
-							<h1>Total Number of Students</h1>
-							<h2>{stats.totalStudents || 'Loading...'}</h2>
-						</div>
-						<div className={Styles.Stat_Card}>
-							<h1> Number of Instructor/per season</h1>
-							<h2>{stats.totalStudents || 'Loading...'}</h2>
-						</div>
-					</div>l
+        // Fetch attendance data (if you have an endpoint for this)
+        // Example: Replace with actual endpoint if available
+        const attendanceResponse = await axios.get('http://localhost:8000/api/attendance'); // Hypothetical endpoint
+        setAttendanceData(attendanceResponse.data);
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+        setStats({ totalStudents: 'Error', totalInstructors: 'Error' });
+        setStudents([]);
+        setInstructors([]);
+      }
+    };
 
-					<div className={Styles.List_Students}>
-						<div className={Styles.Student}>
-							<h2>List of Students</h2>
-						</div>
-						<div className={Styles.Instructor}>
-							<h2>Names of Instructor's/Per season</h2>
-						</div>
-					</div>
-				</div>
-			</div>
-			{/* footer */}
-			<Footer></Footer>
-		</div>
-	);
+    fetchDashboardData();
+  }, []);
+
+  return (
+    <div className={Styles.Maincontainer}>
+      <Header />
+      <div className={Styles.Content_Wrapper}>
+        <Admin_Sidebar />
+        <div className={Styles.Content}>
+          <div className={Styles.Greeting_Dashboard}>
+            <h1>Admin Dashboard</h1>
+          </div>
+          <button className={Styles.Redirect_Button} onClick={redirectToAdminPost}>
+            Admin Post
+          </button>
+          <div className={Styles.Statistics_Container}>
+            <div className={Styles.Stat_Card}>
+              <h1>Total Number of Students</h1>
+              <h2>{stats.totalStudents || 'Loading...'}</h2>
+            </div>
+            <div className={Styles.Stat_Card}>
+              <h1>Total Number of Instructors</h1>
+              <h2>{stats.totalInstructors || 'Loading...'}</h2>
+            </div>
+          </div>
+          <div className={Styles.List_Students}>
+            <div className={Styles.Student}>
+              <h2>List of Students</h2>
+              <ul>
+                {students.length > 0 ? (
+                  students.map(student => (
+                    <li key={student.id}>
+                      {student.name} ({student.studentNo}) - {student.program}
+                    </li>
+                  ))
+                ) : (
+                  <li>No students found</li>
+                )}
+              </ul>
+            </div>
+            <div className={Styles.Instructor}>
+              <h2>List of Instructors</h2>
+              <ul>
+                {instructors.length > 0 ? (
+                  instructors.map(instructor => (
+                    <li key={instructor.id_number}>
+                      {instructor.firstname} {instructor.lastname} ({instructor.id_number})
+                    </li>
+                  ))
+                ) : (
+                  <li>No instructors found</li>
+                )}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
 };
 
 export default AdminDashboard;
