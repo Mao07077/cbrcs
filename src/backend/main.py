@@ -85,7 +85,7 @@ origins = [
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Specific origins, not wildcard
+    allow_origins=origins,  # Specific origins, not wildcard
     allow_credentials=True,  # Allow cookies/credentials
     allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
     allow_headers=["*"], # or specify headers
@@ -765,7 +765,7 @@ async def signup(data: SignupData):
     else:
         raise HTTPException(status_code=500, detail="Signup failed")
 
-@app.post("/api/login")
+@router.post("/login")
 async def login(data: LoginData):
     user = collection.find_one({"id_number": data.idNumber})
     if user and verify_password(data.password, user["password"]):
