@@ -6,7 +6,7 @@ import Footer from '../../Components/composables/FooterAdmin';
 import Header from '../../Components/composables/Header';
 
 const API_URL = process.env.REACT_APP_API_URL || 
-    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://22fc-2405-8d40-4458-3649-842c-4170-14eb-eb79.ngrok-free.app");
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://c29e-2405-8d40-4458-3649-8963-f5d1-1589-9112.ngrok-free.app");
 
 const Request = () => {
     const [requests, setRequests] = useState([]);
