@@ -79,7 +79,7 @@ router = APIRouter()
 router = APIRouter(prefix="/api")
 
 origins = [
-    "https:cbrcs.vercel.app", 
+    "https//cbrcs.vercel.app", 
     "http://localhost:3000" 
 ]
 # CORS configuration

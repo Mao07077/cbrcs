@@ -27,7 +27,7 @@ ChartJS.register(
 
 // Set API URL dynamically based on the environment
 const API_URL = process.env.REACT_APP_API_URL || 
-    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://c29e-2405-8d40-4458-3649-8963-f5d1-1589-9112.ngrok-free.app");
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
 
 const DailyActivityBarChart = ({ dailyData }) => {
 	const data = {
@@ -45,7 +45,7 @@ const DailyActivityBarChart = ({ dailyData }) => {
 
 	const options = {
 		responsive: true,
-		maintainAspectRatio: false, // Allow the chart to resize dynamically
+		maintainAspectRatio: false,
 		scales: {
 			y: {
 				beginAtZero: true,
@@ -70,23 +70,18 @@ const DailyActivityBarChart = ({ dailyData }) => {
 
 	return (
 		<div style={{ width: '100%', height: '300px', maxWidth: '600px', margin: '0 auto' }}>
-			{/* Adjust height and center the chart */}
 			<Bar data={data} options={options} />
 		</div>
 	);
 };
 
 const Profile = () => {
-	const handleNavigation = (route) => {
-		console.log(`Navigating to: ${route}`);
-		window.location.href = `/${route}`;
-	};
-
+	const navigate = useNavigate();
 	const [profile, setProfile] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState('');
 	const [profileImage, setProfileImage] = useState(nameIcon);
-	const [top3Habits, setTop3Habits] = useState([]); // State for top 3 habits
+	const [top3Habits, setTop3Habits] = useState([]);
 
 	const [dailyData, setDailyData] = useState([
 		{ day: 'Monday', hours: 2 },
@@ -115,6 +110,7 @@ const Profile = () => {
 				}
 				const profileData = await profileResponse.json();
 				setProfile(profileData);
+				setProfileImage(profileData.profileImage || nameIcon);
 
 				// Fetch top 3 study habits
 				const habitsResponse = await fetch(`${API_URL}/students/${idNumber}/recommended-pages`);
@@ -122,7 +118,7 @@ const Profile = () => {
 					throw new Error('Failed to fetch habits');
 				}
 				const habitsData = await habitsResponse.json();
-				setTop3Habits(habitsData.recommendedPages); // Assuming response has 'recommendedPages' key
+				setTop3Habits(habitsData.recommendedPages);
 			} catch (err) {
 				setError(err.message);
 			} finally {
@@ -133,12 +129,34 @@ const Profile = () => {
 		fetchProfileAndHabits();
 	}, []);
 
-	const handleImageChange = (event) => {
+	const handleImageChange = async (event) => {
 		const file = event.target.files[0];
 		if (file) {
-			const imageUrl = URL.createObjectURL(file);
-			setProfileImage(imageUrl);
+			try {
+				const idNumber = localStorage.getItem('userIdNumber');
+				const formData = new FormData();
+				formData.append('profileImage', file);
+
+				const response = await fetch(`${API_URL}/api/update-profile-image/${idNumber}`, {
+					method: 'POST',
+					body: formData,
+				});
+
+				if (!response.ok) {
+					throw new Error('Failed to upload profile image');
+				}
+
+				const updatedProfile = await response.json();
+				setProfileImage(updatedProfile.profileImage || nameIcon);
+				setError('');
+			} catch (err) {
+				setError(err.message);
+			}
 		}
+	};
+
+	const handleNavigation = (route) => {
+		navigate(`/${route}`);
 	};
 
 	if (loading) return <div>Loading...</div>;
@@ -146,19 +164,20 @@ const Profile = () => {
 
 	return (
 		<div className={Styles.MainContainer}>
-			<Header></Header>
-
+			<Header />
 			<div className={Styles.Content_Wrapper}>
-				<Student_Sidebar></Student_Sidebar>
+				<Student_Sidebar />
 				<div className={Styles.Content}>
 					<div className={Styles.TopSection}>
 						<h2>Account Profile</h2>
 					</div>
 
-					{/* Profile Icon and Info Card */}
 					<div className={Styles.Info}>
 						<div className={Styles.IconContainer}>
-							<img src={profileImage} alt="Profile Icon" />
+							<img
+								src={typeof profileImage === 'string' ? profileImage : URL.createObjectURL(profileImage)}
+								alt="Profile Icon"
+							/>
 							<input
 								type="file"
 								accept="image/*"
@@ -168,9 +187,7 @@ const Profile = () => {
 							/>
 							<button
 								className={Styles.editButton}
-								onClick={() =>
-									document.getElementById('profileImageUpload').click()
-								}
+								onClick={() => document.getElementById('profileImageUpload').click()}
 							>
 								Edit
 							</button>
@@ -188,7 +205,6 @@ const Profile = () => {
 						</div>
 					</div>
 
-					{/* Display Dynamic Top 3 Study Habits */}
 					<div className={Styles.HabitsWrapper}>
 						<h3 className={Styles.StudyTitle}>Your Top 3 Study Habits</h3>
 						{top3Habits.length > 0 ? (
@@ -209,17 +225,15 @@ const Profile = () => {
 						)}
 					</div>
 
-					{/* Daily Activity Bar Chart */}
 					<div className={Styles.chartSection}>
 						<h3>Daily Activity</h3>
 						<div className={Styles.Data}>
-						<DailyActivityBarChart dailyData={dailyData} />
+							<DailyActivityBarChart dailyData={dailyData} />
 						</div>
 					</div>
 				</div>
 			</div>
-
-			<Footer></Footer>
+			<Footer />
 		</div>
 	);
 };
