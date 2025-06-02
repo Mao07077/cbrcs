@@ -5,7 +5,7 @@ import Footer from '../../../Components/composables/Footer';
 
 // Define the API_URL depending on the environment
 const API_URL = process.env.REACT_APP_API_URL || 
-    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://c29e-2405-8d40-4458-3649-8963-f5d1-1589-9112.ngrok-free.app");
 
 const Notes = () => {
     const [title, setTitle] = useState('');
