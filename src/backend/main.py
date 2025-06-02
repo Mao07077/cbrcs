@@ -78,14 +78,10 @@ app = FastAPI()
 router = APIRouter()
 router = APIRouter(prefix="/api")
 
-origins = [
-    "https//cbrcs.vercel.app", 
-    "http://localhost:3000" 
-]
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # Specific origins, not wildcard
+    allow_origins=["*"],  # Specific origins, not wildcard
     allow_credentials=True,  # Allow cookies/credentials
     allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
     allow_headers=["*"], # or specify headers
