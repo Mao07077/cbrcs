@@ -5,7 +5,7 @@ import Icon from '../../icon/actual.png';
 import image from '../../icon/carlbalita.jpg';
 
 const API_URL = process.env.REACT_APP_API_URL || 
-    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://c29e-2405-8d40-4458-3649-8963-f5d1-1589-9112.ngrok-free.app");
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://321d-2405-8d40-484d-d125-c439-23f4-26b1-4546.ngrok-free.app");
 
 const Landing = () => {
   const [introText, setIntroText] = useState({ header: '', subHeader: '' });
@@ -25,33 +25,41 @@ const Landing = () => {
     // Fetch post data from backend
     const fetchPost = async () => {
       try {
+        console.log('Fetching post from:', `${API_URL}/api/get_post`);
         const response = await axios.get(`${API_URL}/api/get_post`, {
-          headers: requestHeaders, // Add headers here
+          headers: requestHeaders,
+          withCredentials: true, // Include credentials if needed (e.g., cookies)
         });
         const post = response.data.data;
-        console.log('Fetched post data:', post); // Debug log
+        console.log('Fetched post data:', post);
+
         setIntroText({
-          header: post.intro?.header || '',
-          subHeader: post.intro?.subHeader || '',
+          header: post.intro?.header || 'Welcome to Dr. Carl Balita Review Center Student Portal',
+          subHeader: post.intro?.subHeader || 'Where the dream and the dreamer become ONE!',
         });
         setIntroImage(post.intro?.introImage ? `${API_URL}/${post.intro.introImage}` : null);
         setNews(post.news?.content || '');
         setNewsImage(post.news?.newsImage ? `${API_URL}/${post.news.newsImage}` : null);
         setCourseImages(
-          post.courseImages?.images?.map((img) => (img ? `${API_URL}/${img}` : null)) || [
-            null,
-            null,
-            null,
-          ]
+          post.courseImages?.images?.map((img) => (img ? `${API_URL}/${img}` : null)) || [null, null, null]
         );
         setError('');
       } catch (error) {
-        console.error('Error fetching post:', error.response?.data || error.message);
-        setError(error.response?.data?.detail || 'Failed to load landing page content.');
+        const errorMessage = error.response?.data?.detail || error.message || 'Failed to load landing page content.';
+        console.error('Error fetching post:', errorMessage, error.response || error);
+        setError(errorMessage);
       }
     };
     fetchPost();
   }, []);
+
+  // Sanitize HTML content to prevent XSS
+  const sanitizeHTML = (html) => {
+    // Use a simple regex to remove <script> tags and dangerous attributes
+    // For production, consider using a library like DOMPurify
+    return html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+               .replace(/on\w+="[^"]*"/gi, '');
+  };
 
   return (
     <div className={Styles.Landing_Page}>
@@ -63,20 +71,23 @@ const Landing = () => {
         </div>
       </div>
       <div className={Styles.Content}>
-        {error && <p className={Styles.ErrorMessage}>{error}</p>}
+        {error && (
+          <p className={Styles.ErrorMessage} role="alert">
+            {error}
+            {error.includes('CORS') && (
+              <span> Please check if the backend server is running and accessible.</span>
+            )}
+          </p>
+        )}
         <div className={Styles.Intro_Container}>
           <div className={Styles.Text_Container}>
-            <h1>
-              {introText.header || 'Welcome to Dr. Carl Balita Review Center Student Portal'}
-            </h1>
-            <p>
-              {introText.subHeader || 'Where the dream and the dreamer become ONE!'}
-            </p>
+            <h1>{introText.header}</h1>
+            <p>{introText.subHeader}</p>
             <div className={Styles.Buttons}>
               <button
                 type="button"
                 className={Styles.LoginBtn}
-                onClick={() => (window.location.href = 'login')}
+                onClick={() => (window.location.href = '/login')} // Ensure correct path
               >
                 Log-in
               </button>
@@ -85,8 +96,11 @@ const Landing = () => {
           <div className={Styles.Image_Container}>
             <img
               src={introImage || image}
-              alt="carlbalita"
-              onError={() => console.error('Failed to load intro image:', introImage)}
+              alt="Introduction"
+              onError={(e) => {
+                console.error('Failed to load intro image:', introImage);
+                e.target.src = image; // Fallback to default image
+              }}
             />
           </div>
         </div>
@@ -119,7 +133,11 @@ const Landing = () => {
                   src={newsImage}
                   alt="News"
                   style={{ maxWidth: '100%', maxHeight: '100%' }}
-                  onError={() => console.error('Failed to load news image:', newsImage)}
+                  onError={(e) => {
+                    console.error('Failed to load news image:', newsImage);
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'block';
+                  }}
                 />
               ) : (
                 <p style={{ color: '#888', textAlign: 'center' }}>
@@ -131,9 +149,10 @@ const Landing = () => {
               <h3>Announcement</h3>
               <div
                 dangerouslySetInnerHTML={{
-                  __html:
+                  __html: sanitizeHTML(
                     news ||
-                    'CBRC is proud to announce the launch of its new online learning platform, designed to make education accessible to everyone!',
+                    'CBRC is proud to announce the launch of its new online learning platform, designed to make education accessible to everyone!'
+                  ),
                 }}
               />
             </div>
@@ -173,7 +192,11 @@ const Landing = () => {
                       src={image}
                       alt={`Course ${index + 1}`}
                       style={{ maxWidth: '100%', maxHeight: '100%' }}
-                      onError={() => console.error(`Failed to load course image ${index + 1}:`, image)}
+                      onError={(e) => {
+                        console.error(`Failed to load course image ${index + 1}:`, image);
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'block';
+                      }}
                     />
                   ) : (
                     <p>Placeholder</p>
@@ -190,8 +213,8 @@ const Landing = () => {
 
         {/* Footer */}
         <div className={Styles.Footer}>
-          <img src={Icon} alt="actual" />
-          <p>© 2024 Dr. Carl Balita Review Center. All Rights Reserved.</p>
+          <img src={Icon} alt="Footer Logo" />
+          <p>© 2025 Dr. Carl Balita Review Center. All Rights Reserved.</p>
         </div>
       </div>
     </div>

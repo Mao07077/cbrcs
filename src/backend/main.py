@@ -445,9 +445,7 @@ def extract_text_from_pdf(file_path: str) -> str:
 # Helper function to generate flashcards using ollama
 async def generate_flashcards_with_ollama(text: str, module_id: str) -> List[Flashcard]:
     try:
-        # Limit text to 2000 characters to balance content and performance
         text = text[:2000]
-        # Simplified prompt for faster processing
         prompt = (
             f"Generate 10 flashcard questions from the following text. "
             f"Each question must start with 'What', 'Where', 'When', 'Who', 'Why', or 'How', "
@@ -462,16 +460,16 @@ async def generate_flashcards_with_ollama(text: str, module_id: str) -> List[Fla
             f'{{"question": "What are Kolb’s learning stages?", "answer": "Concrete Experience, Reflective Observation, Abstract Conceptualization, Active Experimentation"}}]'
         )
 
-        # Set a timeout for the Ollama call to prevent long hangs
         async def run_ollama_with_timeout():
             loop = asyncio.get_event_loop()
             return await asyncio.wait_for(
                 loop.run_in_executor(None, lambda: ollama.generate(model='llama3:latest', prompt=prompt)),
-                timeout=30  # 30-second timeout
+                timeout=30
             )
 
         response = await run_ollama_with_timeout()
-        flashcards_data = eval(response['response'])  # Safely parse JSON response
+        # Use json.loads instead of eval
+        flashcards_data = json.loads(response['response'])  # Parse JSON safely
 
         flashcards = []
         for i, item in enumerate(flashcards_data[:10]):
@@ -484,6 +482,9 @@ async def generate_flashcards_with_ollama(text: str, module_id: str) -> List[Fla
             flashcards.append(flashcard)
         
         return flashcards
+    except json.JSONDecodeError as e:
+        logging.error(f"Failed to parse Ollama response as JSON: {e}")
+        return None
     except asyncio.TimeoutError:
         logging.error("Ollama request timed out after 30 seconds")
         return None
@@ -747,8 +748,12 @@ async def websocket_endpoint(websocket: WebSocket, identifier: str):
 
 
 @app.get("/")
-def root():
-    return {"message": "FastAPI Backend is Running!"}
+async def root():
+    content = {"message": "FastAPI Backend is Running!"}
+    headers = {
+        "Content-Security-Policy": "default-src 'self'; script-src 'self'; object-src 'none';"
+    }
+    return JSONResponse(content=content, headers=headers)
 
 @app.post("/api/signup")
 async def signup(data: SignupData):
@@ -1694,6 +1699,7 @@ async def save_post(
 
 @app.get("/api/get_post")
 async def get_post():
+    logging.info("Received request for /api/get_post")
     try:
         post = posts_collection.find_one()
         if not post:
