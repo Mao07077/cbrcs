@@ -81,9 +81,7 @@ router = APIRouter(prefix="/api")
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://cbrcs.vercel.app",
-    ],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
