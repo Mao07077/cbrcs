@@ -397,3 +397,17 @@ def save_note(
     notes.insert(0, note)  # Add new note at the beginning
     users_collection.update_one({"id_number": id_number}, {"$set": {"notes": notes}})
     return {"success": True, "message": "Note saved successfully!"}
+
+@app.get("/instructors")
+def get_instructors():
+    # Adjust the query as needed for your schema
+    instructors = list(users_collection.find({"role": "instructor"}))
+    # Return only the fields you need (e.g., firstname, lastname, id_number)
+    return [
+        {
+            "firstname": instructor.get("firstname", ""),
+            "lastname": instructor.get("lastname", ""),
+            "id_number": instructor.get("id_number", "")
+        }
+        for instructor in instructors
+    ]
