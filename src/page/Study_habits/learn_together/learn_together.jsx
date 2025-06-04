@@ -37,7 +37,7 @@ const WebRTCComponent = () => {
 
     // Define the API_URL depending on the environment
     const API_URL = process.env.REACT_APP_API_URL || 
-        (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://542b-2405-8d40-4c5a-d127-298f-8677-1072-7782.ngrok-free.app");
+        (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://e9b7-2405-8d40-4896-dd96-74e0-7ffa-8c67-3b26.ngrok-free.app ");
 
     // Fetch user from localStorage on mount
     useEffect(() => {
