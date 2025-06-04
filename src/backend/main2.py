@@ -421,18 +421,35 @@ def get_instructors():
         for instructor in instructors
     ]
 
+
 @app.websocket("/ws/{call_id}")
 async def websocket_endpoint(websocket: WebSocket, call_id: str):
     await websocket.accept()
     try:
         while True:
             data = await websocket.receive_text()
-            # Instead of sending plain text, send JSON
-            response = {
-                "type": "echo",
-                "message": data
-            }
-            await websocket.send_text(json.dumps(response))
+            try:
+                msg = json.loads(data)
+            except Exception:
+                msg = {"type": "unknown", "message": data}
+
+            if msg.get("type") == "chat":
+                # Example: get sender name from session or msg, here just "User"
+                chat_message = {
+                    "type": "chat",
+                    "message": {
+                        "sender_name": "User",  # Replace with real user name if available
+                        "timestamp": datetime.utcnow().isoformat(),
+                        "message": msg.get("message", "")
+                    }
+                }
+                await websocket.send_text(json.dumps(chat_message))
+            else:
+                # Echo for other types
+                await websocket.send_text(json.dumps({
+                    "type": "echo",
+                    "message": data
+                }))
     except WebSocketDisconnect:
         print(f"WebSocket disconnected: {call_id}")
 
