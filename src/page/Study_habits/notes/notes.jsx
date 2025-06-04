@@ -3,14 +3,12 @@ import styles from './Notes.module.css';
 import Header from '../../../Components/composables/Header';
 import Footer from '../../../Components/composables/Footer';
 
-// Define the API_URL depending on the environment
-const API_URL = process.env.REACT_APP_API_URL || 
-
-localStorage.getItem('REACT_APP_API_URL') ||
-process.env.REACT_APP_API_URL ||
-(window.location.hostname === "localhost"
-  ? "http://127.0.0.1:8000"
-  : "https://ea13-110-54-166-204.ngrok-free.app ");
+const API_URL =
+  localStorage.getItem('REACT_APP_API_URL') ||
+  process.env.REACT_APP_API_URL ||
+  (window.location.hostname === "localhost"
+    ? "http://127.0.0.1:8000"
+    : "https://ea13-110-54-166-204.ngrok-free.app");
 const Notes = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');

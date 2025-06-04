@@ -12,13 +12,12 @@ const ModuleDashboard = () => {
   const [moduleStatuses, setModuleStatuses] = useState({});
   const navigate = useNavigate();
 
-  const API_URL = process.env.REACT_APP_API_URL || 
-
-  localStorage.getItem('REACT_APP_API_URL') ||
-  process.env.REACT_APP_API_URL ||
-  (window.location.hostname === "localhost"
-    ? "http://127.0.0.1:8000"
-    : "https://ea13-110-54-166-204.ngrok-free.app ");
+  const API_URL =
+    localStorage.getItem('REACT_APP_API_URL') ||
+    process.env.REACT_APP_API_URL ||
+    (window.location.hostname === "localhost"
+      ? "http://127.0.0.1:8000"
+      : "https://ea13-110-54-166-204.ngrok-free.app");
   // Common headers for all fetch requests
   const requestHeaders = {
     'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page

@@ -3,14 +3,12 @@ import axios from 'axios';
 import './signup.css';
 import Icon from '../../icon/actual.png';
 
-// Set API URL dynamically based on the environment
-const API_URL = process.env.REACT_APP_API_URL || 
-
-localStorage.getItem('REACT_APP_API_URL') ||
-process.env.REACT_APP_API_URL ||
-(window.location.hostname === "localhost"
-  ? "http://127.0.0.1:8000"
-  : "https://ea13-110-54-166-204.ngrok-free.app ");
+const API_URL =
+  localStorage.getItem('REACT_APP_API_URL') ||
+  process.env.REACT_APP_API_URL ||
+  (window.location.hostname === "localhost"
+    ? "http://127.0.0.1:8000"
+    : "https://ea13-110-54-166-204.ngrok-free.app");
 const Signup = () => {
     const [formData, setFormData] = useState({
         firstname: '',

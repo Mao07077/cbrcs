@@ -29,14 +29,12 @@ const PreTest = () => {
     const [loading, setLoading] = useState(false);
     const [timeSpent, setTimeSpent] = useState(0); // Time spent on the pre-test (in seconds)
 
-    // Dynamically switch between local and production environment
-    const API_URL = process.env.REACT_APP_API_URL || 
-
-    localStorage.getItem('REACT_APP_API_URL') ||
-    process.env.REACT_APP_API_URL ||
-    (window.location.hostname === "localhost"
-      ? "http://127.0.0.1:8000"
-      : "https://ea13-110-54-166-204.ngrok-free.app ");
+    const API_URL =
+      localStorage.getItem('REACT_APP_API_URL') ||
+      process.env.REACT_APP_API_URL ||
+      (window.location.hostname === "localhost"
+        ? "http://127.0.0.1:8000"
+        : "https://ea13-110-54-166-204.ngrok-free.app");
     // Common headers for axios requests
     const requestHeaders = {
         'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
