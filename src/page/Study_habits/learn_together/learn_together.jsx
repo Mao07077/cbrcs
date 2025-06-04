@@ -434,8 +434,11 @@ const WebRTCComponent = () => {
             return;
         }
         if (message.trim() === '') return;
-        ws.send(JSON.stringify({ type: 'chat', message }));
-        setMessage('');
+        ws.send(JSON.stringify({ 
+            type: 'chat', 
+            message, 
+            sender_name: user?.firstname || "User" // Use the user's firstname from state
+        }));        setMessage('');
     };
 
     const endCall = () => {

@@ -434,11 +434,10 @@ async def websocket_endpoint(websocket: WebSocket, call_id: str):
                 msg = {"type": "unknown", "message": data}
 
             if msg.get("type") == "chat":
-                # Example: get sender name from session or msg, here just "User"
                 chat_message = {
                     "type": "chat",
                     "message": {
-                        "sender_name": "User",  # Replace with real user name if available
+                        "sender_name": msg.get("sender_name", "User"),  # Use sender_name from frontend
                         "timestamp": datetime.utcnow().isoformat(),
                         "message": msg.get("message", "")
                     }
