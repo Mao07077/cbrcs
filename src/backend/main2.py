@@ -1,5 +1,5 @@
 from fastapi import (
-    FastAPI, HTTPException, Query, Body, WebSocket, WebSocketDisconnect, UploadFile, File, Form, status, BackgroundTasks
+    FastAPI, HTTPException, Query, Body, WebSocket, WebSocketDisconnect, UploadFile, File, Form, status, BackgroundTasks, Path
 )
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -673,3 +673,75 @@ def get_all_accounts():
 def get_attendance():
     # Dummy data for now
     return []
+
+@app.get("/api/reports")
+def get_reports(
+    search: str = Query("", alias="search"),
+    status: str = Query("All", alias="status")
+):
+    query = {}
+    if search:
+        query["$or"] = [
+            {"id_number": {"$regex": search, "$options": "i"}},
+            {"title": {"$regex": search, "$options": "i"}},
+            {"content": {"$regex": search, "$options": "i"}},
+        ]
+    if status != "All":
+        query["status"] = status
+
+    reports = list(db["reports"].find(query))
+    result = []
+    for report in reports:
+        result.append({
+            "id": str(report.get("_id", "")),
+            "student": report.get("id_number", ""),
+            "issue": report.get("title", ""),
+            "content": report.get("content", ""),
+            "date": report.get("created_at", "").strftime("%Y-%m-%d %H:%M") if report.get("created_at") else "",
+            "status": report.get("status", "Pending"),
+            "screenshot": f"uploads/{report['screenshot_filename']}" if report.get("screenshot_filename") else None,
+        })
+    return result
+
+@app.delete("/api/reports/{report_id}")
+def delete_report(report_id: str = Path(...)):
+    result = db["reports"].delete_one({"_id": ObjectId(report_id)})
+    if result.deleted_count == 1:
+        return {"success": True, "message": "Report deleted successfully."}
+    else:
+        raise HTTPException(status_code=404, detail="Report not found")
+    
+@app.get("/admin/requests")
+def get_settings_requests():
+    requests = list(db["settings_requests"].find())
+    result = []
+    for req in requests:
+        result.append({
+            "_id": str(req.get("_id", "")),
+            "id_number": req.get("id_number", ""),
+            "firstname": req.get("requested_changes", {}).get("firstname", ""),
+            "lastname": req.get("requested_changes", {}).get("lastname", ""),
+            "program": req.get("requested_changes", {}).get("program", ""),
+            "update_data": req.get("requested_changes", {}),
+        })
+    return {"success": True, "data": result}
+
+@app.post("/admin/requests/accept/{request_id}")
+def accept_settings_request(request_id: str = Path(...), update_data: dict = Body(...)):
+    req = db["settings_requests"].find_one({"_id": ObjectId(request_id)})
+    if not req:
+        raise HTTPException(status_code=404, detail="Request not found")
+    id_number = req.get("id_number")
+    # Update user profile
+    users_collection.update_one({"id_number": id_number}, {"$set": update_data})
+    # Remove the request after applying
+    db["settings_requests"].delete_one({"_id": ObjectId(request_id)})
+    return {"success": True, "message": "Request accepted and changes applied."}
+
+@app.delete("/admin/requests/decline/{request_id}")
+def decline_settings_request(request_id: str = Path(...)):
+    result = db["settings_requests"].delete_one({"_id": ObjectId(request_id)})
+    if result.deleted_count == 1:
+        return {"success": True, "message": "Request declined and removed."}
+    else:
+        raise HTTPException(status_code=404, detail="Request not found")
