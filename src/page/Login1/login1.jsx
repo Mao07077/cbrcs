@@ -48,7 +48,7 @@ function Login1() {
                 }
 
                 // Redirect to /module for all users after successful login
-                window.location.href = '/module';
+                window.location.href = '/module1';
             } else {
                 setError(response.data.message || 'Invalid ID number or password');
             }
