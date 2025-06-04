@@ -261,7 +261,11 @@ const PostTest = () => {
                 )}
 
                 {loading ? (
-                    <div className="loading-message">Loading and paraphrasing questions...</div>
+                    <div className="loading-message">
+                        Please wait up to 5 minutes.<br />
+                        The AI is generating and paraphrasing questions to make them easier for you.<br />
+                        This may take a while—sit back and relax
+                    </div>
                 ) : submitted ? (
                     <div className="submission-container">
                         <h2 className="submission-title">Your Score</h2>

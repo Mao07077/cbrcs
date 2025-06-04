@@ -9,6 +9,8 @@ import os
 import bcrypt
 from bson import ObjectId
 from datetime import datetime
+import ollama
+import logging
 
 # Load environment variables from .env
 load_dotenv()
@@ -315,3 +317,60 @@ def get_module_by_id(module_id: str):
         raise HTTPException(status_code=404, detail="Module not found")
     module["_id"] = str(module["_id"])
     return module
+
+class PostTestResponse(BaseModel):
+    post_test_id: str
+    module_id: str
+    title: str
+    questions: List[QuestionWithAnswers]
+
+@app.get("/api/post-test/{module_id}", response_model=PostTestResponse)
+def get_post_test(module_id: str):
+    post_test = post_test_collection.find_one({"module_id": module_id})
+    if not post_test:
+        raise HTTPException(status_code=404, detail="Post-test not found")
+    questions_with_answers = []
+    for question in post_test['questions']:
+        wrong_answers = [opt for opt in question['options'] if opt != question['correctAnswer']]
+        questions_with_answers.append(QuestionWithAnswers(
+            question=question['question'],
+            options=question['options'],
+            correctAnswer=question['correctAnswer'],
+            wrongAnswers=wrong_answers
+        ))
+    return PostTestResponse(
+        post_test_id=str(post_test['_id']),
+        module_id=post_test['module_id'],
+        title=post_test['title'],
+        questions=questions_with_answers
+    )
+
+
+
+class ParaphraseRequest(BaseModel):
+    input: str
+
+class ParaphraseResponse(BaseModel):
+    paraphrased: str
+
+def create_prompt(input_text: str, correct_answer: str = None, wrong_answers: List[str] = None) -> str:
+    prompt = (
+        f"You are a helpful assistant. Please paraphrase the following question. "
+        f"REMOVE ANY INTRODUCTION THAT SAYS IT'S A PARAPHRASE, REMOVE NUMBERING, AND REMOVE ANY NOTES. "
+        f"DO NOT INCLUDE THE CORRECT ANSWER ('{correct_answer}') IN THE QUESTION TEXT. "
+        f"Keep the meaning intact and maintain proper grammar.\n\n"
+        f"Original question: {input_text}\n"
+    )
+    if wrong_answers:
+        prompt += f"Wrong answers: {', '.join(wrong_answers)}\n"
+    return prompt
+
+@app.post("/api/paraphrase", response_model=ParaphraseResponse)
+async def paraphrase(request: ParaphraseRequest):
+    try:
+        prompt = create_prompt(request.input)
+        response = ollama.generate(model='llama3:latest', prompt=prompt)
+        return {"paraphrased": response.response.strip()}
+    except Exception as e:
+        logging.error(f"Paraphrase error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to paraphrase input")
