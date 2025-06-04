@@ -34,7 +34,7 @@ const ScheduleTable = () => {
             ? 'http://127.0.0.1:8000'
 
             : 'https://dfbd-110-54-166-204.ngrok-free.app');
-            : 'https://c3a1-2405-8d40-448f-2d57-c4b-6820-175b-382a.ngrok-free.app ');
+            // : 'https://c3a1-2405-8d40-448f-2d57-c4b-6820-175b-382a.ngrok-free.app ');
 
     useEffect(() => {
         const userId = localStorage.getItem('userIdNumber');
