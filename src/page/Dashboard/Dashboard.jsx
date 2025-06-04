@@ -51,9 +51,11 @@ const Dashboard = ({ isModal = false }) => {
 
     const API_URL = process.env.REACT_APP_API_URL || 
 
-        (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://dfbd-110-54-166-204.ngrok-free.app");
-        (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://c3a1-2405-8d40-448f-2d57-c4b-6820-175b-382a.ngrok-free.app ");
-
+    localStorage.getItem('REACT_APP_API_URL') ||
+    process.env.REACT_APP_API_URL ||
+    (window.location.hostname === "localhost"
+      ? "http://127.0.0.1:8000"
+      : "https://dfbd-110-54-166-204.ngrok-free.app");
     const requestHeaders = {
         'ngrok-skip-browser-warning': 'true',
         'Accept': 'application/json',
@@ -320,7 +322,7 @@ const Dashboard = ({ isModal = false }) => {
                     </div>
                     <div className={Styles.PerformanceOverview}>
                         <h2>Performance Overview</h2>
-                        <p>{progress === 0 && !error ? 'No modules available or no post-tests completed yet.' : `Your progress: ${progress}%`}</p>
+                        <p>{progress === 0 && !error ? 'Please wait while your study progress is being updated.' : `Your progress: ${progress}%`}</p>
                         <div className={Styles.ProgressContainer}>
                             <Doughnut
                                 data={progressChartData}
@@ -370,7 +372,7 @@ const Dashboard = ({ isModal = false }) => {
                                         </div>
                                     ))
                                 ) : (
-                                    <p>No recommended study habits found.</p>
+                                    <p>Please wait a moment while we identify your Top 3 Study Habits</p>
                                 )}
                             </div>
                         </section>
@@ -388,7 +390,7 @@ const Dashboard = ({ isModal = false }) => {
                                     }}
                                 />
                             ) : (
-                                <p>No pre-test scores available.</p>
+                                <p>Analyzing your pre-test results—please wait while we calculate your performance.</p>
                             )}
                             <h3 className="mt-6">Post-Test Performance</h3>
                             {postTestChartData.labels.length > 0 ? (
@@ -403,7 +405,7 @@ const Dashboard = ({ isModal = false }) => {
                                     }}
                                 />
                             ) : (
-                                <p>No post-test scores available.</p>
+                                <p>Processing your post-test scores—please wait as we generate your performance summary.</p>
                             )}
                         </section>
                     </div>

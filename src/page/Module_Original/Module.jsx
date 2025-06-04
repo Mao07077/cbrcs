@@ -5,19 +5,20 @@ import Header from '../../Components/composables/Header';
 import Student_Sidebar from '../../Components/Student_Sidebar';
 import Footer from '../../Components/composables/FooterM';
 
-const ModuleDashboard1 = () => {
+const ModuleDashboard = () => {
   const [modules, setModules] = useState([]);
   const [error, setError] = useState(null);
   const [userProgram, setUserProgram] = useState(null);
   const [moduleStatuses, setModuleStatuses] = useState({});
   const navigate = useNavigate();
 
-  const API_URL =
-    localStorage.getItem('REACT_APP_API_URL') ||
-    process.env.REACT_APP_API_URL ||
-    (window.location.hostname === "localhost"
-      ? "http://127.0.0.1:8000"
-      : "https://dfbd-110-54-166-204.ngrok-free.app");
+  const API_URL = process.env.REACT_APP_API_URL || 
+
+  localStorage.getItem('REACT_APP_API_URL') ||
+  process.env.REACT_APP_API_URL ||
+  (window.location.hostname === "localhost"
+    ? "http://127.0.0.1:8000"
+    : "https://dfbd-110-54-166-204.ngrok-free.app");
   // Common headers for all fetch requests
   const requestHeaders = {
     'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
@@ -160,4 +161,4 @@ const ModuleDashboard1 = () => {
   );
 };
 
-export default ModuleDashboard1;
+export default ModuleDashboard;

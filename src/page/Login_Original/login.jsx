@@ -4,14 +4,12 @@ import './login.css';
 import Icon from '../../icon/actual.png';
 import cbrcimage from '../../icon/carlbalita.jpg';
 
-const API_URL =
-    localStorage.getItem('REACT_APP_API_URL') ||
-    process.env.REACT_APP_API_URL ||
-    (window.location.hostname === "localhost"
-        ? "http://127.0.0.1:8000"
-        : "https://dfbd-110-54-166-204.ngrok-free.app");
+const API_URL = process.env.REACT_APP_API_URL || 
 
-function Login1() {
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://dfbd-110-54-166-204.ngrok-free.app");
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://c3a1-2405-8d40-448f-2d57-c4b-6820-175b-382a.ngrok-free.app ");
+
+function Login() {
     const [idNumber, setIdNumber] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -19,7 +17,7 @@ function Login1() {
 
     // Common headers for axios requests
     const requestHeaders = {
-        'ngrok-skip-browser-warning': 'true',
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
         'Accept': 'application/json',
         'Content-Type': 'application/json',
     };
@@ -30,7 +28,7 @@ function Login1() {
         setIsLoading(true);
         try {
             const response = await axios.post(`${API_URL}/api/login`, { idNumber, password }, {
-                headers: requestHeaders,
+                headers: requestHeaders, // Add headers here
             });
             if (response.data.success) {
                 localStorage.setItem('userIdNumber', response.data.id_number);
@@ -47,8 +45,18 @@ function Login1() {
                     console.warn('No token received from backend');
                 }
 
-                // Redirect to /module for all users after successful login
-                window.location.href = '/module';
+                const role = response.data.role;
+                const surveyTaken = response.data.surveyCompleted;
+
+                if (role === 'student') {
+                    window.location.href = surveyTaken ? '/module' : '/survey';
+                } else if (role === 'admin') {
+                    window.location.href = '/admin_dashboard';
+                } else if (role === 'instructor') {
+                    window.location.href = '/instructor_dashboard';
+                } else {
+                    setError('Unknown role');
+                }
             } else {
                 setError(response.data.message || 'Invalid ID number or password');
             }
@@ -110,4 +118,4 @@ function Login1() {
     );
 }
 
-export default Login1;
+export default Login;

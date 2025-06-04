@@ -137,7 +137,7 @@ const FlashcardsLandingPage = () => {
                                 </div>
                             ))
                         ) : (
-                            <p>No modules available</p>
+                            <p>Please wait for the modules.</p>
                         )}
                     </div>
                 </div>

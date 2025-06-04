@@ -279,7 +279,7 @@ function DashboardModal({ student, onClose }) {
                                             </div>
                                         ))
                                     ) : (
-                                        <p>No recommended study habits found.</p>
+                                        <p>Please wait a moment while we identify your Top 3 Study Habits</p>
                                     )}
                                 </div>
                             </section>
@@ -297,7 +297,7 @@ function DashboardModal({ student, onClose }) {
                                         }}
                                     />
                                 ) : (
-                                    <p>No pre-test scores available.</p>
+                                    <p>Analyzing your pre-test results—please wait while we calculate your performance.</p>
                                 )}
                                 <h3 className={Styles.ChartTitle}>Post-Test Performance</h3>
                                 {postTestChartData.labels.length > 0 ? (
@@ -312,7 +312,7 @@ function DashboardModal({ student, onClose }) {
                                         }}
                                     />
                                 ) : (
-                                    <p>No post-test scores available.</p>
+                                    <p>Processing your post-test scores—please wait as we generate your performance summary.</p>
                                 )}
                             </section>
                         </div>
