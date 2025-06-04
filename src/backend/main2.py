@@ -654,3 +654,22 @@ def send_message(message: dict):
         raise HTTPException(status_code=400, detail="Missing fields")
     chat_messages.append(message)
     return {"success": True}
+
+@app.get("/api/accounts")
+def get_all_accounts():
+    # Return all users with their role, id_number, firstname, lastname, and program
+    accounts = list(users_collection.find({}, {
+        "_id": 0,  # Exclude MongoDB's internal _id
+        "role": 1,
+        "id_number": 1,
+        "firstname": 1,
+        "lastname": 1,
+        "program": 1,
+        "email": 1,
+    }))
+    return {"accounts": accounts}
+
+@app.get("/api/attendance")
+def get_attendance():
+    # Dummy data for now
+    return []

@@ -91,7 +91,7 @@ const AdminDashboard = () => {
               <ul>
                 {students.length > 0 ? (
                   students.map(student => (
-                    <li key={student.id}>
+                    <li key={student.studentNo}>
                       {student.name} ({student.studentNo}) - {student.program}
                     </li>
                   ))
