@@ -467,3 +467,8 @@ async def request_settings_change(id_number: str, data: dict = Body(...)):
         "created_at": datetime.utcnow()
     })
     return {"success": True, "message": "Request sent to admin."}
+
+@app.post("/api/generate-flashcards/{module_id}")
+def generate_flashcards(module_id: str):
+    # TODO: Implement actual flashcard generation logic
+    return {"success": True, "flashcards": []}
