@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -11,6 +11,7 @@ from bson import ObjectId
 from datetime import datetime
 import ollama
 import logging
+
 
 # Load environment variables from .env
 load_dotenv()
@@ -374,3 +375,25 @@ async def paraphrase(request: ParaphraseRequest):
     except Exception as e:
         logging.error(f"Paraphrase error: {e}")
         raise HTTPException(status_code=500, detail="Failed to paraphrase input")
+    
+@app.get("/get_notes/{id_number}")
+def get_notes(id_number: str):
+    user = users_collection.find_one({"id_number": id_number})
+    if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+    notes = user.get("notes", [])
+    return {"notes": notes} 
+
+
+@app.post("/save_note")
+def save_note(
+    id_number: str = Body(...),
+    note: dict = Body(...)
+):
+    user = users_collection.find_one({"id_number": id_number})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    notes = user.get("notes", [])
+    notes.insert(0, note)  # Add new note at the beginning
+    users_collection.update_one({"id_number": id_number}, {"$set": {"notes": notes}})
+    return {"success": True, "message": "Note saved successfully!"}
