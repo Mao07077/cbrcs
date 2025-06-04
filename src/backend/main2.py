@@ -1,5 +1,5 @@
 from fastapi import (
-    FastAPI, HTTPException, Query, Body, WebSocket, WebSocketDisconnect, UploadFile, File, Form, status
+    FastAPI, HTTPException, Query, Body, WebSocket, WebSocketDisconnect, UploadFile, File, Form, status, BackgroundTasks
 )
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -590,3 +590,25 @@ def signup(data: SignupRequest):
     
         users_collection.insert_one(user_doc)
         return {"success": True, "message": "Signup successful!"}
+
+@app.post("/api/forgot_password")
+def forgot_password(data: dict, background_tasks: BackgroundTasks):
+    id_number = data.get("id_number")
+    email = data.get("email")
+    user = users_collection.find_one({"id_number": id_number, "email": email})
+    if not user:
+        return {"success": False, "message": "No user found with that ID number and email."}
+
+    # Generate a simple reset code (for demo, use a better method in production)
+    import random
+    reset_code = str(random.randint(100000, 999999))
+    users_collection.update_one(
+        {"id_number": id_number},
+        {"$set": {"reset_code": reset_code, "reset_code_created": datetime.utcnow()}}
+    )
+
+    # TODO: Send the reset code to the user's email.
+    # For now, just print it (replace with real email sending in production)
+    print(f"Password reset code for {email}: {reset_code}")
+
+    return {"success": True, "message": "Reset code sent to your email."}
