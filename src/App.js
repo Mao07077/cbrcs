@@ -9,6 +9,7 @@ import Module from './page/Module/Module';
 import Profile from './page/Profile/Profile';
 import Settings from './page/Settings/Settings';
 import Login from './page/Login/login';
+import Login1 from './page/Login1/login1';
 import ModuleInside from './page/Module_Inside/ModuleInside';
 import PostTest from './page/PostTest/posttest';
 import ResetPassword from './page/Reset_Password/reset_password';
@@ -55,6 +56,7 @@ function App() {
           <Route path="/modulesh" element={<ModuleSH />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/login1" element={<Login1 />} />
           <Route path="/module/:id" element={<ModuleInside />} />
           <Route path="/post-test/:moduleId" element={<PostTest />} />
           <Route path= "/createmodule" element={<CreateModule />} />
