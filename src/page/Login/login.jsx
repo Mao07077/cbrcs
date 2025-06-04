@@ -41,14 +41,21 @@ function Login1() {
                 localStorage.setItem('hoursActivity', response.data.hoursActivity || '0');
                 localStorage.setItem('surveyCompleted', response.data.surveyCompleted || 'false');
 
-                if (response.data.token) {
-                    localStorage.setItem('token', response.data.token);
-                } else {
-                    console.warn('No token received from backend');
-                }
+                // Removed token check and warning
 
-                // Redirect to /module for all users after successful login
-                window.location.href = '/module';
+                // Role-based redirection
+                const role = (response.data.role || '').toLowerCase();
+                const surveyTaken = response.data.surveyCompleted;
+                
+                if (role === 'student') {
+                    window.location.href = surveyTaken ? '/module' : '/survey';
+                } else if (role === 'admin') {
+                    window.location.href = '/admin_dashboard';
+                } else if (role === 'instructor') {
+                    window.location.href = '/instructor_dashboard';
+                } else {
+                    setError('Unknown role');
+                }
             } else {
                 setError(response.data.message || 'Invalid ID number or password');
             }

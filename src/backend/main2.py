@@ -612,3 +612,10 @@ def forgot_password(data: dict, background_tasks: BackgroundTasks):
     print(f"Password reset code for {email}: {reset_code}")
 
     return {"success": True, "message": "Reset code sent to your email."}
+
+@app.get("/students")
+def get_students():
+    students = list(users_collection.find({"role": {"$regex": "^student$", "$options": "i"}}))
+    for student in students:
+        student["_id"] = str(student["_id"])
+    return students
