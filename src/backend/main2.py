@@ -1,5 +1,5 @@
 from fastapi import (
-    FastAPI, HTTPException, Query, Body, WebSocket, WebSocketDisconnect, UploadFile, File, Form
+    FastAPI, HTTPException, Query, Body, WebSocket, WebSocketDisconnect, UploadFile, File, Form, status
 )
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -554,3 +554,39 @@ async def generate_flashcards(module_id: str):
     except Exception as e:
         logging.error(f"Error generating flashcards for module {module_id}: {e}")
         raise HTTPException(status_code=500, detail=f"Error generating flashcards: {str(e)}")
+    
+    
+class SignupRequest(BaseModel):
+        firstname: str
+        middlename: str = ""
+        lastname: str
+        suffix: str = ""
+        birthdate: str
+        gender: str
+        email: str
+        password: str
+        program: str = ""
+        id_number: str
+        role: str
+    
+@app.post("/api/signup")
+def signup(data: SignupRequest):
+        # Check if user already exists
+        if users_collection.find_one({"id_number": data.id_number}):
+            return {"success": False, "message": "ID number already registered."}
+        if users_collection.find_one({"email": data.email}):
+            return {"success": False, "message": "Email already registered."}
+    
+        hashed_pw = bcrypt.hashpw(data.password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        user_doc = data.dict()
+        user_doc["password"] = hashed_pw
+        del user_doc["password"]  # Remove plain password
+        user_doc["password"] = hashed_pw  # Store hashed password
+    
+        # Default values
+        user_doc["hoursActivity"] = 0
+        user_doc["surveyCompleted"] = False
+        user_doc["notes"] = []
+    
+        users_collection.insert_one(user_doc)
+        return {"success": True, "message": "Signup successful!"}
