@@ -6,7 +6,11 @@ import Footer from '../../Components/composables/FooterAdmin';
 import Header from '../../Components/composables/Header';
 
 const API_URL = process.env.REACT_APP_API_URL || 
+<<<<<<< HEAD
     (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://dfbd-110-54-166-204.ngrok-free.app");
+=======
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://c3a1-2405-8d40-448f-2d57-c4b-6820-175b-382a.ngrok-free.app ");
+>>>>>>> 7f7275bb7d6da1ff74d3aeb13cd33bbea9a68491
 
 function Accounts() {
     const [searchQuery, setSearchQuery] = useState('');

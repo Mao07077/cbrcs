@@ -38,6 +38,7 @@ import Chat from './page/Study_habits/Instructor_chat/chat';
 import SendReport from './page/SendReport/SendReport';
 import PreTest from './page/PreTest/pretest';
 import StudentReport from './Admin_Page/StudentReport/StudentReport';
+import Login1 from './page/login1.jsx/login1';
 
 
 
@@ -87,6 +88,7 @@ function App() {
             <Route path="/SendReport" element={<SendReport />} />
             <Route path="/pre-test/:moduleId" element={<PreTest />} />
             <Route path="/StudentReport" element={<StudentReport />} />
+            <Route path="/login1" element={<Login1/>} />
           </Routes>
         
       </BrowserRouter>
