@@ -619,3 +619,32 @@ def get_students():
     for student in students:
         student["_id"] = str(student["_id"])
     return students
+
+@app.get("/instructor-chats/{instructor_name}")
+def get_instructor_chats(instructor_name: str):
+    students = list(users_collection.find({"role": {"$regex": "^student$", "$options": "i"}}))
+    student_ids = [
+        f"{student.get('firstname', '')} {student.get('lastname', '')}".strip().lower()
+        for student in students
+    ]
+    return {"student_ids": student_ids}
+
+chat_messages = []
+
+@app.get("/messages/{sender}/{receiver}")
+def get_messages(sender: str, receiver: str):
+    # Return all messages between sender and receiver
+    filtered = [
+        msg for msg in chat_messages
+        if (msg["sender"] == sender and msg["receiver"] == receiver) or
+           (msg["sender"] == receiver and msg["receiver"] == sender)
+    ]
+    return filtered
+
+@app.post("/send-message")
+def send_message(message: dict):
+    # message: { sender, receiver, text }
+    if not all(k in message for k in ("sender", "receiver", "text")):
+        raise HTTPException(status_code=400, detail="Missing fields")
+    chat_messages.append(message)
+    return {"success": True}
