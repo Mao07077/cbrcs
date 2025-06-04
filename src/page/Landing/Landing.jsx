@@ -6,7 +6,7 @@ import image from '../../icon/carlbalita.jpg';
 
 const API_URL = process.env.REACT_APP_API_URL || 
 
-    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://dfbd-110-54-166-204.ngrok-free.app");
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://ea13-110-54-166-204.ngrok-free.app ");
     (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://c3a1-2405-8d40-448f-2d57-c4b-6820-175b-382a.ngrok-free.app ");
 
 const Landing = () => {

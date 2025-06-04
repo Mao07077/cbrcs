@@ -36,7 +36,7 @@ const PreTest = () => {
     process.env.REACT_APP_API_URL ||
     (window.location.hostname === "localhost"
       ? "http://127.0.0.1:8000"
-      : "https://dfbd-110-54-166-204.ngrok-free.app");
+      : "https://ea13-110-54-166-204.ngrok-free.app ");
     // Common headers for axios requests
     const requestHeaders = {
         'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page

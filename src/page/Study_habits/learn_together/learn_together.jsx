@@ -42,7 +42,7 @@ const WebRTCComponent = () => {
     process.env.REACT_APP_API_URL ||
     (window.location.hostname === "localhost"
       ? "http://127.0.0.1:8000"
-      : "https://dfbd-110-54-166-204.ngrok-free.app");
+      : "https://ea13-110-54-166-204.ngrok-free.app ");
     // Fetch user from localStorage on mount
     useEffect(() => {
         const userIdNumber = localStorage.getItem('userIdNumber');
