@@ -616,9 +616,15 @@ def forgot_password(data: dict, background_tasks: BackgroundTasks):
 @app.get("/students")
 def get_students():
     students = list(users_collection.find({"role": {"$regex": "^student$", "$options": "i"}}))
+    mapped_students = []
     for student in students:
-        student["_id"] = str(student["_id"])
-    return students
+        mapped_students.append({
+            "studentNo": student.get("id_number", ""),
+            "name": f"{student.get('firstname', '')} {student.get('lastname', '')}".strip(),
+            "profile": student.get("profile", ""),  # or provide a default image URL if needed
+            "program": student.get("program", ""),
+        })
+    return mapped_students
 
 @app.get("/instructor-chats/{instructor_name}")
 def get_instructor_chats(instructor_name: str):
