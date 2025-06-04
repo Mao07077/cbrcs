@@ -6,6 +6,7 @@ import Header from './Components/Header';
 import HelpPage from './page/Help/help';
 import ModuleSH from './page/Module/ModuleSH';
 import Module from './page/Module/Module';
+import Module1 from './page/Module1/Module1';
 import Profile from './page/Profile/Profile';
 import Settings from './page/Settings/Settings';
 import Login from './page/Login/login';
@@ -58,6 +59,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/login1" element={<Login1 />} />
           <Route path="/module/:id" element={<ModuleInside />} />
+          <Route path="/module1" element={<Module1 />} />
           <Route path="/post-test/:moduleId" element={<PostTest />} />
           <Route path= "/createmodule" element={<CreateModule />} />
           <Route path="/Settings" element={<Settings />} />

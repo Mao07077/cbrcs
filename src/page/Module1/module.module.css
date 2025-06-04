@@ -1,0 +1,312 @@
+* {
+	margin: 0;
+	padding: 0;
+	font-family: Arial, Helvetica, sans-serif;
+}
+body {
+	font-family: Consolas, sans-serif;
+	box-sizing: border-box;
+}
+.MainContainer {
+	display: flex;
+	flex-direction: column;
+	height: auto;
+	width: 100vw;
+}
+.Content_Wrapper {
+	flex: 1;
+	display: flex;
+}
+
+.Header {
+	grid-area: Header;
+	background-color: #002f87;
+	display: flex;
+}
+.Greeting_Dashboard {
+	display: flex;
+	justify-content: flex-start;
+	padding: 15px;
+	border-bottom: 4px solid #333;
+}
+
+.Content {
+	width: 100%;
+	padding: 10px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	font-size: 25px;
+	font-style: initial;
+	margin: 10px 10px;
+	margin-left: 10px;
+	font-size: 1.2em;
+}
+
+.Module_Container {
+	background: white;
+	padding: 40px;
+	border-radius: 15px;
+	box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.1);
+	text-align: center;
+	width: 96%;
+	max-width: 1550px;
+	min-height: 85vh;
+	margin-left: 10px;
+}
+
+.Module_Container h1 {
+	border-top: 1px solid #333;
+	border-bottom: 1px solid #333;
+	padding: 15px 0;
+	width: 100%;
+	text-align: left;
+	font-size: 30px;
+	font-weight: bold;
+	margin-bottom: 25px;
+}
+
+.Module_Grid {
+	display: flex;
+	justify-content: center;
+	gap: 40px;
+	flex-wrap: wrap;
+}
+
+.ModuleCard {
+	background: white;
+	padding: 25px;
+	border-radius: 10px;
+	box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.1);
+	text-align: center;
+	width: 340px;
+}
+
+.ModuleImage {
+	width: 200px;
+	height: 140px;
+	background: #f0f0f0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 15px auto;
+}
+.ModuleImage img {
+	max-width: 100%;
+	max-height: 100%;
+    object-fit: contain;
+}
+.ModuleCard p {
+	font-size: 10px;
+	font-weight: bold;
+	color: #333;
+	margin-bottom: 10px;
+	margin-top: 10px;
+
+}
+.ModuleProceedBtn {
+	background-color: #002ead;
+	color: white;
+	padding: 12px 24px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 12px;
+	margin-left: 100px;
+	text-align: center; /* Center the text */
+	display: flex; /* Ensure proper alignment */
+	align-items: center; /* Vertically center the text */
+	justify-content: center; /* Horizontally center the text */
+	margin: 0 auto; /* Center the button itself */
+}
+@media (max-width: 375px) {
+	.ModuleProceedBtn {
+		padding: 10px 20px; /* Adjust padding for smaller button */
+		font-size: 10px; /* Reduce font size */
+		width: auto; /* Ensure button width adjusts to content */
+		margin-top: 10px; /* Add spacing above the button */
+		}
+}
+@media (max-width: 590px) {
+	.Menu ul {
+		display: flex;
+		flex-direction: row;
+		height: 5px;
+		justify-content: center;
+		padding-bottom: 50px;
+		margin-top: 8px;
+	}
+	.Menu ul li {
+		display: flex;
+		flex-direction: row;
+		height: 5px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	.Menu img {
+		margin: 0 auto;
+		width: 20px;
+		height: 20px;
+	}
+	.Menu span {
+		font-size: 10px;
+	}
+
+	.HabitCard {
+		font-size: 12px;
+	}
+	.ModuleDashboard {
+		
+		display: flex;
+		justify-content: center;
+	}
+	.Module_Container{
+		width: 100%;
+	}
+	.Module_Container h1 {
+		text-align: center;
+		font-size: 1em;
+	}
+	.ModuleCard {
+		width: 100%;
+		font-size: 14px;
+	}
+	.ModuleCard h3{
+		font-size: 0.7em;
+	}
+	.ModuleImage{
+		width: 100%;
+		
+	}
+	
+
+	.ModuleCard {
+		width: 90%; /* Reduce card width for better fit */
+		padding: 15px; /* Reduce padding */
+		font-size: 14px; /* Adjust font size for compact layout */
+		margin: 10px auto; /* Center the card with spacing */
+		height: auto; /* Allow height to adjust dynamically */
+		min-height: 150px; /* Set a minimum height for consistency */
+	}
+
+	.ModuleImage {
+		width: 100px; /* Reduce image width */
+		height: 80px; /* Reduce image height */
+		margin: 10px auto; /* Add spacing around the image */
+		display: none; /* Hide the image in mobile view */
+	}
+
+	.ModuleProceedBtn {
+		padding: 10px 20px; /* Adjust padding for smaller button */
+		font-size: 8px; /* Reduce font size */
+		width: auto; /* Ensure button width adjusts to content */
+		margin-top: 10px; /* Add spacing above the button */
+		}
+	}
+
+	.ModuleCard h1 {
+		font-size: 12px; /* Reduce font size for long titles */
+		word-wrap: break-word; /* Wrap long titles */
+	}
+	.Content {
+		width: 100%;
+		padding: 10px;
+		align-items: center;
+		display: flex;
+		font-size: 25px;
+		font-style: initial;
+		margin: 10px 10px;
+		font-size: 1.2em;
+	}
+
+@media (max-width: 1000px) {
+	.Menu ul {
+		display: flex;
+		flex-direction: row;
+		height: 5px;
+		justify-content: center;
+		padding-bottom: 50px;
+		margin-top: 10px;
+	}
+	.Menu ul li {
+		display: flex;
+		flex-direction: row;
+		height: 5px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	.Menu img {
+		margin: 0 auto;
+		width: 20px;
+		height: 20px;
+	}
+	.Menu span {
+		font-size: 10px;
+	}
+
+	.HabitCard {
+		font-size: 12px;
+	}
+	.ModuleDashboard {
+		margin-left: -30px;
+		padding: 20px;
+		margin-top: 10px;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+	}
+	.Module_Container{
+		width: 100%;
+	}
+	.Module_Container h1 {
+		text-align: center;
+	}
+	.ModuleCard {
+		width: 100%;
+		font-size: 14px;
+	}
+	.ModuleImage{
+		width: 100%;
+		display: none; /* Hide the image in mobile view */
+	}
+	
+	.ModuleCard {
+		width: 90%; /* Reduce card width for better fit */
+		padding: 15px; /* Reduce padding */
+		font-size: 14px; /* Adjust font size for compact layout */
+		margin: 10px auto; /* Center the card with spacing */
+		height: auto; /* Allow height to adjust dynamically */
+		min-height: 150px; /* Set a minimum height for consistency */
+	}
+
+	.ModuleImage {
+		width: 100px; /* Reduce image width */
+		height: 80px; /* Reduce image height */
+		margin: 10px auto; /* Add spacing around the image */
+	}
+
+	.ModuleProceedBtn {
+		padding: 10px 20px; /* Adjust padding for smaller button */
+		font-size: 10px; /* Reduce font size */
+		width: auto; /* Ensure button width adjusts to content */
+		margin-top: 10px; /* Add spacing above the button */
+	}
+
+	.ModuleCard h1 {
+		font-size: 12px; /* Reduce font size for long titles */
+		word-wrap: break-word; /* Wrap long titles */
+	}
+}
+
+
+  
+  .ModuleCard.completed {
+	background-color: #e0ffe0;
+	border: 2px solid #5d0fa7f8;
+  }
+  
+  .ModuleProceedBtn:disabled {
+	background-color: #cccccc;
+	cursor: not-allowed;
+  }
