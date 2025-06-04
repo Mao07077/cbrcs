@@ -85,7 +85,6 @@ function App() {
             <Route path="/SendReport" element={<SendReport />} />
             <Route path="/pre-test/:moduleId" element={<PreTest />} />
             <Route path="/StudentReport" element={<StudentReport />} />
-            <Route path="/login1" element={<Login1/>} />
           </Routes>
         
       </BrowserRouter>
