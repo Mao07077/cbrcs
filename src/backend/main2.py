@@ -431,7 +431,7 @@ async def websocket_endpoint(websocket: WebSocket, call_id: str):
             await websocket.send_text(json.dumps(response))
     except WebSocketDisconnect:
         print(f"WebSocket disconnected: {call_id}")
-        
+
 @app.post("/api/reports")
 async def submit_report(
     id_number: str = Form(...),
@@ -456,3 +456,13 @@ async def submit_report(
 
     db["reports"].insert_one(report)
     return {"message": "Report submitted successfully!"}
+
+@app.post("/user/settings/request/{id_number}")
+async def request_settings_change(id_number: str, data: dict = Body(...)):
+    # You can save the request to a collection for admin review
+    db["settings_requests"].insert_one({
+        "id_number": id_number,
+        "requested_changes": data,
+        "created_at": datetime.utcnow()
+    })
+    return {"success": True, "message": "Request sent to admin."}
