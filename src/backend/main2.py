@@ -1,8 +1,9 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from pymongo import MongoClient
 from dotenv import load_dotenv
+from typing import Optional
 import os
 import bcrypt
 
@@ -34,6 +35,13 @@ class LoginRequest(BaseModel):
     idNumber: str
     password: str
 
+class ProfileData(BaseModel):
+    firstname: str
+    lastname: str
+    id_number: str
+    program: str
+    hoursActivity: int = 0
+
 def verify_password(password: str, hashed: str) -> bool:
     return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
 
@@ -56,6 +64,30 @@ def login(data: LoginRequest):
             "surveyCompleted": user.get("surveyCompleted", False)
         }
     raise HTTPException(status_code=401, detail="Invalid credentials")
+
+@app.get("/api/profile/{id_number}", response_model=ProfileData)
+def get_profile(id_number: str):
+    user = users_collection.find_one({"id_number": id_number})
+    if user:
+        return {
+            "firstname": user.get("firstname", ""),
+            "lastname": user.get("lastname", ""),
+            "id_number": user.get("id_number", ""),
+            "program": user.get("program", ""),
+            "hoursActivity": user.get("hoursActivity", 0)
+        }
+    raise HTTPException(status_code=404, detail="User not found")
+
+@app.get("/api/modules")
+def get_modules(program: Optional[str] = Query(None)):
+    query = {}
+    if program and program != "All Programs":
+        query["program"] = program
+    modules = list(db["modules"].find(query))
+    # Convert ObjectId to string for frontend compatibility
+    for module in modules:
+        module["_id"] = str(module["_id"])
+    return modules
 
 @app.get("/dashboard")
 def dashboard(idNumber: str):
