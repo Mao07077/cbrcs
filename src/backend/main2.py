@@ -11,6 +11,8 @@ from bson import ObjectId
 from datetime import datetime
 import ollama
 import logging
+from fastapi import WebSocket, WebSocketDisconnect
+import json
 
 
 # Load environment variables from .env
@@ -411,3 +413,18 @@ def get_instructors():
         }
         for instructor in instructors
     ]
+
+@app.websocket("/ws/{call_id}")
+async def websocket_endpoint(websocket: WebSocket, call_id: str):
+    await websocket.accept()
+    try:
+        while True:
+            data = await websocket.receive_text()
+            # Instead of sending plain text, send JSON
+            response = {
+                "type": "echo",
+                "message": data
+            }
+            await websocket.send_text(json.dumps(response))
+    except WebSocketDisconnect:
+        print(f"WebSocket disconnected: {call_id}")
