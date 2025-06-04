@@ -1,18 +1,21 @@
-from fastapi import FastAPI, HTTPException, Query, Body
+from fastapi import (
+    FastAPI, HTTPException, Query, Body, WebSocket, WebSocketDisconnect, UploadFile, File, Form
+)
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+
 from pydantic import BaseModel
 from pymongo import MongoClient
 from dotenv import load_dotenv
+
 from typing import Optional, List, Dict
-import os
-import bcrypt
 from bson import ObjectId
 from datetime import datetime
+import bcrypt
 import ollama
 import logging
-from fastapi import WebSocket, WebSocketDisconnect
 import json
+import os
 
 
 # Load environment variables from .env
@@ -428,3 +431,28 @@ async def websocket_endpoint(websocket: WebSocket, call_id: str):
             await websocket.send_text(json.dumps(response))
     except WebSocketDisconnect:
         print(f"WebSocket disconnected: {call_id}")
+        
+@app.post("/api/reports")
+async def submit_report(
+    id_number: str = Form(...),
+    title: str = Form(...),
+    content: str = Form(...),
+    screenshot: UploadFile = File(None)
+):
+    # Save the report to the database or handle as needed
+    # Example: save to a "reports" collection
+    report = {
+        "id_number": id_number,
+        "title": title,
+        "content": content,
+        "created_at": datetime.utcnow()
+    }
+    if screenshot:
+        # Save the file or its path as needed
+        report["screenshot_filename"] = screenshot.filename
+        # You can save the file to disk if you want:
+        # with open(f"uploads/{screenshot.filename}", "wb") as f:
+        #     f.write(await screenshot.read())
+
+    db["reports"].insert_one(report)
+    return {"message": "Report submitted successfully!"}
