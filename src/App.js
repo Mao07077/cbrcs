@@ -38,7 +38,6 @@ import Chat from './page/Study_habits/Instructor_chat/chat';
 import SendReport from './page/SendReport/SendReport';
 import PreTest from './page/PreTest/pretest';
 import StudentReport from './Admin_Page/StudentReport/StudentReport';
-import Login1 from './page/login1.jsx/login1';
 
 
 
