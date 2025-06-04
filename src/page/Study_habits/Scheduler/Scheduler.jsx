@@ -32,7 +32,7 @@ const ScheduleTable = () => {
         process.env.REACT_APP_API_URL ||
         (window.location.hostname === 'localhost'
             ? 'http://127.0.0.1:8000'
-            : 'https://542b-2405-8d40-4c5a-d127-298f-8677-1072-7782.ngrok-free.app');
+            : 'https://dfbd-110-54-166-204.ngrok-free.app');
 
     useEffect(() => {
         const userId = localStorage.getItem('userIdNumber');
