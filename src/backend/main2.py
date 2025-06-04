@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from pymongo import MongoClient
 from dotenv import load_dotenv
@@ -7,6 +8,7 @@ from typing import Optional, List, Dict
 import os
 import bcrypt
 from bson import ObjectId
+from datetime import datetime
 
 # Load environment variables from .env
 load_dotenv()
@@ -27,6 +29,13 @@ post_test_collection = db["post_tests"]
 scores_collection = db["scores"]
 
 app = FastAPI()
+
+# Mount static files for uploads
+app.mount(
+    "/uploads",
+    StaticFiles(directory=os.path.abspath("../uploads")),
+    name="uploads"
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -198,3 +207,111 @@ async def get_user_settings(id_number: str):
             "username": user.get("username", ""),
         },
     }
+
+# ------------------- PRE-TEST ENDPOINTS -------------------
+
+class QuestionWithAnswers(BaseModel):
+    question: str
+    options: List[str]
+    correctAnswer: str
+    wrongAnswers: List[str] = []
+
+class PreTestResponse(BaseModel):
+    pre_test_id: str
+    module_id: str
+    title: str
+    questions: List[QuestionWithAnswers]
+
+class PostTestSubmission(BaseModel):
+    answers: Dict[str, str]
+    user_id: str
+    time_spent: int  # seconds
+
+@app.get("/api/pre-test/{module_id}", response_model=PreTestResponse)
+def get_pre_test(module_id: str):
+    pre_test = pre_test_collection.find_one({"module_id": module_id})
+    if not pre_test:
+        raise HTTPException(status_code=404, detail="Pre-test not found")
+    questions_with_answers = []
+    for question in pre_test['questions']:
+        wrong_answers = [opt for opt in question['options'] if opt != question['correctAnswer']]
+        questions_with_answers.append(QuestionWithAnswers(
+            question=question['question'],
+            options=question['options'],
+            correctAnswer=question['correctAnswer'],
+            wrongAnswers=wrong_answers
+        ))
+    return PreTestResponse(
+        pre_test_id=str(pre_test['_id']),
+        module_id=pre_test['module_id'],
+        title=pre_test['title'],
+        questions=questions_with_answers
+    )
+
+@app.post("/api/pre-test/submit/{module_id}")
+def submit_pre_test(module_id: str, submission: PostTestSubmission):
+    pre_test = pre_test_collection.find_one({"module_id": module_id})
+    if not pre_test:
+        raise HTTPException(status_code=404, detail="Pre-test not found for this module")
+    correct_answers = {str(index): question["correctAnswer"] for index, question in enumerate(pre_test["questions"])}
+    correct_count = 0
+    incorrect_count = 0
+    for question, user_answer in submission.answers.items():
+        correct_answer = correct_answers.get(question)
+        if correct_answer and user_answer == correct_answer:
+            correct_count += 1
+        elif user_answer:
+            incorrect_count += 1
+    score_data = {
+        "module_id": module_id,
+        "user_id": submission.user_id,
+        "correct": correct_count,
+        "incorrect": incorrect_count,
+        "total_questions": len(pre_test["questions"]),
+        "user_answers": submission.answers,
+        "test_type": "pretest",
+        "time_spent": submission.time_spent,
+        "submitted_at": datetime.utcnow()
+    }
+    scores_collection.insert_one(score_data)
+    return {
+        "success": True,
+        "message": "Pre-test submitted successfully!",
+        "correct": correct_count,
+        "incorrect": incorrect_count,
+        "total_questions": len(pre_test["questions"])
+    }
+
+@app.get("/api/module-status/{module_id}/{user_id}")
+def get_module_status(module_id: str, user_id: str):
+    # Check if pre-test is completed
+    pre_test_score = scores_collection.find_one({
+        "module_id": module_id,
+        "user_id": user_id,
+        "test_type": "pretest"
+    })
+    pre_test_completed = pre_test_score is not None
+
+    # Check if post-test is completed
+    post_test_score = scores_collection.find_one({
+        "module_id": module_id,
+        "user_id": user_id,
+        "test_type": "posttest"
+    })
+    post_test_completed = post_test_score is not None
+
+    return {
+        "pre_test_completed": pre_test_completed,
+        "post_test_completed": post_test_completed
+    }
+
+@app.get("/api/modules/{module_id}")
+def get_module_by_id(module_id: str):
+    try:
+        module = modules_collection.find_one({"_id": ObjectId(module_id)})
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid module ID format")
+    if not module:
+        raise HTTPException(status_code=404, detail="Module not found")
+    module["_id"] = str(module["_id"])
+    return module
