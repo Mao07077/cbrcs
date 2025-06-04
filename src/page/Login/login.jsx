@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './login.css';
 import Icon from '../../icon/actual.png';
 import cbrcimage from '../../icon/carlbalita.jpg';
+
+const API_URL = process.env.REACT_APP_API_URL || 
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://e9b7-2405-8d40-4896-dd96-74e0-7ffa-8c67-3b26.ngrok-free.app ");
 
 function Login() {
     const [idNumber, setIdNumber] = useState('');
@@ -9,27 +13,55 @@ function Login() {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    // Common headers for axios requests
+    const requestHeaders = {
+        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setIsLoading(true);
+        try {
+            const response = await axios.post(`${API_URL}/api/login`, { idNumber, password }, {
+                headers: requestHeaders, // Add headers here
+            });
+            if (response.data.success) {
+                localStorage.setItem('userIdNumber', response.data.id_number);
+                localStorage.setItem('userRole', response.data.role);
+                localStorage.setItem('userProgram', response.data.program || 'N/A');
+                localStorage.setItem('firstname', response.data.firstname || 'Unknown');
+                localStorage.setItem('lastname', response.data.lastname || 'Unknown');
+                localStorage.setItem('hoursActivity', response.data.hoursActivity || '0');
+                localStorage.setItem('surveyCompleted', response.data.surveyCompleted || 'false');
 
-        // Hardcoded credentials
-        const hardcodedId = '111';
-        const hardcodedPassword = 'password'; // set your hardcoded password here
+                if (response.data.token) {
+                    localStorage.setItem('token', response.data.token);
+                } else {
+                    console.warn('No token received from backend');
+                }
 
-        if (idNumber === hardcodedId && password === hardcodedPassword) {
-            localStorage.setItem('userIdNumber', '111');
-            localStorage.setItem('userRole', 'student');
-            localStorage.setItem('userProgram', 'LET');
-            localStorage.setItem('firstname', 'mark');
-            localStorage.setItem('lastname', 'manuson');
-            localStorage.setItem('hoursActivity', '0');
-            localStorage.setItem('surveyCompleted', 'true');
-            setIsLoading(false);
-            window.location.href = '/module';
-        } else {
-            setError('Invalid ID number or password');
+                const role = response.data.role;
+                const surveyTaken = response.data.surveyCompleted;
+
+                if (role === 'student') {
+                    window.location.href = surveyTaken ? '/module' : '/survey';
+                } else if (role === 'admin') {
+                    window.location.href = '/admin_dashboard';
+                } else if (role === 'instructor') {
+                    window.location.href = '/instructor_dashboard';
+                } else {
+                    setError('Unknown role');
+                }
+            } else {
+                setError(response.data.message || 'Invalid ID number or password');
+            }
+        } catch (error) {
+            console.error('Login error:', error.response?.data || error.message);
+            setError(error.response?.data?.detail || 'An error occurred. Please try again.');
+        } finally {
             setIsLoading(false);
         }
     };
