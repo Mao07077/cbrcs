@@ -24,7 +24,7 @@ ChartJS.register(
 
 // Set the API_URL based on the environment
 const API_URL = process.env.REACT_APP_API_URL || 
-    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://e9b7-2405-8d40-4896-dd96-74e0-7ffa-8c67-3b26.ngrok-free.app ");
+    (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://c3a1-2405-8d40-448f-2d57-c4b-6820-175b-382a.ngrok-free.app ");
 
 function DashboardModal({ student, onClose }) {
     const [dashboardData, setDashboardData] = useState({

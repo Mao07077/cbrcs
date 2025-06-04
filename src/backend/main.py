@@ -785,27 +785,6 @@ async def login(data: LoginData):
     else:
         logging.info(f"Login failed for idNumber: {data.idNumber}")
         raise HTTPException(status_code=401, detail="Invalid credentials")
-
-@router.post("/login1")
-async def login(data: LoginData):
-    logging.info(f"Received login request for idNumber: {data.idNumber}")
-    user = collection.find_one({"id_number": data.idNumber})
-    if user and verify_password(data.password, user["password"]):
-        logging.info(f"Login successful for idNumber: {data.idNumber}")
-        return JSONResponse({
-            "success": True,
-            "message": "Login successful!",
-            "role": user.get("role", "unknown").lower(),
-            "surveyCompleted": user.get("surveyCompleted", False),
-            "firstname": user.get("firstname", ""),
-            "lastname": user.get("lastname", ""),
-            "id_number": user.get("id_number", ""),
-            "program": user.get("program", ""),
-            "hoursActivity": user.get("hoursActivity", 0)
-        })
-    else:
-        logging.info(f"Login failed for idNumber: {data.idNumber}")
-        raise HTTPException(status_code=401, detail="Invalid credentials")
 @app.post("/api/forgot_password")
 async def forgot_password(data: ForgotPasswordData):
     user = collection.find_one({"id_number": data.id_number, "email": data.email})
