@@ -172,9 +172,8 @@ const WebRTCComponent = () => {
     }, [showCallOptions, callId, user, studentId, peerConnections]);
 
     useEffect(() => {
-        if (studentId && students.length > 0) {
+        if (studentId && students.length > 0 && stream) {
             students.forEach((student) => {
-                // Only start call if my studentId is less than the other student's id
                 if (
                     student.id !== studentId &&
                     !peerConnections.has(student.id) &&
@@ -185,7 +184,7 @@ const WebRTCComponent = () => {
             });
         }
         // eslint-disable-next-line
-    }, [students, studentId]);
+    }, [students, studentId, stream]);
 
     const wsRef = useRef(null);
         useEffect(() => {
@@ -388,12 +387,6 @@ const WebRTCComponent = () => {
     const startCall = async (targetStudentId) => {
         if (!targetStudentId || peerConnections.has(targetStudentId)) return;
         try {
-            console.log(`Starting call with target: ${targetStudentId}`);
-            const pc = new RTCPeerConnection({
-                iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
-            });
-            setPeerConnections((prev) => new Map(prev).set(targetStudentId, pc));
-
             let localStream = stream;
             if (!localStream) {
                 console.log('No local stream, initializing...');
@@ -402,6 +395,17 @@ const WebRTCComponent = () => {
                     console.error('Failed to initialize stream for call');
                     return;
                 }
+            }
+
+        if (
+                student.id !== studentId &&
+                !peerConnections.has(student.id) &&
+                studentId < student.id &&
+                wsRef.current &&
+                wsRef.current.readyState === WebSocket.OPEN &&
+                stream
+            ) {
+                startCall(student.id);
             }
 
             localStream.getTracks().forEach((track) => {
