@@ -784,30 +784,78 @@ def submit_survey(data: dict = Body(...)):
     )
     return {"success": True, "message": "Survey submitted successfully!"}
 
+
 rooms = defaultdict(list)  # {call_id: [websocket, ...]}
+student_info = defaultdict(dict)  # {call_id: {websocket: {"id": ..., "name": ..., "muted": ..., "camera_off": ...}}}
 
 @app.websocket("/ws/{call_id}")
 async def websocket_endpoint(websocket: WebSocket, call_id: str):
     await websocket.accept()
     student_id = str(uuid.uuid4())
-    # Add to room
+    # Wait for the client to send their id_number and name
+    data = await websocket.receive_text()
+    try:
+        msg = json.loads(data)
+        id_number = msg.get("id_number", "")
+        name = msg.get("firstname", "Anonymous")
+    except Exception:
+        id_number = ""
+        name = "Anonymous"
+
+    # Add to room and store info
     rooms[call_id].append(websocket)
+    student_info[call_id][websocket] = {
+        "id": student_id,
+        "name": name,
+        "muted": False,
+        "camera_off": False,
+        "id_number": id_number,
+    }
+
+    async def broadcast_active_students():
+        students = [
+            {
+                "id": info["id"],
+                "name": info["name"],
+                "muted": info.get("muted", False),
+                "camera_off": info.get("camera_off", False),
+            }
+            for info in student_info[call_id].values()
+        ]
+        for ws in rooms[call_id]:
+            await ws.send_text(json.dumps({
+                "type": "active_students",
+                "students": students,
+            }))
+
     try:
         await websocket.send_text(json.dumps({
             "type": "student_id",
             "studentId": student_id,
             "callId": call_id
         }))
+        await broadcast_active_students()
         while True:
             data = await websocket.receive_text()
             try:
                 msg = json.loads(data)
             except Exception:
                 msg = {"type": "unknown", "message": data}
+
+            # Update mute/camera status if needed
+            if msg.get("type") == "status_update":
+                info = student_info[call_id][websocket]
+                info["muted"] = msg.get("muted", False)
+                info["camera_off"] = msg.get("camera_off", False)
+                await broadcast_active_students()
+                continue
+
             # Relay signaling/chat messages to other participants in the same room
             for ws in rooms[call_id]:
                 if ws != websocket:
                     await ws.send_text(json.dumps(msg))
     except WebSocketDisconnect:
         rooms[call_id].remove(websocket)
+        student_info[call_id].pop(websocket, None)
+        await broadcast_active_students()
         print(f"WebSocket disconnected: {call_id}")

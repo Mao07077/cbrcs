@@ -94,7 +94,10 @@ const WebRTCComponent = () => {
 
             socket.onopen = () => {
                 console.log('WebSocket connection established');
-                socket.send(JSON.stringify({ id_number: user.id_number }));
+                socket.send(JSON.stringify({ 
+                    id_number: user.id_number, 
+                    firstname: user.firstname // <-- add this line
+                }));
             };
 
             socket.onmessage = async (event) => {
@@ -167,6 +170,12 @@ const WebRTCComponent = () => {
             }
         };
     }, [showCallOptions, callId, user, studentId, peerConnections]);
+
+    const wsRef = useRef(null);
+        useEffect(() => {
+        wsRef.current = ws;
+    }, [ws]);
+
 
     const initializeMediaStream = async () => {
         try {
@@ -289,21 +298,28 @@ const WebRTCComponent = () => {
 
             pc.onicecandidate = (event) => {
                 if (event.candidate) {
-                    ws.send(
-                        JSON.stringify({
-                            type: 'ice-candidate',
-                            target: from,
-                            candidate: event.candidate,
-                        })
-                    );
-                    console.log('Sent ICE candidate to:', from);
+                    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+                        wsRef.current.send(
+                            JSON.stringify({
+                                type: 'answer',
+                                target: from,
+                                answer,
+                            })
+                        );
+                        console.log('Sent answer to:', from);
+                    } else {
+                        console.error('WebSocket is not open when sending answer');
+                    }
                 }
             };
-
-            pc.ontrack = (event) => {
-                console.log(`Received remote stream from ${from}:`, event.streams[0]);
-                setRemoteStreams((prev) => new Map(prev).set(from, event.streams[0]));
-            };
+            
+            // wsRef.current && wsRef.current.send(
+            //     JSON.stringify({
+            //         type: 'answer',
+            //         target: from,
+            //         answer,
+            //     })
+            // );
 
             await pc.setRemoteDescription(new RTCSessionDescription(offer));
             console.log('Set remote description:', offer);
@@ -379,14 +395,18 @@ const WebRTCComponent = () => {
 
             pc.onicecandidate = (event) => {
                 if (event.candidate) {
-                    ws.send(
-                        JSON.stringify({
-                            type: 'ice-candidate',
-                            target: targetStudentId,
-                            candidate: event.candidate,
-                        })
-                    );
-                    console.log('Sent ICE candidate to:', targetStudentId);
+                    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+                        wsRef.current.send(
+                            JSON.stringify({
+                                type: 'ice-candidate',
+                                target: targetStudentId,
+                                candidate: event.candidate,
+                            })
+                        );
+                        console.log('Sent ICE candidate to:', targetStudentId);
+                    } else {
+                        console.error('WebSocket is not open when sending ICE candidate');
+                    }
                 }
             };
 
@@ -399,13 +419,27 @@ const WebRTCComponent = () => {
             await pc.setLocalDescription(offer);
             console.log('Created and set offer:', offer);
 
-            ws.send(
-                JSON.stringify({
-                    type: 'offer',
-                    target: targetStudentId,
-                    offer,
-                })
-            );
+            // ws.send(
+            //     JSON.stringify({
+            //         type: 'offer',
+            //         target: targetStudentId,
+            //         offer,
+            //     })
+            // );
+            if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+                wsRef.current.send(
+                    JSON.stringify({
+                        type: 'offer',
+                        target: targetStudentId,
+                        offer,
+                    })
+                );
+                console.log('Sent offer to:', targetStudentId);
+            } else {
+                console.error('WebSocket is not open when sending offer');
+            }
+
+
             console.log('Sent offer to:', targetStudentId);
         } catch (error) {
             console.error('Failed to start call:', error);
@@ -437,22 +471,24 @@ const WebRTCComponent = () => {
     };
 
     const sendMessage = () => {
-        if (!ws || ws.readyState !== WebSocket.OPEN) {
+        if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
             setError('No active WebSocket connection. Please reconnect.');
             return;
         }
-        if (message.trim() === '') return;
-        ws.send(JSON.stringify({ 
+        wsRef.current.send(JSON.stringify({ 
             type: 'chat', 
             message, 
-            sender_name: user?.firstname || "User" // Use the user's firstname from state
-        }));        setMessage('');
+            sender_name: user?.firstname || "User"
+        }));       setMessage('');
     };
 
     const endCall = () => {
         console.log('Ending call');
-        if (ws && ws.readyState === WebSocket.OPEN) {
-            ws.send(JSON.stringify({ type: 'leave' }));
+        // if (ws && ws.readyState === WebSocket.OPEN) {
+        //     ws.send(JSON.stringify({ type: 'leave' }));
+        // }
+        if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+            wsRef.current.send(JSON.stringify({ type: 'leave' }));
         }
         if (stream && stream.getTracks) {
             stream.getTracks().forEach((track) => {
@@ -495,8 +531,8 @@ const WebRTCComponent = () => {
         });
         setIsMuted(!isMuted);
         console.log(`Mute state: isMuted=${!isMuted}`);
-        if (ws && ws.readyState === WebSocket.OPEN) {
-            ws.send(JSON.stringify({ type: 'status_update', muted: !isMuted, camera_off: isCameraOff }));
+        if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+            wsRef.current.send(JSON.stringify({ type: 'status_update', muted: !isMuted, camera_off: isCameraOff }));
         }
     };
 
@@ -518,8 +554,11 @@ const WebRTCComponent = () => {
         });
         setIsCameraOff(!isCameraOff);
         console.log(`Camera state: isCameraOff=${!isCameraOff}`);
-        if (ws && ws.readyState === WebSocket.OPEN) {
-            ws.send(JSON.stringify({ type: 'status_update', muted: isMuted, camera_off: !isCameraOff }));
+        // if (ws && ws.readyState === WebSocket.OPEN) {
+        //     ws.send(JSON.stringify({ type: 'status_update', muted: isMuted, camera_off: !isCameraOff }));
+        // }
+        if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+            wsRef.current.send(JSON.stringify({ type: 'status_update', muted: isMuted, camera_off: !isCameraOff }));
         }
     };
 
