@@ -15,8 +15,7 @@ const FlashcardsLandingPage = () => {
         process.env.REACT_APP_API_URL ||
         (window.location.hostname === 'localhost'
             ? 'http://127.0.0.1:8000'
-            : 'https://ea13-110-54-166-204.ngrok-free.app ');
-            // : 'https://c3a1-2405-8d40-448f-2d57-c4b-6820-175b-382a.ngrok-free.app');
+            : 'https://ea13-110-54-166-204.ngrok-free.app');
 
     const requestHeaders = {
         'ngrok-skip-browser-warning': 'true',
@@ -106,8 +105,8 @@ const FlashcardsLandingPage = () => {
         <div className={Styles.page_container}>
             <Header isStudyHabits={true}></Header>
             <div className={Styles.content_wrapper}>
-                <div className={Styles.module_container}>
-                    <h2>Flashcards Module</h2>
+                <div className={Styles.Module_Container}>
+                    <h1>Flashcards Module</h1>
                     {error && <p className={Styles.error_message}>{error}</p>}
                     {isLoading && (
                         <div className={Styles.loading_container}>
@@ -115,20 +114,20 @@ const FlashcardsLandingPage = () => {
                             <p>Generating flashcards...</p>
                         </div>
                     )}
-                    <p>Select a module to review its flashcards.</p>
-                    <div className={Styles.module_grid}>
+                    <div className={Styles.Module_Grid}>
                         {modules.length > 0 ? (
                             modules.map((module) => (
-                                <div className={Styles.module_card} key={module._id}>
+                                <div className={Styles.ModuleCard} key={module._id}>
                                     <h3>{module.title}</h3>
-                                    <img
-                                        src={`/uploads/${module.image_url.split('/').pop()}`} // Strip path if needed
-                                        alt={module.title}
-                                        className={Styles.module_image}
-                                        onError={(e) => (e.target.src = '/images/fallback.jpg')}
-                                    />
+                                    <div className={Styles.ModuleImage}>
+                                        <img
+                                            src={`${API_URL}/${module.image_url}`}
+                                            alt={module.title}
+                                            onError={(e) => (e.target.src = '/images/fallback.jpg')}
+                                        />
+                                    </div>
                                     <button
-                                        className={Styles.flashcard_btn}
+                                        className={Styles.ModuleProceedBtn}
                                         onClick={() => handleOpenFlashcards(module._id)}
                                         disabled={isLoading}
                                     >
