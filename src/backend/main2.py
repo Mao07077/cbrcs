@@ -8,6 +8,8 @@ from pydantic import BaseModel
 from pymongo import MongoClient
 from dotenv import load_dotenv
 
+from collections import defaultdict
+
 from typing import Optional, List, Dict
 from bson import ObjectId
 from datetime import datetime
@@ -781,3 +783,31 @@ def submit_survey(data: dict = Body(...)):
         }
     )
     return {"success": True, "message": "Survey submitted successfully!"}
+
+rooms = defaultdict(list)  # {call_id: [websocket, ...]}
+
+@app.websocket("/ws/{call_id}")
+async def websocket_endpoint(websocket: WebSocket, call_id: str):
+    await websocket.accept()
+    student_id = str(uuid.uuid4())
+    # Add to room
+    rooms[call_id].append(websocket)
+    try:
+        await websocket.send_text(json.dumps({
+            "type": "student_id",
+            "studentId": student_id,
+            "callId": call_id
+        }))
+        while True:
+            data = await websocket.receive_text()
+            try:
+                msg = json.loads(data)
+            except Exception:
+                msg = {"type": "unknown", "message": data}
+            # Relay signaling/chat messages to other participants in the same room
+            for ws in rooms[call_id]:
+                if ws != websocket:
+                    await ws.send_text(json.dumps(msg))
+    except WebSocketDisconnect:
+        rooms[call_id].remove(websocket)
+        print(f"WebSocket disconnected: {call_id}")
