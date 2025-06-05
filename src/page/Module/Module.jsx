@@ -13,11 +13,11 @@ const ModuleDashboard1 = () => {
   const navigate = useNavigate();
 
   const API_URL =
-    localStorage.getItem('REACT_APP_API_URL') ||
+    localStorage.getItem('https://cbrcs-1.onrender.com') ||
     process.env.REACT_APP_API_URL ||
     (window.location.hostname === "localhost"
       ? "http://127.0.0.1:8000"
-      : "https://cbrcs-1.onrender.com ");
+      : " ");
   // Common headers for all fetch requests
   const requestHeaders = {
     'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
