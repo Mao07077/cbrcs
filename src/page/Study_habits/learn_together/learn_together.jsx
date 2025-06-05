@@ -155,11 +155,17 @@ const WebRTCComponent = () => {
                 setError('WebSocket connection failed. Please check your network or backend configuration.');
             };
 
-            return () => {
-                console.log('Cleaning up WebSocket connection');
-                if (socket) socket.close();
-            };
+            // return () => {
+            //     console.log('Cleaning up WebSocket connection');
+            //     if (socket) socket.close();
+            // };
         }
+        return () => {
+            if (ws) {
+                console.log('Cleaning up WebSocket connection');
+                ws.close();
+            }
+        };
     }, [showCallOptions, callId, user, studentId, peerConnections]);
 
     const initializeMediaStream = async () => {
@@ -230,7 +236,9 @@ const WebRTCComponent = () => {
             setError('Please log in to create a call.');
             return;
         }
-        setCallId(null);
+        // Generate a random meeting ID
+        const newMeetingId = Math.random().toString(36).substring(2, 10);
+        setCallId(newMeetingId);
         setShowCallOptions(false);
         setError(null);
         await initializeMediaStream();

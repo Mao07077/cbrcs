@@ -16,6 +16,8 @@ import ollama
 import logging
 import json
 import os
+import uuid
+
 
 
 # Load environment variables from .env
@@ -430,6 +432,13 @@ def get_instructors():
 @app.websocket("/ws/{call_id}")
 async def websocket_endpoint(websocket: WebSocket, call_id: str):
     await websocket.accept()
+    # Send student_id and callId to the client right after connection
+    student_id = str(uuid.uuid4())
+    await websocket.send_text(json.dumps({
+        "type": "student_id",
+        "studentId": student_id,
+        "callId": call_id
+    }))
     try:
         while True:
             data = await websocket.receive_text()
@@ -442,14 +451,13 @@ async def websocket_endpoint(websocket: WebSocket, call_id: str):
                 chat_message = {
                     "type": "chat",
                     "message": {
-                        "sender_name": msg.get("sender_name", "User"),  # Use sender_name from frontend
+                        "sender_name": msg.get("sender_name", "User"),
                         "timestamp": datetime.utcnow().isoformat(),
                         "message": msg.get("message", "")
                     }
                 }
                 await websocket.send_text(json.dumps(chat_message))
             else:
-                # Echo for other types
                 await websocket.send_text(json.dumps({
                     "type": "echo",
                     "message": data
