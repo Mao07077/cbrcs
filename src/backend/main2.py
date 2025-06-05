@@ -430,43 +430,6 @@ def get_instructors():
         for instructor in instructors
     ]
 
-
-# @app.websocket("/ws/{call_id}")
-# async def websocket_endpoint(websocket: WebSocket, call_id: str):
-#     await websocket.accept()
-#     # Send student_id and callId to the client right after connection
-#     student_id = str(uuid.uuid4())
-#     await websocket.send_text(json.dumps({
-#         "type": "student_id",
-#         "studentId": student_id,
-#         "callId": call_id
-#     }))
-#     try:
-#         while True:
-#             data = await websocket.receive_text()
-#             try:
-#                 msg = json.loads(data)
-#             except Exception:
-#                 msg = {"type": "unknown", "message": data}
-
-#             if msg.get("type") == "chat":
-#                 chat_message = {
-#                     "type": "chat",
-#                     "message": {
-#                         "sender_name": msg.get("sender_name", "User"),
-#                         "timestamp": datetime.utcnow().isoformat(),
-#                         "message": msg.get("message", "")
-#                     }
-#                 }
-#                 await websocket.send_text(json.dumps(chat_message))
-#             else:
-#                 await websocket.send_text(json.dumps({
-#                     "type": "echo",
-#                     "message": data
-#                 }))
-#     except WebSocketDisconnect:
-#         print(f"WebSocket disconnected: {call_id}")
-
 @app.post("/api/reports")
 async def submit_report(
     id_number: str = Form(...),
