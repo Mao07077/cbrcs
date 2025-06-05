@@ -812,50 +812,65 @@ async def websocket_endpoint(websocket: WebSocket, call_id: str):
         "id_number": id_number,
     }
 
+    
     async def broadcast_active_students():
-        students = [
-            {
-                "id": info["id"],
-                "name": info["name"],
-                "muted": info.get("muted", False),
-                "camera_off": info.get("camera_off", False),
-            }
-            for info in student_info[call_id].values()
-        ]
-        for ws in rooms[call_id]:
-            await ws.send_text(json.dumps({
-                "type": "active_students",
-                "students": students,
-            }))
-
-    try:
-        await websocket.send_text(json.dumps({
-            "type": "student_id",
-            "studentId": student_id,
-            "callId": call_id
-        }))
-        await broadcast_active_students()
-        while True:
-            data = await websocket.receive_text()
-            try:
-                msg = json.loads(data)
-            except Exception:
-                msg = {"type": "unknown", "message": data}
-
-            # Update mute/camera status if needed
-            if msg.get("type") == "status_update":
-                info = student_info[call_id][websocket]
-                info["muted"] = msg.get("muted", False)
-                info["camera_off"] = msg.get("camera_off", False)
-                await broadcast_active_students()
-                continue
-
-            # Relay signaling/chat messages to other participants in the same room
+            students = [
+                {
+                    "id": info["id"],
+                    "name": info["name"],
+                    "muted": info.get("muted", False),
+                    "camera_off": info.get("camera_off", False),
+                }
+                for info in student_info[call_id].values()
+            ]
             for ws in rooms[call_id]:
-                if ws != websocket:
-                    await ws.send_text(json.dumps(msg))
+                await ws.send_text(json.dumps({
+                    "type": "active_students",
+                    "students": students,
+                }))
+    
+    try:
+            await websocket.send_text(json.dumps({
+                "type": "student_id",
+                "studentId": student_id,
+                "callId": call_id
+            }))
+            await broadcast_active_students()  # <--- Only call here, not inside itself!
+            while True:
+                data = await websocket.receive_text()
+                try:
+                    msg = json.loads(data)
+                except Exception:
+                    msg = {"type": "unknown", "message": data}
+    
+                # Update mute/camera status if needed
+                if msg.get("type") == "status_update":
+                    info = student_info[call_id][websocket]
+                    info["muted"] = msg.get("muted", False)
+                    info["camera_off"] = msg.get("camera_off", False)
+                    await broadcast_active_students()
+                    continue
+    
+                # --- NEW LOGIC: Broadcast chat to all, signaling to others only ---
+                if msg.get("type") == "chat":
+                    chat_message = {
+                        "type": "chat",
+                        "message": {
+                            "sender_name": student_info[call_id][websocket]["name"],
+                            "timestamp": datetime.utcnow().isoformat(),
+                            "message": msg.get("message", "")
+                        }
+                    }
+                    for ws in rooms[call_id]:
+                        await ws.send_text(json.dumps(chat_message))
+                else:
+                    for ws in rooms[call_id]:
+                        if ws != websocket:
+                            await ws.send_text(json.dumps(msg))
     except WebSocketDisconnect:
-        rooms[call_id].remove(websocket)
-        student_info[call_id].pop(websocket, None)
-        await broadcast_active_students()
-        print(f"WebSocket disconnected: {call_id}")
+            rooms[call_id].remove(websocket)
+            student_info[call_id].pop(websocket, None)
+            await broadcast_active_students()
+            print(f"WebSocket disconnected: {call_id}")
+
+        
