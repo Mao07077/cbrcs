@@ -116,11 +116,11 @@ const WebRTCComponent = () => {
                     setCallIdDisplay(data.callId);
                 } else if (data.type === 'active_students') {
                     setStudents(data.students);
-                    data.students.forEach((student) => {
-                        if (student.id !== studentId && !peerConnections.has(student.id)) {
-                            startCall(student.id);
-                        }
-                    });
+                    // data.students.forEach((student) => {
+                    //     if (student.id !== studentId && !peerConnections.has(student.id)) {
+                    //         startCall(student.id);
+                    //     }
+                    // });
                 } else if (data.type === 'chat') {
                     setChatMessages((prev) => [...prev, data.message]);
                 } else if (data.type === 'notification') {
@@ -170,6 +170,17 @@ const WebRTCComponent = () => {
             }
         };
     }, [showCallOptions, callId, user, studentId, peerConnections]);
+
+    useEffect(() => {
+        if (studentId && students.length > 0) {
+            students.forEach((student) => {
+                if (student.id !== studentId && !peerConnections.has(student.id)) {
+                    startCall(student.id);
+                }
+            });
+        }
+        // eslint-disable-next-line
+    }, [students, studentId]);
 
     const wsRef = useRef(null);
         useEffect(() => {
