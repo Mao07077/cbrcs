@@ -396,23 +396,17 @@ const WebRTCComponent = () => {
                     return;
                 }
             }
-
-        if (
-                student.id !== studentId &&
-                !peerConnections.has(student.id) &&
-                studentId < student.id &&
-                wsRef.current &&
-                wsRef.current.readyState === WebSocket.OPEN &&
-                stream
-            ) {
-                startCall(student.id);
-            }
-
+    
+            const pc = new RTCPeerConnection({
+                iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
+            });
+            setPeerConnections((prev) => new Map(prev).set(targetStudentId, pc));
+    
             localStream.getTracks().forEach((track) => {
                 pc.addTrack(track, localStream);
                 console.log(`Added track to peer connection: ${track.kind}, enabled: ${track.enabled}`);
             });
-
+    
             pc.onicecandidate = (event) => {
                 if (event.candidate) {
                     if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
@@ -429,23 +423,16 @@ const WebRTCComponent = () => {
                     }
                 }
             };
-
+    
             pc.ontrack = (event) => {
                 console.log(`Received remote stream from ${targetStudentId}:`, event.streams[0]);
                 setRemoteStreams((prev) => new Map(prev).set(targetStudentId, event.streams[0]));
             };
-
+    
             const offer = await pc.createOffer();
             await pc.setLocalDescription(offer);
             console.log('Created and set offer:', offer);
-
-            // ws.send(
-            //     JSON.stringify({
-            //         type: 'offer',
-            //         target: targetStudentId,
-            //         offer,
-            //     })
-            // );
+    
             if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
                 wsRef.current.send(
                     JSON.stringify({
@@ -458,9 +445,6 @@ const WebRTCComponent = () => {
             } else {
                 console.error('WebSocket is not open when sending offer');
             }
-
-
-            console.log('Sent offer to:', targetStudentId);
         } catch (error) {
             console.error('Failed to start call:', error);
             setError('Failed to start call. Please try again.');
