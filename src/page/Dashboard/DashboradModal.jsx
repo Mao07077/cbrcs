@@ -12,7 +12,6 @@ import {
 } from 'chart.js';
 import { Bar, Doughnut } from 'react-chartjs-2';
 
-// Register Chart.js components
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -28,12 +27,16 @@ const API_URL =
   (window.location.hostname === "localhost"
     ? "http://127.0.0.1:8000"
     : "https://ea13-110-54-166-204.ngrok-free.app");
+
 function DashboardModal({ student, onClose }) {
     const [dashboardData, setDashboardData] = useState({
         modules: [],
         pre_tests: [],
         post_tests: []
     });
+    const [program, setProgram] = useState('');
+    const [progress, setProgress] = useState(0);
+    const [progressData, setProgressData] = useState(null);
     const [preTestChartData, setPreTestChartData] = useState({
         labels: [],
         datasets: [],
@@ -43,18 +46,17 @@ function DashboardModal({ student, onClose }) {
         datasets: [],
     });
     const [top3Habits, setTop3Habits] = useState([]);
-    const [progress] = useState(60); // Fixed progress as per Dashboard component
+    const [strengths, setStrengths] = useState([]);
+    const [weaknesses, setWeaknesses] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Common headers for axios requests
     const requestHeaders = {
-        'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page
+        'ngrok-skip-browser-warning': 'true',
         'Accept': 'application/json',
         'Content-Type': 'application/json',
     };
 
-    // Chart options for bar charts
     const chartOptions = {
         responsive: true,
         scales: {
@@ -71,28 +73,110 @@ function DashboardModal({ student, onClose }) {
         },
     };
 
-    // Progress doughnut chart data
-    const progressData = {
-        labels: ['Completed', 'Remaining'],
-        datasets: [
-            {
-                data: [progress, 100 - progress],
-                backgroundColor: ['#FFD700', '#1E40AF'],
-            },
-        ],
-    };
-
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
-                // Fetch dashboard data
-                const response = await axios.get(`${API_URL}/api/dashboard/${student.studentNo}`, {
-                    headers: requestHeaders, // Add headers here
+                const profileResponse = await axios.get(`${API_URL}/api/profile/${student.studentNo}`, {
+                    headers: requestHeaders,
                 });
-                const { pre_tests, post_tests } = response.data;
-                setDashboardData(response.data);
+                const userProgram = profileResponse.data.program;
+                setProgram(userProgram);
 
-                // Process pre-test data for bar chart
+                const dashboardResponse = await axios.get(`${API_URL}/api/dashboard/${student.studentNo}`, {
+                    headers: requestHeaders,
+                });
+                const { modules, pre_tests, post_tests } = dashboardResponse.data;
+                setDashboardData(dashboardResponse.data);
+
+                const totalModules = modules.length;
+                const completedPostTests = post_tests.length;
+                const progressPercentage = totalModules > 0 
+                    ? Math.round((completedPostTests / totalModules) * 100) 
+                    : 0;
+                setProgress(progressPercentage);
+                setProgressData({ totalModules, completedPostTests });
+
+                const avgTimeSpent = (pre_tests.concat(post_tests).reduce((sum, test) => sum + (test.time_spent || 0), 0) / (pre_tests.length + post_tests.length)) || 300;
+
+                const skillCategories = {
+                    'Lesson Planning': 'Instructional Skills',
+                    'Curriculum Design': 'Instructional Skills',
+                    'Classroom Management': 'Classroom Skills',
+                    'Student Engagement': 'Classroom Skills',
+                    'Critical Thinking': 'Analytical Skills',
+                    'Problem Solving': 'Analytical Skills',
+                    'Assessment Strategies': 'Evaluation Skills',
+                    'Feedback Techniques': 'Evaluation Skills',
+                    'Teaching Methods': 'Instructional Skills',
+                };
+
+                const calculateStrengthsWeaknesses = (preTests, postTests) => {
+                    const categoryPerformance = {};
+                    const thresholdStrength = 0.7;
+                    const thresholdWeakness = 0.5;
+                    const improvementThreshold = 0.2;
+                    const timeEfficiencyThreshold = avgTimeSpent * 0.8;
+
+                    const postTestMap = postTests.reduce((map, test) => {
+                        map[test.post_test_title] = test;
+                        return map;
+                    }, {});
+
+                    preTests.forEach((preTest) => {
+                        const preScore = preTest.correct / preTest.total_questions || 0;
+                        const postTest = postTestMap[preTest.pre_test_title.replace('Pre-Test', 'Post-Test')] || {};
+                        const postScore = postTest.correct / postTest.total_questions || 0;
+                        const avgScore = (preScore + postScore) / 2;
+                        const improvement = postScore - preScore;
+                        const postTimeSpent = postTest.time_spent || avgTimeSpent;
+
+                        const skill = preTest.pre_test_title.replace('Pre-Test for ', '').replace('Module', '').trim();
+                        const category = skillCategories[skill] || 'General Skills';
+
+                        if (!categoryPerformance[category]) {
+                            categoryPerformance[category] = {
+                                scores: [],
+                                improvements: [],
+                                timeSpent: [],
+                            };
+                        }
+
+                        categoryPerformance[category].scores.push(avgScore);
+                        categoryPerformance[category].improvements.push(improvement);
+                        categoryPerformance[category].timeSpent.push(postTimeSpent);
+                    });
+
+                    const strengths = [];
+                    const weaknesses = [];
+
+                    for (const [category, data] of Object.entries(categoryPerformance)) {
+                        const avgScore = data.scores.reduce((sum, score) => sum + score, 0) / data.scores.length;
+                        const avgImprovement = data.improvements.reduce((sum, imp) => sum + imp, 0) / data.improvements.length;
+                        const avgTimeSpent = data.timeSpent.reduce((sum, time) => sum + time, 0) / data.timeSpent.length;
+
+                        if (avgScore >= thresholdStrength && avgImprovement >= improvementThreshold && avgTimeSpent <= timeEfficiencyThreshold) {
+                            strengths.push(`Strong ${category} (Efficient and High-Performing)`);
+                        }
+                        else if (avgImprovement >= improvementThreshold && avgScore >= 0.6) {
+                            strengths.push(`Adaptability in ${category}`);
+                        }
+
+                        if (avgScore < thresholdWeakness || avgImprovement < 0.1) {
+                            if (avgTimeSpent > avgTimeSpent * 1.2) {
+                                weaknesses.push(`Needs Improvement in ${category} (Slow Processing)`);
+                            } else {
+                                weaknesses.push(`Needs Improvement in ${category}`);
+                            }
+                        }
+                    }
+
+                    return { strengths: strengths.slice(0, 2), weaknesses: weaknesses.slice(0, 2) };
+                };
+
+                const { strengths, weaknesses } = calculateStrengthsWeaknesses(pre_tests, post_tests);
+                setStrengths(strengths);
+                setWeaknesses(weaknesses);
+
                 if (pre_tests && pre_tests.length > 0) {
                     const preTestLabels = pre_tests.map(
                         (test) => test.pre_test_title || 'Unknown Pre-Test'
@@ -132,7 +216,6 @@ function DashboardModal({ student, onClose }) {
                     });
                 }
 
-                // Process post-test data for bar chart
                 if (post_tests && post_tests.length > 0) {
                     const postTestLabels = post_tests.map(
                         (test) => test.post_test_title || 'Unknown Post-Test'
@@ -172,16 +255,15 @@ function DashboardModal({ student, onClose }) {
                     });
                 }
 
-                // Fetch recommended study habits
                 const habitsResponse = await axios.get(`${API_URL}/students/${student.studentNo}/recommended-pages`, {
-                    headers: requestHeaders, // Add headers here
+                    headers: requestHeaders,
                 });
                 setTop3Habits(habitsResponse.data.recommendedPages || []);
 
                 setIsLoading(false);
             } catch (error) {
-                const errorMessage = error.response?.data?.detail || 'Failed to load dashboard data.';
-                console.error('Error fetching dashboard data:', error.response?.data || error.message);
+                const errorMessage = error.response?.data?.error || error.response?.data?.detail || 'Failed to load dashboard data.';
+                console.error('Error fetching dashboard data:', errorMessage);
                 setError(errorMessage);
                 setIsLoading(false);
             }
@@ -190,9 +272,14 @@ function DashboardModal({ student, onClose }) {
         fetchDashboardData();
     }, [student.studentNo]);
 
-    const handleNavigation = (route) => {
-        console.log(`Navigating to: ${route}`);
-        window.location.href = `/${route}`;
+    const progressChartData = {
+        labels: ['Completed', 'Remaining'],
+        datasets: [
+            {
+                data: [progress, 100 - progress],
+                backgroundColor: ['#FFD700', '#1E40AF'],
+            },
+        ],
     };
 
     return (
@@ -210,10 +297,11 @@ function DashboardModal({ student, onClose }) {
                     <div className={Styles.dashboardContent}>
                         <div className={Styles.PerformanceOverview}>
                             <h3>Performance Overview</h3>
-                            <p>Track your progress</p>
+                            <div className={Styles.FormField}>
+                            </div>
                             <div className={Styles.ProgressContainer}>
                                 <Doughnut
-                                    data={progressData}
+                                    data={progressChartData}
                                     options={{
                                         responsive: true,
                                         maintainAspectRatio: false,
@@ -255,31 +343,38 @@ function DashboardModal({ student, onClose }) {
                                     ]}
                                 />
                             </div>
-                            <p className={Styles.Disclaimer}>
-                                Note: For new accounts, the progress starts at 60% as the standard passing threshold.
-                            </p>
                         </div>
                         <div className={Styles.Section}>
                             <div className={Styles.StrengthWeaknessContainer}>
-                                <div className={Styles.StrengthCard}>Strength</div>
-                                <div className={Styles.WeaknessCard}>Weakness</div>
+                                <div className={Styles.StrengthCard}>
+                                    <h4>Strengths</h4>
+                                    <ul>
+                                        {strengths.length > 0 ? strengths.map((strength, index) => (
+                                            <li key={index}>{strength}</li>
+                                        )) : <li>No strengths identified</li>}
+                                    </ul>
+                                </div>
+                                <div className={Styles.WeaknessCard}>
+                                    <h4>Weaknesses</h4>
+                                    <ul>
+                                        {weaknesses.length > 0 ? weaknesses.map((weakness, index) => (
+                                            <li key={index}>{weakness}</li>
+                                        )) : <li>No weaknesses identified</li>}
+                                    </ul>
+                                </div>
                             </div>
                             <section className={Styles.StudyHabitsSection}>
-                                <h3>Top 3 Study Habits:</h3>
+                                <h3>Top 3 Study Habits</h3>
                                 <div className={Styles.HabitsWrapper}>
                                     {top3Habits.length > 0 ? (
                                         top3Habits.map((habit, index) => (
-                                            <div
-                                                key={index}
-                                                className={Styles.HabitCard}
-                                                onClick={() => handleNavigation(habit)}
-                                            >
+                                            <div key={index} className={Styles.HabitCard}>
                                                 <h4 className={Styles.HabitTitle}>{habit}</h4>
                                                 <p className={Styles.HabitDescription}>Description for {habit}</p>
                                             </div>
                                         ))
                                     ) : (
-                                        <p>Please wait a moment while we identify your Top 3 Study Habits</p>
+                                        <p>No study habits identified</p>
                                     )}
                                 </div>
                             </section>
@@ -297,7 +392,7 @@ function DashboardModal({ student, onClose }) {
                                         }}
                                     />
                                 ) : (
-                                    <p>Analyzing your pre-test results—please wait while we calculate your performance.</p>
+                                    <p>No pre-test data available</p>
                                 )}
                                 <h3 className={Styles.ChartTitle}>Post-Test Performance</h3>
                                 {postTestChartData.labels.length > 0 ? (
@@ -312,7 +407,7 @@ function DashboardModal({ student, onClose }) {
                                         }}
                                     />
                                 ) : (
-                                    <p>Processing your post-test scores—please wait as we generate your performance summary.</p>
+                                    <p>No post-test data available</p>
                                 )}
                             </section>
                         </div>
