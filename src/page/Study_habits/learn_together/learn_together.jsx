@@ -76,11 +76,11 @@ const WebRTCComponent = () => {
             console.log(`Attempting to connect to WebSocket: ${wsUrl}`);
 
             // Validate WebSocket URL
-            if (isProduction && (cleanAPI_URL.includes('localhost') || cleanAPI_URL.includes('127.0.0.1'))) {
-                setError('Invalid backend URL in production. Please configure REACT_APP_API_URL in Vercel.');
-                console.error('WebSocket connection aborted: Using localhost in production.');
-                return;
-            }
+            // if (isProduction && (cleanAPI_URL.includes('localhost') || cleanAPI_URL.includes('127.0.0.1'))) {
+            //     setError('Invalid backend URL in production. Please configure REACT_APP_API_URL in Vercel.');
+            //     console.error('WebSocket connection aborted: Using localhost in production.');
+            //     return;
+            // }
 
             let socket;
             try {
