@@ -5,11 +5,14 @@ import Icon from '../../icon/actual.png';
 import cbrcimage from '../../icon/carlbalita.jpg';
 
 // Use this pattern everywhere you define API_URL
-const API_URL =
+const API_URL = "https://cbrcs-1.onrender.com";
   process.env.REACT_APP_API_URL ||
   (window.location.hostname === "localhost"
     ? "http://127.0.0.1:8000"
     : "https://cbrcs-1.onrender.com");
+
+    console.log("Using API_URL:", API_URL);
+
 
 function Login1() {
     const [idNumber, setIdNumber] = useState('');

@@ -28,13 +28,11 @@ const ScheduleTable = () => {
         color: '#FFD1DC', // Default pastel color
     });
 
-    const API_URL =
-        process.env.REACT_APP_API_URL ||
-        (window.location.hostname === 'localhost'
-            ? 'http://127.0.0.1:8000'
-
-            : 'https://cbrcs-1.onrender.com ');
-            // : 'https://c3a1-2405-8d40-448f-2d57-c4b-6820-175b-382a.ngrok-free.app ');
+    const API_URL = "https://cbrcs-1.onrender.com";
+    process.env.REACT_APP_API_URL ||
+    (window.location.hostname === "localhost"
+      ? "http://127.0.0.1:8000"
+      : "https://cbrcs-1.onrender.com");
 
     useEffect(() => {
         const userId = localStorage.getItem('userIdNumber');

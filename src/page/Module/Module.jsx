@@ -13,11 +13,13 @@ const ModuleDashboard1 = () => {
   const navigate = useNavigate();
 
   // Use this pattern everywhere you define API_URL
-  const API_URL =
-    process.env.REACT_APP_API_URL ||
-    (window.location.hostname === "localhost"
-      ? "http://127.0.0.1:8000"
-      : "https://cbrcs-1.onrender.com");
+  const API_URL = "https://cbrcs-1.onrender.com";
+  process.env.REACT_APP_API_URL ||
+  (window.location.hostname === "localhost"
+    ? "http://127.0.0.1:8000"
+    : "https://cbrcs-1.onrender.com");
+
+      console.log("Using API_URL:", API_URL);
   // Common headers for all fetch requests
   const requestHeaders = {
     'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page

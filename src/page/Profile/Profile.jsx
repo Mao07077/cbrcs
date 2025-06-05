@@ -25,8 +25,7 @@ ChartJS.register(
 	Legend
 );
 
-const API_URL =
-  localStorage.getItem('REACT_APP_API_URL') ||
+const API_URL = "https://cbrcs-1.onrender.com";
   process.env.REACT_APP_API_URL ||
   (window.location.hostname === "localhost"
     ? "http://127.0.0.1:8000"

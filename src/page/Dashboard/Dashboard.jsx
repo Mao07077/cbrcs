@@ -49,12 +49,11 @@ const Dashboard = ({ isModal = false }) => {
     const [strengths, setStrengths] = useState([]);
     const [weaknesses, setWeaknesses] = useState([]);
 
-    const API_URL =
-      localStorage.getItem('REACT_APP_API_URL') ||
-      process.env.REACT_APP_API_URL ||
-      (window.location.hostname === "localhost"
-        ? "http://127.0.0.1:8000"
-        : "https://cbrcs-1.onrender.com");
+    const API_URL = "https://cbrcs-1.onrender.com";
+    process.env.REACT_APP_API_URL ||
+    (window.location.hostname === "localhost"
+      ? "http://127.0.0.1:8000"
+      : "https://cbrcs-1.onrender.com");
     const requestHeaders = {
         'ngrok-skip-browser-warning': 'true',
         'Accept': 'application/json',

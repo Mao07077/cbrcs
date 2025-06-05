@@ -5,8 +5,7 @@ import Header from '../../Components/composables/Header';
 import Footer from '../../Components/composables/FooterP';
 import Student_Sidebar from '../../Components/Student_Sidebar';
 
-const API_URL =
-  localStorage.getItem('REACT_APP_API_URL') ||
+const API_URL = "https://cbrcs-1.onrender.com";
   process.env.REACT_APP_API_URL ||
   (window.location.hostname === "localhost"
     ? "http://127.0.0.1:8000"
