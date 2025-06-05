@@ -1,142 +1,197 @@
 * {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
 }
-.body {
-	font-family: Consolas, sans-serif;
-	box-sizing: border-box;
+
+body {
+  font-family: Consolas, sans-serif;
+  box-sizing: border-box;
 }
-.Header {
-	grid-area: Header;
-	background-color: #002f87;
-	display: flex;
-}
+
 .MainContainer {
-	display: flex;
-	flex-direction: column;
-	height: 100svh;
-	width: 100vw;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: 100vw;
 }
+
 .Content_Wrapper {
-	flex: 1;
-	display: flex;
+  flex: 1;
+  display: flex;
+}
+
+.Header {
+  grid-area: Header;
+  background-color: #002f87;
+  display: flex;
 }
 
 .Content {
-	width: 100%;
-	padding: 10px;
-	text-align: center;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	font-size: 25px;
-	font-style: initial;
-	margin: 10px 10px;
-	margin-left: 10px;
-	font-size: 1.2em;
-	height: 1000px;
-}
-/* ================= MODULES SECTION ================= */
-.moduleContainer {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	width: 100%;
-	max-width: 1500px;
-	gap: 10px;
-	margin: -50%;
-}
-/* Module Grid */
-.ModuleGrid {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center; /* Spreads modules */
-	width: 100%;
-	gap: 20px;
-}
-.ModuleGrid p {
-	padding: 15px;
-	display: flex;
-	justify-items: center;
-	text-align: center;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-size: 1.2em;
+  margin: 10px;
 }
 
-/* Individual Module Card */
-.moduleCard {
-	flex: 1;
-	max-width: 300px; /* Prevents cards from getting too big */
-	padding: 15px;
-	background: white;
-	border-radius: 10px;
-	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-	text-align: center;
-	margin-top: 50px;
-	margin-left: 20px;
+.Module_Container {
+  background: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 96%;
+  max-width: 1550px;
+  min-height: 85vh;
+  margin-left: 10px;
 }
 
-/* Module Image */
-.moduleImage {
-	width: 100%;
-	height: 150px;
-	background-color: #d9d9d9;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 8px;
-	overflow: hidden;
-	margin: 10px 0;
+.Module_Container h1 {
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+  padding: 15px 0;
+  width: 100%;
+  text-align: left;
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 25px;
 }
 
-.moduleImage img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	border-radius: 8px;
+.Module_Grid {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
 }
 
-/* Proceed Button */
-.proceedBtn {
-	background-color: #002c77;
-	color: white;
-	padding: 8px 12px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	font-size: 12px;
-	font-weight: normal;
-	font-family: Arial;
-	transition: background-color 0.3s;
+.ModuleCard {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 340px;
 }
 
-.proceedBtn:hover {
-	background-color: #001a4d;
+.ModuleCard.completed {
+  background-color: #e0ffe0;
+  border: 2px solid #5d0fa7f8;
 }
-.Greeting_Dashboard {
-	display: flex;
-	justify-content: flex-start;
-	padding: 15px;
-	border-bottom: 0.5px solid #333;
+
+.ModuleImage {
+  width: 200px;
+  height: 140px;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px auto;
 }
+
+.ModuleImage img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.ModuleCard p {
+  font-size: 10px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.ModuleProceedBtn {
+  background-color: #002ead;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ModuleProceedBtn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+@media (max-width: 590px) {
+  .Module_Container {
+    width: 100%;
+  }
+
+  .Module_Container h1 {
+    text-align: center;
+    font-size: 1em;
+  }
+
+  .ModuleCard {
+    width: 90%;
+    padding: 15px;
+    font-size: 14px;
+    margin: 10px auto;
+    height: auto;
+    min-height: 150px;
+  }
+
+  .ModuleCard h3 {
+    font-size: 0.7em;
+  }
+
+  .ModuleImage {
+    width: 100px;
+    height: 80px;
+    margin: 10px auto;
+    display: none;
+  }
+
+  .ModuleProceedBtn {
+    padding: 10px 20px;
+    font-size: 8px;
+    width: auto;
+    margin-top: 10px;
+  }
+}
+
 @media (max-width: 1000px) {
-	.HabitsContainer {
-		padding: 10px;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-	}
-	.HabitCard {
-		flex: 1;
-		background: white;
-		padding: 15px;
-		border-radius: 8px;
-		text-align: center;
-		box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-		font-size: 10px;
-		width: 50px;
-		min-width: 200px;
-		height: 100%;
-		gap: 10px;
-		margin: 10px;
-	}
+  .Module_Container {
+    width: 100%;
+  }
+
+  .Module_Container h1 {
+    text-align: center;
+  }
+
+  .ModuleCard {
+    width: 90%;
+    padding: 15px;
+    font-size: 14px;
+    margin: 10px auto;
+    height: auto;
+    min-height: 150px;
+  }
+
+  .ModuleImage {
+    width: 100px;
+    height: 80px;
+    margin: 10px auto;
+    display: none;
+  }
+
+  .ModuleProceedBtn {
+    padding: 10px 20px;
+    font-size: 10px;
+    width: auto;
+    margin-top: 10px;
+  }
 }
