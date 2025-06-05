@@ -58,7 +58,7 @@ app.add_middleware(
         "https://cbrcs-git-aaron-maos-projects-a7ae5dee.vercel.app",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
-        "https://ea13-110-54-166-204.ngrok-free.app",
+        "https://cbrcs-1.onrender.com",
     ],
     allow_credentials=True,
     allow_methods=["*"],

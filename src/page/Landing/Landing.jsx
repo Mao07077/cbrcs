@@ -9,7 +9,7 @@ const API_URL =
   process.env.REACT_APP_API_URL ||
   (window.location.hostname === "localhost"
     ? "http://127.0.0.1:8000"
-    : "https://ea13-110-54-166-204.ngrok-free.app");
+    : "https://cbrcs-1.onrender.com");
 const Landing = () => {
   const [introText, setIntroText] = useState({ header: '', subHeader: '' });
   const [news, setNews] = useState('');
