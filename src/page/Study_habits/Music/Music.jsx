@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styles from './MusicPlayer.module.css';
 import Header from '../../../Components/composables/Header';
 import Footer from '../../../Components/composables/Footer';
@@ -8,8 +8,8 @@ const MusicPlayer = () => {
     const [customPlaylist, setCustomPlaylist] = useState([]);
     const [currentVideo, setCurrentVideo] = useState('');
     const [error, setError] = useState(null);
+    const videoRef = useRef(null);
 
-    // Use environment variable for YouTube API key
     const YOUTUBE_API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY || 'YOUR_API_KEY';
 
     const fetchVideoDetails = async (url) => {
@@ -89,37 +89,45 @@ const MusicPlayer = () => {
                         <button onClick={handleAddToPlaylist}>Add to Playlist</button>
                     </div>
 
-                    <div className={styles.youtubePlayerContainer}>
-                        {currentVideo && (
-                            <iframe
-                                src={currentVideo.replace('watch?v=', 'embed/')}
-                                title="YouTube Video Player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                            ></iframe>
-                        )}
-                    </div>
+                    <div className={styles.contentWrapper}>
+                        <div className={styles.youtubePlayerContainer}>
+                            {currentVideo && (
+                                <>
+                                    <iframe
+                                        ref={videoRef}
+                                        src={currentVideo.replace('watch?v=', 'embed/')}
+                                        title="YouTube Video Player"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                    ></iframe>
+                                    <p className={styles.pipInfo}>
+                                        To enable Picture-in-Picture, right-click the video and select "Picture in Picture" (supported in Chrome/Edge).
+                                    </p>
+                                </>
+                            )}
+                        </div>
 
-                    <div className={styles.customPlaylist}>
-                        <h3>Your Playlist</h3>
-                        {customPlaylist.length === 0 ? (
-                            <p>No videos in the playlist</p>
-                        ) : (
-                            customPlaylist.map((video, index) => (
-                                <div key={index} onClick={() => handlePlayVideo(video.url)} className={styles.playlistItem}>
-                                    <img src={video.thumbnail} alt={video.title} />
-                                    <span>{video.title}</span>
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleRemoveFromPlaylist(video.url);
-                                        }}
-                                    >
-                                        Remove
-                                    </button>
-                                </div>
-                            ))
-                        )}
+                        <div className={styles.customPlaylist}>
+                            <h3>Your Playlist</h3>
+                            {customPlaylist.length === 0 ? (
+                                <p>No videos in the playlist</p>
+                            ) : (
+                                customPlaylist.map((video, index) => (
+                                    <div key={index} onClick={() => handlePlayVideo(video.url)} className={styles.playlistItem}>
+                                        <img src={video.thumbnail} alt={video.title} />
+                                        <span>{video.title}</span>
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleRemoveFromPlaylist(video.url);
+                                            }}
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+                                ))
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
