@@ -174,7 +174,12 @@ const WebRTCComponent = () => {
     useEffect(() => {
         if (studentId && students.length > 0) {
             students.forEach((student) => {
-                if (student.id !== studentId && !peerConnections.has(student.id)) {
+                // Only start call if my studentId is less than the other student's id
+                if (
+                    student.id !== studentId &&
+                    !peerConnections.has(student.id) &&
+                    studentId < student.id // Only one side initiates
+                ) {
                     startCall(student.id);
                 }
             });
