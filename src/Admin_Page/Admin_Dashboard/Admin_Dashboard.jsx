@@ -28,7 +28,7 @@ const AdminDashboard = () => {
     const fetchDashboardData = async () => {
       try {
         // Fetch total accounts (students and instructors)
-        const accountsResponse = await axios.get('http://localhost:8000/api/accounts');
+        const accountsResponse = await axios.get('https://6d3wthwg-8000.asse.devtunnels.ms/api/accounts');
         const accounts = accountsResponse.data.accounts;
 
         // Calculate total students and instructors
@@ -41,16 +41,16 @@ const AdminDashboard = () => {
         });
 
         // Fetch student list
-        const studentsResponse = await axios.get('http://localhost:8000/students');
+        const studentsResponse = await axios.get('https://6d3wthwg-8000.asse.devtunnels.ms/students');
         setStudents(studentsResponse.data);
 
         // Fetch instructor list
-        const instructorsResponse = await axios.get('http://localhost:8000/instructors');
+        const instructorsResponse = await axios.get('https://6d3wthwg-8000.asse.devtunnels.ms/instructors');
         setInstructors(instructorsResponse.data);
 
         // Fetch attendance data (if you have an endpoint for this)
         // Example: Replace with actual endpoint if available
-        const attendanceResponse = await axios.get('http://localhost:8000/api/attendance'); // Hypothetical endpoint
+        const attendanceResponse = await axios.get('https://6d3wthwg-8000.asse.devtunnels.ms/api/attendance'); // Hypothetical endpoint
         setAttendanceData(attendanceResponse.data);
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
