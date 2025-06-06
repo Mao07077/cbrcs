@@ -28,7 +28,7 @@ const Settings = () => {
     // Set API URL dynamically based on the environment
     const apiUrl = process.env.REACT_APP_API_URL || 
 
-        (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://cbrcs-1.onrender.com ");
+        (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://g28s4zdq-8000.asse.devtunnels.ms ");
         (window.location.hostname === "localhost" ? "http://127.0.0.1:8000" : "https://c3a1-2405-8d40-448f-2d57-c4b-6820-175b-382a.ngrok-free.app ");
 
     // Common headers for fetch requests

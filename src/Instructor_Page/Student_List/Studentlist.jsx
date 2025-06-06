@@ -6,11 +6,11 @@ import Header from '../../Components/composables/Header';
 import Instructor_Sidebar from '../../Components/Instructor_Sidebar';
 import Footer from '../../Components/composables/Footer';
 
-const API_URL = "https://cbrcs-1.onrender.com";
+const API_URL = "https://g28s4zdq-8000.asse.devtunnels.ms";
   process.env.REACT_APP_API_URL ||
   (window.location.hostname === "localhost"
     ? "http://127.0.0.1:8000"
-    : "https://cbrcs-1.onrender.com");
+    : "https://g28s4zdq-8000.asse.devtunnels.ms");
 function StudentTable() {
     const [searchQuery, setSearchQuery] = useState('');
     const [students, setStudents] = useState([]);
