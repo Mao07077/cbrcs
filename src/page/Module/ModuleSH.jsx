@@ -15,11 +15,11 @@ const ModuleDashboard = () => {
     const [userProgram, setUserProgram] = useState(null);
     const navigate = useNavigate();
 
-    const API_URL = "https://g28s4zdq-8000.asse.devtunnels.ms";
+    const API_URL = "https://6d3wthwg-8000.asse.devtunnels.ms";
     process.env.REACT_APP_API_URL ||
     (window.location.hostname === "localhost"
       ? "http://127.0.0.1:8000"
-      : "https://g28s4zdq-8000.asse.devtunnels.ms");
+      : "https://6d3wthwg-8000.asse.devtunnels.ms");
     // Common headers for fetch requests
     const requestHeaders = {
         'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page

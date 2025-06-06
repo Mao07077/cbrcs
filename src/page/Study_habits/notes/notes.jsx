@@ -3,11 +3,11 @@ import styles from './Notes.module.css';
 import Header from '../../../Components/composables/Header';
 import Footer from '../../../Components/composables/Footer';
 
-const API_URL = "https://g28s4zdq-8000.asse.devtunnels.ms";
+const API_URL = "https://6d3wthwg-8000.asse.devtunnels.ms";
   process.env.REACT_APP_API_URL ||
   (window.location.hostname === "localhost"
     ? "http://127.0.0.1:8000"
-    : "https://g28s4zdq-8000.asse.devtunnels.ms");
+    : "https://6d3wthwg-8000.asse.devtunnels.ms");
 const Notes = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');

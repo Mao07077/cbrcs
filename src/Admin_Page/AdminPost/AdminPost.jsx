@@ -8,11 +8,11 @@ import Footer from '../../Components/composables/FooterAdmin';
 import Header from '../../Components/composables/Header';
 import axios from 'axios';
 
-const API_URL = "https://g28s4zdq-8000.asse.devtunnels.ms";
+const API_URL = "https://6d3wthwg-8000.asse.devtunnels.ms";
   process.env.REACT_APP_API_URL ||
   (window.location.hostname === "localhost"
     ? "http://127.0.0.1:8000"
-    : "https://g28s4zdq-8000.asse.devtunnels.ms");
+    : "https://6d3wthwg-8000.asse.devtunnels.ms");
 const AdminPost = () => {
   const [introText, setIntroText] = useState({
     header: 'Welcome to Dr. Carl Balita Review Center Student Portal',

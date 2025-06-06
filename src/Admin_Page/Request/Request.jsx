@@ -5,11 +5,11 @@ import Admin_Sidebar from '../../Components/Admin_Sidebar';
 import Footer from '../../Components/composables/FooterAdmin';
 import Header from '../../Components/composables/Header';
 
-const API_URL = "https://g28s4zdq-8000.asse.devtunnels.ms";
+const API_URL = "https://6d3wthwg-8000.asse.devtunnels.ms";
   process.env.REACT_APP_API_URL ||
   (window.location.hostname === "localhost"
     ? "http://127.0.0.1:8000"
-    : "https://g28s4zdq-8000.asse.devtunnels.ms");
+    : "https://6d3wthwg-8000.asse.devtunnels.ms");
 const Request = () => {
     const [requests, setRequests] = useState([]);
     const [selectedRequest, setSelectedRequest] = useState(null);
