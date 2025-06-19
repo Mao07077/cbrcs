@@ -13,11 +13,11 @@ const CreateModule = ({ onClose }) => {
 
   const navigate = useNavigate();
 
-  const API_URL = "https://g28s4zdq-8000.asse.devtunnels.ms/";
+  const API_URL = "http://127.0.0.1:8000";
   process.env.REACT_APP_API_URL ||
   (window.location.hostname === "localhost"
-    ? "https://g28s4zdq-8000.asse.devtunnels.ms/"
-    : "https://g28s4zdq-8000.asse.devtunnels.ms/");
+    ? "http://127.0.0.1:8000"
+    : "http://127.0.0.1:8000");
   // Common headers for axios requests
   const requestHeaders = {
     'ngrok-skip-browser-warning': 'true', // Bypasses ngrok warning page

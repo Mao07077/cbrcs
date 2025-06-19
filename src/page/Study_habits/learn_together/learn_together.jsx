@@ -36,7 +36,7 @@ const WebRTCComponent = () => {
     const chatBoxRef = useRef(null);
     const wsRef = useRef(null);
 
-    const API_URL = "https://g28s4zdq-8000.asse.devtunnels.ms/";
+    const API_URL = "http://127.0.0.1:8000";
 
     // Update wsRef when ws changes
     useEffect(() => {

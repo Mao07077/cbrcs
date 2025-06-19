@@ -25,11 +25,11 @@ ChartJS.register(
 	Legend
 );
 
-const API_URL = "https://g28s4zdq-8000.asse.devtunnels.ms/";
+const API_URL = "http://127.0.0.1:8000";
   process.env.REACT_APP_API_URL ||
   (window.location.hostname === "localhost"
-    ? "https://g28s4zdq-8000.asse.devtunnels.ms/"
-    : "https://g28s4zdq-8000.asse.devtunnels.ms/");
+    ? "http://127.0.0.1:8000"
+    : "http://127.0.0.1:8000");
 const DailyActivityBarChart = ({ dailyData }) => {
 	const data = {
 		labels: dailyData.map((item) => item.day),

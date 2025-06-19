@@ -1,3 +1,3 @@
 
-/api/*   https://g28s4zdq-8000.asse.devtunnels.ms/ /api/:splat  200
+/api/*   http://127.0.0.1:8000 /api/:splat  200
 /api/*   https://c3a1-2405-8d40-448f-2d57-c4b-6820-175b-382a.ngrok-free.app /api/:splat  200

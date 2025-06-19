@@ -58,7 +58,7 @@ app.add_middleware(
         "https://cbrcs-git-aaron-maos-projects-a7ae5dee.vercel.app",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
-        "https://g28s4zdq-8000.asse.devtunnels.ms/",
+        "http://127.0.0.1:8000",
     ],
     allow_credentials=True,
     allow_methods=["*"],
