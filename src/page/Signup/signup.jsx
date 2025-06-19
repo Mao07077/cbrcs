@@ -3,11 +3,11 @@ import axios from 'axios';
 import './signup.css';
 import Icon from '../../icon/actual.png';
 
-const API_URL = "https://6d3wthwg-8000.asse.devtunnels.ms";
+const API_URL = "https://g28s4zdq-8000.asse.devtunnels.ms/";
   process.env.REACT_APP_API_URL ||
   (window.location.hostname === "localhost"
-    ? "http://127.0.0.1:8000"
-    : "https://6d3wthwg-8000.asse.devtunnels.ms");
+    ? "https://g28s4zdq-8000.asse.devtunnels.ms/"
+    : "https://g28s4zdq-8000.asse.devtunnels.ms/");
 const Signup = () => {
     const [formData, setFormData] = useState({
         firstname: '',

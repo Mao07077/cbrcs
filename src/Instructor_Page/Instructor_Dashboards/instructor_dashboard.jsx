@@ -32,7 +32,7 @@ const InstructorDashboard = () => {
       setIsLoading(true);
       try {
         // Fetch total students
-        const studentsResponse = await axios.get('https://6d3wthwg-8000.asse.devtunnels.ms/students');
+        const studentsResponse = await axios.get('https://g28s4zdq-8000.asse.devtunnels.ms//students');
         const totalStudents = studentsResponse.data.length;
 
         setStats({
@@ -41,7 +41,7 @@ const InstructorDashboard = () => {
         });
 
         // Fetch modules
-        const modulesResponse = await axios.get('https://6d3wthwg-8000.asse.devtunnels.ms/api/modules');
+        const modulesResponse = await axios.get('https://g28s4zdq-8000.asse.devtunnels.ms//api/modules');
         setModules(modulesResponse.data);
 
         // Keep hardcoded attendance data as requested

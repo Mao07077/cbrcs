@@ -4,11 +4,11 @@ import './login.css';
 import Icon from '../../icon/actual.png';
 import cbrcimage from '../../icon/carlbalita.jpg';
 
-const API_URL = "https://6d3wthwg-8000.asse.devtunnels.ms";
+const API_URL = "https://g28s4zdq-8000.asse.devtunnels.ms/";
   process.env.REACT_APP_API_URL ||
   (window.location.hostname === "localhost"
-    ? "http://127.0.0.1:8000"
-    : "https://6d3wthwg-8000.asse.devtunnels.ms");
+    ? "https://g28s4zdq-8000.asse.devtunnels.ms/"
+    : "https://g28s4zdq-8000.asse.devtunnels.ms/");
 function Login() {
     const [idNumber, setIdNumber] = useState('');
     const [password, setPassword] = useState('');

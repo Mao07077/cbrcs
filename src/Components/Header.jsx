@@ -11,8 +11,8 @@ import { useNavigate } from 'react-router-dom';
 const Header = () => {
 	const nav = useNavigate();
 	const handleNavigation = (route) => {
-		console.log(`Navigating to: ${route}`);
-		nav(`/${route}`);
+		console.log(`Navigating to: /module`);
+		nav(`/module`);
 	};
 
 	return (

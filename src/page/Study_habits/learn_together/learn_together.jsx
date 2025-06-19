@@ -34,12 +34,15 @@ const WebRTCComponent = () => {
     const [speaking, setSpeaking] = useState(new Set());
     const [notifications, setNotifications] = useState([]);
     const chatBoxRef = useRef(null);
+    const wsRef = useRef(null);
 
-    const API_URL = "https://6d3wthwg-8000.asse.devtunnels.ms";
-    process.env.REACT_APP_API_URL ||
-    (window.location.hostname === "localhost"
-      ? "http://127.0.0.1:8000"
-      : "https://6d3wthwg-8000.asse.devtunnels.ms");
+    const API_URL = "https://g28s4zdq-8000.asse.devtunnels.ms/";
+
+    // Update wsRef when ws changes
+    useEffect(() => {
+        wsRef.current = ws;
+    }, [ws]);
+
     // Fetch user from localStorage on mount
     useEffect(() => {
         const userIdNumber = localStorage.getItem('userIdNumber');
@@ -62,24 +65,12 @@ const WebRTCComponent = () => {
     // WebSocket connection
     useEffect(() => {
         if (!showCallOptions && !ws && user?.id_number) {
-            // Construct WebSocket URL
             const cleanAPI_URL = API_URL.replace(/^https?:\/\//, '').replace(/^ws?:\/\//, '');
             const isProduction = process.env.NODE_ENV === 'production';
             const protocol = isProduction ? 'wss://' : 'ws://';
             const wsUrl = `${protocol}${cleanAPI_URL}/ws/${callId || 'random'}`;
 
-            console.log(`Environment: ${process.env.NODE_ENV}`);
-            console.log(`REACT_APP_API_URL: ${process.env.REACT_APP_API_URL}`);
-            console.log(`API_URL (after fallback): ${API_URL}`);
-            console.log(`Clean API_URL: ${cleanAPI_URL}`);
             console.log(`Attempting to connect to WebSocket: ${wsUrl}`);
-
-            // Validate WebSocket URL
-            // if (isProduction && (cleanAPI_URL.includes('localhost') || cleanAPI_URL.includes('127.0.0.1'))) {
-            //     setError('Invalid backend URL in production. Please configure REACT_APP_API_URL in Vercel.');
-            //     console.error('WebSocket connection aborted: Using localhost in production.');
-            //     return;
-            // }
 
             let socket;
             try {
@@ -95,7 +86,7 @@ const WebRTCComponent = () => {
                 console.log('WebSocket connection established');
                 socket.send(JSON.stringify({ 
                     id_number: user.id_number, 
-                    firstname: user.firstname // <-- add this line
+                    firstname: user.firstname 
                 }));
             };
 
@@ -115,11 +106,6 @@ const WebRTCComponent = () => {
                     setCallIdDisplay(data.callId);
                 } else if (data.type === 'active_students') {
                     setStudents(data.students);
-                    // data.students.forEach((student) => {
-                    //     if (student.id !== studentId && !peerConnections.has(student.id)) {
-                    //         startCall(student.id);
-                    //     }
-                    // });
                 } else if (data.type === 'chat') {
                     setChatMessages((prev) => [...prev, data.message]);
                 } else if (data.type === 'notification') {
@@ -157,45 +143,31 @@ const WebRTCComponent = () => {
                 setError('WebSocket connection failed. Please check your network or backend configuration.');
             };
 
-            // return () => {
-            //     console.log('Cleaning up WebSocket connection');
-            //     if (socket) socket.close();
-            // };
-        }
-        return () => {
-            if (ws) {
+            return () => {
                 console.log('Cleaning up WebSocket connection');
-                ws.close();
-            }
-        };
-    }, [showCallOptions, callId, user, studentId, peerConnections]);
+                if (socket && socket.readyState === WebSocket.OPEN) {
+                    socket.close();
+                }
+            };
+        }
+    }, [showCallOptions, callId, user]);
 
+    // Initiate calls when students list or stream changes
     useEffect(() => {
         if (studentId && students.length > 0 && stream) {
             students.forEach((student) => {
-                if (
-                    student.id !== studentId &&
-                    !peerConnections.has(student.id) &&
-                    studentId < student.id // Only one side initiates
-                ) {
+                if (student.id !== studentId && !peerConnections.has(student.id)) {
                     startCall(student.id);
                 }
             });
         }
-        // eslint-disable-next-line
     }, [students, studentId, stream]);
-
-    const wsRef = useRef(null);
-        useEffect(() => {
-        wsRef.current = ws;
-    }, [ws]);
-
 
     const initializeMediaStream = async () => {
         try {
             console.log('Requesting media stream with constraints: video=true, audio=true');
             const mediaStream = await navigator.mediaDevices.getUserMedia({
-                video: true,
+                video: { width: 640, height: 480, frameRate: 30 },
                 audio: true,
             });
 
@@ -216,6 +188,10 @@ const WebRTCComponent = () => {
             if (localVideoRef.current) {
                 localVideoRef.current.srcObject = mediaStream;
                 console.log('Local video srcObject set:', mediaStream);
+                localVideoRef.current.play().catch((err) => {
+                    console.error('Failed to play local video:', err);
+                    setError('Failed to play local video. Please check your browser settings.');
+                });
             } else {
                 console.warn('localVideoRef is not available');
             }
@@ -259,7 +235,6 @@ const WebRTCComponent = () => {
             setError('Please log in to create a call.');
             return;
         }
-        // Generate a random meeting ID
         const newMeetingId = Math.random().toString(36).substring(2, 10);
         setCallId(newMeetingId);
         setShowCallOptions(false);
@@ -296,8 +271,10 @@ const WebRTCComponent = () => {
                 localStream = await initializeMediaStream();
                 if (!localStream) {
                     console.error('Failed to initialize stream for offer');
+                    setError('Failed to access camera/microphone. Please check permissions.');
                     return;
                 }
+                setStream(localStream);
             }
 
             const pc = new RTCPeerConnection({
@@ -311,29 +288,28 @@ const WebRTCComponent = () => {
             });
 
             pc.onicecandidate = (event) => {
-                if (event.candidate) {
-                    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-                        wsRef.current.send(
-                            JSON.stringify({
-                                type: 'answer',
-                                target: from,
-                                answer,
-                            })
-                        );
-                        console.log('Sent answer to:', from);
-                    } else {
-                        console.error('WebSocket is not open when sending answer');
-                    }
+                if (event.candidate && wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+                    wsRef.current.send(
+                        JSON.stringify({
+                            type: 'ice-candidate',
+                            target: from,
+                            candidate: event.candidate,
+                        })
+                    );
+                    console.log('Sent ICE candidate to:', from);
+                } else if (!event.candidate) {
+                    console.log('No more ICE candidates');
+                } else {
+                    console.error('WebSocket is not open when sending ICE candidate');
                 }
             };
-            
-            // wsRef.current && wsRef.current.send(
-            //     JSON.stringify({
-            //         type: 'answer',
-            //         target: from,
-            //         answer,
-            //     })
-            // );
+
+            pc.ontrack = (event) => {
+                console.log(`Received remote stream from ${from}:`, event.streams[0]);
+                const tracks = event.streams[0].getTracks();
+                console.log(`Remote stream tracks:`, tracks);
+                setRemoteStreams((prev) => new Map(prev).set(from, event.streams[0]));
+            };
 
             await pc.setRemoteDescription(new RTCSessionDescription(offer));
             console.log('Set remote description:', offer);
@@ -341,14 +317,19 @@ const WebRTCComponent = () => {
             await pc.setLocalDescription(answer);
             console.log('Created and set answer:', answer);
 
-            ws.send(
-                JSON.stringify({
-                    type: 'answer',
-                    target: from,
-                    answer,
-                })
-            );
-            console.log('Sent answer to:', from);
+            if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+                wsRef.current.send(
+                    JSON.stringify({
+                        type: 'answer',
+                        target: from,
+                        answer,
+                    })
+                );
+                console.log('Sent answer to:', from);
+            } else {
+                console.error('WebSocket is not open when sending answer');
+                setError('Failed to send answer. Please check your connection.');
+            }
         } catch (error) {
             console.error('Failed to handle offer:', error);
             setError('Failed to establish call. Please try again.');
@@ -363,6 +344,7 @@ const WebRTCComponent = () => {
                 console.log(`Set answer from ${from}:`, answer);
             } catch (error) {
                 console.error(`Failed to set answer from ${from}:`, error);
+                setError('Failed to process answer. Please try again.');
             }
         } else {
             console.warn(`No peer connection found for ${from}`);
@@ -377,6 +359,7 @@ const WebRTCComponent = () => {
                 console.log(`Added ICE candidate from ${from}`);
             } catch (error) {
                 console.error(`Failed to add ICE candidate from ${from}:`, error);
+                setError('Failed to add ICE candidate. Please try again.');
             }
         } else {
             console.warn(`No peer connection found for ${from}`);
@@ -392,46 +375,50 @@ const WebRTCComponent = () => {
                 localStream = await initializeMediaStream();
                 if (!localStream) {
                     console.error('Failed to initialize stream for call');
+                    setError('Failed to access camera/microphone. Please check permissions.');
                     return;
                 }
+                setStream(localStream);
             }
-    
+
             const pc = new RTCPeerConnection({
                 iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
             });
             setPeerConnections((prev) => new Map(prev).set(targetStudentId, pc));
-    
+
             localStream.getTracks().forEach((track) => {
                 pc.addTrack(track, localStream);
                 console.log(`Added track to peer connection: ${track.kind}, enabled: ${track.enabled}`);
             });
-    
+
             pc.onicecandidate = (event) => {
-                if (event.candidate) {
-                    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-                        wsRef.current.send(
-                            JSON.stringify({
-                                type: 'ice-candidate',
-                                target: targetStudentId,
-                                candidate: event.candidate,
-                            })
-                        );
-                        console.log('Sent ICE candidate to:', targetStudentId);
-                    } else {
-                        console.error('WebSocket is not open when sending ICE candidate');
-                    }
+                if (event.candidate && wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+                    wsRef.current.send(
+                        JSON.stringify({
+                            type: 'ice-candidate',
+                            target: targetStudentId,
+                            candidate: event.candidate,
+                        })
+                    );
+                    console.log('Sent ICE candidate to:', targetStudentId);
+                } else if (!event.candidate) {
+                    console.log('No more ICE candidates');
+                } else {
+                    console.error('WebSocket is not open when sending ICE candidate');
                 }
             };
-    
+
             pc.ontrack = (event) => {
                 console.log(`Received remote stream from ${targetStudentId}:`, event.streams[0]);
+                const tracks = event.streams[0].getTracks();
+                console.log(`Remote stream tracks:`, tracks);
                 setRemoteStreams((prev) => new Map(prev).set(targetStudentId, event.streams[0]));
             };
-    
+
             const offer = await pc.createOffer();
             await pc.setLocalDescription(offer);
             console.log('Created and set offer:', offer);
-    
+
             if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
                 wsRef.current.send(
                     JSON.stringify({
@@ -443,6 +430,7 @@ const WebRTCComponent = () => {
                 console.log('Sent offer to:', targetStudentId);
             } else {
                 console.error('WebSocket is not open when sending offer');
+                setError('Failed to send offer. Please check your connection.');
             }
         } catch (error) {
             console.error('Failed to start call:', error);
@@ -482,14 +470,12 @@ const WebRTCComponent = () => {
             type: 'chat', 
             message, 
             sender_name: user?.firstname || "User"
-        }));       setMessage('');
+        }));
+        setMessage('');
     };
 
     const endCall = () => {
         console.log('Ending call');
-        // if (ws && ws.readyState === WebSocket.OPEN) {
-        //     ws.send(JSON.stringify({ type: 'leave' }));
-        // }
         if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
             wsRef.current.send(JSON.stringify({ type: 'leave' }));
         }
@@ -536,6 +522,9 @@ const WebRTCComponent = () => {
         console.log(`Mute state: isMuted=${!isMuted}`);
         if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
             wsRef.current.send(JSON.stringify({ type: 'status_update', muted: !isMuted, camera_off: isCameraOff }));
+        } else {
+            console.error('WebSocket is not open when sending status update');
+            setError('Failed to send status update. Please check your connection.');
         }
     };
 
@@ -557,11 +546,11 @@ const WebRTCComponent = () => {
         });
         setIsCameraOff(!isCameraOff);
         console.log(`Camera state: isCameraOff=${!isCameraOff}`);
-        // if (ws && ws.readyState === WebSocket.OPEN) {
-        //     ws.send(JSON.stringify({ type: 'status_update', muted: isMuted, camera_off: !isCameraOff }));
-        // }
         if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
             wsRef.current.send(JSON.stringify({ type: 'status_update', muted: isMuted, camera_off: !isCameraOff }));
+        } else {
+            console.error('WebSocket is not open when sending status update');
+            setError('Failed to send status update. Please check your connection.');
         }
     };
 
@@ -695,6 +684,9 @@ const WebRTCComponent = () => {
                                                             if (video.srcObject !== stream) {
                                                                 video.srcObject = stream;
                                                                 console.log(`Set remote video srcObject for ${student.id}:`, stream);
+                                                                video.play().catch((err) => {
+                                                                    console.error(`Failed to play remote video for ${student.id}:`, err);
+                                                                });
                                                             }
                                                         }
                                                     }}
